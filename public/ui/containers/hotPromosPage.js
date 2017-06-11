@@ -41,7 +41,7 @@ var HotPromosPage = {
             </div>
           </div>
           <section class="bg-white ">
-            <div class="  w-100 pa1">
+            <div class="w-100 pa1">
               <img src="/assets/img/ad/5.jpg" class="w-100 br3"/>
             </div>
             <div class="pa2 ">

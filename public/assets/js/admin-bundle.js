@@ -63,633 +63,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _mithril = __webpack_require__(3);
-
-var _mithril2 = _interopRequireDefault(_mithril);
-
-var _hotPromosPage = __webpack_require__(2);
-
-var _hotPromosPage2 = _interopRequireDefault(_hotPromosPage);
-
-var _promoDetailPage = __webpack_require__(12);
-
-var _promoDetailPage2 = _interopRequireDefault(_promoDetailPage);
-
-var _offCanvasMenu = __webpack_require__(11);
-
-var _offCanvasMenu2 = _interopRequireDefault(_offCanvasMenu);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var root = document.getElementById('appContainer');
-
-_mithril2.default.route.prefix('');
-_mithril2.default.route(root, '/', {
-  '/': {
-    view: function view(vnode) {
-      return (0, _mithril2.default)(_offCanvasMenu2.default, vnode.attrs, (0, _mithril2.default)(_hotPromosPage2.default, vnode.attrs));
-    }
-  },
-  '/promo/:slug': {
-    view: function view(vnode) {
-      return (0, _mithril2.default)(_offCanvasMenu2.default, vnode.attrs, (0, _mithril2.default)(_promoDetailPage2.default, vnode.attrs));
-    }
-  }
-});
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _mithril = __webpack_require__(3);
-
-var _mithril2 = _interopRequireDefault(_mithril);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var HotPromosPage = {
-  oncreate: function oncreate(vnode) {
-    console.log(vnode);
-  },
-  view: function view(vnode) {
-    return (0, _mithril2.default)(
-      "section",
-      null,
-      (0, _mithril2.default)(
-        "section",
-        null,
-        (0, _mithril2.default)(
-          "div",
-          { "class": "flex flex-row pv1 ph2" },
-          (0, _mithril2.default)(
-            "div",
-            { "class": "flex pa1 pr3" },
-            (0, _mithril2.default)(
-              "a",
-              { "class": "red-custom f3", onclick: function onclick() {
-                  return vnode.attrs.slideout.toggle();
-                } },
-              "\u2630"
-            )
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "flex flex-row flex-auto" },
-            (0, _mithril2.default)(
-              "div",
-              { "class": "flex flex-auto  justify-center pa1 tc" },
-              (0, _mithril2.default)(
-                "a",
-                { "class": "pa1 dib w-100  red-custom " },
-                "map"
-              )
-            ),
-            (0, _mithril2.default)(
-              "div",
-              { "class": "flex flex-auto  justify-center pa1 tc" },
-              (0, _mithril2.default)(
-                "a",
-                { "class": "pa1 dib w-100  br-pill bg-red-custom white" },
-                "hot"
-              )
-            ),
-            (0, _mithril2.default)(
-              "div",
-              { "class": "flex flex-auto  justify-center pa1 tc" },
-              (0, _mithril2.default)(
-                "a",
-                { "class": "pa1 dib w-100 red-custom " },
-                "2 in 1"
-              )
-            )
-          )
-        ),
-        (0, _mithril2.default)(
-          "div",
-          { "class": "pa2" },
-          (0, _mithril2.default)(
-            "div",
-            { "class": " cf flex justify-between relative" },
-            (0, _mithril2.default)(
-              "div",
-              { "class": "dib   flex relative ", style: "flex:7" },
-              (0, _mithril2.default)(
-                "span",
-                { "class": "dib searchbtn z-3 pv1 ", style: "padding-top:0.60rem" },
-                (0, _mithril2.default)("img", { src: "/assets/img/svg/search.svg", "class": "", style: "height:0.8rem;" })
-              ),
-              (0, _mithril2.default)("input", { type: "search", "class": "w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent ", placeholder: "search" })
-            ),
-            (0, _mithril2.default)(
-              "div",
-              { "class": "dib ml2 flex relative", style: "flex:3" },
-              (0, _mithril2.default)(
-                "span",
-                { "class": "dib searchbtn z-3 pv1 ", style: "padding-top:0.60rem" },
-                (0, _mithril2.default)("img", { src: "/assets/img/svg/location.svg", "class": "", style: "height:0.8rem;" })
-              ),
-              (0, _mithril2.default)("input", { type: "search", "class": "w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent ", placeholder: "area" })
-            )
-          )
-        ),
-        (0, _mithril2.default)(
-          "section",
-          { "class": "bg-white " },
-          (0, _mithril2.default)(
-            "div",
-            { "class": "w-100 pa1" },
-            (0, _mithril2.default)("img", { src: "/assets/img/ad/5.jpg", "class": "w-100 br3" })
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "pa2 " },
-            (0, _mithril2.default)(
-              "div",
-              { "class": "dib w-50 br b--transparent" },
-              (0, _mithril2.default)("img", { src: "/assets/img/ad/1.png", "class": "w-100 br3 b--light-gray-custom" })
-            ),
-            (0, _mithril2.default)(
-              "div",
-              { "class": "dib w-50 bl b--transparent" },
-              (0, _mithril2.default)("img", { src: "/assets/img/ad/2.png", "class": "w-100 br3 b--light-gray-custom" })
-            )
-          )
-        ),
-        (0, _mithril2.default)(
-          "section",
-          { "class": "bg-light-gray-custom pv3" },
-          (0, _mithril2.default)(
-            "div",
-            { "class": "pa2" },
-            (0, _mithril2.default)(
-              "span",
-              null,
-              (0, _mithril2.default)("img", { src: "/assets/img/svg/star.svg", "class": "dib pt1", style: "height:0.8rem;" })
-            ),
-            (0, _mithril2.default)(
-              "span",
-              { "class": "red-custom dib pt1" },
-              "Popular"
-            )
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "" },
-            (0, _mithril2.default)(
-              "div",
-              { "class": "pv1 cf" },
-              (0, _mithril2.default)(
-                "div",
-                { "class": "dib w-50 pa1 fl" },
-                (0, _mithril2.default)(
-                  "div",
-                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray" },
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "w-100" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/ad/3.png", "class": "w-100 br2" })
-                  ),
-                  (0, _mithril2.default)(
-                    "span",
-                    { "class": "f7 lh-title dib pa1" },
-                    "Ticket to Cruise and Chillz Boat Cruise"
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pv1 tr pa1" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/svg/cart.svg", style: "height:0.6rem;" }),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "red-custom" },
-                      "super mercado"
-                    )
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pa1" },
-                    (0, _mithril2.default)(
-                      "strong",
-                      { "class": "dark-gray" },
-                      "20000CFA"
-                    ),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "strike" },
-                      "10000CFA"
-                    )
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pa1 pv2" },
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
-                      (0, _mithril2.default)(
-                        "span",
-                        null,
-                        "200"
-                      )
-                    ),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
-                      (0, _mithril2.default)(
-                        "span",
-                        null,
-                        "12"
-                      )
-                    )
-                  )
-                )
-              ),
-              (0, _mithril2.default)(
-                "div",
-                { "class": "dib w-50 pa1 fl" },
-                (0, _mithril2.default)(
-                  "div",
-                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray" },
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "w-100" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/ad/2.png", "class": "w-100 br2" })
-                  ),
-                  (0, _mithril2.default)(
-                    "span",
-                    { "class": "f7 lh-title dib pa1" },
-                    "Ticket to Cruise and Chillz Boat Cruise"
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pv1 tr pa1" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/svg/cart.svg", style: "height:0.6rem;" }),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "red-custom" },
-                      "super mercado"
-                    )
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pa1" },
-                    (0, _mithril2.default)(
-                      "strong",
-                      { "class": "dark-gray" },
-                      "20000CFA"
-                    ),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "strike" },
-                      "10000CFA"
-                    )
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pa1 pv2" },
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
-                      (0, _mithril2.default)(
-                        "span",
-                        null,
-                        "200"
-                      )
-                    ),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
-                      (0, _mithril2.default)(
-                        "span",
-                        null,
-                        "12"
-                      )
-                    )
-                  )
-                )
-              )
-            ),
-            (0, _mithril2.default)(
-              "div",
-              { "class": "pv1 cf" },
-              (0, _mithril2.default)(
-                "div",
-                { "class": "dib w-50 pa1 fl" },
-                (0, _mithril2.default)(
-                  "div",
-                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray" },
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "w-100" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/ad/4.jpg", "class": "w-100 br2" })
-                  ),
-                  (0, _mithril2.default)(
-                    "span",
-                    { "class": "f7 lh-title dib pa1" },
-                    "Ticket to Cruise and Chillz Boat Cruise"
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pv1 tr pa1" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/svg/cart.svg", style: "height:0.6rem;" }),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "red-custom" },
-                      "super mercado"
-                    )
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pa1" },
-                    (0, _mithril2.default)(
-                      "strong",
-                      { "class": "dark-gray" },
-                      "20000CFA"
-                    ),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "strike" },
-                      "10000CFA"
-                    )
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pa1 pv2" },
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
-                      (0, _mithril2.default)(
-                        "span",
-                        null,
-                        "200"
-                      )
-                    ),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
-                      (0, _mithril2.default)(
-                        "span",
-                        null,
-                        "12"
-                      )
-                    )
-                  )
-                )
-              ),
-              (0, _mithril2.default)(
-                "div",
-                { "class": "dib w-50 pa1 fl" },
-                (0, _mithril2.default)(
-                  "div",
-                  { "class": "br2 b--transparent gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 b--light-gray-custom" },
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "w-100" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/ad/5.jpg", "class": "w-100 br2" })
-                  ),
-                  (0, _mithril2.default)(
-                    "span",
-                    { "class": "f7 lh-title dib pa1" },
-                    "Ticket to Cruise and Chillz Boat Cruise"
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pv1 tr pa1" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/svg/cart.svg", style: "height:0.6rem;" }),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "red-custom" },
-                      "super mercado"
-                    )
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pa1" },
-                    (0, _mithril2.default)(
-                      "strong",
-                      { "class": "dark-gray" },
-                      "20000CFA"
-                    ),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "strike" },
-                      "10000CFA"
-                    )
-                  ),
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "f8 pa1 pv2" },
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
-                      (0, _mithril2.default)(
-                        "span",
-                        null,
-                        "200"
-                      )
-                    ),
-                    (0, _mithril2.default)(
-                      "span",
-                      { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
-                      (0, _mithril2.default)(
-                        "span",
-                        null,
-                        "12"
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "tc pv3" },
-            (0, _mithril2.default)(
-              "button",
-              { "class": "ba b--red-custom bg-transparent pv2 ph3" },
-              "load more"
-            )
-          )
-        )
-      ),
-      (0, _mithril2.default)(
-        "section",
-        { "class": "bg-dark-gray  cf f5" },
-        (0, _mithril2.default)(
-          "div",
-          { "class": "white-80 cf pa3" },
-          (0, _mithril2.default)(
-            "div",
-            { "class": "dib w-50 fl pv3" },
-            (0, _mithril2.default)(
-              "h3",
-              { "class": "mv1 fw6 red-custom" },
-              "Company"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "About Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "FAQ"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "How It Works"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Careers"
-            )
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "dib w-50 fl pv3" },
-            (0, _mithril2.default)(
-              "h3",
-              { "class": "mv1 fw6 red-custom" },
-              "Explore"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "About Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "FAQ"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "How It Works"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Careers"
-            )
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "dib w-50 fl pv3" },
-            (0, _mithril2.default)(
-              "h3",
-              { "class": "mv1 fw6 red-custom" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "About Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "FAQ"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "How It Works"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Careers"
-            )
-          )
-        ),
-        (0, _mithril2.default)(
-          "div",
-          { "class": "tc pv3 white-80 bg-black" },
-          (0, _mithril2.default)(
-            "span",
-            null,
-            "copyright Bonways 2017"
-          )
-        )
-      )
-    );
-  }
-};
-
-exports.default = HotPromosPage;
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(setImmediate, global) {;(function() {
@@ -1919,7 +1297,240 @@ m.vnode = Vnode
 if (true) module["exports"] = m
 else window.m = m
 }());
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6).setImmediate, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7).setImmediate, __webpack_require__(1)))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var requestAnimFrame = (function() {
+  return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    function (callback) {
+      window.setTimeout(callback, 1000 / 60);
+    };
+}());
+
+function decouple(node, event, fn) {
+  var eve,
+      tracking = false;
+
+  function captureEvent(e) {
+    eve = e;
+    track();
+  }
+
+  function track() {
+    if (!tracking) {
+      requestAnimFrame(update);
+      tracking = true;
+    }
+  }
+
+  function update() {
+    fn.call(node, eve);
+    tracking = false;
+  }
+
+  node.addEventListener(event, captureEvent, false);
+
+  return captureEvent;
+}
+
+/**
+ * Expose decouple
+ */
+module.exports = decouple;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+exports.__esModule = true;
+/**
+ * Creates a new instance of Emitter.
+ * @class
+ * @returns {Object} Returns a new instance of Emitter.
+ * @example
+ * // Creates a new instance of Emitter.
+ * var Emitter = require('emitter');
+ *
+ * var emitter = new Emitter();
+ */
+
+var Emitter = (function () {
+  function Emitter() {
+    _classCallCheck(this, Emitter);
+  }
+
+  /**
+   * Adds a listener to the collection for the specified event.
+   * @memberof! Emitter.prototype
+   * @function
+   * @param {String} event - The event name.
+   * @param {Function} listener - A listener function to add.
+   * @returns {Object} Returns an instance of Emitter.
+   * @example
+   * // Add an event listener to "foo" event.
+   * emitter.on('foo', listener);
+   */
+
+  Emitter.prototype.on = function on(event, listener) {
+    // Use the current collection or create it.
+    this._eventCollection = this._eventCollection || {};
+
+    // Use the current collection of an event or create it.
+    this._eventCollection[event] = this._eventCollection[event] || [];
+
+    // Appends the listener into the collection of the given event
+    this._eventCollection[event].push(listener);
+
+    return this;
+  };
+
+  /**
+   * Adds a listener to the collection for the specified event that will be called only once.
+   * @memberof! Emitter.prototype
+   * @function
+   * @param {String} event - The event name.
+   * @param {Function} listener - A listener function to add.
+   * @returns {Object} Returns an instance of Emitter.
+   * @example
+   * // Will add an event handler to "foo" event once.
+   * emitter.once('foo', listener);
+   */
+
+  Emitter.prototype.once = function once(event, listener) {
+    var self = this;
+
+    function fn() {
+      self.off(event, fn);
+      listener.apply(this, arguments);
+    }
+
+    fn.listener = listener;
+
+    this.on(event, fn);
+
+    return this;
+  };
+
+  /**
+   * Removes a listener from the collection for the specified event.
+   * @memberof! Emitter.prototype
+   * @function
+   * @param {String} event - The event name.
+   * @param {Function} listener - A listener function to remove.
+   * @returns {Object} Returns an instance of Emitter.
+   * @example
+   * // Remove a given listener.
+   * emitter.off('foo', listener);
+   */
+
+  Emitter.prototype.off = function off(event, listener) {
+
+    var listeners = undefined;
+
+    // Defines listeners value.
+    if (!this._eventCollection || !(listeners = this._eventCollection[event])) {
+      return this;
+    }
+
+    listeners.forEach(function (fn, i) {
+      if (fn === listener || fn.listener === listener) {
+        // Removes the given listener.
+        listeners.splice(i, 1);
+      }
+    });
+
+    // Removes an empty event collection.
+    if (listeners.length === 0) {
+      delete this._eventCollection[event];
+    }
+
+    return this;
+  };
+
+  /**
+   * Execute each item in the listener collection in order with the specified data.
+   * @memberof! Emitter.prototype
+   * @function
+   * @param {String} event - The name of the event you want to emit.
+   * @param {...Object} data - Data to pass to the listeners.
+   * @returns {Object} Returns an instance of Emitter.
+   * @example
+   * // Emits the "foo" event with 'param1' and 'param2' as arguments.
+   * emitter.emit('foo', 'param1', 'param2');
+   */
+
+  Emitter.prototype.emit = function emit(event) {
+    var _this = this;
+
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var listeners = undefined;
+
+    // Defines listeners value.
+    if (!this._eventCollection || !(listeners = this._eventCollection[event])) {
+      return this;
+    }
+
+    // Clone listeners
+    listeners = listeners.slice(0);
+
+    listeners.forEach(function (fn) {
+      return fn.apply(_this, args);
+    });
+
+    return this;
+  };
+
+  return Emitter;
+})();
+
+/**
+ * Exports Emitter
+ */
+exports["default"] = Emitter;
+module.exports = exports["default"];
 
 /***/ }),
 /* 4 */
@@ -2302,282 +1913,10 @@ process.umask = function() { return 0; };
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(4)))
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(5);
-exports.setImmediate = setImmediate;
-exports.clearImmediate = clearImmediate;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(1);
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var requestAnimFrame = (function() {
-  return window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    function (callback) {
-      window.setTimeout(callback, 1000 / 60);
-    };
-}());
-
-function decouple(node, event, fn) {
-  var eve,
-      tracking = false;
-
-  function captureEvent(e) {
-    eve = e;
-    track();
-  }
-
-  function track() {
-    if (!tracking) {
-      requestAnimFrame(update);
-      tracking = true;
-    }
-  }
-
-  function update() {
-    fn.call(node, eve);
-    tracking = false;
-  }
-
-  node.addEventListener(event, captureEvent, false);
-
-  return captureEvent;
-}
-
-/**
- * Expose decouple
- */
-module.exports = decouple;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
-
-exports.__esModule = true;
-/**
- * Creates a new instance of Emitter.
- * @class
- * @returns {Object} Returns a new instance of Emitter.
- * @example
- * // Creates a new instance of Emitter.
- * var Emitter = require('emitter');
- *
- * var emitter = new Emitter();
- */
-
-var Emitter = (function () {
-  function Emitter() {
-    _classCallCheck(this, Emitter);
-  }
-
-  /**
-   * Adds a listener to the collection for the specified event.
-   * @memberof! Emitter.prototype
-   * @function
-   * @param {String} event - The event name.
-   * @param {Function} listener - A listener function to add.
-   * @returns {Object} Returns an instance of Emitter.
-   * @example
-   * // Add an event listener to "foo" event.
-   * emitter.on('foo', listener);
-   */
-
-  Emitter.prototype.on = function on(event, listener) {
-    // Use the current collection or create it.
-    this._eventCollection = this._eventCollection || {};
-
-    // Use the current collection of an event or create it.
-    this._eventCollection[event] = this._eventCollection[event] || [];
-
-    // Appends the listener into the collection of the given event
-    this._eventCollection[event].push(listener);
-
-    return this;
-  };
-
-  /**
-   * Adds a listener to the collection for the specified event that will be called only once.
-   * @memberof! Emitter.prototype
-   * @function
-   * @param {String} event - The event name.
-   * @param {Function} listener - A listener function to add.
-   * @returns {Object} Returns an instance of Emitter.
-   * @example
-   * // Will add an event handler to "foo" event once.
-   * emitter.once('foo', listener);
-   */
-
-  Emitter.prototype.once = function once(event, listener) {
-    var self = this;
-
-    function fn() {
-      self.off(event, fn);
-      listener.apply(this, arguments);
-    }
-
-    fn.listener = listener;
-
-    this.on(event, fn);
-
-    return this;
-  };
-
-  /**
-   * Removes a listener from the collection for the specified event.
-   * @memberof! Emitter.prototype
-   * @function
-   * @param {String} event - The event name.
-   * @param {Function} listener - A listener function to remove.
-   * @returns {Object} Returns an instance of Emitter.
-   * @example
-   * // Remove a given listener.
-   * emitter.off('foo', listener);
-   */
-
-  Emitter.prototype.off = function off(event, listener) {
-
-    var listeners = undefined;
-
-    // Defines listeners value.
-    if (!this._eventCollection || !(listeners = this._eventCollection[event])) {
-      return this;
-    }
-
-    listeners.forEach(function (fn, i) {
-      if (fn === listener || fn.listener === listener) {
-        // Removes the given listener.
-        listeners.splice(i, 1);
-      }
-    });
-
-    // Removes an empty event collection.
-    if (listeners.length === 0) {
-      delete this._eventCollection[event];
-    }
-
-    return this;
-  };
-
-  /**
-   * Execute each item in the listener collection in order with the specified data.
-   * @memberof! Emitter.prototype
-   * @function
-   * @param {String} event - The name of the event you want to emit.
-   * @param {...Object} data - Data to pass to the listeners.
-   * @returns {Object} Returns an instance of Emitter.
-   * @example
-   * // Emits the "foo" event with 'param1' and 'param2' as arguments.
-   * emitter.emit('foo', 'param1', 'param2');
-   */
-
-  Emitter.prototype.emit = function emit(event) {
-    var _this = this;
-
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    var listeners = undefined;
-
-    // Defines listeners value.
-    if (!this._eventCollection || !(listeners = this._eventCollection[event])) {
-      return this;
-    }
-
-    // Clone listeners
-    listeners = listeners.slice(0);
-
-    listeners.forEach(function (fn) {
-      return fn.apply(_this, args);
-    });
-
-    return this;
-  };
-
-  return Emitter;
-})();
-
-/**
- * Exports Emitter
- */
-exports["default"] = Emitter;
-module.exports = exports["default"];
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2586,8 +1925,8 @@ module.exports = exports["default"];
 /**
  * Module dependencies
  */
-var decouple = __webpack_require__(8);
-var Emitter = __webpack_require__(9);
+var decouple = __webpack_require__(2);
+var Emitter = __webpack_require__(3);
 
 /**
  * Privates
@@ -2930,7 +2269,66 @@ module.exports = Slideout;
 
 
 /***/ }),
-/* 11 */
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(5);
+exports.setImmediate = setImmediate;
+exports.clearImmediate = clearImmediate;
+
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2940,11 +2338,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _mithril = __webpack_require__(3);
+var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _slideout = __webpack_require__(10);
+var _slideout = __webpack_require__(6);
 
 var _slideout2 = _interopRequireDefault(_slideout);
 
@@ -2999,7 +2397,7 @@ var OffCanvasMenu = {
 exports.default = OffCanvasMenu;
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3009,7 +2407,561 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _mithril = __webpack_require__(3);
+var _mithril = __webpack_require__(0);
+
+var _mithril2 = _interopRequireDefault(_mithril);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var HotPromosPage = {
+  oncreate: function oncreate(vnode) {
+    console.log(vnode);
+  },
+  view: function view(vnode) {
+    return (0, _mithril2.default)(
+      "section",
+      null,
+      (0, _mithril2.default)(
+        "section",
+        null,
+        (0, _mithril2.default)(
+          "div",
+          { "class": "flex flex-row pv1 ph2" },
+          (0, _mithril2.default)(
+            "div",
+            { "class": "flex pa1 pr3" },
+            (0, _mithril2.default)(
+              "a",
+              { "class": "red-custom f3", onclick: function onclick() {
+                  return vnode.attrs.slideout.toggle();
+                } },
+              "\u2630"
+            )
+          ),
+          (0, _mithril2.default)(
+            "div",
+            { "class": "flex flex-row flex-auto" },
+            (0, _mithril2.default)(
+              "div",
+              { "class": "flex flex-auto  justify-center pa1 tc" },
+              (0, _mithril2.default)(
+                "a",
+                { "class": "pa1 dib w-100  red-custom " },
+                "map"
+              )
+            ),
+            (0, _mithril2.default)(
+              "div",
+              { "class": "flex flex-auto  justify-center pa1 tc" },
+              (0, _mithril2.default)(
+                "a",
+                { "class": "pa1 dib w-100  br-pill bg-red-custom white" },
+                "hot"
+              )
+            ),
+            (0, _mithril2.default)(
+              "div",
+              { "class": "flex flex-auto  justify-center pa1 tc" },
+              (0, _mithril2.default)(
+                "a",
+                { "class": "pa1 dib w-100 red-custom " },
+                "2 in 1"
+              )
+            )
+          )
+        ),
+        (0, _mithril2.default)(
+          "div",
+          { "class": "pa2" },
+          (0, _mithril2.default)(
+            "div",
+            { "class": " cf flex justify-between relative" },
+            (0, _mithril2.default)(
+              "div",
+              { "class": "dib   flex relative ", style: "flex:7" },
+              (0, _mithril2.default)(
+                "span",
+                { "class": "dib searchbtn z-3 pv1 ", style: "padding-top:0.60rem" },
+                (0, _mithril2.default)("img", { src: "/assets/img/svg/search.svg", "class": "", style: "height:0.8rem;" })
+              ),
+              (0, _mithril2.default)("input", { type: "search", "class": "w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent ", placeholder: "search" })
+            ),
+            (0, _mithril2.default)(
+              "div",
+              { "class": "dib ml2 flex relative", style: "flex:3" },
+              (0, _mithril2.default)(
+                "span",
+                { "class": "dib searchbtn z-3 pv1 ", style: "padding-top:0.60rem" },
+                (0, _mithril2.default)("img", { src: "/assets/img/svg/location.svg", "class": "", style: "height:0.8rem;" })
+              ),
+              (0, _mithril2.default)("input", { type: "search", "class": "w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent ", placeholder: "area" })
+            )
+          )
+        ),
+        (0, _mithril2.default)(
+          "section",
+          { "class": "bg-white " },
+          (0, _mithril2.default)(
+            "div",
+            { "class": "w-100 pa1" },
+            (0, _mithril2.default)("img", { src: "/assets/img/ad/5.jpg", "class": "w-100 br3" })
+          ),
+          (0, _mithril2.default)(
+            "div",
+            { "class": "pa2 " },
+            (0, _mithril2.default)(
+              "div",
+              { "class": "dib w-50 br b--transparent" },
+              (0, _mithril2.default)("img", { src: "/assets/img/ad/1.png", "class": "w-100 br3 b--light-gray-custom" })
+            ),
+            (0, _mithril2.default)(
+              "div",
+              { "class": "dib w-50 bl b--transparent" },
+              (0, _mithril2.default)("img", { src: "/assets/img/ad/2.png", "class": "w-100 br3 b--light-gray-custom" })
+            )
+          )
+        ),
+        (0, _mithril2.default)(
+          "section",
+          { "class": "bg-light-gray-custom pv3" },
+          (0, _mithril2.default)(
+            "div",
+            { "class": "pa2" },
+            (0, _mithril2.default)(
+              "span",
+              null,
+              (0, _mithril2.default)("img", { src: "/assets/img/svg/star.svg", "class": "dib pt1", style: "height:0.8rem;" })
+            ),
+            (0, _mithril2.default)(
+              "span",
+              { "class": "red-custom dib pt1" },
+              "Popular"
+            )
+          ),
+          (0, _mithril2.default)(
+            "div",
+            { "class": "" },
+            (0, _mithril2.default)(
+              "div",
+              { "class": "pv1 cf" },
+              (0, _mithril2.default)(
+                "div",
+                { "class": "dib w-50 pa1 fl" },
+                (0, _mithril2.default)(
+                  "div",
+                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray" },
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "w-100" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/ad/3.png", "class": "w-100 br2" })
+                  ),
+                  (0, _mithril2.default)(
+                    "span",
+                    { "class": "f7 lh-title dib pa1" },
+                    "Ticket to Cruise and Chillz Boat Cruise"
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pv1 tr pa1" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/svg/cart.svg", style: "height:0.6rem;" }),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "red-custom" },
+                      "super mercado"
+                    )
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1" },
+                    (0, _mithril2.default)(
+                      "strong",
+                      { "class": "dark-gray" },
+                      "20000CFA"
+                    ),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "strike" },
+                      "10000CFA"
+                    )
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1 pv2" },
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "pa1" },
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)(
+                        "span",
+                        null,
+                        "200"
+                      )
+                    ),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "pa1" },
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)(
+                        "span",
+                        null,
+                        "12"
+                      )
+                    )
+                  )
+                )
+              ),
+              (0, _mithril2.default)(
+                "div",
+                { "class": "dib w-50 pa1 fl" },
+                (0, _mithril2.default)(
+                  "div",
+                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray" },
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "w-100" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/ad/2.png", "class": "w-100 br2" })
+                  ),
+                  (0, _mithril2.default)(
+                    "span",
+                    { "class": "f7 lh-title dib pa1" },
+                    "Ticket to Cruise and Chillz Boat Cruise"
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pv1 tr pa1" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/svg/cart.svg", style: "height:0.6rem;" }),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "red-custom" },
+                      "super mercado"
+                    )
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1" },
+                    (0, _mithril2.default)(
+                      "strong",
+                      { "class": "dark-gray" },
+                      "20000CFA"
+                    ),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "strike" },
+                      "10000CFA"
+                    )
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1 pv2" },
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "pa1" },
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)(
+                        "span",
+                        null,
+                        "200"
+                      )
+                    ),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "pa1" },
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)(
+                        "span",
+                        null,
+                        "12"
+                      )
+                    )
+                  )
+                )
+              )
+            ),
+            (0, _mithril2.default)(
+              "div",
+              { "class": "pv1 cf" },
+              (0, _mithril2.default)(
+                "div",
+                { "class": "dib w-50 pa1 fl" },
+                (0, _mithril2.default)(
+                  "div",
+                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray" },
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "w-100" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/ad/4.jpg", "class": "w-100 br2" })
+                  ),
+                  (0, _mithril2.default)(
+                    "span",
+                    { "class": "f7 lh-title dib pa1" },
+                    "Ticket to Cruise and Chillz Boat Cruise"
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pv1 tr pa1" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/svg/cart.svg", style: "height:0.6rem;" }),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "red-custom" },
+                      "super mercado"
+                    )
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1" },
+                    (0, _mithril2.default)(
+                      "strong",
+                      { "class": "dark-gray" },
+                      "20000CFA"
+                    ),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "strike" },
+                      "10000CFA"
+                    )
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1 pv2" },
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "pa1" },
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)(
+                        "span",
+                        null,
+                        "200"
+                      )
+                    ),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "pa1" },
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)(
+                        "span",
+                        null,
+                        "12"
+                      )
+                    )
+                  )
+                )
+              ),
+              (0, _mithril2.default)(
+                "div",
+                { "class": "dib w-50 pa1 fl" },
+                (0, _mithril2.default)(
+                  "div",
+                  { "class": "br2 b--transparent gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 b--light-gray-custom" },
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "w-100" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/ad/5.jpg", "class": "w-100 br2" })
+                  ),
+                  (0, _mithril2.default)(
+                    "span",
+                    { "class": "f7 lh-title dib pa1" },
+                    "Ticket to Cruise and Chillz Boat Cruise"
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pv1 tr pa1" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/svg/cart.svg", style: "height:0.6rem;" }),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "red-custom" },
+                      "super mercado"
+                    )
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1" },
+                    (0, _mithril2.default)(
+                      "strong",
+                      { "class": "dark-gray" },
+                      "20000CFA"
+                    ),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "strike" },
+                      "10000CFA"
+                    )
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1 pv2" },
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "pa1" },
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)(
+                        "span",
+                        null,
+                        "200"
+                      )
+                    ),
+                    (0, _mithril2.default)(
+                      "span",
+                      { "class": "pa1" },
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)(
+                        "span",
+                        null,
+                        "12"
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          ),
+          (0, _mithril2.default)(
+            "div",
+            { "class": "tc pv3" },
+            (0, _mithril2.default)(
+              "button",
+              { "class": "ba b--red-custom bg-transparent pv2 ph3" },
+              "load more"
+            )
+          )
+        )
+      ),
+      (0, _mithril2.default)(
+        "section",
+        { "class": "bg-dark-gray  cf f5" },
+        (0, _mithril2.default)(
+          "div",
+          { "class": "white-80 cf pa3" },
+          (0, _mithril2.default)(
+            "div",
+            { "class": "dib w-50 fl pv3" },
+            (0, _mithril2.default)(
+              "h3",
+              { "class": "mv1 fw6 red-custom" },
+              "Company"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "About Us"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "Contact Us"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "FAQ"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "How It Works"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "Careers"
+            )
+          ),
+          (0, _mithril2.default)(
+            "div",
+            { "class": "dib w-50 fl pv3" },
+            (0, _mithril2.default)(
+              "h3",
+              { "class": "mv1 fw6 red-custom" },
+              "Explore"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "About Us"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "Contact Us"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "FAQ"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "How It Works"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "Careers"
+            )
+          ),
+          (0, _mithril2.default)(
+            "div",
+            { "class": "dib w-50 fl pv3" },
+            (0, _mithril2.default)(
+              "h3",
+              { "class": "mv1 fw6 red-custom" },
+              "Contact Us"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "About Us"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "Contact Us"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "FAQ"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "How It Works"
+            ),
+            (0, _mithril2.default)(
+              "a",
+              { href: "#", "class": "white-80 db link" },
+              "Careers"
+            )
+          )
+        ),
+        (0, _mithril2.default)(
+          "div",
+          { "class": "tc pv3 white-80 bg-black" },
+          (0, _mithril2.default)(
+            "span",
+            null,
+            "copyright Bonways 2017"
+          )
+        )
+      )
+    );
+  }
+};
+
+exports.default = HotPromosPage;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
@@ -3106,7 +3058,7 @@ var PromoDetailPage = {
           (0, _mithril2.default)(
             "div",
             { "class": "  w-100 " },
-            (0, _mithril2.default)("img", { src: "/assets/img/ad/5.jpg", "class": "w-100 " })
+            (0, _mithril2.default)("img", { src: "/assets/img/ad/1.png", "class": "w-100 " })
           )
         ),
         (0, _mithril2.default)(
@@ -3356,6 +3308,53 @@ var PromoDetailPage = {
 };
 
 exports.default = PromoDetailPage;
+
+/***/ }),
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _mithril = __webpack_require__(0);
+
+var _mithril2 = _interopRequireDefault(_mithril);
+
+var _hotPromosPage = __webpack_require__(9);
+
+var _hotPromosPage2 = _interopRequireDefault(_hotPromosPage);
+
+var _promoDetailPage = __webpack_require__(10);
+
+var _promoDetailPage2 = _interopRequireDefault(_promoDetailPage);
+
+var _offCanvasMenu = __webpack_require__(8);
+
+var _offCanvasMenu2 = _interopRequireDefault(_offCanvasMenu);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var root = document.getElementById('appContainer');
+
+_mithril2.default.route.prefix('');
+_mithril2.default.route(root, '/', {
+  '/': {
+    view: function view(vnode) {
+      return (0, _mithril2.default)(_offCanvasMenu2.default, vnode.attrs, (0, _mithril2.default)(_hotPromosPage2.default, vnode.attrs));
+    }
+  },
+  '/promo/:slug': {
+    view: function view(vnode) {
+      return (0, _mithril2.default)(_offCanvasMenu2.default, vnode.attrs, (0, _mithril2.default)(_promoDetailPage2.default, vnode.attrs));
+    }
+  }
+});
 
 /***/ })
 /******/ ]);

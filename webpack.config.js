@@ -3,11 +3,13 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-  entry: [
-    "./public/ui/index.js",
-  ],
+  entry: {
+    index:"./public/ui/index.js",
+    admin:"./public/admin/index.js",
+    merchant:"./public/merchant/index.js",
+  },
   output: {
-    filename: "js/index.js",
+    filename: "js/[name]-bundle.js",
     path: __dirname + "/public/assets"
   },
   plugins: [

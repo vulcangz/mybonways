@@ -1,13 +1,16 @@
 import m from 'mithril';
 
-var LoginPage = {
-  view: function() {
+var HotPromosPage = {
+  oncreate:function(vnode){
+    console.log(vnode)
+  },
+  view: function(vnode) {
     return (
-      <section >
+      <section>
         <section>
           <div class="flex flex-row pv1 ph2">
             <div class="flex pa1 pr3">
-              <a class="red-custom f3">☰</a>
+              <a class="red-custom f3" onclick={()=>vnode.attrs.slideout.toggle()}>☰</a>
             </div>
             <div class="flex flex-row flex-auto">
               <div class="flex flex-auto  justify-center pa1 tc">
@@ -216,4 +219,4 @@ var LoginPage = {
   },
 };
 
-export default LoginPage;
+export default HotPromosPage;

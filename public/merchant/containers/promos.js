@@ -2,14 +2,6 @@ import m from "mithril";
 import {Promos} from "../models/promos.js";
 
 var PromosTable = {
-  
-    // Name: "",
-    // Category: "",
-    // OldPrice: "",
-    // NewPrice: "",
-    // Description: "",
-    // StartDate: "",
-    // EndDate: ""
     
   view:function(){
     var p = Promos.AllPromos
@@ -50,8 +42,6 @@ var PromosTable = {
               </table>
             </div>
         </div>
-        <section class="pa3 bg-white shadow-m2 mt3 cf" >
-        </section>
       </section>
     )
   }

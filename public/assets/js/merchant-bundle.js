@@ -4931,6 +4931,11 @@ var MenuComponent = {
           { 'class': 'db pa2 hover-bg-light-gray link navy ', href: '/listings/find', oncreate: _mithril2.default.route.link },
           ' Find Listings'
         )
+      ),
+      (0, _mithril2.default)(
+        'a',
+        { 'class': 'db pa2 bb b--light-gray hover-bg-light-gray link navy', href: '/promos', oncreate: _mithril2.default.route.link },
+        'Promos'
       )
     );
   }
@@ -5239,14 +5244,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var PromosTable = {
 
-  // Name: "",
-  // Category: "",
-  // OldPrice: "",
-  // NewPrice: "",
-  // Description: "",
-  // StartDate: "",
-  // EndDate: ""
-
   view: function view() {
     var p = _promos.Promos.AllPromos;
     return (0, _mithril2.default)(
@@ -5380,8 +5377,7 @@ var PromosTable = {
             )
           )
         )
-      ),
-      (0, _mithril2.default)("section", { "class": "pa3 bg-white shadow-m2 mt3 cf" })
+      )
     );
   }
 };
@@ -5584,7 +5580,7 @@ _mithril2.default.route(root, '/', {
   },
   '/promos': {
     view: function view(vnode) {
-      return (0, _mithril2.default)(_offCanvasMenu2.default, vnode.attrs, (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_promos2.default, vnode.attrs)));
+      return (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_promos2.default, vnode.attrs));
     }
   }
 });

@@ -30,11 +30,7 @@ m.route(root, '/', {
   },
   '/promos': {
       view: function(vnode) {
-          return m(OffCanvasMenu, vnode.attrs,
-            m(AdminShell, vnode.attrs,
-              m(PromosTable, vnode.attrs)
-            )
-          )
+          return m(AdminShell, vnode.attrs, m(PromosTable, vnode.attrs))
       }
   }
 });

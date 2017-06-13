@@ -1,4 +1,5 @@
 function samplePromo() {
+    this.ID = 0;
     this.Name = "";
     this.Category = "";
     this.OldPrice = 0;
@@ -12,6 +13,7 @@ function genFakePromos(n) {
     var fakePromos = [];
     for (var i = 1; i < n; i++) {
         var p = new samplePromo();
+        p.ID = i;
         p.Name = "Name " + i;
         p.Category = "Category " + i;
         p.OldPrice = 1000 * i;

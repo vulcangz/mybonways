@@ -46,13 +46,18 @@ func App() *buffalo.App {
 		app.Use(T.Middleware())
 
 		app.GET("/", HomeHandler)
+		app.GET("/admin/{rest:.*}", AdminHandler)
+		app.GET("/merchants/{rest:.*}", MerchantHandler)
 
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
+
+		app.Resource("/api/merchants", &MerchantsResource{})
 
 		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
 			c.Render(200, spa.HTML("index.html"))
 			return nil
 		}
+
 	}
 
 	return app

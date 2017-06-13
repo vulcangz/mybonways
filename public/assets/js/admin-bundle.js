@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 21);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2328,7 +2328,9 @@ exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 8 */
+/* 8 */,
+/* 9 */,
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2397,7 +2399,7 @@ var OffCanvasMenu = {
 exports.default = OffCanvasMenu;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2951,7 +2953,7 @@ var HotPromosPage = {
 exports.default = HotPromosPage;
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3310,13 +3312,15 @@ var PromoDetailPage = {
 exports.default = PromoDetailPage;
 
 /***/ }),
-/* 11 */,
-/* 12 */,
 /* 13 */,
 /* 14 */,
 /* 15 */,
 /* 16 */,
-/* 17 */
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3326,15 +3330,15 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _hotPromosPage = __webpack_require__(9);
+var _hotPromosPage = __webpack_require__(11);
 
 var _hotPromosPage2 = _interopRequireDefault(_hotPromosPage);
 
-var _promoDetailPage = __webpack_require__(10);
+var _promoDetailPage = __webpack_require__(12);
 
 var _promoDetailPage2 = _interopRequireDefault(_promoDetailPage);
 
-var _offCanvasMenu = __webpack_require__(8);
+var _offCanvasMenu = __webpack_require__(10);
 
 var _offCanvasMenu2 = _interopRequireDefault(_offCanvasMenu);
 
@@ -3342,7 +3346,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var root = document.getElementById('appContainer');
 
-_mithril2.default.route.prefix('');
+_mithril2.default.route.prefix('/admin');
 _mithril2.default.route(root, '/', {
   '/': {
     view: function view(vnode) {

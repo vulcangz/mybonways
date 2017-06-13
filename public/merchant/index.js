@@ -1,25 +1,30 @@
 import m from 'mithril';
 
-import HotPromosPage from './containers/hotPromosPage.js';
-import PromoDetailPage from './containers/promoDetailPage.js';
+import SignupPage from './containers/signupPage.js';
 import OffCanvasMenu from './components/offCanvasMenu.js';
+import AdminShell from './containers/adminShell.js';
+
+import Categories from './containers/categories.js';
+import {AdminAuth} from './components/auth.js';
 
 var root = document.getElementById('appContainer');
 
-m.route.prefix('');
+m.route.prefix('/merchants');
 m.route(root, '/', {
   '/':{
     view: function(vnode){
-      return m(OffCanvasMenu,vnode.attrs,
-          m(HotPromosPage,vnode.attrs)
+      return m(AdminAuth,vnode.attrs,
+          m(OffCanvasMenu,vnode.attrs,
+              m(AdminShell,vnode.attrs,
+                m(Categories,vnode.attrs)
+              )
+          )
         );
       },
   },
-  '/promo/:slug':{
+  '/signup':{
     view: function(vnode){
-      return m(OffCanvasMenu,vnode.attrs,
-          m(PromoDetailPage,vnode.attrs)
-        );
+      return m(SignupPage,vnode.attrs);
       },
   }
 });

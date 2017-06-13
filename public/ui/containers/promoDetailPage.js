@@ -14,13 +14,13 @@ var PromoDetailPage = {
             </div>
             <div class="flex flex-row flex-auto">
               <div class="flex flex-auto  justify-center pa1 tc">
-                <a class="pa1 dib w-100  red-custom ">map</a>
+                <a class="pa1 dib w-100  red-custom link" href="/" oncreate={m.route.link}>map</a>
               </div>
               <div class="flex flex-auto  justify-center pa1 tc">
-                <a class="pa1 dib w-100  br-pill bg-red-custom white">hot</a>
+                <a class="pa1 dib w-100  br-pill bg-red-custom white link" href="/" oncreate={m.route.link}>hot</a>
               </div>
               <div class="flex flex-auto  justify-center pa1 tc">
-                <a class="pa1 dib w-100 red-custom ">2 in 1</a>
+                <a class="pa1 dib w-100 red-custom link" href="/" oncreate={m.route.link}>2 in 1</a>
               </div>
             </div>
           </div>
@@ -51,7 +51,9 @@ var PromoDetailPage = {
                 <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
                   <img src="/assets/img/svg/like-block.svg" class="" style="height:0.8rem;"/>
                 </a>
-                <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">sd</a>
+                <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
+                  <img src="/assets/img/svg/call.svg" class="" style="height:0.8rem;"/>
+                </a>
                 <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
                   <img src="/assets/img/svg/location.svg" class="" style="height:0.8rem;"/>
                 </a>
@@ -59,12 +61,12 @@ var PromoDetailPage = {
               <div class="ph2">
                 <span class="dib red-custom pv1">Buy 2 and get 5 free cokes</span>
                 <div class="pt1">
-                  <span>Original Price:</span>
-                  <span>34334</span>
+                  <span>Original Price: </span>
+                  <span>34334CFA</span>
                 </div>
                 <div class="pt1">
-                  <span>Current Price:</span>
-                  <span>34334</span>
+                  <span>Current Price: </span>
+                  <span>34334CFA</span>
                 </div>
               </div>
             </section>
@@ -96,32 +98,6 @@ var PromoDetailPage = {
           </section>
         </section>
         <section class="bg-dark-gray  cf f5">
-          <div class="white-80 cf pa3">
-            <div class="dib w-50 fl pv3">
-              <h3 class="mv1 fw6 red-custom">Company</h3>
-              <a href="#" class="white-80 db link">About Us</a>
-              <a href="#" class="white-80 db link">Contact Us</a>
-              <a href="#" class="white-80 db link">FAQ</a>
-              <a href="#" class="white-80 db link">How It Works</a>
-              <a href="#" class="white-80 db link">Careers</a>
-            </div>
-            <div class="dib w-50 fl pv3">
-              <h3 class="mv1 fw6 red-custom">Explore</h3>
-              <a href="#" class="white-80 db link">About Us</a>
-              <a href="#" class="white-80 db link">Contact Us</a>
-              <a href="#" class="white-80 db link">FAQ</a>
-              <a href="#" class="white-80 db link">How It Works</a>
-              <a href="#" class="white-80 db link">Careers</a>
-            </div>
-            <div class="dib w-50 fl pv3" >
-              <h3 class="mv1 fw6 red-custom">Contact Us</h3>
-              <a href="#" class="white-80 db link">About Us</a>
-              <a href="#" class="white-80 db link">Contact Us</a>
-              <a href="#" class="white-80 db link">FAQ</a>
-              <a href="#" class="white-80 db link">How It Works</a>
-              <a href="#" class="white-80 db link">Careers</a>
-            </div>
-          </div>
           <div class="tc pv3 white-80 bg-black">
             <span>copyright Bonways 2017</span>
           </div>

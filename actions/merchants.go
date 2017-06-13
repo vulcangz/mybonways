@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"log"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/markbates/pop"
@@ -17,9 +19,9 @@ type MerchantsResource struct {
 
 // List renders all users
 func (mr *MerchantsResource) List(c buffalo.Context) error {
-	m := &models.Merchants{}
+	m := models.Merchants{}
 	tx := c.Value("tx").(*pop.Connection)
-	err := tx.All(m)
+	err := tx.All(&m)
 	if err != nil {
 		return c.Error(404, errors.WithStack(err))
 	}
@@ -99,7 +101,8 @@ func (mr *MerchantsResource) Update(c buffalo.Context) error {
 
 func VerifyMerchant(c buffalo.Context) error {
 	code := c.Param("code")
-	v := &models.VerificationCode{}
+	log.Printf("code: %#v \n ", code)
+	v := models.VerificationCode{}
 	tx := c.Value("tx").(*pop.Connection)
 	query := pop.Q(tx)
 	query = tx.Where("code = ?", code)
@@ -109,24 +112,28 @@ func VerifyMerchant(c buffalo.Context) error {
 		return c.Error(404, errors.WithStack(err))
 	}
 
+	log.Printf("verifivation: %#v \n ", v)
+
 	query2 := pop.Q(tx)
 	query2 = tx.Where("company_id = ?", v.CompanyID)
 
-	m := &models.Merchant{}
+	m := models.Merchant{}
 	err = query2.First(&m)
 	if err != nil {
 		return c.Error(404, errors.WithStack(err))
 	}
 
 	m.Approved = true
-	err = tx.Update(m)
+	err = tx.Update(&m)
+	log.Println(err)
 	if err != nil {
 		return c.Error(404, errors.WithStack(err))
 	}
 
-	err = tx.Reload(m)
+	err = tx.Reload(&m)
 	if err != nil {
 		return errors.WithStack(err)
 	}
+
 	return c.Render(200, render.JSON(m))
 }

@@ -5014,7 +5014,7 @@ var AdminShell = {
           ),
           (0, _mithril2.default)(
             'div',
-            { 'class': 'dib v-mid pv2 fr ' },
+            { 'class': 'dib v-mid pv2 fr pointer' },
             (0, _mithril2.default)(
               'div',
               { 'class': 'dib' },

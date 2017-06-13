@@ -69,7 +69,7 @@ var AdminShell = {
       			  <span class="f3 dib v-mid pl2">my<strong>Bonways</strong></span>
             </div>
     			</div>
-          <div class="dib v-mid pv2 fr ">
+          <div class="dib v-mid pv2 fr pointer">
             <div class="dib">
               <a onclick={()=>vnode.state.showProfileNav=!vnode.state.showProfileNav}>
         			  <span class="dib v-mid">{UserModel.User.Username}</span>

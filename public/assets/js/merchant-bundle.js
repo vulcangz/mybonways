@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4889,7 +4889,7 @@ var _localforage2 = _interopRequireDefault(_localforage);
 
 var _userAuth = __webpack_require__(9);
 
-var _analytics = __webpack_require__(23);
+var _analytics = __webpack_require__(24);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5160,7 +5160,7 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _categories = __webpack_require__(24);
+var _categories = __webpack_require__(25);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5220,6 +5220,120 @@ exports.default = Categories;
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mithril = __webpack_require__(0);
+
+var _mithril2 = _interopRequireDefault(_mithril);
+
+var _promos = __webpack_require__(26);
+
+var _promos2 = _interopRequireDefault(_promos);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Promos = {
+
+  // Name: "",
+  // Category: "",
+  // OldPrice: "",
+  // NewPrice: "",
+  // Description: "",
+  // StartDate: "",
+  // EndDate: ""
+
+  view: function view() {
+
+    return (0, _mithril2.default)(
+      "section",
+      null,
+      (0, _mithril2.default)(
+        "div",
+        { "class": "pa3 bg-white shadow-m2 tc" },
+        (0, _mithril2.default)(
+          "h3",
+          null,
+          "All Promos"
+        )
+      ),
+      (0, _mithril2.default)(
+        "div",
+        { "class": "pa3 bg-white shadow-m2 mt3 cf" },
+        (0, _mithril2.default)(
+          "table",
+          { "class": "w-100 ba b--gray" },
+          (0, _mithril2.default)(
+            "thead",
+            { "class": "pa2" },
+            (0, _mithril2.default)(
+              "th",
+              { "class": "pa2 tl ttu" },
+              "Name"
+            ),
+            (0, _mithril2.default)(
+              "th",
+              { "class": "pa2 tl ttu" },
+              "Category"
+            ),
+            (0, _mithril2.default)(
+              "th",
+              { "class": "pa2 tl ttu" },
+              "OldPrice"
+            ),
+            (0, _mithril2.default)(
+              "th",
+              { "class": "pa2 tl ttu" },
+              "NewPrice"
+            ),
+            (0, _mithril2.default)(
+              "th",
+              { "class": "pa2 tl ttu" },
+              "Description"
+            ),
+            (0, _mithril2.default)(
+              "th",
+              { "class": "pa2 tl ttu" },
+              "StartDate"
+            ),
+            (0, _mithril2.default)(
+              "th",
+              { "class": "pa2 tl ttu" },
+              "EndDate"
+            )
+          ),
+          (0, _mithril2.default)(
+            "tbody",
+            null,
+            (0, _mithril2.default)(
+              "tr",
+              null,
+              (0, _mithril2.default)("td", null),
+              (0, _mithril2.default)("td", null),
+              (0, _mithril2.default)("td", null),
+              (0, _mithril2.default)("td", null),
+              (0, _mithril2.default)("td", null),
+              (0, _mithril2.default)("td", null),
+              (0, _mithril2.default)("td", null)
+            )
+          )
+        )
+      ),
+      (0, _mithril2.default)("section", { "class": "pa3 bg-white shadow-m2 mt3 cf" })
+    );
+  }
+};
+
+exports.default = Promos;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5360,11 +5474,11 @@ var SignupPage = {
 exports.default = SignupPage;
 
 /***/ }),
-/* 18 */,
 /* 19 */,
 /* 20 */,
 /* 21 */,
-/* 22 */
+/* 22 */,
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5374,7 +5488,7 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _signupPage = __webpack_require__(17);
+var _signupPage = __webpack_require__(18);
 
 var _signupPage2 = _interopRequireDefault(_signupPage);
 
@@ -5392,6 +5506,10 @@ var _categories2 = _interopRequireDefault(_categories);
 
 var _auth = __webpack_require__(13);
 
+var _promos = __webpack_require__(17);
+
+var _promos2 = _interopRequireDefault(_promos);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var root = document.getElementById('appContainer');
@@ -5407,11 +5525,16 @@ _mithril2.default.route(root, '/', {
     view: function view(vnode) {
       return (0, _mithril2.default)(_signupPage2.default, vnode.attrs);
     }
+  },
+  '/promos': {
+    view: function view(vnode) {
+      return (0, _mithril2.default)(_offCanvasMenu2.default, vnode.attrs, (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_promos2.default, vnode.attrs)));
+    }
   }
 });
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5444,7 +5567,7 @@ Analytics.GetAnalytics = function () {
 };
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5485,6 +5608,51 @@ var CategoriesModel = exports.CategoriesModel = {
       console.error(error);
     });
   }
+};
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function samplePromo() {
+    this.Name = "";
+    this.Category = "";
+    this.OldPrice = 0;
+    this.NewPrice = 0;
+    this.Description = "";
+    this.StartDate = "";
+    this.EndDate = "";
+}
+
+function genFakePromos(n) {
+    var fakePromos = [];
+    for (var i = 1; i < n; i++) {
+        var p = new samplePromo();
+        p.Name = "Name " + i;
+        p.Category = "Category " + i;
+        p.OldPrice = 1000 * i;
+        p.NewPrice = p.OldPrice - 500;
+        p.Description = "Description " + i;
+        p.StartDate = "12/09/2017";
+        p.EndDate = "19/09/2017";
+
+        fakePromos.push(p);
+    }
+    return fakePromos;
+}
+
+var Promos = exports.Promos = {
+    AllPromos: genFakePromos(5),
+
+    GetAllPromos: function GetAllPromos() {
+        // TODO:: Get All Promos from DB
+    }
 };
 
 /***/ })

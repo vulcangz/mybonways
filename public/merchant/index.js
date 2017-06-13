@@ -25,7 +25,7 @@ m.route(root, '/', {
   },
   '/signup':{
     view: function(vnode){
-      return m(SignupPage,vnode.attrs);
+      return m(SignupPage, vnode.attrs);
       },
   },
   '/promos': {

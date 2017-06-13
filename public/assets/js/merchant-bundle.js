@@ -5399,6 +5399,8 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
+var _user = __webpack_require__(28);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SignupPage = {
@@ -5407,110 +5409,127 @@ var SignupPage = {
   },
   view: function view(vnode) {
     return (0, _mithril2.default)(
-      "section",
+      'section',
       null,
       (0, _mithril2.default)(
-        "section",
+        'section',
         null,
         (0, _mithril2.default)(
-          "nav",
-          { "class": "db pa2 shadow-4 fixed w-100", style: "background-color:#F3F3F1" },
+          'nav',
+          { 'class': 'db pa2 shadow-4 fixed w-100', style: 'background-color:#F3F3F1' },
           (0, _mithril2.default)(
-            "div",
+            'div',
             null,
             (0, _mithril2.default)(
-              "div",
-              { "class": "dib" },
-              (0, _mithril2.default)("img", { src: "/assets/img/logo_xs.png", "class": "h2 dib v-mid" }),
+              'div',
+              { 'class': 'dib' },
+              (0, _mithril2.default)('img', { src: '/assets/img/logo_xs.png', 'class': 'h2 dib v-mid' }),
               (0, _mithril2.default)(
-                "span",
-                { "class": "f3 dib v-mid pl2" },
-                "my",
+                'span',
+                { 'class': 'f3 dib v-mid pl2' },
+                'my',
                 (0, _mithril2.default)(
-                  "strong",
+                  'strong',
                   null,
-                  "Bonways"
+                  'Bonways'
                 )
               )
             ),
             (0, _mithril2.default)(
-              "div",
-              { "class": "v-mid dib fr " },
+              'div',
+              { 'class': 'v-mid dib fr ' },
               (0, _mithril2.default)(
-                "div",
-                { "class": "dib " },
-                (0, _mithril2.default)("input", { type: "email", placeholder: "email", "class": "input-reset ba b--black-20   db w-100 pv2 ph3" })
+                'div',
+                { 'class': 'dib ' },
+                (0, _mithril2.default)('input', { type: 'email', placeholder: 'email', 'class': 'input-reset ba b--black-20 db w-100 pv2 ph3' })
               ),
               (0, _mithril2.default)(
-                "div",
-                { "class": "dib ph1" },
-                (0, _mithril2.default)("input", { type: "password", placeholder: "password", "class": "input-reset ba b--black-20   db w-100 pv2 ph3" })
+                'div',
+                { 'class': 'dib ph1' },
+                (0, _mithril2.default)('input', { type: 'password', placeholder: 'password', 'class': 'input-reset ba b--black-20 db w-100 pv2 ph3' })
               ),
               (0, _mithril2.default)(
-                "button",
-                { "class": "pv2 ph3 bg-navy bw0 shadow grow white-80" },
-                "login"
+                'button',
+                { 'class': 'pv2 ph3 bg-navy bw0 shadow grow white-80' },
+                'login'
               )
             )
           )
         ),
         (0, _mithril2.default)(
-          "section",
-          { style: "background-image:url(/assets/img/merchant_login_bg.jpg)", "class": "vh-100 cover" },
+          'section',
+          { style: 'background-image:url(/assets/img/merchant_login_bg.jpg)', 'class': 'vh-100 cover' },
           (0, _mithril2.default)(
-            "section",
-            { "class": "w-100 h-100 bg-black-60 flex flex-column justify-center items-center" },
+            'section',
+            { 'class': 'w-100 h-100 bg-black-60 flex flex-column justify-center items-center' },
             (0, _mithril2.default)(
-              "section",
+              'section',
               null,
               (0, _mithril2.default)(
-                "section",
-                { "class": " pa3 pa2-ns  br2 dib w-100 w-60-ns white-90 " },
+                'section',
+                { 'class': ' pa3 pa2-ns  br2 dib w-100 w-60-ns white-90 ' },
                 (0, _mithril2.default)(
-                  "div",
+                  'div',
                   null,
                   (0, _mithril2.default)(
-                    "h2",
-                    { "class": "f2 fw3" },
-                    "Show your deals and promos to the world. ",
-                    (0, _mithril2.default)("br", null),
-                    " Become a merchant"
+                    'h2',
+                    { 'class': 'f2 fw3' },
+                    'Show your deals and promos to the world. ',
+                    (0, _mithril2.default)('br', null),
+                    ' Become a merchant'
                   )
                 )
               ),
               (0, _mithril2.default)(
-                "section",
-                { "class": " pa3 pa4-ns bg-white br2 dib w-100 w-40-ns " },
+                'section',
+                { 'class': ' pa3 pa4-ns bg-white br2 dib w-100 w-40-ns ' },
                 (0, _mithril2.default)(
-                  "div",
-                  { "class": "" },
+                  'div',
+                  { 'class': '' },
                   (0, _mithril2.default)(
-                    "div",
-                    { "class": "pv2" },
-                    (0, _mithril2.default)("input", { "class": "input-reset ba b--black-20   db w-100 pv3 ph3", type: "text", placeholder: "Store Name" })
+                    'div',
+                    { 'class': 'pv2' },
+                    (0, _mithril2.default)('input', { 'class': 'input-reset ba b--black-20 db w-100 pv3 ph3', type: 'text', placeholder: 'Store Name',
+                      oninput: _mithril2.default.withAttr("value", function (value) {
+                        _user.UserModel.signupData.company_name = value;
+                      }) })
                   ),
                   (0, _mithril2.default)(
-                    "div",
-                    { "class": "pv2" },
-                    (0, _mithril2.default)("input", { "class": "input-reset ba b--black-20   db w-100 pv3 ph3", type: "text", placeholder: "Store ID" })
+                    'div',
+                    { 'class': 'pv2' },
+                    (0, _mithril2.default)('input', { 'class': 'input-reset ba b--black-20 db w-100 pv3 ph3', type: 'text', placeholder: 'Store ID',
+                      oninput: _mithril2.default.withAttr("value", function (value) {
+                        _user.UserModel.signupData.company_id = value;
+                      })
+                    })
                   ),
                   (0, _mithril2.default)(
-                    "div",
-                    { "class": "pv2" },
-                    (0, _mithril2.default)("input", { "class": "input-reset ba b--black-20   db w-100 pv3 ph3", type: "email", placeholder: "Merchant Email" })
+                    'div',
+                    { 'class': 'pv2' },
+                    (0, _mithril2.default)('input', { 'class': 'input-reset ba b--black-20 db w-100 pv3 ph3', type: 'email', placeholder: 'Merchant Email',
+                      oninput: _mithril2.default.withAttr("value", function (value) {
+                        _user.UserModel.signupData.merchant_email = value;
+                      })
+                    })
                   ),
                   (0, _mithril2.default)(
-                    "div",
-                    { "class": "pv2" },
-                    (0, _mithril2.default)("input", { "class": "input-reset ba b--black-20   db w-100 pv3 ph3", type: "password", placeholder: "Merchant Password" })
+                    'div',
+                    { 'class': 'pv2' },
+                    (0, _mithril2.default)('input', { 'class': 'input-reset ba b--black-20 db w-100 pv3 ph3', type: 'password', placeholder: 'Merchant Password',
+                      oninput: _mithril2.default.withAttr("value", function (value) {
+                        _user.UserModel.signupData.merchant_password = value;
+                      })
+                    })
                   ),
                   (0, _mithril2.default)(
-                    "div",
-                    { "class": "tr pv2" },
+                    'div',
+                    { 'class': 'tr pv2' },
                     (0, _mithril2.default)(
-                      "button",
-                      { "class": "pv3 ph4 bg-navy white-90 bw0 shadow-4 grow" },
-                      "signup"
+                      'button',
+                      { 'class': 'pv3 ph4 bg-navy white-90 bw0 shadow-4 grow', onclick: function onclick() {
+                          _user.UserModel.Signup();
+                        } },
+                      'signup'
                     )
                   )
                 )
@@ -5706,6 +5725,39 @@ var Promos = exports.Promos = {
 
     GetAllPromos: function GetAllPromos() {
         // TODO:: Get All Promos from DB
+    }
+};
+
+/***/ }),
+/* 27 */,
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.UserModel = undefined;
+
+var _mithril = __webpack_require__(0);
+
+var _mithril2 = _interopRequireDefault(_mithril);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UserModel = exports.UserModel = {
+    signupData: {},
+    Signup: function Signup() {
+        console.log("signup: ", UserModel.signupData);
+        return _mithril2.default.request({
+            url: "/api/merchants",
+            method: "POST",
+            data: UserModel.signupData
+        }).then(function (response) {
+            console.log("response: ", response);
+        });
     }
 };
 

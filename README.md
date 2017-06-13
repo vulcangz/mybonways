@@ -35,3 +35,43 @@ We recommend you heading over to [http://gobuffalo.io](http://gobuffalo.io) and 
 Good luck!
 
 [Powered by Buffalo](http://gobuffalo.io)
+
+# Mybonways
+
+## Setup process for mybonways
+
+Before cloning this repository, make you sure you have the following installed:
+
+- [Golang](http://golang.org)  `1.7.x` or higher
+- GCC for your operating system (prefarably linux or MACos) very Important.
+- [Postgresql](https://www.postgresql.org)
+- [Nodejs and npm](https://nodejs.org/)
+
+After installing all of the above:
+
+1. clone the repository to $GOPATH/src/github.com/tonyalaribe/mybonways like this: (Assuming you have your $GOPATH setup correctly)
+```
+	$ go get github.com/tonyalaribe/mybonways
+```
+2. Next install buffalo:
+```
+	$ go get -u -v github.com/gobuffalo/buffalo/buffalo
+```
+3. change directory to the repo ($GOPATH/src/github.com/tonyalaribe/mybonways) and Install javascript modules:
+```
+	$ npm install
+```
+4. Set up your database correctly according to the database.yml OR run:
+```
+	$ buffalo db create -a
+```
+buffalo will automatically setup the database.
+
+NOTICE: If for any reason buffalo throws any errors of packages not found, change to its directory:
+
+	$ cd $GOPATH/src/github.com/gobuffalo/buffalo/
+	
+and install it's dependencies (```go get ./...```)
+
+	$ go get ./...
+

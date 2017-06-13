@@ -75,3 +75,8 @@ and install it's dependencies (```go get ./...```)
 
 	$ go get ./...
 
+Finally, start the application (in the repository directory $GOPATH/src/github.com/tonyalaribe/mybonways):
+
+	$ buffalo dev
+
+Open your browser to localhost:3000. The page should appear.

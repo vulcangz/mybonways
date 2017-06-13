@@ -6,7 +6,7 @@ import AdminShell from './containers/adminShell.js';
 
 import Categories from './containers/categories.js';
 import {AdminAuth} from './components/auth.js';
-import Promos from './containers/promos.js';
+import PromosTable from './containers/promos.js';
 
 var root = document.getElementById('appContainer');
 
@@ -32,7 +32,7 @@ m.route(root, '/', {
       view: function(vnode) {
           return m(OffCanvasMenu, vnode.attrs,
             m(AdminShell, vnode.attrs,
-              m(Promos, vnode.attrs)
+              m(PromosTable, vnode.attrs)
             )
           )
       }

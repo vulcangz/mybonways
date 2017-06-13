@@ -5235,11 +5235,9 @@ var _mithril2 = _interopRequireDefault(_mithril);
 
 var _promos = __webpack_require__(26);
 
-var _promos2 = _interopRequireDefault(_promos);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Promos = {
+var PromosTable = {
 
   // Name: "",
   // Category: "",
@@ -5250,7 +5248,7 @@ var Promos = {
   // EndDate: ""
 
   view: function view() {
-
+    var p = _promos.Promos.AllPromos;
     return (0, _mithril2.default)(
       "section",
       null,
@@ -5268,60 +5266,104 @@ var Promos = {
         { "class": "pa3 bg-white shadow-m2 mt3 cf" },
         (0, _mithril2.default)(
           "table",
-          { "class": "w-100 ba b--gray" },
+          { "class": "w-100" },
           (0, _mithril2.default)(
             "thead",
             { "class": "pa2" },
             (0, _mithril2.default)(
               "th",
-              { "class": "pa2 tl ttu" },
+              { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white ttu" },
               "Name"
             ),
             (0, _mithril2.default)(
               "th",
-              { "class": "pa2 tl ttu" },
+              { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white ttu" },
               "Category"
             ),
             (0, _mithril2.default)(
               "th",
-              { "class": "pa2 tl ttu" },
+              { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white ttu" },
               "OldPrice"
             ),
             (0, _mithril2.default)(
               "th",
-              { "class": "pa2 tl ttu" },
+              { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white ttu" },
               "NewPrice"
             ),
             (0, _mithril2.default)(
               "th",
-              { "class": "pa2 tl ttu" },
+              { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white ttu" },
               "Description"
             ),
             (0, _mithril2.default)(
               "th",
-              { "class": "pa2 tl ttu" },
+              { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white ttu" },
               "StartDate"
             ),
             (0, _mithril2.default)(
               "th",
-              { "class": "pa2 tl ttu" },
+              { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white ttu" },
               "EndDate"
+            ),
+            (0, _mithril2.default)(
+              "th",
+              { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white ttu" },
+              "Edit"
             )
           ),
           (0, _mithril2.default)(
             "tbody",
             null,
-            (0, _mithril2.default)(
-              "tr",
-              null,
-              (0, _mithril2.default)("td", null),
-              (0, _mithril2.default)("td", null),
-              (0, _mithril2.default)("td", null),
-              (0, _mithril2.default)("td", null),
-              (0, _mithril2.default)("td", null),
-              (0, _mithril2.default)("td", null),
-              (0, _mithril2.default)("td", null)
-            )
+            p.map(function (promo) {
+              return (0, _mithril2.default)(
+                "tr",
+                { "class": "" },
+                (0, _mithril2.default)(
+                  "td",
+                  { "class": "pv3 pr3 bb b--black-20" },
+                  promo.Name
+                ),
+                (0, _mithril2.default)(
+                  "td",
+                  { "class": "pv3 pr3 bb b--black-20" },
+                  promo.Category
+                ),
+                (0, _mithril2.default)(
+                  "td",
+                  { "class": "pv3 pr3 bb b--black-20" },
+                  promo.OldPrice
+                ),
+                (0, _mithril2.default)(
+                  "td",
+                  { "class": "pv3 pr3 bb b--black-20" },
+                  promo.NewPrice
+                ),
+                (0, _mithril2.default)(
+                  "td",
+                  { "class": "pv3 pr3 bb b--black-20" },
+                  promo.Description
+                ),
+                (0, _mithril2.default)(
+                  "td",
+                  { "class": "pv3 pr3 bb b--black-20" },
+                  promo.StartDate
+                ),
+                (0, _mithril2.default)(
+                  "td",
+                  { "class": "pv3 pr3 bb b--black-20" },
+                  promo.EndDate
+                ),
+                (0, _mithril2.default)(
+                  "td",
+                  { "class": "pv3 pr3 bb b--black-20" },
+                  (0, _mithril2.default)(
+                    "button",
+                    { type: "button", "class": "ph1 pv2 ba b--white shadow-4 bg-red white" },
+                    "del"
+                  )
+                )
+              );
+            })
           )
         )
       ),
@@ -5330,7 +5372,7 @@ var Promos = {
   }
 };
 
-exports.default = Promos;
+exports.default = PromosTable;
 
 /***/ }),
 /* 18 */

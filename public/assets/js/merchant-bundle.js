@@ -5376,6 +5376,15 @@ var PromosTable = {
               })
             )
           )
+        ),
+        (0, _mithril2.default)(
+          "div",
+          { "class": "mt2 fr" },
+          (0, _mithril2.default)(
+            "button",
+            { "class": "ph3 pv2 bg-white yellow ba b--yellow bw1 shadow-3 pointer", type: "button" },
+            "Add Promo"
+          )
         )
       )
     );

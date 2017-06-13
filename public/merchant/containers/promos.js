@@ -41,6 +41,9 @@ var PromosTable = {
                   </tbody>
               </table>
             </div>
+            <div class="mt2 fr">
+              <button class="ph3 pv2 bg-white yellow ba b--yellow bw1 shadow-3 pointer" type="button">Add Promo</button>
+            </div>
         </div>
       </section>
     )

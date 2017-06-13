@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4889,7 +4889,7 @@ var _localforage2 = _interopRequireDefault(_localforage);
 
 var _userAuth = __webpack_require__(9);
 
-var _analytics = __webpack_require__(23);
+var _analytics = __webpack_require__(24);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4931,6 +4931,11 @@ var MenuComponent = {
           { 'class': 'db pa2 hover-bg-light-gray link navy ', href: '/listings/find', oncreate: _mithril2.default.route.link },
           ' Find Listings'
         )
+      ),
+      (0, _mithril2.default)(
+        'a',
+        { 'class': 'db pa2 bb b--light-gray hover-bg-light-gray link navy', href: '/promos', oncreate: _mithril2.default.route.link },
+        'Promos'
       )
     );
   }
@@ -5009,7 +5014,7 @@ var AdminShell = {
           ),
           (0, _mithril2.default)(
             'div',
-            { 'class': 'dib v-mid pv2 fr ' },
+            { 'class': 'dib v-mid pv2 fr pointer' },
             (0, _mithril2.default)(
               'div',
               { 'class': 'dib' },
@@ -5160,7 +5165,7 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _categories = __webpack_require__(24);
+var _categories = __webpack_require__(25);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5220,6 +5225,167 @@ exports.default = Categories;
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mithril = __webpack_require__(0);
+
+var _mithril2 = _interopRequireDefault(_mithril);
+
+var _promos = __webpack_require__(26);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PromosTable = {
+
+  view: function view() {
+    var p = _promos.Promos.AllPromos;
+    return (0, _mithril2.default)(
+      "section",
+      null,
+      (0, _mithril2.default)(
+        "div",
+        { "class": "pa2 bg-white shadow-m2 mt3 cf" },
+        (0, _mithril2.default)(
+          "div",
+          { "class": "tc bb b--light-gray" },
+          (0, _mithril2.default)(
+            "h3",
+            null,
+            "All Promos"
+          )
+        ),
+        (0, _mithril2.default)(
+          "div",
+          { "class": "ba pa2 b--light-gray", style: "overflow: auto" },
+          (0, _mithril2.default)(
+            "table",
+            { "class": "f6 w-100 mw8 center", cellspacing: "0" },
+            (0, _mithril2.default)(
+              "thead",
+              { "class": "pa2" },
+              (0, _mithril2.default)(
+                "th",
+                { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white" },
+                "S/N"
+              ),
+              (0, _mithril2.default)(
+                "th",
+                { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white" },
+                "Name"
+              ),
+              (0, _mithril2.default)(
+                "th",
+                { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white" },
+                "Category"
+              ),
+              (0, _mithril2.default)(
+                "th",
+                { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white" },
+                "OldPrice"
+              ),
+              (0, _mithril2.default)(
+                "th",
+                { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white" },
+                "NewPrice"
+              ),
+              (0, _mithril2.default)(
+                "th",
+                { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white" },
+                "Description"
+              ),
+              (0, _mithril2.default)(
+                "th",
+                { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white" },
+                "StartDate"
+              ),
+              (0, _mithril2.default)(
+                "th",
+                { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white" },
+                "EndDate"
+              ),
+              (0, _mithril2.default)(
+                "th",
+                { "class": "fw6 bb b--black-20 tl pb3 pr3 bg-white" },
+                "Edit"
+              )
+            ),
+            (0, _mithril2.default)(
+              "tbody",
+              { "class": "lh-copy" },
+              p.map(function (promo) {
+                return (0, _mithril2.default)(
+                  "tr",
+                  { "class": "" },
+                  (0, _mithril2.default)(
+                    "td",
+                    { "class": "pv3 pr3 bb b--black-20" },
+                    promo.ID
+                  ),
+                  (0, _mithril2.default)(
+                    "td",
+                    { "class": "pv3 pr3 bb b--black-20" },
+                    promo.Name
+                  ),
+                  (0, _mithril2.default)(
+                    "td",
+                    { "class": "pv3 pr3 bb b--black-20" },
+                    promo.Category
+                  ),
+                  (0, _mithril2.default)(
+                    "td",
+                    { "class": "pv3 pr3 bb b--black-20" },
+                    promo.OldPrice
+                  ),
+                  (0, _mithril2.default)(
+                    "td",
+                    { "class": "pv3 pr3 bb b--black-20" },
+                    promo.NewPrice
+                  ),
+                  (0, _mithril2.default)(
+                    "td",
+                    { "class": "pv3 pr3 bb b--black-20" },
+                    promo.Description
+                  ),
+                  (0, _mithril2.default)(
+                    "td",
+                    { "class": "pv3 pr3 bb b--black-20" },
+                    promo.StartDate
+                  ),
+                  (0, _mithril2.default)(
+                    "td",
+                    { "class": "pv3 pr3 bb b--black-20" },
+                    promo.EndDate
+                  ),
+                  (0, _mithril2.default)(
+                    "td",
+                    { "class": "pv3 pr3 bb b--black-20" },
+                    (0, _mithril2.default)(
+                      "button",
+                      { type: "button", "class": "ph1 pv2 ba b--white shadow-4 bg-red white" },
+                      "Del"
+                    )
+                  )
+                );
+              })
+            )
+          )
+        )
+      )
+    );
+  }
+};
+
+exports.default = PromosTable;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5360,11 +5526,11 @@ var SignupPage = {
 exports.default = SignupPage;
 
 /***/ }),
-/* 18 */,
 /* 19 */,
 /* 20 */,
 /* 21 */,
-/* 22 */
+/* 22 */,
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5374,7 +5540,7 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _signupPage = __webpack_require__(17);
+var _signupPage = __webpack_require__(18);
 
 var _signupPage2 = _interopRequireDefault(_signupPage);
 
@@ -5392,6 +5558,10 @@ var _categories2 = _interopRequireDefault(_categories);
 
 var _auth = __webpack_require__(13);
 
+var _promos = __webpack_require__(17);
+
+var _promos2 = _interopRequireDefault(_promos);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var root = document.getElementById('appContainer');
@@ -5407,11 +5577,16 @@ _mithril2.default.route(root, '/', {
     view: function view(vnode) {
       return (0, _mithril2.default)(_signupPage2.default, vnode.attrs);
     }
+  },
+  '/promos': {
+    view: function view(vnode) {
+      return (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_promos2.default, vnode.attrs));
+    }
   }
 });
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5444,7 +5619,7 @@ Analytics.GetAnalytics = function () {
 };
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5485,6 +5660,53 @@ var CategoriesModel = exports.CategoriesModel = {
       console.error(error);
     });
   }
+};
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function samplePromo() {
+    this.ID = 0;
+    this.Name = "";
+    this.Category = "";
+    this.OldPrice = 0;
+    this.NewPrice = 0;
+    this.Description = "";
+    this.StartDate = "";
+    this.EndDate = "";
+}
+
+function genFakePromos(n) {
+    var fakePromos = [];
+    for (var i = 1; i < n; i++) {
+        var p = new samplePromo();
+        p.ID = i;
+        p.Name = "Name " + i;
+        p.Category = "Category " + i;
+        p.OldPrice = 1000 * i;
+        p.NewPrice = p.OldPrice - 500;
+        p.Description = "Description " + i;
+        p.StartDate = "12/09/2017";
+        p.EndDate = "19/09/2017";
+
+        fakePromos.push(p);
+    }
+    return fakePromos;
+}
+
+var Promos = exports.Promos = {
+    AllPromos: genFakePromos(5),
+
+    GetAllPromos: function GetAllPromos() {
+        // TODO:: Get All Promos from DB
+    }
 };
 
 /***/ })

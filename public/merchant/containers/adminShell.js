@@ -15,6 +15,7 @@ var MenuComponent = {
           <a class="db pa2 hover-bg-light-gray link navy" href="/listings/unapproved" oncreate={m.route.link}>  Unapproved Listings</a>
           <a class="db pa2 hover-bg-light-gray link navy " href="/listings/find" oncreate={m.route.link}> Find Listings</a>
         </div>
+        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/promos" oncreate={m.route.link}>Promos</a>
       </div>
     );
   }
@@ -68,7 +69,7 @@ var AdminShell = {
       			  <span class="f3 dib v-mid pl2">my<strong>Bonways</strong></span>
             </div>
     			</div>
-          <div class="dib v-mid pv2 fr ">
+          <div class="dib v-mid pv2 fr pointer">
             <div class="dib">
               <a onclick={()=>vnode.state.showProfileNav=!vnode.state.showProfileNav}>
         			  <span class="dib v-mid">{UserModel.User.Username}</span>

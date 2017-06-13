@@ -6,7 +6,7 @@ import OffCanvasMenu from './components/offCanvasMenu.js';
 
 var root = document.getElementById('appContainer');
 
-m.route.prefix('');
+m.route.prefix('/admin');
 m.route(root, '/', {
   '/':{
     view: function(vnode){

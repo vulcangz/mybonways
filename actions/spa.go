@@ -7,3 +7,11 @@ import "github.com/gobuffalo/buffalo"
 func HomeHandler(c buffalo.Context) error {
 	return c.Render(200, spa.HTML("index.html"))
 }
+
+func AdminHandler(c buffalo.Context) error {
+	return c.Render(200, spa.HTML("admin.html"))
+}
+
+func MerchantHandler(c buffalo.Context) error {
+	return c.Render(200, spa.HTML("merchant.html"))
+}

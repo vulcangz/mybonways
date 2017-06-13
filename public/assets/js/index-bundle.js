@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 25);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2334,7 +2334,11 @@ exports.clearImmediate = clearImmediate;
 /* 11 */,
 /* 12 */,
 /* 13 */,
-/* 14 */
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2378,7 +2382,7 @@ var OffCanvasMenu = {
           (0, _mithril2.default)(
             'div',
             { 'class': 'tc' },
-            (0, _mithril2.default)('img', { src: 'http://placehold.it/200x200', 'class': 'w4 h4 br-100 pa1 ba bw1 b--white' }),
+            (0, _mithril2.default)('img', { src: '/assets/img/user.jpg', 'class': 'w4 h4 br-100 pa1 ba bw1 b--white' }),
             (0, _mithril2.default)(
               'div',
               null,
@@ -2387,6 +2391,25 @@ var OffCanvasMenu = {
                 { 'class': 'f4' },
                 'Anthony Alaribe'
               )
+            )
+          ),
+          (0, _mithril2.default)(
+            'div',
+            { 'class': 'pt4 ph4' },
+            (0, _mithril2.default)(
+              'a',
+              { 'class': 'db pv2 ph2 bt link white-90', oncreate: _mithril2.default.route.link, href: '/' },
+              'Home'
+            ),
+            (0, _mithril2.default)(
+              'a',
+              { 'class': 'db pv2 ph2 bt ' },
+              'Profile'
+            ),
+            (0, _mithril2.default)(
+              'a',
+              { 'class': 'db pv2 ph2 bt ' },
+              'Favorites'
             )
           )
         )
@@ -2403,7 +2426,7 @@ var OffCanvasMenu = {
 exports.default = OffCanvasMenu;
 
 /***/ }),
-/* 15 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2535,8 +2558,8 @@ var HotPromosPage = {
             { "class": "pa2" },
             (0, _mithril2.default)(
               "span",
-              null,
-              (0, _mithril2.default)("img", { src: "/assets/img/svg/star.svg", "class": "dib pt1", style: "height:0.8rem;" })
+              { "class": "dib ph2" },
+              (0, _mithril2.default)("img", { src: "/assets/img/svg/star.svg", "class": "dib ", style: "height:0.8rem;" })
             ),
             (0, _mithril2.default)(
               "span",
@@ -2554,18 +2577,8 @@ var HotPromosPage = {
                 "div",
                 { "class": "dib w-50 pa1 fl" },
                 (0, _mithril2.default)(
-                  "div",
-                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray" },
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "w-100" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/ad/3.png", "class": "w-100 br2" })
-                  ),
-                  (0, _mithril2.default)(
-                    "span",
-                    { "class": "f7 lh-title dib pa1" },
-                    "Ticket to Cruise and Chillz Boat Cruise"
-                  ),
+                  "a",
+                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link", href: "/promo/s", oncreate: _mithril2.default.route.link },
                   (0, _mithril2.default)(
                     "div",
                     { "class": "f8 pv1 tr pa1" },
@@ -2578,38 +2591,61 @@ var HotPromosPage = {
                   ),
                   (0, _mithril2.default)(
                     "div",
-                    { "class": "f8 pa1" },
+                    { "class": "w-100" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/ad/3.png", "class": "w-100 br2" })
+                  ),
+                  (0, _mithril2.default)(
+                    "span",
+                    { "class": "f7 lh-title dib pa1 " },
+                    "Ticket to Cruise"
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1 tr cf" },
                     (0, _mithril2.default)(
-                      "strong",
-                      { "class": "dark-gray" },
-                      "20000CFA"
+                      "div",
+                      { "class": "dib w-50 fl" },
+                      (0, _mithril2.default)(
+                        "span",
+                        { "class": " red-custom db fw6 f5" },
+                        "50%"
+                      )
                     ),
                     (0, _mithril2.default)(
-                      "span",
-                      { "class": "strike" },
-                      "10000CFA"
+                      "div",
+                      { "class": "dib w-50 fl" },
+                      (0, _mithril2.default)(
+                        "strong",
+                        { "class": "dark-gray db" },
+                        "20000CFA"
+                      ),
+                      (0, _mithril2.default)(
+                        "span",
+                        { "class": "strike db" },
+                        "10000CFA"
+                      )
                     )
                   ),
                   (0, _mithril2.default)(
                     "div",
-                    { "class": "f8 pa1 pv2" },
+                    { "class": "f8 pa1 pv2 " },
                     (0, _mithril2.default)(
                       "span",
                       { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "dib pr1", style: "height:0.5rem;" }),
                       (0, _mithril2.default)(
                         "span",
-                        null,
+                        { "class": "dib" },
                         "200"
                       )
                     ),
                     (0, _mithril2.default)(
                       "span",
                       { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "pr1", style: "height:0.5rem;" }),
                       (0, _mithril2.default)(
                         "span",
-                        null,
+                        { "class": "dib" },
                         "12"
                       )
                     )
@@ -2620,18 +2656,8 @@ var HotPromosPage = {
                 "div",
                 { "class": "dib w-50 pa1 fl" },
                 (0, _mithril2.default)(
-                  "div",
-                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray" },
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "w-100" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/ad/2.png", "class": "w-100 br2" })
-                  ),
-                  (0, _mithril2.default)(
-                    "span",
-                    { "class": "f7 lh-title dib pa1" },
-                    "Ticket to Cruise and Chillz Boat Cruise"
-                  ),
+                  "a",
+                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link", href: "/promo/s", oncreate: _mithril2.default.route.link },
                   (0, _mithril2.default)(
                     "div",
                     { "class": "f8 pv1 tr pa1" },
@@ -2644,38 +2670,61 @@ var HotPromosPage = {
                   ),
                   (0, _mithril2.default)(
                     "div",
-                    { "class": "f8 pa1" },
+                    { "class": "w-100" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/ad/3.png", "class": "w-100 br2" })
+                  ),
+                  (0, _mithril2.default)(
+                    "span",
+                    { "class": "f7 lh-title dib pa1 " },
+                    "Ticket to Cruise"
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1 tr cf" },
                     (0, _mithril2.default)(
-                      "strong",
-                      { "class": "dark-gray" },
-                      "20000CFA"
+                      "div",
+                      { "class": "dib w-50 fl" },
+                      (0, _mithril2.default)(
+                        "span",
+                        { "class": " red-custom db fw6 f5" },
+                        "50%"
+                      )
                     ),
                     (0, _mithril2.default)(
-                      "span",
-                      { "class": "strike" },
-                      "10000CFA"
+                      "div",
+                      { "class": "dib w-50 fl" },
+                      (0, _mithril2.default)(
+                        "strong",
+                        { "class": "dark-gray db" },
+                        "20000CFA"
+                      ),
+                      (0, _mithril2.default)(
+                        "span",
+                        { "class": "strike db" },
+                        "10000CFA"
+                      )
                     )
                   ),
                   (0, _mithril2.default)(
                     "div",
-                    { "class": "f8 pa1 pv2" },
+                    { "class": "f8 pa1 pv2 " },
                     (0, _mithril2.default)(
                       "span",
                       { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "dib pr1", style: "height:0.5rem;" }),
                       (0, _mithril2.default)(
                         "span",
-                        null,
+                        { "class": "dib" },
                         "200"
                       )
                     ),
                     (0, _mithril2.default)(
                       "span",
                       { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "pr1", style: "height:0.5rem;" }),
                       (0, _mithril2.default)(
                         "span",
-                        null,
+                        { "class": "dib" },
                         "12"
                       )
                     )
@@ -2690,18 +2739,8 @@ var HotPromosPage = {
                 "div",
                 { "class": "dib w-50 pa1 fl" },
                 (0, _mithril2.default)(
-                  "div",
-                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray" },
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "w-100" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/ad/4.jpg", "class": "w-100 br2" })
-                  ),
-                  (0, _mithril2.default)(
-                    "span",
-                    { "class": "f7 lh-title dib pa1" },
-                    "Ticket to Cruise and Chillz Boat Cruise"
-                  ),
+                  "a",
+                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link", href: "/promo/s", oncreate: _mithril2.default.route.link },
                   (0, _mithril2.default)(
                     "div",
                     { "class": "f8 pv1 tr pa1" },
@@ -2714,38 +2753,61 @@ var HotPromosPage = {
                   ),
                   (0, _mithril2.default)(
                     "div",
-                    { "class": "f8 pa1" },
+                    { "class": "w-100" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/ad/3.png", "class": "w-100 br2" })
+                  ),
+                  (0, _mithril2.default)(
+                    "span",
+                    { "class": "f7 lh-title dib pa1 " },
+                    "Ticket to Cruise"
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1 tr cf" },
                     (0, _mithril2.default)(
-                      "strong",
-                      { "class": "dark-gray" },
-                      "20000CFA"
+                      "div",
+                      { "class": "dib w-50 fl" },
+                      (0, _mithril2.default)(
+                        "span",
+                        { "class": " red-custom db fw6 f5" },
+                        "50%"
+                      )
                     ),
                     (0, _mithril2.default)(
-                      "span",
-                      { "class": "strike" },
-                      "10000CFA"
+                      "div",
+                      { "class": "dib w-50 fl" },
+                      (0, _mithril2.default)(
+                        "strong",
+                        { "class": "dark-gray db" },
+                        "20000CFA"
+                      ),
+                      (0, _mithril2.default)(
+                        "span",
+                        { "class": "strike db" },
+                        "10000CFA"
+                      )
                     )
                   ),
                   (0, _mithril2.default)(
                     "div",
-                    { "class": "f8 pa1 pv2" },
+                    { "class": "f8 pa1 pv2 " },
                     (0, _mithril2.default)(
                       "span",
                       { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "dib pr1", style: "height:0.5rem;" }),
                       (0, _mithril2.default)(
                         "span",
-                        null,
+                        { "class": "dib" },
                         "200"
                       )
                     ),
                     (0, _mithril2.default)(
                       "span",
                       { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "pr1", style: "height:0.5rem;" }),
                       (0, _mithril2.default)(
                         "span",
-                        null,
+                        { "class": "dib" },
                         "12"
                       )
                     )
@@ -2756,18 +2818,8 @@ var HotPromosPage = {
                 "div",
                 { "class": "dib w-50 pa1 fl" },
                 (0, _mithril2.default)(
-                  "div",
-                  { "class": "br2 b--transparent gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 b--light-gray-custom" },
-                  (0, _mithril2.default)(
-                    "div",
-                    { "class": "w-100" },
-                    (0, _mithril2.default)("img", { src: "/assets/img/ad/5.jpg", "class": "w-100 br2" })
-                  ),
-                  (0, _mithril2.default)(
-                    "span",
-                    { "class": "f7 lh-title dib pa1" },
-                    "Ticket to Cruise and Chillz Boat Cruise"
-                  ),
+                  "a",
+                  { "class": "br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link", href: "/promo/s", oncreate: _mithril2.default.route.link },
                   (0, _mithril2.default)(
                     "div",
                     { "class": "f8 pv1 tr pa1" },
@@ -2780,38 +2832,61 @@ var HotPromosPage = {
                   ),
                   (0, _mithril2.default)(
                     "div",
-                    { "class": "f8 pa1" },
+                    { "class": "w-100" },
+                    (0, _mithril2.default)("img", { src: "/assets/img/ad/3.png", "class": "w-100 br2" })
+                  ),
+                  (0, _mithril2.default)(
+                    "span",
+                    { "class": "f7 lh-title dib pa1 " },
+                    "Ticket to Cruise"
+                  ),
+                  (0, _mithril2.default)(
+                    "div",
+                    { "class": "f8 pa1 tr cf" },
                     (0, _mithril2.default)(
-                      "strong",
-                      { "class": "dark-gray" },
-                      "20000CFA"
+                      "div",
+                      { "class": "dib w-50 fl" },
+                      (0, _mithril2.default)(
+                        "span",
+                        { "class": " red-custom db fw6 f5" },
+                        "50%"
+                      )
                     ),
                     (0, _mithril2.default)(
-                      "span",
-                      { "class": "strike" },
-                      "10000CFA"
+                      "div",
+                      { "class": "dib w-50 fl" },
+                      (0, _mithril2.default)(
+                        "strong",
+                        { "class": "dark-gray db" },
+                        "20000CFA"
+                      ),
+                      (0, _mithril2.default)(
+                        "span",
+                        { "class": "strike db" },
+                        "10000CFA"
+                      )
                     )
                   ),
                   (0, _mithril2.default)(
                     "div",
-                    { "class": "f8 pa1 pv2" },
+                    { "class": "f8 pa1 pv2 " },
                     (0, _mithril2.default)(
                       "span",
                       { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/like-hollow.svg", "class": "dib pr1", style: "height:0.5rem;" }),
                       (0, _mithril2.default)(
                         "span",
-                        null,
+                        { "class": "dib" },
                         "200"
                       )
                     ),
                     (0, _mithril2.default)(
                       "span",
                       { "class": "pa1" },
-                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "", style: "height:0.6rem;" }),
+                      (0, _mithril2.default)("img", { src: "/assets/img/svg/comment.svg", "class": "pr1", style: "height:0.5rem;" }),
                       (0, _mithril2.default)(
                         "span",
-                        null,
+                        { "class": "dib" },
                         "12"
                       )
                     )
@@ -2836,112 +2911,6 @@ var HotPromosPage = {
         { "class": "bg-dark-gray  cf f5" },
         (0, _mithril2.default)(
           "div",
-          { "class": "white-80 cf pa3" },
-          (0, _mithril2.default)(
-            "div",
-            { "class": "dib w-50 fl pv3" },
-            (0, _mithril2.default)(
-              "h3",
-              { "class": "mv1 fw6 red-custom" },
-              "Company"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "About Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "FAQ"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "How It Works"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Careers"
-            )
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "dib w-50 fl pv3" },
-            (0, _mithril2.default)(
-              "h3",
-              { "class": "mv1 fw6 red-custom" },
-              "Explore"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "About Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "FAQ"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "How It Works"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Careers"
-            )
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "dib w-50 fl pv3" },
-            (0, _mithril2.default)(
-              "h3",
-              { "class": "mv1 fw6 red-custom" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "About Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "FAQ"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "How It Works"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Careers"
-            )
-          )
-        ),
-        (0, _mithril2.default)(
-          "div",
           { "class": "tc pv3 white-80 bg-black" },
           (0, _mithril2.default)(
             "span",
@@ -2957,7 +2926,7 @@ var HotPromosPage = {
 exports.default = HotPromosPage;
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3006,7 +2975,7 @@ var PromoDetailPage = {
               { "class": "flex flex-auto  justify-center pa1 tc" },
               (0, _mithril2.default)(
                 "a",
-                { "class": "pa1 dib w-100  red-custom " },
+                { "class": "pa1 dib w-100  red-custom link", href: "/", oncreate: _mithril2.default.route.link },
                 "map"
               )
             ),
@@ -3015,7 +2984,7 @@ var PromoDetailPage = {
               { "class": "flex flex-auto  justify-center pa1 tc" },
               (0, _mithril2.default)(
                 "a",
-                { "class": "pa1 dib w-100  br-pill bg-red-custom white" },
+                { "class": "pa1 dib w-100  br-pill bg-red-custom white link", href: "/", oncreate: _mithril2.default.route.link },
                 "hot"
               )
             ),
@@ -3024,7 +2993,7 @@ var PromoDetailPage = {
               { "class": "flex flex-auto  justify-center pa1 tc" },
               (0, _mithril2.default)(
                 "a",
-                { "class": "pa1 dib w-100 red-custom " },
+                { "class": "pa1 dib w-100 red-custom link", href: "/", oncreate: _mithril2.default.route.link },
                 "2 in 1"
               )
             )
@@ -3084,7 +3053,7 @@ var PromoDetailPage = {
               (0, _mithril2.default)(
                 "a",
                 { "class": "pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2" },
-                "sd"
+                (0, _mithril2.default)("img", { src: "/assets/img/svg/call.svg", "class": "", style: "height:0.8rem;" })
               ),
               (0, _mithril2.default)(
                 "a",
@@ -3106,12 +3075,12 @@ var PromoDetailPage = {
                 (0, _mithril2.default)(
                   "span",
                   null,
-                  "Original Price:"
+                  "Original Price: "
                 ),
                 (0, _mithril2.default)(
                   "span",
                   null,
-                  "34334"
+                  "34334CFA"
                 )
               ),
               (0, _mithril2.default)(
@@ -3120,12 +3089,12 @@ var PromoDetailPage = {
                 (0, _mithril2.default)(
                   "span",
                   null,
-                  "Current Price:"
+                  "Current Price: "
                 ),
                 (0, _mithril2.default)(
                   "span",
                   null,
-                  "34334"
+                  "34334CFA"
                 )
               )
             )
@@ -3195,112 +3164,6 @@ var PromoDetailPage = {
         { "class": "bg-dark-gray  cf f5" },
         (0, _mithril2.default)(
           "div",
-          { "class": "white-80 cf pa3" },
-          (0, _mithril2.default)(
-            "div",
-            { "class": "dib w-50 fl pv3" },
-            (0, _mithril2.default)(
-              "h3",
-              { "class": "mv1 fw6 red-custom" },
-              "Company"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "About Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "FAQ"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "How It Works"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Careers"
-            )
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "dib w-50 fl pv3" },
-            (0, _mithril2.default)(
-              "h3",
-              { "class": "mv1 fw6 red-custom" },
-              "Explore"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "About Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "FAQ"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "How It Works"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Careers"
-            )
-          ),
-          (0, _mithril2.default)(
-            "div",
-            { "class": "dib w-50 fl pv3" },
-            (0, _mithril2.default)(
-              "h3",
-              { "class": "mv1 fw6 red-custom" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "About Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Contact Us"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "FAQ"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "How It Works"
-            ),
-            (0, _mithril2.default)(
-              "a",
-              { href: "#", "class": "white-80 db link" },
-              "Careers"
-            )
-          )
-        ),
-        (0, _mithril2.default)(
-          "div",
           { "class": "tc pv3 white-80 bg-black" },
           (0, _mithril2.default)(
             "span",
@@ -3316,9 +3179,11 @@ var PromoDetailPage = {
 exports.default = PromoDetailPage;
 
 /***/ }),
-/* 17 */,
-/* 18 */,
-/* 19 */
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3328,15 +3193,15 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _hotPromosPage = __webpack_require__(15);
+var _hotPromosPage = __webpack_require__(19);
 
 var _hotPromosPage2 = _interopRequireDefault(_hotPromosPage);
 
-var _promoDetailPage = __webpack_require__(16);
+var _promoDetailPage = __webpack_require__(20);
 
 var _promoDetailPage2 = _interopRequireDefault(_promoDetailPage);
 
-var _offCanvasMenu = __webpack_require__(14);
+var _offCanvasMenu = __webpack_require__(18);
 
 var _offCanvasMenu2 = _interopRequireDefault(_offCanvasMenu);
 

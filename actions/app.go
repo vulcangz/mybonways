@@ -54,6 +54,7 @@ func App() *buffalo.App {
 
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
 		app.Resource("/api/merchants", &MerchantsResource{})
+		app.Resource("/api/promo", &PromoResource{})
 		app.POST("/api/merchants/login", MerchantLogin)
 
 		// app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {

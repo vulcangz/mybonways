@@ -5195,24 +5195,23 @@ var _mithril2 = _interopRequireDefault(_mithril);
 
 var _promos = __webpack_require__(9);
 
-var _promos2 = _interopRequireDefault(_promos);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Preview(e) {
-    var image = e.target.files[0];
-    var reader = new FileReader();
-
-    reader.addEventListener("load", function () {
-        _promos2.default.NewPromo[e.target.name] = reader.result;
-    });
-
-    if (image) {
-        reader.readAsDataURL(image);
-    }
-}
-
 var NewPromo = {
+    Preview: function Preview(e) {
+        var image = e.target.files[0];
+        var reader = new FileReader();
+        var img = document.getElementById(e.target.name);
+
+        reader.addEventListener("load", function () {
+            _promos.Promos.NewPromo[e.target.name] = reader.result;
+            img.src = reader.result;
+        });
+
+        if (image) {
+            reader.readAsDataURL(image);
+        }
+    },
     view: function view(vnode) {
         return (0, _mithril2.default)(
             'section',
@@ -5240,7 +5239,7 @@ var NewPromo = {
                     (0, _mithril2.default)('br', null),
                     (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray w-100 pa2 bw1',
                         oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.Name = value;
+                            _promos.Promos.NewPromo.Name = value;
                         }) })
                 ),
                 (0, _mithril2.default)(
@@ -5253,7 +5252,7 @@ var NewPromo = {
                     ),
                     (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
                         oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.Category = value;
+                            _promos.Promos.NewPromo.Category = value;
                         })
                     })
                 ),
@@ -5267,7 +5266,7 @@ var NewPromo = {
                     ),
                     (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
                         oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.OldPrice = value;
+                            _promos.Promos.NewPromo.OldPrice = value;
                         })
                     })
                 ),
@@ -5281,7 +5280,7 @@ var NewPromo = {
                     ),
                     (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
                         oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.NewPrice = value;
+                            _promos.Promos.NewPromo.NewPrice = value;
                         })
                     })
                 ),
@@ -5295,7 +5294,7 @@ var NewPromo = {
                     ),
                     (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
                         oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.StartDate = value;
+                            _promos.Promos.NewPromo.StartDate = value;
                         })
                     })
                 ),
@@ -5309,7 +5308,7 @@ var NewPromo = {
                     ),
                     (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
                         oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.EndDate = value;
+                            _promos.Promos.NewPromo.EndDate = value;
                         })
                     })
                 ),
@@ -5323,7 +5322,7 @@ var NewPromo = {
                     ),
                     (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
                         oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.Description = value;
+                            _promos.Promos.NewPromo.Description = value;
                         })
                     })
                 ),
@@ -5335,14 +5334,12 @@ var NewPromo = {
                         { 'class': 'w-25 dib mh2 ba bw1 b--light-gray pa1' },
                         (0, _mithril2.default)(
                             'label',
-                            { 'for': 'image1', 'class': '' },
-                            (0, _mithril2.default)('input', { type: 'file', name: 'image1', id: 'image1', 'class': 'dn', onchange: Preview }),
+                            { 'for': 'img1', 'class': '' },
+                            (0, _mithril2.default)('input', { type: 'file', name: 'image1', id: 'img1', 'class': 'dn', onchange: this.Preview }),
                             (0, _mithril2.default)(
                                 'div',
-                                { 'class': '', style: 'overflow: hidden' },
-                                (0, _mithril2.default)('img', { 'class': '', src: function src() {
-                                        return _promos2.default.NewPromo.image1 || "/assets/img/user.jpg";
-                                    }, alt: 'image' })
+                                { 'class': 'tc overflow-hidden' },
+                                (0, _mithril2.default)('img', { 'class': '', id: 'image1', src: '/assets/img/user.jpg', alt: 'image' })
                             )
                         )
                     ),
@@ -5351,14 +5348,12 @@ var NewPromo = {
                         { 'class': 'w-25 dib mh2 ba bw1 b--light-gray pa1' },
                         (0, _mithril2.default)(
                             'label',
-                            { 'for': 'image2', 'class': '' },
-                            (0, _mithril2.default)('input', { type: 'file', name: 'image2', id: 'image2', 'class': 'dn', onchange: Preview }),
+                            { 'for': 'img2', 'class': '' },
+                            (0, _mithril2.default)('input', { type: 'file', name: 'image2', id: 'img2', 'class': 'dn', onchange: this.Preview }),
                             (0, _mithril2.default)(
                                 'div',
-                                { 'class': '', style: 'overflow: hidden' },
-                                (0, _mithril2.default)('img', { 'class': '', src: function src() {
-                                        return _promos2.default.NewPromo.image2 || "/assets/img/merchant_login_bg.jpg";
-                                    }, alt: 'image' })
+                                { 'class': 'tc overflow-hidden' },
+                                (0, _mithril2.default)('img', { 'class': '', id: 'image2', src: '/assets/img/merchant_login_bg.jpg', alt: 'image' })
                             )
                         )
                     )
@@ -5369,7 +5364,7 @@ var NewPromo = {
                     (0, _mithril2.default)(
                         'button',
                         { 'class': 'f4 ph3 pv2 blue ba b--blue bw1 shadow-3 bg-white', onclick: function onclick() {
-                                _promos2.default.SaveNew();
+                                _promos.Promos.SaveNew();
                             } },
                         'ADD PROMO'
                     )

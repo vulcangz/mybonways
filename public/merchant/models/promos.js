@@ -1,3 +1,5 @@
+import m from 'mithril';
+
 function genFakePromos(n) {
     var fakePromos = [];
     for (var i = 1; i < n; i++) {
@@ -15,6 +17,23 @@ function genFakePromos(n) {
     }
     return fakePromos;
 }
+/*
+    {
+  "item_name":"my item"
+  "company_id":"calli"
+  "category":"cat"
+  "old_price":2000
+  "new_price":1000
+  "start_date":"2017-06-14T20:00:05.869Z"
+  "end_date":"2017-06-14T20:00:05.869Z"
+  "description":"description_one"
+  "image_1":"image_4"
+  "image_2":"image_3"
+  "image_3":"image_2"
+  "image_4":"image_1"
+}
+*/
+
 
 export var Promos = {
     AllPromos: genFakePromos(5),
@@ -26,7 +45,7 @@ export var Promos = {
         // TODO:: Save a new promo.
         return m.request({
             method: "POST",
-            url: "/api/promo",
+            url: "/api/merchants/promo",
             data: Promos.NewPromo
         }).then(function(response) {
             console.log("New promo Response: ", response);

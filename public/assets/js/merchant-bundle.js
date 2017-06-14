@@ -5672,21 +5672,10 @@ var CategoriesModel = exports.CategoriesModel = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-function samplePromo() {
-    this.ID = 0;
-    this.Name = "";
-    this.Category = "";
-    this.OldPrice = 0;
-    this.NewPrice = 0;
-    this.Description = "";
-    this.StartDate = "";
-    this.EndDate = "";
-}
-
 function genFakePromos(n) {
     var fakePromos = [];
     for (var i = 1; i < n; i++) {
-        var p = new samplePromo();
+        var p = {};
         p.ID = i;
         p.Name = "Name " + i;
         p.Category = "Category " + i;

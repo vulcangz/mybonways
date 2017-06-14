@@ -82,7 +82,9 @@ var NewPromo = {
                     <label for="image1" class="">
                         <input type="file" name="image1" id="image1" class="dn" onchange={Preview} />
                         <div class="" style="overflow: hidden">
-                            <img class="" src={Promo.NewPromo.image1 || "/assets/img/user.jpg"} alt="image"/>
+                            <img class="" src={function() {
+                                return Promo.NewPromo.image1 || "/assets/img/user.jpg"
+                             }} alt="image"/>
                         </div>
                     </label>
                 </div>
@@ -90,7 +92,9 @@ var NewPromo = {
                     <label for="image2" class="">
                         <input type="file" name="image2" id="image2" class="dn" onchange={Preview} />
                         <div class="" style="overflow: hidden">
-                            <img class="" src={Promo.NewPromo.image2 || "/assets/img/merchant_login_bg.jpg"} alt="image"/>
+                            <img class="" src={function() {
+                                return Promo.NewPromo.image2 || "/assets/img/merchant_login_bg.jpg"
+                            }} alt="image"/>
                         </div>
                     </label>
                 </div>

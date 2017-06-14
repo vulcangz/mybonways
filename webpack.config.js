@@ -12,6 +12,7 @@ module.exports = {
     filename: "js/[name]-bundle.js",
     path: __dirname + "/public/assets"
   },
+  devtool: 'eval-source-map',
   plugins: [
     new ExtractTextPlugin("css/common.css"),
   ],

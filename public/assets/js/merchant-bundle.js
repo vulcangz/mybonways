@@ -4694,98 +4694,7 @@ var Promos = exports.Promos = {
 };
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.UserLogin = exports.UserModel = undefined;
-
-var _mithril = __webpack_require__(0);
-
-var _mithril2 = _interopRequireDefault(_mithril);
-
-var _localforage = __webpack_require__(8);
-
-var _localforage2 = _interopRequireDefault(_localforage);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var UserModel = exports.UserModel = {
-  User: {},
-  Token: "",
-  GetUserfromStorage: function GetUserfromStorage() {
-    if (!UserModel.User || !UserModel.User.Username) {
-      return _localforage2.default.getItem('AuthUser').then(function (user) {
-        console.log(user);
-        if (user != null) {
-          UserModel.User = user;
-          _mithril2.default.redraw();
-          return;
-        }
-        UserModel.User = null;
-        _mithril2.default.redraw();
-      });
-    }
-  },
-  GetTokenFromStorage: function GetTokenFromStorage() {
-    console.log("get token from storage");
-    if (!UserModel.Token) {
-      return _localforage2.default.getItem('jwtToken').then(function (token) {
-        console.log(token);
-        if (token != null) {
-          UserModel.Token = token;
-          _mithril2.default.redraw();
-          return;
-        }
-        UserModel.Token = null;
-        _mithril2.default.redraw();
-      });
-    }
-  },
-  Logout: function Logout() {
-    return _localforage2.default.removeItem('jwtToken').then(function () {
-      return _localforage2.default.removeItem('jwtToken').then(function () {
-        _mithril2.default.route.set("/login");
-      });
-    });
-  }
-
-};
-
-var UserLogin = exports.UserLogin = {
-  User: {},
-  Submit: function Submit() {
-    UserLogin.User.Username = document.getElementById('username').value;
-    UserLogin.User.Password = document.getElementById('password').value;
-
-    console.log(UserLogin.User);
-    _mithril2.default.request({
-      method: 'POST',
-      url: '/api/admin/login',
-      data: UserLogin.User
-    }).then(function (response) {
-      console.log(response);
-      _localforage2.default.setItem('jwtToken', response.Token).then(function () {
-        return _localforage2.default.setItem('AuthUser', response.User);
-      }).then(function () {
-        UserModel.GetTokenFromStorage().then(function () {
-          return UserModel.GetUserfromStorage();
-        }).then(function () {
-          _mithril2.default.route.set("/");
-        });
-      });
-    }).catch(function (error) {
-      console.error(error);
-    });
-  }
-};
-
-/***/ }),
+/* 10 */,
 /* 11 */,
 /* 12 */,
 /* 13 */,
@@ -4798,7 +4707,7 @@ var UserLogin = exports.UserLogin = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AdminAuth = undefined;
+exports.MerchantAuth = undefined;
 
 var _mithril = __webpack_require__(0);
 
@@ -4808,21 +4717,20 @@ var _localforage = __webpack_require__(8);
 
 var _localforage2 = _interopRequireDefault(_localforage);
 
-var _userAuth = __webpack_require__(10);
+var _merchant = __webpack_require__(31);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var AdminAuth = exports.AdminAuth = {
+var MerchantAuth = exports.MerchantAuth = {
   oncreate: function oncreate() {
-    _userAuth.UserModel.GetTokenFromStorage();
-    _userAuth.UserModel.GetUserfromStorage();
+    _merchant.MerchantModel.GetUserfromStorage();
   },
   view: function view(vnode) {
-    //  console.log(UserModel.Token)
-    //  if (UserModel.Token==null){
-    //     m.route.set("/login")
-    //      return m("div")
-    //  }
+    var cookie = (0, _merchant.getCookie)("X-MERCHANT-TOKEN");
+    if (cookie === "") {
+      _mithril2.default.route.set("/signup");
+      return (0, _mithril2.default)("div");
+    }
     return (0, _mithril2.default)("div", vnode.attrs, _mithril2.default.fragment(vnode.attrs, [vnode.children]));
   }
 };
@@ -4934,9 +4842,9 @@ var _localforage = __webpack_require__(8);
 
 var _localforage2 = _interopRequireDefault(_localforage);
 
-var _userAuth = __webpack_require__(10);
-
 var _analytics = __webpack_require__(26);
+
+var _merchant = __webpack_require__(31);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5027,7 +4935,7 @@ var AdminShell = {
         { 'class': '  pt3-ns   ph5-ns black-80 bg-light-gray-custom' },
         (0, _mithril2.default)(
           'div',
-          { 'class': "pa2 pv3-ns  w-100  z-5 " + (vnode.state.fixNav === true ? "fixed top-0 left-0 bg-yellow shadow-4" : "relative-ns"), id: 'fixedNav' },
+          { 'class': "pa2 pv3-ns  w-100  z-5 " + (vnode.state.fixNav === true ? "fixed top-0 left-0 bg-light-gray-custom shadow-4" : "relative-ns"), id: 'fixedNav' },
           (0, _mithril2.default)(
             'div',
             { 'class': 'dib relative' },
@@ -5073,7 +4981,7 @@ var AdminShell = {
                 (0, _mithril2.default)(
                   'span',
                   { 'class': 'dib v-mid' },
-                  _userAuth.UserModel.User.Username
+                  _merchant.MerchantModel.Merchant.company_id
                 ),
                 (0, _mithril2.default)(
                   'small',
@@ -5090,7 +4998,7 @@ var AdminShell = {
                   (0, _mithril2.default)(
                     'a',
                     { 'class': 'db pa2 bb b--light-gray hover-bg-light-gray link navy pointer', onclick: function onclick() {
-                        return _userAuth.UserModel.Logout();
+                        return _merchant.MerchantModel.Logout();
                       } },
                     'logout'
                   )
@@ -5432,7 +5340,9 @@ var NewPromo = {
                             (0, _mithril2.default)(
                                 'div',
                                 { 'class': '', style: 'overflow: hidden' },
-                                (0, _mithril2.default)('img', { 'class': '', src: _promos2.default.NewPromo.image1 || "/assets/img/user.jpg", alt: 'image' })
+                                (0, _mithril2.default)('img', { 'class': '', src: function src() {
+                                        return _promos2.default.NewPromo.image1 || "/assets/img/user.jpg";
+                                    }, alt: 'image' })
                             )
                         )
                     ),
@@ -5446,7 +5356,9 @@ var NewPromo = {
                             (0, _mithril2.default)(
                                 'div',
                                 { 'class': '', style: 'overflow: hidden' },
-                                (0, _mithril2.default)('img', { 'class': '', src: _promos2.default.NewPromo.image2 || "/assets/img/merchant_login_bg.jpg", alt: 'image' })
+                                (0, _mithril2.default)('img', { 'class': '', src: function src() {
+                                        return _promos2.default.NewPromo.image2 || "/assets/img/merchant_login_bg.jpg";
+                                    }, alt: 'image' })
                             )
                         )
                     )
@@ -5654,13 +5566,13 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _user = __webpack_require__(29);
-
-var _merchantAuth = __webpack_require__(28);
+var _merchant = __webpack_require__(31);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SignupPage = {
+  SignupMerchant: {},
+  LoginMerchant: {},
   oncreate: function oncreate(vnode) {
     console.log(vnode);
   },
@@ -5694,29 +5606,56 @@ var SignupPage = {
             ),
             (0, _mithril2.default)(
               'div',
-              { 'class': 'v-mid dib fr ' },
+              { 'class': 'v-mid dib fr' },
               (0, _mithril2.default)(
                 'div',
-                { 'class': 'dib ' },
-                (0, _mithril2.default)('input', { type: 'email', placeholder: 'email', 'class': 'input-reset ba b--black-20 db w-100 pv2 ph3',
-                  oninput: _mithril2.default.withAttr("value", function (value) {
-                    _merchantAuth.MerchantLogin.Merchant.Email = value;
-                  }) })
-              ),
-              (0, _mithril2.default)(
-                'div',
-                { 'class': 'dib ph1' },
-                (0, _mithril2.default)('input', { type: 'password', placeholder: 'password', 'class': 'input-reset ba b--black-20 db w-100 pv2 ph3',
-                  oninput: _mithril2.default.withAttr("value", function (value) {
-                    _merchantAuth.MerchantLogin.Merchant.Password = value;
-                  }) })
-              ),
-              (0, _mithril2.default)(
-                'button',
-                { 'class': 'pv2 ph3 bg-navy bw0 shadow grow white-80', onclick: function onclick() {
-                    _merchantAuth.MerchantLogin.Submit();
-                  } },
-                'Login'
+                { 'class': 'dib relative' },
+                (0, _mithril2.default)(
+                  'a',
+                  { href: '#', 'class': 'dib  black link v-mid mr3  pa2  relative', onclick: function onclick() {
+                      return vnode.state.showNav = !vnode.state.showNav;
+                    } },
+                  'login'
+                ),
+                (0, _mithril2.default)(
+                  'div',
+                  { 'class': " right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 w5 " + (vnode.state.showNav ? "db" : "dn") },
+                  (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'db pv1' },
+                    (0, _mithril2.default)('input', { type: 'text', placeholder: 'company id', 'class': 'input-reset ba b--black-20 db w-100 pv2 ph3',
+                      oninput: _mithril2.default.withAttr("value", function (value) {
+                        SignupPage.LoginMerchant.company_id = value.trim();
+                      }) })
+                  ),
+                  (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'db pv1' },
+                    (0, _mithril2.default)('input', { type: 'email', placeholder: 'email', 'class': 'input-reset ba b--black-20 db w-100 pv2 ph3',
+                      oninput: _mithril2.default.withAttr("value", function (value) {
+                        SignupPage.LoginMerchant.merchant_email = value.trim();
+                      }) })
+                  ),
+                  (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'db pv1' },
+                    (0, _mithril2.default)('input', { type: 'password', placeholder: 'password', 'class': 'input-reset ba b--black-20 db w-100 pv2 ph3',
+                      oninput: _mithril2.default.withAttr("value", function (value) {
+                        SignupPage.LoginMerchant.merchant_password = value.trim();
+                      }) })
+                  ),
+                  (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'db tr' },
+                    (0, _mithril2.default)(
+                      'button',
+                      { 'class': 'pv2 ph3 bg-navy bw0 shadow grow white-80', onclick: function onclick() {
+                          _merchant.MerchantModel.Login(SignupPage.LoginMerchant);
+                        } },
+                      'Login'
+                    )
+                  )
+                )
               )
             )
           )
@@ -5756,7 +5695,7 @@ var SignupPage = {
                     { 'class': 'pv2' },
                     (0, _mithril2.default)('input', { 'class': 'input-reset ba b--black-20 db w-100 pv3 ph3', type: 'text', placeholder: 'Store Name',
                       oninput: _mithril2.default.withAttr("value", function (value) {
-                        _user.UserModel.signupData.company_name = value;
+                        SignupPage.SignupMerchant.company_name = value.trim();
                       }) })
                   ),
                   (0, _mithril2.default)(
@@ -5764,7 +5703,7 @@ var SignupPage = {
                     { 'class': 'pv2' },
                     (0, _mithril2.default)('input', { 'class': 'input-reset ba b--black-20 db w-100 pv3 ph3', type: 'text', placeholder: 'Store ID',
                       oninput: _mithril2.default.withAttr("value", function (value) {
-                        _user.UserModel.signupData.company_id = value;
+                        SignupPage.SignupMerchant.company_id = value.trim();
                       })
                     })
                   ),
@@ -5773,7 +5712,7 @@ var SignupPage = {
                     { 'class': 'pv2' },
                     (0, _mithril2.default)('input', { 'class': 'input-reset ba b--black-20 db w-100 pv3 ph3', type: 'email', placeholder: 'Merchant Email',
                       oninput: _mithril2.default.withAttr("value", function (value) {
-                        _user.UserModel.signupData.merchant_email = value;
+                        SignupPage.SignupMerchant.merchant_email = value.trim();
                       })
                     })
                   ),
@@ -5782,7 +5721,7 @@ var SignupPage = {
                     { 'class': 'pv2' },
                     (0, _mithril2.default)('input', { 'class': 'input-reset ba b--black-20 db w-100 pv3 ph3', type: 'password', placeholder: 'Merchant Password',
                       oninput: _mithril2.default.withAttr("value", function (value) {
-                        _user.UserModel.signupData.merchant_password = value;
+                        SignupPage.SignupMerchant.merchant_password = value.trim();
                       })
                     })
                   ),
@@ -5792,7 +5731,7 @@ var SignupPage = {
                     (0, _mithril2.default)(
                       'button',
                       { 'class': 'pv3 ph4 bg-navy white-90 bw0 shadow-4 grow', onclick: function onclick() {
-                          _user.UserModel.Signup();
+                          _merchant.MerchantModel.Signup(SignupPage.SignupMerchant);
                         } },
                       'signup'
                     )
@@ -5856,26 +5795,26 @@ var root = document.getElementById('appContainer');
 
 _mithril2.default.route.prefix('/merchants');
 _mithril2.default.route(root, '/', {
-    '/': {
-        view: function view(vnode) {
-            return (0, _mithril2.default)(_auth.AdminAuth, vnode.attrs, (0, _mithril2.default)(_offCanvasMenu2.default, vnode.attrs, (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_categories2.default, vnode.attrs))));
-        }
-    },
-    '/signup': {
-        view: function view(vnode) {
-            return (0, _mithril2.default)(_signupPage2.default, vnode.attrs);
-        }
-    },
-    '/promos': {
-        view: function view(vnode) {
-            return (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_promos2.default, vnode.attrs));
-        }
-    },
-    '/promos/new': {
-        view: function view(vnode) {
-            return (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_newpromo2.default, vnode.attrs));
-        }
+  '/': {
+    view: function view(vnode) {
+      return (0, _mithril2.default)(_auth.MerchantAuth, vnode.attrs, (0, _mithril2.default)(_offCanvasMenu2.default, vnode.attrs, (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_categories2.default, vnode.attrs))));
     }
+  },
+  '/signup': {
+    view: function view(vnode) {
+      return (0, _mithril2.default)(_signupPage2.default, vnode.attrs);
+    }
+  },
+  '/promos': {
+    view: function view(vnode) {
+      return (0, _mithril2.default)(_auth.MerchantAuth, vnode.attrs, (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_promos2.default, vnode.attrs)));
+    }
+  },
+  '/promos/new': {
+    view: function view(vnode) {
+      return (0, _mithril2.default)(_auth.MerchantAuth, vnode.attrs, (0, _mithril2.default)(_adminShell2.default, vnode.attrs, (0, _mithril2.default)(_newpromo2.default, vnode.attrs)));
+    }
+  }
 });
 
 /***/ }),
@@ -5956,7 +5895,10 @@ var CategoriesModel = exports.CategoriesModel = {
 };
 
 /***/ }),
-/* 28 */
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5965,7 +5907,9 @@ var CategoriesModel = exports.CategoriesModel = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.MerchantLogin = exports.MerchantModel = undefined;
+exports.MerchantModel = undefined;
+exports.getCookie = getCookie;
+exports.deleteCookie = deleteCookie;
 
 var _mithril = __webpack_require__(0);
 
@@ -5977,52 +5921,72 @@ var _localforage2 = _interopRequireDefault(_localforage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+function deleteCookie(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 var MerchantModel = exports.MerchantModel = {
     Merchant: {},
-    Token: ""
-};
-
-var MerchantLogin = exports.MerchantLogin = {
-    Merchant: {},
-    Submit: function Submit() {
-        console.log(MerchantLogin.Merchant);
-
+    Token: "",
+    GetUserfromStorage: function GetUserfromStorage() {
+        if (!MerchantModel.Merchant || !MerchantModel.Merchant.merchant_email) {
+            return _localforage2.default.getItem('AuthMerchant').then(function (merchant) {
+                console.log(merchant);
+                if (merchant != null) {
+                    MerchantModel.Merchant = merchant;
+                    _mithril2.default.redraw();
+                    return;
+                }
+                MerchantModel.Merchant = null;
+                _mithril2.default.redraw();
+            });
+        }
+    },
+    Login: function Login(merchant) {
+        console.log(merchant);
         return _mithril2.default.request({
             url: "/api/merchants/login",
             method: "POST",
-            data: MerchantLogin.Merchant
+            data: merchant
         }).then(function (response) {
-            console.log("Merchant login response: ", response);
+            console.log(response);
+            var cookie = getCookie("X-MERCHANT-TOKEN");
+            console.log(cookie);
+            return _localforage2.default.setItem('AuthMerchant', response.merchant);
+        }).then(function () {
+            return MerchantModel.GetUserfromStorage().then(function () {
+                _mithril2.default.route.set("/");
+            });
+        }).catch(function (error) {
+            console.error(error);
         });
-    }
-};
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.UserModel = undefined;
-
-var _mithril = __webpack_require__(0);
-
-var _mithril2 = _interopRequireDefault(_mithril);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var UserModel = exports.UserModel = {
-    signupData: {},
-    Signup: function Signup() {
-        console.log("signup: ", UserModel.signupData);
+    },
+    Logout: function Logout() {
+        _mithril2.default.route.set("/signup");
+        _localforage2.default.removeItem("AuthMerchant");
+        deleteCookie("X-MERCHANT-TOKEN");
+    },
+    Signup: function Signup(merchant) {
+        console.log("signup: ", merchant);
         return _mithril2.default.request({
             url: "/api/merchants",
             method: "POST",
-            data: UserModel.signupData
+            data: merchant
         }).then(function (response) {
             console.log("response: ", response);
         });

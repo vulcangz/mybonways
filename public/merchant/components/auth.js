@@ -1,19 +1,18 @@
 import m from 'mithril';
 import localforage from 'localforage';
-import {UserModel} from '../models/userAuth.js';
+import {MerchantModel, getCookie} from '../models/merchant.js';
 
-export var AdminAuth = {
+export var MerchantAuth = {
  oncreate:function(){
-  UserModel.GetTokenFromStorage()
-  UserModel.GetUserfromStorage()
+   MerchantModel.GetUserfromStorage()
 
  },
  view:function(vnode){
-  //  console.log(UserModel.Token)
-  //  if (UserModel.Token==null){
-  //     m.route.set("/login")
-  //      return m("div")
-  //  }
+  var cookie = getCookie("X-MERCHANT-TOKEN")
+  if (cookie === ""){
+    m.route.set("/signup")
+    return m("div")
+  }
    return m("div",vnode.attrs,m.fragment(vnode.attrs,[vnode.children]));
  }
 }

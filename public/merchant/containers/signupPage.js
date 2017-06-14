@@ -1,5 +1,6 @@
 import m from 'mithril';
 import {UserModel} from '../models/user.js';
+import {MerchantLogin} from '../models/merchantAuth.js';
 
 var SignupPage = {
   oncreate:function(vnode){
@@ -17,12 +18,18 @@ var SignupPage = {
                 </div>
                 <div class="v-mid dib fr ">
                   <div class="dib ">
-                    <input type="email" placeholder="email" class="input-reset ba b--black-20 db w-100 pv2 ph3"/>
+                    <input type="email" placeholder="email" class="input-reset ba b--black-20 db w-100 pv2 ph3"
+                    oninput={m.withAttr("value", function(value) {
+                      MerchantLogin.Merchant.Email = value;
+                    })}/>
                   </div>
                   <div class="dib ph1">
-                    <input type="password" placeholder="password" class="input-reset ba b--black-20 db w-100 pv2 ph3"/>
+                    <input type="password" placeholder="password" class="input-reset ba b--black-20 db w-100 pv2 ph3"
+                    oninput={m.withAttr("value", function(value) {
+                      MerchantLogin.Merchant.Password = value;
+                    })}/>
                   </div>
-                  <button class="pv2 ph3 bg-navy bw0 shadow grow white-80">login</button>
+                  <button class="pv2 ph3 bg-navy bw0 shadow grow white-80" onclick={function(){ MerchantLogin.Submit() }}>Login</button>
                 </div>
               </div>
             </nav>

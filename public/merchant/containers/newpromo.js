@@ -18,61 +18,63 @@ var NewPromo = {
     },
   view: function(vnode) {
     return (
-      <section class="pa2 bg-white">
-        <div class="ba b--light-gray">
-            <div class="tc">
-                <h2>Add a new promo</h2>
+      <section class="">
+        <div class="ph4 pv4 bg-white shadow-m2 ">
+          <div class="">
+            <span  class="fw6 f3">New Promo </span>
             </div>
+        </div>
+        <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
             <div class="pa2">
-                <label class="f4 gray">Item Name:</label><br></br>
-                <input type="text" class="ba b--gray w-100 pa2 bw1"
+                <label class="f4 gray pv2 dib">Item Name:</label><br></br>
+                <input type="text" class="ba b--light-silver w-100 pa2 bw1"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.Name = value;
                 })} />
             </div>
             <div class="pa2">
-                <label class="f4 gray">Item Category:</label>
-                <input type="text" class="ba b--gray bw1 pa2 w-100"
+                <label class="f4 gray pv2 dib">Item Category:</label>
+                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.Category = value;
                 })}
                 />
             </div>
             <div class="pa2">
-                <label class="f4 gray">Old Price:</label>
-                <input type="text" class="ba b--gray bw1 pa2 w-100"
+                <label class="f4 gray pv2 dib">Old Price:</label>
+                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.OldPrice = value;
                 })}
                 />
             </div>
             <div class="pa2">
-                <label class="f4 gray">New Price:</label>
-                <input type="text" class="ba b--gray bw1 pa2 w-100"
+                <label class="f4 gray pv2 dib">New Price:</label>
+                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.NewPrice = value;
                 })}
                 />
             </div>
             <div class="pa2">
-                <label class="f4 gray">Start Date:</label>
-                <input type="text" class="ba b--gray bw1 pa2 w-100"
+                <label class="f4 gray pv2 dib">Start Date:</label>
+                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.StartDate = value;
                 })}
                 />
             </div>
             <div class="pa2">
-                <label class="f4 gray">End Date:</label>
-                <input type="text" class="ba b--gray bw1 pa2 w-100"
+                <label class="f4 gray pv2 dib">End Date:</label>
+                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.EndDate = value;
                 })}
                 />
             </div>
             <div class="pa2">
-                <label class="f4 gray">Description:</label>
-                <input type="text" class="ba b--gray bw1 pa2 w-100"
+                <label class="f4 gray pv2 dib">Description:</label>
+                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.Description = value;
                 })}
@@ -96,10 +98,10 @@ var NewPromo = {
                     </label>
                 </div>
             </div>
-            <div class="pa2">
-                <button class="f4 ph3 pv2 blue ba b--blue bw1 shadow-3 bg-white" onclick={function() {
+            <div class="pa2  pv3 mt2 tr">
+                <button  class=" ph3 pv2 bg-navy white-90 grow pointer no-underline shadow-4 bw0 " onclick={function() {
                     Promos.SaveNew();
-                }}>ADD PROMO</button>
+                }}>submit promo</button>
             </div>
         </div>
       </section>

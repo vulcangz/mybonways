@@ -56,9 +56,6 @@ export var MerchantModel = {
               m.route.set("/")
             })
         })
-        .catch(function(error) {
-          console.error(error);
-        });
     },
     Logout:function(){
       m.route.set("/signup")

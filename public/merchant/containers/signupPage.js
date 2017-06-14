@@ -1,4 +1,6 @@
 import m from 'mithril';
+import {UserModel} from '../models/user.js';
+import {MerchantLogin} from '../models/merchantAuth.js';
 
 var SignupPage = {
   oncreate:function(vnode){
@@ -16,12 +18,18 @@ var SignupPage = {
                 </div>
                 <div class="v-mid dib fr ">
                   <div class="dib ">
-                    <input type="email" placeholder="email" class="input-reset ba b--black-20   db w-100 pv2 ph3"/>
+                    <input type="email" placeholder="email" class="input-reset ba b--black-20 db w-100 pv2 ph3"
+                    oninput={m.withAttr("value", function(value) {
+                      MerchantLogin.Merchant.Email = value;
+                    })}/>
                   </div>
                   <div class="dib ph1">
-                    <input type="password" placeholder="password" class="input-reset ba b--black-20   db w-100 pv2 ph3"/>
+                    <input type="password" placeholder="password" class="input-reset ba b--black-20 db w-100 pv2 ph3"
+                    oninput={m.withAttr("value", function(value) {
+                      MerchantLogin.Merchant.Password = value;
+                    })}/>
                   </div>
-                  <button class="pv2 ph3 bg-navy bw0 shadow grow white-80">login</button>
+                  <button class="pv2 ph3 bg-navy bw0 shadow grow white-80" onclick={function(){ MerchantLogin.Submit() }}>Login</button>
                 </div>
               </div>
             </nav>
@@ -36,19 +44,36 @@ var SignupPage = {
                   <section class=" pa3 pa4-ns bg-white br2 dib w-100 w-40-ns ">
                     <div class="">
                       <div class="pv2">
-                        <input class="input-reset ba b--black-20   db w-100 pv3 ph3" type="text" placeholder="Store Name" />
+                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Store Name"
+                        oninput={m.withAttr("value", function(value) {
+                          UserModel.signupData.company_name = value;
+                        })} />
                       </div>
                       <div class="pv2">
-                        <input class="input-reset ba b--black-20   db w-100 pv3 ph3" type="text" placeholder="Store ID" />
+                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Store ID"
+                        oninput={m.withAttr("value", function(value) {
+                          UserModel.signupData.company_id = value;
+                        })}
+                        />
                       </div>
                       <div class="pv2">
-                        <input class="input-reset ba b--black-20   db w-100 pv3 ph3" type="email" placeholder="Merchant Email" />
+                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="email" placeholder="Merchant Email"
+                        oninput={m.withAttr("value", function(value) {
+                          UserModel.signupData.merchant_email = value;
+                        })}
+                        />
                       </div>
                       <div class="pv2">
-                        <input class="input-reset ba b--black-20   db w-100 pv3 ph3" type="password" placeholder="Merchant Password" />
+                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="password" placeholder="Merchant Password"
+                        oninput={m.withAttr("value", function(value) {
+                          UserModel.signupData.merchant_password = value;
+                        })}
+                        />
                       </div>
                       <div class="tr pv2">
-                        <button class="pv3 ph4 bg-navy white-90 bw0 shadow-4 grow">signup</button>
+                        <button class="pv3 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={() => {
+                            UserModel.Signup();
+                          }}>signup</button>
                       </div>
                     </div>
                   </section>

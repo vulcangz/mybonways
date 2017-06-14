@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 30);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2339,7 +2339,9 @@ exports.clearImmediate = clearImmediate;
 /* 16 */,
 /* 17 */,
 /* 18 */,
-/* 19 */
+/* 19 */,
+/* 20 */,
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2427,7 +2429,7 @@ var OffCanvasMenu = {
 exports.default = OffCanvasMenu;
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2927,7 +2929,7 @@ var HotPromosPage = {
 exports.default = HotPromosPage;
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3180,12 +3182,13 @@ var PromoDetailPage = {
 exports.default = PromoDetailPage;
 
 /***/ }),
-/* 22 */,
-/* 23 */,
 /* 24 */,
 /* 25 */,
 /* 26 */,
-/* 27 */
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3195,15 +3198,15 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _hotPromosPage = __webpack_require__(20);
+var _hotPromosPage = __webpack_require__(22);
 
 var _hotPromosPage2 = _interopRequireDefault(_hotPromosPage);
 
-var _promoDetailPage = __webpack_require__(21);
+var _promoDetailPage = __webpack_require__(23);
 
 var _promoDetailPage2 = _interopRequireDefault(_promoDetailPage);
 
-var _offCanvasMenu = __webpack_require__(19);
+var _offCanvasMenu = __webpack_require__(21);
 
 var _offCanvasMenu2 = _interopRequireDefault(_offCanvasMenu);
 

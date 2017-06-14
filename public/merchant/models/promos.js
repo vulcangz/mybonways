@@ -18,8 +18,19 @@ function genFakePromos(n) {
 
 export var Promos = {
     AllPromos: genFakePromos(5),
-
+    NewPromo: {},
     GetAllPromos: function() {
         // TODO:: Get All Promos from DB
+    },
+    SaveNew: function() {
+        // TODO:: Save a new promo.
+        return m.request({
+            method: "POST",
+            url: "/api/promo",
+            data: Promos.NewPromo
+        }).then(function(response) {
+            console.log("New promo Response: ", response);
+            // if successful, add the new promo to the promo list
+        })
     }
 }

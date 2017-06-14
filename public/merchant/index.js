@@ -7,6 +7,7 @@ import AdminShell from './containers/adminShell.js';
 import Categories from './containers/categories.js';
 import {AdminAuth} from './components/auth.js';
 import PromosTable from './containers/promos.js';
+import NewPromo from './containers/newpromo.js';
 
 var root = document.getElementById('appContainer');
 
@@ -25,12 +26,17 @@ m.route(root, '/', {
   },
   '/signup':{
     view: function(vnode){
-      return m(SignupPage,vnode.attrs);
+      return m(SignupPage, vnode.attrs);
       },
   },
   '/promos': {
       view: function(vnode) {
           return m(AdminShell, vnode.attrs, m(PromosTable, vnode.attrs))
+      }
+  },
+  '/promos/new': {
+      view: function(vnode) {
+          return m(AdminShell, vnode.attrs, m(NewPromo, vnode.attrs))
       }
   }
 });

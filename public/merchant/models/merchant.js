@@ -1,0 +1,78 @@
+import m from 'mithril';
+import localforage from 'localforage';
+
+export function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+export function deleteCookie(name) {
+  document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+
+export var MerchantModel = {
+    Merchant: {},
+    Token: "",
+    GetUserfromStorage: function(){
+      if (!MerchantModel.Merchant || !MerchantModel.Merchant.merchant_email){
+        return localforage.getItem('AuthMerchant').then(function(merchant){
+          console.log(merchant)
+          if (merchant!=null){
+            MerchantModel.Merchant = merchant
+            m.redraw()
+            return
+          }
+          MerchantModel.Merchant = null
+          m.redraw()
+        })
+      }
+    },
+    Login:function(merchant){
+      console.log(merchant)
+      return m.request({
+          url: "/api/merchants/login",
+          method: "POST",
+          data: merchant
+      })
+          .then(function(response) {
+            console.log(response);
+            var cookie = getCookie("X-MERCHANT-TOKEN")
+            console.log(cookie)
+            return localforage.setItem('AuthMerchant', response.merchant)
+          })
+          .then(function(){
+            return MerchantModel.GetUserfromStorage().then(function(){
+              m.route.set("/")
+            })
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    },
+    Logout:function(){
+      m.route.set("/signup")
+      localforage.removeItem("AuthMerchant")
+      deleteCookie("X-MERCHANT-TOKEN")
+    },
+    Signup: function(merchant) {
+        console.log("signup: ", merchant);
+        return m.request({
+            url: "/api/merchants",
+            method: "POST",
+            data: merchant
+        }).then(function(response) {
+            console.log("response: ", response);
+        })
+    }
+}

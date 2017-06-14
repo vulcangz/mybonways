@@ -62,13 +62,12 @@ func MerchantLogin(c buffalo.Context) error {
 	}
 
 	cookie := &http.Cookie{
-		Name:     "X-AUTH-TOKEN",
-		Value:    token["token"].(string),
-		Path:     "/",
-		Secure:   true,
-		HttpOnly: true,
+		Name:  "X-MERCHANT-TOKEN",
+		Value: token["token"].(string),
+		Path:  "/",
 	}
-	c.Request().AddCookie(cookie)
+
+	http.SetCookie(c.Response(), cookie)
 	return c.Render(http.StatusOK, render.JSON(token))
 }
 
@@ -86,7 +85,7 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 			c.LogField("params", string(b))
 		}
 
-		cookie, err := req.Cookie("X-AUTH-TOKEN")
+		cookie, err := req.Cookie("X-MERCHANT-TOKEN")
 		if err == nil {
 			c.LogField("auth", "not authenticated. No  cookie")
 		}

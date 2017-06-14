@@ -1,7 +1,7 @@
 import m from "mithril";
 import localforage from 'localforage';
-import {UserModel} from '../models/userAuth.js';
 import {Analytics} from '../models/analytics.js';
+import {MerchantModel} from '../models/merchant.js';
 
 var MenuComponent = {
   view:function(){
@@ -57,7 +57,7 @@ var AdminShell = {
 	return (
 	  <section>
   		<section class="  pt3-ns   ph5-ns black-80 bg-light-gray-custom">
-  		  <div class={"pa2 pv3-ns  w-100  z-5 "+(vnode.state.fixNav===true?"fixed top-0 left-0 bg-yellow shadow-4":"relative-ns")} id="fixedNav">
+  		  <div class={"pa2 pv3-ns  w-100  z-5 "+(vnode.state.fixNav===true?"fixed top-0 left-0 bg-light-gray-custom shadow-4":"relative-ns")} id="fixedNav">
     			<div class="dib relative">
             <a href="#" class="dib dn-ns black link v-mid mr3  pa2 ba relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>☰</a>
               <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 "+(vnode.state.showNav?"db":"dn")}>
@@ -72,12 +72,12 @@ var AdminShell = {
           <div class="dib v-mid pv2 fr pointer">
             <div class="dib">
               <a onclick={()=>vnode.state.showProfileNav=!vnode.state.showProfileNav}>
-        			  <span class="dib v-mid">{UserModel.User.Username}</span>
+        			  <span class="dib v-mid">{MerchantModel.Merchant.company_id}</span>
                 <small class="dib v-mid ph2" style="font-size:8px;">▼</small>
               </a>
               <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 "+(vnode.state.showProfileNav?"db":"dn")}>
                 <div class="">
-                  <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy pointer" onclick={()=>UserModel.Logout()} >logout</a>
+                  <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy pointer" onclick={()=>MerchantModel.Logout()} >logout</a>
                 </div>
               </div>
             </div>

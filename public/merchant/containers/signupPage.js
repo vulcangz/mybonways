@@ -1,8 +1,9 @@
 import m from 'mithril';
-import {UserModel} from '../models/user.js';
-import {MerchantLogin} from '../models/merchantAuth.js';
+import {MerchantModel} from '../models/merchant.js';
 
 var SignupPage = {
+  SignupMerchant:{},
+  LoginMerchant:{},
   oncreate:function(vnode){
     console.log(vnode)
   },
@@ -16,21 +17,35 @@ var SignupPage = {
                   <img src="/assets/img/logo_xs.png" class="h2 dib v-mid"/>
           			  <span class="f3 dib v-mid pl2">my<strong>Bonways</strong></span>
                 </div>
-                <div class="v-mid dib fr ">
-                  <div class="dib ">
-                    <input type="email" placeholder="email" class="input-reset ba b--black-20 db w-100 pv2 ph3"
-                    oninput={m.withAttr("value", function(value) {
-                      MerchantLogin.Merchant.Email = value;
-                    })}/>
+                <div class="v-mid dib fr">
+                  <div class="dib relative">
+                    <a href="#" class="dib  black link v-mid mr3  pa2  relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>login</a>
+                    <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 w5 "+(vnode.state.showNav?"db":"dn")}>
+                        <div class="db pv1">
+                          <input type="text" placeholder="company id" class="input-reset ba b--black-20 db w-100 pv2 ph3"
+                          oninput={m.withAttr("value", function(value) {
+                            SignupPage.LoginMerchant.company_id = value.trim();
+                          })}/>
+                        </div>
+                        <div class="db pv1">
+                          <input type="email" placeholder="email" class="input-reset ba b--black-20 db w-100 pv2 ph3"
+                          oninput={m.withAttr("value", function(value) {
+                            SignupPage.LoginMerchant.merchant_email = value.trim();
+                          })}/>
+                        </div>
+                        <div class="db pv1">
+                          <input type="password" placeholder="password" class="input-reset ba b--black-20 db w-100 pv2 ph3"
+                          oninput={m.withAttr("value", function(value) {
+                            SignupPage.LoginMerchant.merchant_password = value.trim();
+                          })}/>
+                        </div>
+                        <div class="db tr">
+                          <button class="pv2 ph3 bg-navy bw0 shadow grow white-80" onclick={function(){ MerchantModel.Login(SignupPage.LoginMerchant) }}>Login</button>
+                        </div>
+                      </div>
                   </div>
-                  <div class="dib ph1">
-                    <input type="password" placeholder="password" class="input-reset ba b--black-20 db w-100 pv2 ph3"
-                    oninput={m.withAttr("value", function(value) {
-                      MerchantLogin.Merchant.Password = value;
-                    })}/>
-                  </div>
-                  <button class="pv2 ph3 bg-navy bw0 shadow grow white-80" onclick={function(){ MerchantLogin.Submit() }}>Login</button>
                 </div>
+
               </div>
             </nav>
             <section style="background-image:url(/assets/img/merchant_login_bg.jpg)" class="vh-100 cover" >
@@ -46,33 +61,33 @@ var SignupPage = {
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Store Name"
                         oninput={m.withAttr("value", function(value) {
-                          UserModel.signupData.company_name = value;
+                          SignupPage.SignupMerchant.company_name = value.trim();
                         })} />
                       </div>
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Store ID"
                         oninput={m.withAttr("value", function(value) {
-                          UserModel.signupData.company_id = value;
+                          SignupPage.SignupMerchant.company_id = value.trim();
                         })}
                         />
                       </div>
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="email" placeholder="Merchant Email"
                         oninput={m.withAttr("value", function(value) {
-                          UserModel.signupData.merchant_email = value;
+                          SignupPage.SignupMerchant.merchant_email = value.trim();
                         })}
                         />
                       </div>
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="password" placeholder="Merchant Password"
                         oninput={m.withAttr("value", function(value) {
-                          UserModel.signupData.merchant_password = value;
+                          SignupPage.SignupMerchant.merchant_password = value.trim();
                         })}
                         />
                       </div>
                       <div class="tr pv2">
                         <button class="pv3 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={() => {
-                            UserModel.Signup();
+                            MerchantModel.Signup(SignupPage.SignupMerchant);
                           }}>signup</button>
                       </div>
                     </div>

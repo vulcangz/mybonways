@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ 	return __webpack_require__(__webpack_require__.s = 25);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4654,6 +4654,53 @@ module.exports = localforage_js;
 
 
 Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function genFakePromos(n) {
+    var fakePromos = [];
+    for (var i = 1; i < n; i++) {
+        var p = {};
+        p.ID = i;
+        p.Name = "Name " + i;
+        p.Category = "Category " + i;
+        p.OldPrice = 1000 * i;
+        p.NewPrice = p.OldPrice - 500;
+        p.Description = "Description " + i;
+        p.StartDate = "12/09/2017";
+        p.EndDate = "19/09/2017";
+
+        fakePromos.push(p);
+    }
+    return fakePromos;
+}
+
+var Promos = exports.Promos = {
+    AllPromos: genFakePromos(5),
+    NewPromo: {},
+    GetAllPromos: function GetAllPromos() {
+        // TODO:: Get All Promos from DB
+    },
+    SaveNew: function SaveNew() {
+        // TODO:: Save a new promo.
+        return m.request({
+            method: "POST",
+            url: "/api/promo",
+            data: Promos.NewPromo
+        }).then(function (response) {
+            console.log("New promo Response: ", response);
+            // if successful, add the new promo to the promo list
+        });
+    }
+};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.UserLogin = exports.UserModel = undefined;
@@ -4739,10 +4786,10 @@ var UserLogin = exports.UserLogin = {
 };
 
 /***/ }),
-/* 10 */,
 /* 11 */,
 /* 12 */,
-/* 13 */
+/* 13 */,
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4761,7 +4808,7 @@ var _localforage = __webpack_require__(8);
 
 var _localforage2 = _interopRequireDefault(_localforage);
 
-var _userAuth = __webpack_require__(9);
+var _userAuth = __webpack_require__(10);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4781,7 +4828,7 @@ var AdminAuth = exports.AdminAuth = {
 };
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4869,7 +4916,7 @@ var OffCanvasMenu = {
 exports.default = OffCanvasMenu;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4887,9 +4934,9 @@ var _localforage = __webpack_require__(8);
 
 var _localforage2 = _interopRequireDefault(_localforage);
 
-var _userAuth = __webpack_require__(9);
+var _userAuth = __webpack_require__(10);
 
-var _analytics = __webpack_require__(24);
+var _analytics = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5151,7 +5198,7 @@ var AdminShell = {
 exports.default = AdminShell;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5165,7 +5212,7 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _categories = __webpack_require__(25);
+var _categories = __webpack_require__(27);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5224,7 +5271,161 @@ var Categories = {
 exports.default = Categories;
 
 /***/ }),
-/* 17 */
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _mithril = __webpack_require__(0);
+
+var _mithril2 = _interopRequireDefault(_mithril);
+
+var _promos = __webpack_require__(9);
+
+var _promos2 = _interopRequireDefault(_promos);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NewPromo = {
+    view: function view(vnode) {
+        return (0, _mithril2.default)(
+            'section',
+            { 'class': 'pa2 bg-white' },
+            (0, _mithril2.default)(
+                'div',
+                { 'class': 'ba b--light-gray' },
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'tc' },
+                    (0, _mithril2.default)(
+                        'h2',
+                        null,
+                        'Add a new promo'
+                    )
+                ),
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'pa2' },
+                    (0, _mithril2.default)(
+                        'label',
+                        { 'class': 'f4 gray' },
+                        'Item Name:'
+                    ),
+                    (0, _mithril2.default)('br', null),
+                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray w-100 pa2 bw1',
+                        oninput: _mithril2.default.withAttr("value", function (value) {
+                            _promos2.default.NewPromo.Name = value;
+                        }) })
+                ),
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'pa2' },
+                    (0, _mithril2.default)(
+                        'label',
+                        { 'class': 'f4 gray' },
+                        'Item Category:'
+                    ),
+                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
+                        oninput: _mithril2.default.withAttr("value", function (value) {
+                            _promos2.default.NewPromo.Category = value;
+                        })
+                    })
+                ),
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'pa2' },
+                    (0, _mithril2.default)(
+                        'label',
+                        { 'class': 'f4 gray' },
+                        'Old Price:'
+                    ),
+                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
+                        oninput: _mithril2.default.withAttr("value", function (value) {
+                            _promos2.default.NewPromo.OldPrice = value;
+                        })
+                    })
+                ),
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'pa2' },
+                    (0, _mithril2.default)(
+                        'label',
+                        { 'class': 'f4 gray' },
+                        'New Price:'
+                    ),
+                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
+                        oninput: _mithril2.default.withAttr("value", function (value) {
+                            _promos2.default.NewPromo.NewPrice = value;
+                        })
+                    })
+                ),
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'pa2' },
+                    (0, _mithril2.default)(
+                        'label',
+                        { 'class': 'f4 gray' },
+                        'Start Date:'
+                    ),
+                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
+                        oninput: _mithril2.default.withAttr("value", function (value) {
+                            _promos2.default.NewPromo.StartDate = value;
+                        })
+                    })
+                ),
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'pa2' },
+                    (0, _mithril2.default)(
+                        'label',
+                        { 'class': 'f4 gray' },
+                        'End Date:'
+                    ),
+                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
+                        oninput: _mithril2.default.withAttr("value", function (value) {
+                            _promos2.default.NewPromo.EndDate = value;
+                        })
+                    })
+                ),
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'pa2' },
+                    (0, _mithril2.default)(
+                        'label',
+                        { 'class': 'f4 gray' },
+                        'Description:'
+                    ),
+                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
+                        oninput: _mithril2.default.withAttr("value", function (value) {
+                            _promos2.default.NewPromo.Description = value;
+                        })
+                    })
+                ),
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'pa2' },
+                    (0, _mithril2.default)(
+                        'button',
+                        { 'class': 'f4 ph3 pv2 blue ba b--blue shadow-3 bg-white', onclick: function onclick() {
+                                _promos2.default.SaveNew();
+                            } },
+                        'ADD PROMO'
+                    )
+                )
+            )
+        );
+    }
+};
+
+exports.default = NewPromo;
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5238,7 +5439,7 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _promos = __webpack_require__(26);
+var _promos = __webpack_require__(9);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5394,7 +5595,7 @@ var PromosTable = {
 exports.default = PromosTable;
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5408,9 +5609,9 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _user = __webpack_require__(30);
+var _user = __webpack_require__(29);
 
-var _merchantAuth = __webpack_require__(29);
+var _merchantAuth = __webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5564,11 +5765,11 @@ var SignupPage = {
 exports.default = SignupPage;
 
 /***/ }),
-/* 19 */,
-/* 20 */,
 /* 21 */,
 /* 22 */,
-/* 23 */
+/* 23 */,
+/* 24 */,
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5578,29 +5779,29 @@ var _mithril = __webpack_require__(0);
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _signupPage = __webpack_require__(18);
+var _signupPage = __webpack_require__(20);
 
 var _signupPage2 = _interopRequireDefault(_signupPage);
 
-var _offCanvasMenu = __webpack_require__(14);
+var _offCanvasMenu = __webpack_require__(15);
 
 var _offCanvasMenu2 = _interopRequireDefault(_offCanvasMenu);
 
-var _adminShell = __webpack_require__(15);
+var _adminShell = __webpack_require__(16);
 
 var _adminShell2 = _interopRequireDefault(_adminShell);
 
-var _categories = __webpack_require__(16);
+var _categories = __webpack_require__(17);
 
 var _categories2 = _interopRequireDefault(_categories);
 
-var _auth = __webpack_require__(13);
+var _auth = __webpack_require__(14);
 
-var _promos = __webpack_require__(17);
+var _promos = __webpack_require__(19);
 
 var _promos2 = _interopRequireDefault(_promos);
 
-var _newpromo = __webpack_require__(28);
+var _newpromo = __webpack_require__(18);
 
 var _newpromo2 = _interopRequireDefault(_newpromo);
 
@@ -5633,7 +5834,7 @@ _mithril2.default.route(root, '/', {
 });
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5666,7 +5867,7 @@ Analytics.GetAnalytics = function () {
 };
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5710,209 +5911,7 @@ var CategoriesModel = exports.CategoriesModel = {
 };
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-function genFakePromos(n) {
-    var fakePromos = [];
-    for (var i = 1; i < n; i++) {
-        var p = {};
-        p.ID = i;
-        p.Name = "Name " + i;
-        p.Category = "Category " + i;
-        p.OldPrice = 1000 * i;
-        p.NewPrice = p.OldPrice - 500;
-        p.Description = "Description " + i;
-        p.StartDate = "12/09/2017";
-        p.EndDate = "19/09/2017";
-
-        fakePromos.push(p);
-    }
-    return fakePromos;
-}
-
-var Promos = exports.Promos = {
-    AllPromos: genFakePromos(5),
-    NewPromo: {},
-    GetAllPromos: function GetAllPromos() {
-        // TODO:: Get All Promos from DB
-    },
-    SaveNew: function SaveNew() {
-        // TODO:: Save a new promo.
-        return m.request({
-            method: "POST",
-            url: "/api/promo",
-            data: Promos.NewPromo
-        }).then(function (response) {
-            console.log("New promo Response: ", response);
-            // if successful, add the new promo to the promo list
-        });
-    }
-};
-
-/***/ }),
-/* 27 */,
 /* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _mithril = __webpack_require__(0);
-
-var _mithril2 = _interopRequireDefault(_mithril);
-
-var _promos = __webpack_require__(26);
-
-var _promos2 = _interopRequireDefault(_promos);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var NewPromo = {
-    view: function view(vnode) {
-        return (0, _mithril2.default)(
-            'section',
-            { 'class': 'pa2 bg-white' },
-            (0, _mithril2.default)(
-                'div',
-                { 'class': 'ba b--light-gray' },
-                (0, _mithril2.default)(
-                    'div',
-                    { 'class': 'tc' },
-                    (0, _mithril2.default)(
-                        'h2',
-                        null,
-                        'Add a new promo'
-                    )
-                ),
-                (0, _mithril2.default)(
-                    'div',
-                    { 'class': 'pa2' },
-                    (0, _mithril2.default)(
-                        'label',
-                        { 'class': 'f4 gray' },
-                        'Item Name:'
-                    ),
-                    (0, _mithril2.default)('br', null),
-                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray w-100 pa2 bw1',
-                        oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.Name = value;
-                        }) })
-                ),
-                (0, _mithril2.default)(
-                    'div',
-                    { 'class': 'pa2' },
-                    (0, _mithril2.default)(
-                        'label',
-                        { 'class': 'f4 gray' },
-                        'Item Category:'
-                    ),
-                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
-                        oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.Category = value;
-                        })
-                    })
-                ),
-                (0, _mithril2.default)(
-                    'div',
-                    { 'class': 'pa2' },
-                    (0, _mithril2.default)(
-                        'label',
-                        { 'class': 'f4 gray' },
-                        'Old Price:'
-                    ),
-                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
-                        oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.OldPrice = value;
-                        })
-                    })
-                ),
-                (0, _mithril2.default)(
-                    'div',
-                    { 'class': 'pa2' },
-                    (0, _mithril2.default)(
-                        'label',
-                        { 'class': 'f4 gray' },
-                        'New Price:'
-                    ),
-                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
-                        oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.NewPrice = value;
-                        })
-                    })
-                ),
-                (0, _mithril2.default)(
-                    'div',
-                    { 'class': 'pa2' },
-                    (0, _mithril2.default)(
-                        'label',
-                        { 'class': 'f4 gray' },
-                        'Start Date:'
-                    ),
-                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
-                        oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.StartDate = value;
-                        })
-                    })
-                ),
-                (0, _mithril2.default)(
-                    'div',
-                    { 'class': 'pa2' },
-                    (0, _mithril2.default)(
-                        'label',
-                        { 'class': 'f4 gray' },
-                        'End Date:'
-                    ),
-                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
-                        oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.EndDate = value;
-                        })
-                    })
-                ),
-                (0, _mithril2.default)(
-                    'div',
-                    { 'class': 'pa2' },
-                    (0, _mithril2.default)(
-                        'label',
-                        { 'class': 'f4 gray' },
-                        'Description:'
-                    ),
-                    (0, _mithril2.default)('input', { type: 'text', 'class': 'ba b--gray bw1 pa2 w-100',
-                        oninput: _mithril2.default.withAttr("value", function (value) {
-                            _promos2.default.NewPromo.Description = value;
-                        })
-                    })
-                ),
-                (0, _mithril2.default)(
-                    'div',
-                    { 'class': 'pa2' },
-                    (0, _mithril2.default)(
-                        'button',
-                        { 'class': 'f4 ph3 pv2 blue ba b--blue shadow-3 bg-white', onclick: function onclick() {
-                                _promos2.default.SaveNew();
-                            } },
-                        'ADD PROMO'
-                    )
-                )
-            )
-        );
-    }
-};
-
-exports.default = NewPromo;
-
-/***/ }),
-/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5954,7 +5953,7 @@ var MerchantLogin = exports.MerchantLogin = {
 };
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

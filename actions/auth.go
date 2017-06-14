@@ -1,8 +1,11 @@
 package actions
 
 import (
+	"encoding/json"
 	"log"
+	"net/http"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/markbates/pop"
@@ -12,50 +15,42 @@ import (
 )
 
 // Login contains login details
-type Login struct {
+type MerchantLoginStruct struct {
 	// PasswordHash []byte
-	Email    string `db:"merchant_email"`
-	Password string `db:"merchant_password"`
+	CompanyID        string `json:"company_id"`
+	MerchantEmail    string `json:"merchant_email"`
+	MerchantPassword string `json:"merchant_password"`
 }
-
-/*
-	{
-	"company_name":"My BonWays",
-	"company_id":"mybonways",
-	"merchant_email":"hello@mybonways.com",
-	"merchant_password":"password"
-}
-*/
 
 // MerchantLogin handles login for merchants...
 func MerchantLogin(c buffalo.Context) error {
 	// get the post parameters...
-	login := &Login{}
+	login := &MerchantLoginStruct{}
 	err := c.Bind(login)
 	if err != nil {
 		return errors.WithStack(err)
 	}
 	// check if the email and password is in the db...
 	log.Println("Login: ", login)
-	// login.PasswordHash, err = bcrypt.GenerateFromPassword([]byte(login.Password), bcrypt.DefaultCost)
+
 	tx := c.Value("tx").(*pop.Connection)
 	query := pop.Q(tx)
-	query = tx.Where("merchant_email = ?", login.Email)
+	query = tx.Where("company_id = ?", login.CompanyID).Where("merchant_email = ?", login.MerchantEmail)
 	m := models.Merchant{}
 
 	err = query.First(&m)
 	if err != nil {
 		log.Printf("first error: %#v \n ", m)
 		log.Println("err", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusNotFound, errors.WithStack(err))
 	}
 
 	// check if the password is correct:
-	err = bcrypt.CompareHashAndPassword(m.MerchantPassword, []byte(login.Password))
+	err = bcrypt.CompareHashAndPassword(m.MerchantPassword, []byte(login.MerchantPassword))
 	if err != nil {
 		log.Printf("first error: %#v \n ", m)
 		log.Println("err", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusNotAcceptable, errors.WithStack(err))
 	}
 
 	log.Printf("Login merchant: %#v \n ", m)
@@ -63,7 +58,71 @@ func MerchantLogin(c buffalo.Context) error {
 	token, err := GenerateJWT(m)
 	if err != nil {
 		log.Println("GenJwt error: ", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	return c.Render(200, render.JSON(token))
+
+	cookie := &http.Cookie{
+		Name:     "X-AUTH-TOKEN",
+		Value:    token["token"].(string),
+		Path:     "/",
+		Secure:   true,
+		HttpOnly: true,
+	}
+	c.Request().AddCookie(cookie)
+	return c.Render(http.StatusOK, render.JSON(token))
+}
+
+func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		req := c.Request()
+		if req.Method != "GET" {
+			b, err := json.Marshal(req.Form)
+			if err == nil {
+				c.LogField("form", string(b))
+			}
+		}
+		b, err := json.Marshal(c.Params())
+		if err == nil {
+			c.LogField("params", string(b))
+		}
+
+		cookie, err := req.Cookie("X-AUTH-TOKEN")
+		if err == nil {
+			c.LogField("auth", "not authenticated. No  cookie")
+		}
+
+		tokenValue := cookie.String()
+		// validate the token
+		token, err := jwt.Parse(tokenValue, func(token *jwt.Token) (interface{}, error) {
+			publicKey, err := jwt.ParseRSAPublicKeyFromPEM(encryption.Bytes("public.pem"))
+
+			if err != nil {
+				return publicKey, err
+			}
+			return publicKey, nil
+		})
+
+		// branch out into the possible error from signing
+		switch err.(type) {
+
+		case nil: // no error
+			if !token.Valid { // but may still be invalid
+				log.Println(err)
+				return c.Error(http.StatusForbidden, errors.WithStack(err))
+			}
+
+			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+				c.Set("Merchant", claims["Merchant"])
+			} else {
+				log.Println(err)
+				return c.Error(http.StatusForbidden, errors.WithStack(err))
+			}
+			next(c)
+		default: // something else went wrong
+			log.Printf("error: %#v", err)
+			return c.Error(http.StatusForbidden, errors.WithStack(err))
+		}
+
+		return next(c)
+	}
 }

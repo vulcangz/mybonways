@@ -6,11 +6,14 @@ import (
 )
 
 var (
-	r   *render.Engine
-	spa *render.Engine
+	r          *render.Engine
+	spa        *render.Engine
+	encryption packr.Box
 )
 
 func init() {
+	encryption = packr.NewBox("../encryption")
+
 	r = render.New(render.Options{
 		// HTML layout to be used for all HTML requests:
 		HTMLLayout: "application.html",

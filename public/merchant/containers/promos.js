@@ -41,8 +41,8 @@ var PromosTable = {
                   </tbody>
               </table>
             </div>
-            <div class="mt2 fr">
-              <button class="ph3 pv2 bg-white blue ba b--blue bw1 shadow-3 pointer" type="button">Add Promo</button>
+            <div class="mt2 cf pa2">
+              <a href="/promos/new" class="fr ph3 pv2 bg-white blue ba b--blue bw1 shadow-3 pointer no-underline" oncreate={m.route.link}>Add Promo</a>
             </div>
         </div>
       </section>

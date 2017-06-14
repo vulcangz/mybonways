@@ -4981,7 +4981,7 @@ var MenuComponent = {
       ),
       (0, _mithril2.default)(
         'a',
-        { 'class': 'db pa2 bb b--light-gray hover-bg-light-gray link navy', href: '/promos', oncreate: _mithril2.default.route.link },
+        { 'class': 'db pa2 bb b--light-gray hover-bg-light-gray link navy', href: '/promos/', oncreate: _mithril2.default.route.link },
         'Promos'
       )
     );
@@ -5291,6 +5291,19 @@ var _promos2 = _interopRequireDefault(_promos);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function Preview(e) {
+    var image = e.target.files[0];
+    var reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+        _promos2.default.NewPromo[e.target.name] = reader.result;
+    });
+
+    if (image) {
+        reader.readAsDataURL(image);
+    }
+}
+
 var NewPromo = {
     view: function view(vnode) {
         return (0, _mithril2.default)(
@@ -5410,8 +5423,40 @@ var NewPromo = {
                     'div',
                     { 'class': 'pa2' },
                     (0, _mithril2.default)(
+                        'div',
+                        { 'class': 'w-25 dib mh2 ba bw1 b--light-gray pa1' },
+                        (0, _mithril2.default)(
+                            'label',
+                            { 'for': 'image1', 'class': '' },
+                            (0, _mithril2.default)('input', { type: 'file', name: 'image1', id: 'image1', 'class': 'dn', onchange: Preview }),
+                            (0, _mithril2.default)(
+                                'div',
+                                { 'class': '', style: 'overflow: hidden' },
+                                (0, _mithril2.default)('img', { 'class': '', src: _promos2.default.NewPromo.image1 || "/assets/img/user.jpg", alt: 'image' })
+                            )
+                        )
+                    ),
+                    (0, _mithril2.default)(
+                        'div',
+                        { 'class': 'w-25 dib mh2 ba bw1 b--light-gray pa1' },
+                        (0, _mithril2.default)(
+                            'label',
+                            { 'for': 'image2', 'class': '' },
+                            (0, _mithril2.default)('input', { type: 'file', name: 'image2', id: 'image2', 'class': 'dn', onchange: Preview }),
+                            (0, _mithril2.default)(
+                                'div',
+                                { 'class': '', style: 'overflow: hidden' },
+                                (0, _mithril2.default)('img', { 'class': '', src: _promos2.default.NewPromo.image2 || "/assets/img/merchant_login_bg.jpg", alt: 'image' })
+                            )
+                        )
+                    )
+                ),
+                (0, _mithril2.default)(
+                    'div',
+                    { 'class': 'pa2' },
+                    (0, _mithril2.default)(
                         'button',
-                        { 'class': 'f4 ph3 pv2 blue ba b--blue shadow-3 bg-white', onclick: function onclick() {
+                        { 'class': 'f4 ph3 pv2 blue ba b--blue bw1 shadow-3 bg-white', onclick: function onclick() {
                                 _promos2.default.SaveNew();
                             } },
                         'ADD PROMO'
@@ -5580,10 +5625,10 @@ var PromosTable = {
         ),
         (0, _mithril2.default)(
           "div",
-          { "class": "mt2 fr" },
+          { "class": "mt2 cf pa2" },
           (0, _mithril2.default)(
-            "button",
-            { "class": "ph3 pv2 bg-white blue ba b--blue bw1 shadow-3 pointer", type: "button" },
+            "a",
+            { href: "/promos/new", "class": "fr ph3 pv2 bg-white blue ba b--blue bw1 shadow-3 pointer no-underline", oncreate: _mithril2.default.route.link },
             "Add Promo"
           )
         )

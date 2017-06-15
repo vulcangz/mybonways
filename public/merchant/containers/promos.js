@@ -41,9 +41,9 @@ var PromosTable = {
                             <span class="db ">{promo.EndDate}</span>
                           </td>
                           <td class="pv3 pr3 bb b--black-20 tc">
-                            <a href="/promos/new" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Edit</a>
+                            <a href="#!" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Edit</a>
 
-                            <a href="/promos/new" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Delete</a>
+                            <a href="#!" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Delete</a>
 
                           </td>
                         </tr>);
@@ -52,8 +52,8 @@ var PromosTable = {
               </table>
             </div>
             <div class="mt4 cf pa2 pv3">
-              <a href="/promos/new" class="fr ph3 pv2 bg-navy white-90 grow pointer no-underline mh1 shadow-4" oncreate={m.route.link}>Previous</a>
-              <a href="/promos/new" class="fr ph3 pv2 bg-navy white-90 grow pointer no-underline mh1 shadow-4" oncreate={m.route.link}>Next</a>
+              <a href="#!" class="fr ph3 pv2 bg-navy white-90 grow pointer no-underline mh1 shadow-4" oncreate={m.route.link}>Previous</a>
+              <a href="#!" class="fr ph3 pv2 bg-navy white-90 grow pointer no-underline mh1 shadow-4" oncreate={m.route.link}>Next</a>
             </div>
         </div>
       </section>

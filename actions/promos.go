@@ -1,10 +1,13 @@
 package actions
 
 import (
+	"log"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/markbates/pop"
 	"github.com/pkg/errors"
+	uuid "github.com/satori/go.uuid"
 	"github.com/tonyalaribe/mybonways/models"
 )
 
@@ -20,6 +23,22 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
+
+	bck := GetBucket()
+	PromoImages := make([]string, 10)
+
+	for _, v := range mp.Images {
+		imgUUID := uuid.NewV1().String()
+		imagename := "promo_images/" + imgUUID
+		imagepath, err := UploadBase64Image(bck.S3Bucket, v, imagename)
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+
+		PromoImages = append(PromoImages, imagepath)
+	}
+	mp.PromoImages = PromoImages
 
 	c.Logger().Infof("MerchantPromo: %#v \n ", mp)
 	tx := c.Value("tx").(*pop.Connection)

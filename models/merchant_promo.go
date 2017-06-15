@@ -21,7 +21,8 @@ type MerchantPromo struct {
 	StartDate   time.Time `json:"start_date" db:"start_date"`
 	EndDate     time.Time `json:"end_date" db:"end_date"`
 	Description string    `json:"description" db:"description"`
-	Images      []string  `json:"images" db:"images"`
+	Images      []string  `json:"images" db:"-"`
+	PromoImages []string  `json:"promo_images" db:"promo_images"`
 }
 
 // String is not required by pop and may be deleted

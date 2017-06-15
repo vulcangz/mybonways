@@ -8,5 +8,5 @@ create_table("merchant_promos", func(t) {
 	t.Column("start_date", "datetime", {})
 	t.Column("end_date", "datetime", {})
 	t.Column("description", "string", {})
-	t.Column("images", "text", {})
+	t.Column("promo_images", "text[]", {})
 })

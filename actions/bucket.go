@@ -34,6 +34,6 @@ func init() {
 	bucket.S3BucketName = bucketname
 }
 
-func Get() *Bucket {
+func GetBucket() *Bucket {
 	return &bucket
 }

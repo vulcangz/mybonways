@@ -45,7 +45,7 @@ var NewPromo = {
                 <label class="f4 gray pv2 dib">Old Price:</label>
                 <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
-                    Promos.NewPromo.old_price = value;
+                    Promos.NewPromo.old_price = parseInt(value);
                 })}
                 />
             </div>
@@ -53,7 +53,7 @@ var NewPromo = {
                 <label class="f4 gray pv2 dib">New Price:</label>
                 <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
-                    Promos.NewPromo.new_price = value;
+                    Promos.NewPromo.new_price = parseInt(value);
                 })}
                 />
             </div>

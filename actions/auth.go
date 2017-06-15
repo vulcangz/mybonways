@@ -86,14 +86,16 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 		}
 
 		cookie, err := req.Cookie("X-MERCHANT-TOKEN")
-		if err == nil {
-			c.LogField("auth", "not authenticated. No  cookie")
+		if err != nil {
+			c.LogField("auth", "not authenticated. No cookie")
+			return c.Error(http.StatusForbidden, errors.WithStack(err))
 		}
 
-		tokenValue := cookie.String()
+		tokenValue := cookie.Value
+		log.Println("tokenValue: ", tokenValue)
 		// validate the token
 		token, err := jwt.Parse(tokenValue, func(token *jwt.Token) (interface{}, error) {
-			publicKey, err := jwt.ParseRSAPublicKeyFromPEM(encryption.Bytes("public.pem"))
+			publicKey, err := jwt.ParseRSAPublicKeyFromPEM(encryption.Bytes("public.pub"))
 
 			if err != nil {
 				return publicKey, err
@@ -106,22 +108,23 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 
 		case nil: // no error
 			if !token.Valid { // but may still be invalid
-				log.Println(err)
+				log.Println("invalid token: ", err)
 				return c.Error(http.StatusForbidden, errors.WithStack(err))
 			}
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 				c.Set("Merchant", claims["Merchant"])
 			} else {
-				log.Println(err)
+				log.Println("not ok: ", err)
 				return c.Error(http.StatusForbidden, errors.WithStack(err))
 			}
-			next(c)
+			return next(c)
 		default: // something else went wrong
-			log.Printf("error: %#v", err)
+			// log.Printf("error: %#v", err)
+			log.Println("error: ", err)
 			return c.Error(http.StatusForbidden, errors.WithStack(err))
 		}
 
-		return next(c)
+		// return next(c)
 	}
 }

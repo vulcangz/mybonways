@@ -48,7 +48,7 @@ export var MerchantModel = {
           .then(function(response) {
             console.log(response);
             var cookie = getCookie("X-MERCHANT-TOKEN")
-            console.log(cookie)
+            console.log("cookie:", cookie)
             return localforage.setItem('AuthMerchant', response.merchant)
           })
           .then(function(){

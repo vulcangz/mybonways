@@ -41,10 +41,10 @@ export var MerchantModel = {
     Login:function(merchant){
       console.log(merchant)
       return m.request({
-          url: "/api/merchants/login",
-          method: "POST",
-          data: merchant
-      })
+              url: "/api/merchants/login",
+              method: "POST",
+              data: merchant
+          })
           .then(function(response) {
             console.log(response);
             var cookie = getCookie("X-MERCHANT-TOKEN")

@@ -27,10 +27,7 @@ function genFakePromos(n) {
   "start_date":"2017-06-14T20:00:05.869Z"
   "end_date":"2017-06-14T20:00:05.869Z"
   "description":"description_one"
-  "image_1":"image_4"
-  "image_2":"image_3"
-  "image_3":"image_2"
-  "image_4":"image_1"
+  "images":[]
 }
 */
 

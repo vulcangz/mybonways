@@ -3,19 +3,40 @@ import {Promos} from '../models/promos.js';
 import {MerchantModel} from '../models/merchant.js';
 
 var NewPromo = {
-    Preview: function(e) {
-        var image = e.target.files[0];
-        var reader = new FileReader();
-        var img = document.getElementById(e.target.name);
+    AddPreview: function() {
+        var images = document.getElementById("images").files;
+        var preview = document.getElementById("preview");
 
-        reader.addEventListener("load", function() {
-            Promos.NewPromo[e.target.name] = reader.result;
-            img.src = reader.result;
-        })
+        function readAndPreview(image) {
+            // Make sure `file.name` matches our extensions criteria
+            if ( /\.(jpe?g|png|gif)$/i.test(image.name) ) {
+                var reader = new FileReader();
 
-        if(image) {
-            reader.readAsDataURL(image);
+                reader.addEventListener("load", function () {
+                    var file = new Image();
+                    file.height = 150;
+                    file.title = image.name;
+                    file.src = this.result;
+                    preview.appendChild( image );
+                    Promos.NewPromo.images.push(this.result);
+                }, false);
+
+                reader.readAsDataURL(image);
+            }
         }
+        // reader.addEventListener("load", function() {
+        //     Promos.NewPromo[e.target.name] = reader.result;
+        //     img.src = reader.result;
+        // })
+
+        if(images) {
+            [].forEach.call(images, readAndPreview);
+            // reader.readAsDataURL(image);
+        }
+    },
+    oncreate: function() {
+        // initialize the images arrays...
+        Promos.NewPromo.images = [];
     },
   view: function(vnode) {
     return (
@@ -82,21 +103,28 @@ var NewPromo = {
                 />
             </div>
             <div class="pa2">
-                <div class="w-25 dib mh2 ba bw1 b--light-gray pa1">
-                    <label for="img1" class="">
-                        <input type="file" name="image_1" id="img1" class="dn" onchange={this.Preview} />
-                        <div class="tc overflow-hidden">
-                            <img class="" id="image_1" src="/assets/img/user.jpg" alt="image"/>
+                <div class="pa2 w-100 bg-navy">
+                    <div class="tc">
+                        <label for="images" class="pointer">
+                            <div class="dib ba b--navy bg-white pa2 shadow-4 br2">
+                                <p class="navy mv0">Choose Files to upload</p>
+                                <input type="file" name="images" id="images" class="dn" onchange={this.AddPreview} multiple/>
+                            </div>
+                        </label>
+                    </div>
+                    <hr class="light"/>
+                    <div id="preview">
+                        <div class="w-25 dib mh2 ba b--light-gray pa1">
+                            <div class="tc overflow-hidden">
+                                <img class="" id="image_1" src="/assets/img/user.jpg" alt="image"/>
+                            </div>
                         </div>
-                    </label>
-                </div>
-                <div class="w-25 dib mh2 ba bw1 b--light-gray pa1">
-                    <label for="img2" class="">
-                        <input type="file" name="image_2" id="img2" class="dn" onchange={this.Preview} />
-                        <div class="tc overflow-hidden">
-                            <img class="" id="image_2" src="/assets/img/merchant_login_bg.jpg" alt="image"/>
+                        <div class="w-25 dib mh2 ba b--light-gray pa1">
+                            <div class="tc overflow-hidden">
+                                <img class="" id="image_1" src="/assets/img/merchant_login_bg.jpg" alt="image"/>
+                            </div>
                         </div>
-                    </label>
+                    </div>
                 </div>
             </div>
             <div class="pa2  pv3 mt2 tr">

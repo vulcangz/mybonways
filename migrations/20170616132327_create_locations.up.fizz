@@ -1,0 +1,7 @@
+create_table("locations", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("branch_id", "uuid", {})
+	t.Column("company_id", "string", {})
+	t.Column("area", "string", {})
+	t.Column("coordinate", "decimal[]", {})
+})

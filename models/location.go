@@ -10,13 +10,14 @@ import (
 )
 
 type Location struct {
-	ID         uuid.UUID  `json:"id" db:"id"`
-	CreatedAt  time.Time  `json:"created_at" db:"created_at"`
-	UpdatedAt  time.Time  `json:"updated_at" db:"updated_at"`
-	BranchID   uuid.UUID  `json:"branch_id" db:"branch_id"`
-	CompanyID  string     `json:"company_id" db:"company_id"`
-	Area       string     `json:"area" db:"area"`
-	Coordinate [2]float64 `json:"coordinate" db:"coordinate"`
+	ID         uuid.UUID `json:"id" db:"id"`
+	CreatedAt  time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at" db:"updated_at"`
+	BranchID   uuid.UUID `json:"branch_id" db:"branch_id"`
+	CompanyID  string    `json:"company_id" db:"company_id"`
+	Area       string    `json:"area" db:"area"`
+	Latitude   float64   `json:"latitude" db:"lat"`
+	Longtitude float64   `json:"longtitude" db:"lng"`
 }
 
 // String is not required by pop and may be deleted

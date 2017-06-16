@@ -3,6 +3,8 @@ import m from 'mithril';
 import SignupPage from './containers/signupPage.js';
 import OffCanvasMenu from './components/offCanvasMenu.js';
 import AdminShell from './containers/adminShell.js';
+import Branches from './containers/branches.js';
+import NewBranch from './containers/newbranch.js';
 
 import Categories from './containers/categories.js';
 import {MerchantAuth} from './components/auth.js';
@@ -46,5 +48,23 @@ m.route(root, '/', {
             )
           )
       }
+  },
+  '/branches': {
+    view: function(vnode) {
+      return m(MerchantAuth,vnode.attrs,
+            m(AdminShell, vnode.attrs,
+              m(Branches, vnode.attrs)
+            )
+          )
+    }
+  },
+  '/branches/new': {
+    view: function(vnode) {
+      return m(MerchantAuth,vnode.attrs,
+            m(AdminShell, vnode.attrs,
+              m(NewBranch, vnode.attrs)
+            )
+          )
+    }
   }
 });

@@ -59,6 +59,7 @@ func App() *buffalo.App {
 		app.Resource("/api/merchants", &MerchantsResource{})
 		app.POST("/api/merchants/login", MerchantLogin)
 		g.Resource("/promo", &PromoResource{})
+		app.Resource("/api/branch", &BranchResource{})
 		// app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
 		// 	c.Render(200, spa.HTML("index.html"))
 		// 	return nil

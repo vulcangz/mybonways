@@ -9,6 +9,7 @@ import (
 	"github.com/gobuffalo/envy"
 	"github.com/markbates/pop"
 	"github.com/pkg/errors"
+	"github.com/satori/go.uuid"
 	"github.com/tonyalaribe/mybonways/models"
 	"googlemaps.github.io/maps"
 )
@@ -47,7 +48,8 @@ func (br *BranchResource) Show(c buffalo.Context) error {
 	// TODO: GET A PARTICULAR BRANCH BY IT'S COMPANYID
 	b := models.Branch{}
 	tx := c.Value("tx").(*pop.Connection)
-	err := tx.Where("branches.id = ?", c.Param("id")).First(&b)
+
+	err := tx.Where("branches.id = ?", c.Param("branch_id")).First(&b)
 	if err != nil {
 		log.Println("error show:", err)
 		return c.Render(201, render.JSON(struct{ Err string }{"no branch"}))
@@ -178,6 +180,18 @@ func (br *BranchResource) Update(c buffalo.Context) error {
 		log.Println()
 	}
 	return c.Render(200, render.JSON(branch))
+}
+
+func (br *BranchResource) Destroy(c buffalo.Context) error {
+	uid, _ := uuid.FromString(c.Param("branch_id"))
+	b := &models.Branch{ID: uid}
+	tx := c.Value("tx").(*pop.Connection)
+	err := tx.Destroy(b)
+	if err != nil {
+		log.Println("err: ", err)
+		return c.Render(200, render.JSON(struct{ Err string }{"Could not delete"}))
+	}
+	return c.Render(200, render.JSON(b))
 }
 
 func GetLongAndLatFromArea(area string, component map[maps.Component]string) (lng float64, lat float64, err error) {

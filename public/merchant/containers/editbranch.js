@@ -11,7 +11,7 @@ var EditBranch = {
             <section class="">
                 <div class="ph4 pv4 bg-white shadow-m2 ">
                     <div class="">
-                        <span  class="fw6 f3">Edit "Branch name" </span>
+                        <span  class="fw6 f3">Edit This Branch </span>
                     </div>
                 </div>
                 <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
@@ -19,7 +19,7 @@ var EditBranch = {
                         <label class="f4 gray pv2 dib">Address:</label><br></br>
                         <input type="text" class="ba b--light-silver w-100 pa2 bw1"
                         oninput={m.withAttr("value", function(value) {
-                            br.NewBranch.address = value;
+                            br.editBranch.address = value;
                         })}
                         value={br.editBranch.address} />
                     </div>
@@ -27,7 +27,7 @@ var EditBranch = {
                         <label class="f4 gray pv2 dib">City:</label><br></br>
                         <input type="text" class="ba b--light-silver w-100 pa2 bw1"
                         oninput={m.withAttr("value", function(value) {
-                            br.NewBranch.city = value;
+                            br.editBranch.city = value;
                         })}
                         value={br.editBranch.city} />
                     </div>
@@ -35,7 +35,7 @@ var EditBranch = {
                         <label class="f4 gray pv2 dib">State:</label><br></br>
                         <input type="text" class="ba b--light-silver w-100 pa2 bw1"
                         oninput={m.withAttr("value", function(value) {
-                            br.NewBranch.state = value;
+                            br.editBranch.state = value;
                         })}
                         value={br.editBranch.state} />
                     </div>
@@ -43,7 +43,7 @@ var EditBranch = {
                         <label class="f4 gray pv2 dib">Country:</label><br></br>
                         <input type="text" class="ba b--light-silver w-100 pa2 bw1"
                         oninput={m.withAttr("value", function(value) {
-                            br.NewBranch.country = value;
+                            br.editBranch.country = value;
                         })}
                         value={br.editBranch.country} />
                     </div>
@@ -52,7 +52,7 @@ var EditBranch = {
                         <label class="f4 gray pv2 dib">Area:</label><br></br>
                         <input type="text" class="ba b--light-silver w-100 pa2 bw1"
                         oninput={m.withAttr("value", function(value) {
-                            br.NewBranch.location.area = value;
+                            br.editBranch.location.area = value;
                         })}
                         value={br.editBranch.area} />
                     </div>

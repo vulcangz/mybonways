@@ -20,9 +20,13 @@ type BranchResource struct {
 
 // List renders all branches
 func (br *BranchResource) List(c buffalo.Context) error {
+	log.Println("LIST branches")
 	b := []models.Branch{}
 	tx := c.Value("tx").(*pop.Connection)
-	err := tx.All(&b)
+	merchant := c.Value("Merchant").(map[string]interface{})
+	// log.Printf("\nmerchant: %T \n %#v\n", merchant, merchant["company_id"])
+	log.Println("company_id: ", merchant["company_id"])
+	err := tx.Where("company_id = ?", merchant["company_id"]).All(&b)
 	if err != nil {
 		log.Println("branch error: ", err)
 		return c.Error(404, errors.WithStack(err))
@@ -34,7 +38,7 @@ func (br *BranchResource) List(c buffalo.Context) error {
 // Show renders a target branch
 func (br *BranchResource) Show(c buffalo.Context) error {
 	// TODO: GET A PARTICULAR BRANCH BY IT'S COMPANYID
-	return nil
+	return c.Render(201, render.JSON(struct{ Value string }{Value: "show"}))
 }
 
 // Create a branch
@@ -53,11 +57,6 @@ func (br *BranchResource) Create(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 	log.Println("created branch")
-	// APIKey := envy.Get("GEOCODE_API_KEY", "key")
-	// gmap, err := maps.NewClient(maps.WithAPIKey(APIKey))
-	// if err != nil {
-	// 	log.Println("gmap error: ", err)
-	// }
 
 	component := make(map[maps.Component]string)
 	if b.Country != "" {
@@ -68,25 +67,9 @@ func (br *BranchResource) Create(c buffalo.Context) error {
 		return c.Render(201, render.JSON(struct{ Err string }{Err: "No area provided"}))
 	}
 	component["locality"] = b.Location.Area
-	// r := &maps.GeocodingRequest{
-	// 	Address:    b.Location.Area,
-	// 	Components: component,
-	// }
-	// log.Println("got component")
-
-	// result, err := gmap.Geocode(context.Background(), r)
-	// if err != nil {
-	// 	log.Println("result err: ", err)
-	// }
 	l := &models.Location{}
 	l = &b.Location
 	l.BranchID = b.ID
-
-	// log.Printf("\nresult geo: %#v\n", result)
-	// if len(result) < 1 {
-	// 	log.Println("No result...")
-	// 	return c.Render(201, render.JSON(struct{ Err string }{Err: "no result"}))
-	// }
 	// get coordinate from the api using the area provided by the merchant
 	lng, lat, err := GetLongAndLatFromArea(b.Location.Area, component)
 	if err != nil {
@@ -116,7 +99,11 @@ func (br *BranchResource) Update(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-
+	// log.Println()
+	// log.Println("branch: ", branch)
+	// log.Println()
+	location := branch.Location
+	country := branch.Country
 	verrs, err := branch.ValidateUpdate(tx)
 	if err != nil {
 		return errors.WithStack(err)
@@ -125,8 +112,13 @@ func (br *BranchResource) Update(c buffalo.Context) error {
 		c.Set("verrs", verrs.Errors)
 		return c.Render(422, render.JSON(verrs))
 	}
+	log.Println()
+	log.Println("branch:: ", branch)
+	log.Println()
+
 	err = tx.Update(branch)
 	if err != nil {
+		log.Println("update err: ", err)
 		return errors.WithStack(err)
 	}
 
@@ -135,25 +127,27 @@ func (br *BranchResource) Update(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 	component := make(map[maps.Component]string)
-	l := &models.Location{}
+	// l := &models.Location{}
 	// update location
-	if branch.Location.Area != "" {
-		if branch.Country != "" {
-			component["country"] = branch.Country
+	log.Println("location.area: ", location)
+	if location.Area != "" {
+		log.Println("location.area: ", location.Area)
+		if country != "" {
+			component["country"] = country
 		}
-		if branch.Location.Area == "" {
+		if location.Area == "" {
 			log.Println("no area provided")
 			return c.Render(201, render.JSON(struct{ Err string }{Err: "No area provided"}))
 		}
-		component["locality"] = branch.Location.Area
-		l = &branch.Location
+		component["locality"] = location.Area
+		// l = &branch.Location
 		// the merchant wants to update the area...
 		// get the long and lat from area provided...
-		l.Longtitude, l.Latitude, err = GetLongAndLatFromArea(branch.Location.Area, component)
+		location.Longtitude, location.Latitude, err = GetLongAndLatFromArea(location.Area, component)
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		verrs, err := l.ValidateUpdate(tx)
+		verrs, err := location.ValidateUpdate(tx)
 		if err != nil {
 			return errors.WithStack(err)
 		}
@@ -161,10 +155,13 @@ func (br *BranchResource) Update(c buffalo.Context) error {
 			c.Set("verrs", verrs.Errors)
 			return c.Render(422, render.JSON(verrs))
 		}
-		err = tx.Update(l)
+		err = tx.Update(&location)
 		if err != nil {
 			return errors.WithStack(err)
 		}
+		log.Println()
+		log.Println("location updated")
+		log.Println()
 	}
 	return c.Render(200, render.JSON(branch))
 }

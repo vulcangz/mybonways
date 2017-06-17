@@ -6,7 +6,7 @@ export var br = {
         // TODO :: GET all my branches
         m.request({
             method: "GET",
-            url: "/api/branch",
+            url: "/api/merchant/branch",
             data:{}
         }).then(function(response) {
             console.log("all branches: ", response);

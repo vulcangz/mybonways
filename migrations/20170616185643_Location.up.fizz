@@ -1,0 +1,3 @@
+raw("ALTER TABLE locations DROP COLUMN IF EXISTS coordinate;")
+add_column("locations", "lat", "decimal", {})
+add_column("locations", "lng", "decimal", {})

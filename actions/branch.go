@@ -43,33 +43,61 @@ func (br *BranchResource) Create(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-
+	log.Printf("\nBRANCH: %#v\n", b)
 	tx := c.Value("tx").(*pop.Connection)
 
 	err = tx.Create(b)
 	if err != nil {
+		log.Println("create errror:", err)
 		return errors.WithStack(err)
 	}
-	gmap, err := maps.NewClient(maps.WithAPIKey(envy.Get("GEOCODE_API_KEY", "key")))
-	if err != nil {
-		log.Println("gmap error: ", err)
-	}
-	component := make(map[maps.Component]string)
-	component["country"] = b.Country
-	component["locality"] = b.Location.Area
-	r := &maps.GeocodingRequest{
-		Components: component,
-	}
+	log.Println("created branch")
+	// APIKey := envy.Get("GEOCODE_API_KEY", "key")
+	// gmap, err := maps.NewClient(maps.WithAPIKey(APIKey))
+	// if err != nil {
+	// 	log.Println("gmap error: ", err)
+	// }
 
-	result, err := gmap.Geocode(context.Background(), r)
+	component := make(map[maps.Component]string)
+	if b.Country != "" {
+		component["country"] = b.Country
+	}
+	if b.Location.Area == "" {
+		log.Println("no area provided")
+		return c.Render(201, render.JSON(struct{ Err string }{Err: "No area provided"}))
+	}
+	component["locality"] = b.Location.Area
+	// r := &maps.GeocodingRequest{
+	// 	Address:    b.Location.Area,
+	// 	Components: component,
+	// }
+	// log.Println("got component")
+
+	// result, err := gmap.Geocode(context.Background(), r)
+	// if err != nil {
+	// 	log.Println("result err: ", err)
+	// }
 	l := &models.Location{}
+	l = &b.Location
 	l.BranchID = b.ID
+
+	// log.Printf("\nresult geo: %#v\n", result)
+	// if len(result) < 1 {
+	// 	log.Println("No result...")
+	// 	return c.Render(201, render.JSON(struct{ Err string }{Err: "no result"}))
+	// }
 	// get coordinate from the api using the area provided by the merchant
-	l.Coordinate[0] = result[0].Geometry.Location.Lng // longtitude
-	l.Coordinate[1] = result[0].Geometry.Location.Lat // latitude
+	lng, lat, err := GetLongAndLatFromArea(b.Location.Area, component)
+	if err != nil {
+		return c.Render(201, render.JSON(struct{ Err string }{Err: "no result"}))
+	}
+	log.Println("\nlocation: ", l, "\n")
+	l.Longtitude = lng // longtitude
+	l.Latitude = lat   // latitude
 
 	err = tx.Create(l)
 	if err != nil {
+		log.Println("create location errror: ", err)
 		return errors.WithStack(err)
 	}
 
@@ -78,32 +106,92 @@ func (br *BranchResource) Create(c buffalo.Context) error {
 	return c.Render(201, render.JSON(b))
 }
 
-// Update a target user
-// func (br *BranchResource) Update(c buffalo.Context) error {
-// 	tx := c.Value("tx").(*pop.Connection)
-// 	u := c.Value("user").(*models.Branch)
+// Update a target branch
+func (br *BranchResource) Update(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	branch := &models.Branch{}
 
-// 	err := c.Bind(u)
-// 	if err != nil {
-// 		return errors.WithStack(err)
-// 	}
+	err := c.Bind(branch)
+	if err != nil {
+		return errors.WithStack(err)
+	}
 
-// 	verrs, err := u.ValidateUpdate(tx)
-// 	if err != nil {
-// 		return errors.WithStack(err)
-// 	}
-// 	if verrs.HasAny() {
-// 		c.Set("verrs", verrs.Errors)
-// 		return c.Render(422, render.JSON(verrs))
-// 	}
-// 	err = tx.Update(u)
-// 	if err != nil {
-// 		return errors.WithStack(err)
-// 	}
+	verrs, err := branch.ValidateUpdate(tx)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	if verrs.HasAny() {
+		c.Set("verrs", verrs.Errors)
+		return c.Render(422, render.JSON(verrs))
+	}
+	err = tx.Update(branch)
+	if err != nil {
+		return errors.WithStack(err)
+	}
 
-// 	err = tx.Reload(u)
-// 	if err != nil {
-// 		return errors.WithStack(err)
-// 	}
-// 	return c.Render(200, render.JSON(u))
-// }
+	err = tx.Reload(branch)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	component := make(map[maps.Component]string)
+	l := &models.Location{}
+	// update location
+	if branch.Location.Area != "" {
+		if branch.Country != "" {
+			component["country"] = branch.Country
+		}
+		if branch.Location.Area == "" {
+			log.Println("no area provided")
+			return c.Render(201, render.JSON(struct{ Err string }{Err: "No area provided"}))
+		}
+		component["locality"] = branch.Location.Area
+		l = &branch.Location
+		// the merchant wants to update the area...
+		// get the long and lat from area provided...
+		l.Longtitude, l.Latitude, err = GetLongAndLatFromArea(branch.Location.Area, component)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		verrs, err := l.ValidateUpdate(tx)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		if verrs.HasAny() {
+			c.Set("verrs", verrs.Errors)
+			return c.Render(422, render.JSON(verrs))
+		}
+		err = tx.Update(l)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+	}
+	return c.Render(200, render.JSON(branch))
+}
+
+func GetLongAndLatFromArea(area string, component map[maps.Component]string) (lng float64, lat float64, err error) {
+
+	APIKey := envy.Get("GEOCODE_API_KEY", "key")
+	gmap, err := maps.NewClient(maps.WithAPIKey(APIKey))
+	if err != nil {
+		log.Println("gmap error: ", err)
+		return 0, 0, err
+	}
+
+	r := &maps.GeocodingRequest{
+		Address:    area,
+		Components: component,
+	}
+
+	result, err := gmap.Geocode(context.Background(), r)
+	if err != nil {
+		log.Println("result err: ", err)
+		return 0, 0, err
+	}
+	if len(result) < 1 {
+		log.Println("No result...")
+		return 0, 0, errors.New("No result")
+	}
+	lng = result[0].Geometry.Location.Lng
+	lat = result[0].Geometry.Location.Lat
+	return lng, lat, nil
+}

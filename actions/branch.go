@@ -20,10 +20,11 @@ type BranchResource struct {
 
 // List renders all branches
 func (br *BranchResource) List(c buffalo.Context) error {
-	b := models.Branch{}
+	b := []models.Branch{}
 	tx := c.Value("tx").(*pop.Connection)
 	err := tx.All(&b)
 	if err != nil {
+		log.Println("branch error: ", err)
 		return c.Error(404, errors.WithStack(err))
 	}
 

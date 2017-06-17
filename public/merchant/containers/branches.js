@@ -2,6 +2,9 @@ import m from "mithril";
 import {br} from "../models/branches.js";
 
 var Branches = {
+    oninit: function() {
+        br.GetAllBranches();
+    },
     view: function() {
         return (
             <section>
@@ -24,17 +27,24 @@ var Branches = {
                                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Edit</th>
                             </thead>
                             <tbody>
-                                <td class="pv3 pr3 bb b--black-20 tc">1</td>
-                                <td class="pv3 pr3 bb b--black-20 tc">Address</td>
-                                <td class="pv3 pr3 bb b--black-20 tc">My Area</td>
-                                <td class="pv3 pr3 bb b--black-20 tc">My City</td>
-                                <td class="pv3 pr3 bb b--black-20 tc">My State</td>
-                                <td class="pv3 pr3 bb b--black-20 tc">My country</td>
-                                <td class="pv3 pr3 bb b--black-20 tc">
-                                    <a href="#!" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Edit</a>
+                                {br.AllBranches.map(function(b, i) {
+                                    return (
+                                    <tr>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{i + 1}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{b.address}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{b.location.area}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{b.city}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{b.state}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{b.country}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">
+                                            <a href="#!" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Edit</a>
 
-                                    <a href="#!" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Delete</a>
-                                </td>
+                                            <a href="#!" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Delete</a>
+                                        </td>
+                                    </tr>
+                                    )
+                                })}
+                                    
                             </tbody>
                         </table>
                     </div>

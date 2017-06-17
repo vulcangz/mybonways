@@ -18,15 +18,22 @@ type BranchResource struct {
 	buffalo.BaseResource
 }
 
+// type fullBranch struct {
+// 	BB []models.Branch
+// 	LL []models.Location
+// }
+
 // List renders all branches
 func (br *BranchResource) List(c buffalo.Context) error {
-	log.Println("LIST branches")
+	log.Println("List()")
+	// m := []models.Location{}
 	b := []models.Branch{}
+
 	tx := c.Value("tx").(*pop.Connection)
 	merchant := c.Value("Merchant").(map[string]interface{})
-	// log.Printf("\nmerchant: %T \n %#v\n", merchant, merchant["company_id"])
-	log.Println("company_id: ", merchant["company_id"])
-	err := tx.Where("company_id = ?", merchant["company_id"]).All(&b)
+
+	err := tx.Where("branches.company_id = ?", merchant["company_id"]).All(&b)
+	// err = tx.Where("locations.company_id = ?", merchant["company_id"]).All(&m)
 	if err != nil {
 		log.Println("branch error: ", err)
 		return c.Error(404, errors.WithStack(err))
@@ -38,7 +45,14 @@ func (br *BranchResource) List(c buffalo.Context) error {
 // Show renders a target branch
 func (br *BranchResource) Show(c buffalo.Context) error {
 	// TODO: GET A PARTICULAR BRANCH BY IT'S COMPANYID
-	return c.Render(201, render.JSON(struct{ Value string }{Value: "show"}))
+	b := models.Branch{}
+	tx := c.Value("tx").(*pop.Connection)
+	err := tx.Where("branches.id = ?", c.Param("id")).First(&b)
+	if err != nil {
+		log.Println("error show:", err)
+		return c.Render(201, render.JSON(struct{ Err string }{"no branch"}))
+	}
+	return c.Render(201, render.JSON(b))
 }
 
 // Create a branch

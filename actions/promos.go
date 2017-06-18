@@ -68,4 +68,27 @@ func (pr *PromoResource) Update(c buffalo.Context) error {
 
 	//
 	return c.Render(http.StatusOK, render.JSON(mp))
+
+}
+
+// List renders all branches
+func (pr *PromoResource) List(c buffalo.Context) error {
+	log.Println("in list ")
+	m := models.MerchantPromos{}
+
+	tx := c.Value("tx").(*pop.Connection)
+	merchant := c.Value("Merchant").(map[string]interface{})
+
+	log.Printf(" before query %#v", merchant)
+
+	query := pop.Q(tx)
+	query = tx.Where("company_id = ?", merchant["company_id"])
+
+	err := query.All(&m)
+	if err != nil {
+		log.Println("promo_resource error: ", err)
+		return c.Error(404, errors.WithStack(err))
+	}
+	log.Println("after query")
+	return c.Render(200, render.JSON(m))
 }

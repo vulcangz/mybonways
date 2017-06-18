@@ -4,6 +4,7 @@ import {Promos} from "../models/promos.js";
 var EditPromo = {
     oninit: function(vnode) {
         EditPromo.p = Promos.AllPromos[vnode.attrs.id]
+        // redirect if there is no value...
     },
     updatebutton: true,
     AddPreview: function(e) {
@@ -52,37 +53,41 @@ var EditPromo = {
                     </div>
 
                     <div class="">
-                        <p class="pa2 bt b--gray cf">Name: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.Name}
+                        <p class="pa2 bt b--gray cf">Item Name: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.Name}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.Name = val;
+                            EditPromo.p.item_name = val;
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Category: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.Category}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.Category = val;
+                            EditPromo.p.category = val;
                         })}/></p>
                         <p class="pa2 bt b--gray cf">New Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.NewPrice}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.NewPrice = val;
+                            EditPromo.p.new_price = val;
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Old Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.OldPrice}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.OldPrice = val;
+                            EditPromo.p.old_price = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Start Date: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.StartDate}
+                        <p class="pa2 bt b--gray cf">Start Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.StartDate}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.StartDate = val;
+                            EditPromo.p.start_date = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">End Date: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.EndDate}
+                        <p class="pa2 bt b--gray cf">End Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.EndDate}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.EndDate = val;
+                            EditPromo.p.end_date = val;
                         })}/></p>
-
+                        <p class="pa2 bt b--gray cf">Description: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.EndDate}
+                        oninput={m.withAttr("value", function(val) {
+                            EditPromo.updatebutton = false;
+                            EditPromo.p.description = val;
+                        })}/></p>
                     </div>
                     <button class={EditPromo.updatebutton?"dn":" ba b--navy white pointer bg-navy pv2 ph3 w-100"}
                     onclick={function() {

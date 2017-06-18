@@ -1,22 +1,4 @@
 import m from 'mithril';
-
-function genFakePromos(n) {
-    var fakePromos = [];
-    for (var i = 1; i < n; i++) {
-        var p = {};
-        p.ID = i;
-        p.Name = "Name " + i;
-        p.Category = "Category " + i;
-        p.OldPrice = 1000 * i;
-        p.NewPrice = p.OldPrice - 500;
-        p.Description = "Description " + i;
-        p.StartDate = "12/09/2017";
-        p.EndDate = "19/09/2017";
-
-        fakePromos.push(p);
-    }
-    return fakePromos;
-}
 /*
     {
   "item_name":"my item"
@@ -33,16 +15,24 @@ function genFakePromos(n) {
 
 
 export var Promos = {
-    AllPromos: genFakePromos(5),
+    AllPromos: [],
     NewPromo: {},
     GetAllPromos: function() {
-        // TODO:: Get All Promos from DB
+        return m.request({
+            method: "GET",
+            url: "/api/merchants/promo"
+        }).then(function(response) {
+            console.log("get promo Response: ", response);
+            Promos.AllPromos = response
+            m.redraw()
+            // if successful, add the new promo to the promo list
+        })
     },
     SaveNew: function() {
         // TODO:: Save a new promo.
         return m.request({
             method: "POST",
-            url: "/api/merchant/promo",
+            url: "/api/merchants/promo",
             data: Promos.NewPromo
         }).then(function(response) {
             console.log("New promo Response: ", response);

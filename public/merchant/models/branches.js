@@ -10,7 +10,7 @@ export var br = {
         // TODO :: GET all my branches
         m.request({
             method: "GET",
-            url: "/api/merchant/branch",
+            url: "/api/merchants/branch",
             data:{}
         }).then(function(response) {
             console.log("all branches: ", response);
@@ -21,7 +21,7 @@ export var br = {
         console.log("new branch: ", br.NewBranch);
         m.request({
             method:"POST",
-            url:"/api/merchant/branch",
+            url:"/api/merchants/branch",
             data: br.NewBranch
         }).then(function(response) {
             console.log(response);
@@ -35,7 +35,7 @@ export var br = {
     GetBranch: (id) => {
         m.request({
             method: "GET",
-            url: "/api/merchant/branch/" + String(id),
+            url: "/api/merchants/branch/" + String(id),
             data:{}
         }).then(function(response) {
             console.log(response);
@@ -45,7 +45,7 @@ export var br = {
     UpdateBranch: () => {
         m.request({
             method: "PUT",
-            url: "/api/merchant/branch/" + br.editBranch.id,
+            url: "/api/merchants/branch/" + br.editBranch.id,
             data: br.editBranch
         }).then(function(response) {
             console.log("response: ", response);
@@ -56,7 +56,7 @@ export var br = {
         console.log("delete: ", id)
         m.request({
             method: "DELETE",
-            url: "/api/merchant/branch/" + id,
+            url: "/api/merchants/branch/" + id,
             data: {}
         }).then(function(response) {
             console.log("delete: ", response);

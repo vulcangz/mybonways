@@ -33,16 +33,24 @@ function genFakePromos(n) {
 
 
 export var Promos = {
-    AllPromos: genFakePromos(5),
+    AllPromos: [],
     NewPromo: {},
     GetAllPromos: function() {
-        // TODO:: Get All Promos from DB
+        return m.request({
+            method: "GET",
+            url: "/api/merchants/promo"
+        }).then(function(response) {
+            console.log("get promo Response: ", response);
+            Promos.AllPromos = response
+            m.redraw()
+            // if successful, add the new promo to the promo list
+        })
     },
     SaveNew: function() {
         // TODO:: Save a new promo.
         return m.request({
             method: "POST",
-            url: "/api/merchant/promo",
+            url: "/api/merchants/promo",
             data: Promos.NewPromo
         }).then(function(response) {
             console.log("New promo Response: ", response);

@@ -12,7 +12,7 @@ export var search = {
             data:{}
         }).then(function(response) {
             console.log("response : ", response);
-            // search.mysearch = response;
+            search.mysearch = response;
         })
     }
 }

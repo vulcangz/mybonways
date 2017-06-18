@@ -2,7 +2,23 @@ import m from 'mithril';
 import {search} from '../models/search.js';
 
 var SearchArea = {
+    initMap: function (myLatLng, i, title) {
+        {/*var myLatLng = {lat: location.latitude, lng: location.longtitude};*/}
 
+        // Create a map object and specify the DOM element for display.
+        var map = new google.maps.Map(document.getElementById('map' + i), {
+            center: myLatLng,
+            scrollwheel: false,
+            zoom: 4
+        });
+
+        // Create a marker and set its position.
+        var marker = new google.maps.Marker({
+            map: map,
+            position: myLatLng,
+            title: title
+        });
+    },
     oninit: function(vnode) {
         search.searchData = vnode.attrs.area;
         search.searchFor();
@@ -55,18 +71,23 @@ var SearchArea = {
                     <div class="cf">
                         <h3 class="tc pa2">Search Area: <span class="navy underline">{vnode.attrs.area}</span></h3>
                     </div>
-                    <div class="pv2 ph4">
-                        <div class="fl w-50 pa2 mh2 hover-shadow-m3">
-                            <img src="" alt="map"/>
-                            <div class="">
-                                <p>Company id:</p>
-                                <p>branch location</p>
-                                <p>branch Area</p>
+                    <div class="cf">
+                    {search.mysearch.map(function(location, i) {
+                        return (
+                        <div class="fl w-third-l w-50-m pa2 cf">
+                            <div class="pa2 ma2 ba b--light-gray hover-shadow-m3 br3">
+                                <div id={"map"+ i}></div>
+                                <img src="/assets/img/800x450.png" width="100%" alt="map"/>
+                                <div class="">
+                                    <p>Company id: {location.company_id}</p>
+                                    <p>branch location(lat : lng): {location.latitude + " : " + location.longtitude}</p>
+                                    <p>branch Area: {location.area}</p>
+                                </div>
                             </div>
+                            {/*this.initMap({lat: location.latitude, lng: location.longtitude}, i, location.area)*/}
                         </div>
-                        <div class="">
-
-                        </div>
+                        )
+                    })}
                     </div>
                 </section>
             </section>

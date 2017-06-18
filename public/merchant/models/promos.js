@@ -48,5 +48,15 @@ export var Promos = {
             console.log("New promo Response: ", response);
             // if successful, add the new promo to the promo list
         })
+    },
+    Update: function(promo) {
+        console.log(promo);
+        m.request({
+            method: "PUT",
+            url: "/api/merchant/promo",
+            data: promo
+        }).then(function(response) {
+            console.log(response);
+        })
     }
 }

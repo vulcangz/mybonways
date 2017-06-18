@@ -44,18 +44,18 @@ var NewPromo = {
         for(let i in files){
           if ( /\.(jpe?g|png|gif)$/i.test(files[i].name) ) {
             let reader  = new FileReader();
-                reader.addEventListener("load", (e)=> {
+            reader.addEventListener("load", (e)=> {
 
-                  //  downscaleImage(e.target.result,1200,"image/jpeg",0.7,(compressed)=>{ Promos.NewPromo.images.push(compressed)
-                  //  console.log(Promos.NewPromo)
-                  // })
+                //  downscaleImage(e.target.result,1200,"image/jpeg",0.7,(compressed)=>{ Promos.NewPromo.images.push(compressed)
+                //  console.log(Promos.NewPromo)
+                // })
 
-                  Promos.NewPromo.images.push(e.target.result)
-                  console.log(Promos.NewPromo)
+                Promos.NewPromo.images.push(e.target.result)
+                console.log(Promos.NewPromo)
 
-                }, false);
+            }, false);
 
-              reader.readAsDataURL(files[i]);
+            reader.readAsDataURL(files[i]);
           }
         }
       },

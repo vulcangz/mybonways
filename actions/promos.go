@@ -57,3 +57,15 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 
 	return c.Render(http.StatusOK, render.JSON(mp))
 }
+
+// Update a promo
+func (pr *PromoResource) Update(c buffalo.Context) error {
+	mp := &models.MerchantPromo{}
+	err := c.Bind(&mp)
+	if err != nil {
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+
+	//
+	return c.Render(http.StatusOK, render.JSON(mp))
+}

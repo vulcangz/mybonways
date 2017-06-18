@@ -2,6 +2,7 @@ package actions
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
@@ -21,7 +22,7 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	mp := &models.MerchantPromo{}
 	err := c.Bind(mp)
 	if err != nil {
-		return errors.WithStack(err)
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	bck := GetBucket()
@@ -33,7 +34,7 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 		imagepath, err := UploadBase64Image(bck.S3Bucket, v, imagename)
 		if err != nil {
 			log.Println(err)
-			return err
+			return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 		}
 
 		PromoImages = append(PromoImages, imagepath)
@@ -43,12 +44,14 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	c.Logger().Infof("MerchantPromo: %#v \n ", mp)
 	tx := c.Value("tx").(*pop.Connection)
 
+	c.Logger().Printf("bout to tx.create")
 	err = tx.Create(mp)
 	if err != nil {
-		return errors.WithStack(err)
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
+	c.Logger().Printf("after tx.create")
 
 	c.Logger().Infof("MerchantPromo: %#v", mp)
 
-	return c.Render(201, render.JSON(mp))
+	return c.Render(http.StatusOK, render.JSON(mp))
 }

@@ -3,8 +3,14 @@ import {Promos} from "../models/promos.js";
 
 var EditPromo = {
     oninit: function(vnode) {
-        EditPromo.p = Promos.AllPromos[vnode.attrs.id]
-        // redirect if there is no value...
+        console.log("init")
+        if(typeof Promos.AllPromos[vnode.attrs.id] == 'undefined'){
+            // redirect if there is no value...
+            console.log("undefined here")
+            m.route.set("/promos");
+        } else {
+            EditPromo.p = Promos.AllPromos[vnode.attrs.id]
+        }
     },
     updatebutton: true,
     AddPreview: function(e) {
@@ -53,37 +59,37 @@ var EditPromo = {
                     </div>
 
                     <div class="">
-                        <p class="pa2 bt b--gray cf">Item Name: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.Name}
+                        <p class="pa2 bt b--gray cf">Item Name: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.item_name}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
                             EditPromo.p.item_name = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Category: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.Category}
+                        <p class="pa2 bt b--gray cf">Category: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.category}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
                             EditPromo.p.category = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">New Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.NewPrice}
+                        <p class="pa2 bt b--gray cf">New Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.new_price}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
                             EditPromo.p.new_price = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Old Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.OldPrice}
+                        <p class="pa2 bt b--gray cf">Old Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.old_price}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
                             EditPromo.p.old_price = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Start Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.StartDate}
+                        <p class="pa2 bt b--gray cf">Start Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.start_date}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
                             EditPromo.p.start_date = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">End Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.EndDate}
+                        <p class="pa2 bt b--gray cf">End Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.end_date}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
                             EditPromo.p.end_date = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Description: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.EndDate}
+                        <p class="pa2 bt b--gray cf">Description: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.description}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
                             EditPromo.p.description = val;

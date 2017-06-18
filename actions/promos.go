@@ -1,8 +1,10 @@
 package actions
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
@@ -19,39 +21,39 @@ type PromoResource struct {
 
 // Create a MerchantPromo
 func (pr *PromoResource) Create(c buffalo.Context) error {
+	log.Println("create promo")
 	mp := &models.MerchantPromo{}
-	err := c.Bind(mp)
+	err := c.Bind(&mp)
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
-	bck := GetBucket()
 	PromoImages := make([]string, 10)
 
+	log.Println("b4 mp image")
 	for _, v := range mp.Images {
 		imgUUID := uuid.NewV1().String()
 		imagename := "promo_images/" + imgUUID
-		imagepath, err := UploadBase64Image(bck.S3Bucket, v, imagename)
+		log.Println("b64error xx")
+		imagepath, err := UploadBase64Image(s3bucket, v, imagename)
 		if err != nil {
-			log.Println(err)
+			log.Println("b64error")
 			return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 		}
 
+		log.Println("no up load b64 error")
 		PromoImages = append(PromoImages, imagepath)
 	}
-	mp.PromoImages = PromoImages
 
-	c.Logger().Infof("MerchantPromo: %#v \n ", mp)
+	log.Println("after mp images")
+	mp.PromoImages = strings.Trim(strings.Join(strings.Fields(fmt.Sprint(PromoImages)), ", "), "[]")
+
+	log.Printf("MerchantPromo: %#v \n ", mp)
 	tx := c.Value("tx").(*pop.Connection)
-
-	c.Logger().Printf("bout to tx.create")
 	err = tx.Create(mp)
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	c.Logger().Printf("after tx.create")
-
-	c.Logger().Infof("MerchantPromo: %#v", mp)
 
 	return c.Render(http.StatusOK, render.JSON(mp))
 }

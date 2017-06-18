@@ -1,10 +1,12 @@
 import m from 'mithril';
 import {Promos} from '../models/promos.js';
 import {MerchantModel} from '../models/merchant.js';
+import {downscaleImage} from '../utils';
+import moment from 'moment';
 
 var NewPromo = {
     AddPreview: function() {
-        var images = document.getElementById("images").files;
+        var images = document.getElementById("imagesInput").files;
         var preview = document.getElementById("preview");
 
         function readAndPreview(image) {
@@ -12,7 +14,8 @@ var NewPromo = {
             if ( /\.(jpe?g|png|gif)$/i.test(image.name) ) {
                 var reader = new FileReader();
 
-                reader.addEventListener("load", function () {
+                reader.addEventListener("load", function (f) {
+                    console.log(f)
                     var file = new Image();
                     file.height = 150;
                     file.title = image.name;
@@ -34,10 +37,33 @@ var NewPromo = {
             // reader.readAsDataURL(image);
         }
     },
-    oncreate: function() {
-        // initialize the images arrays...
-        Promos.NewPromo.images = [];
-    },
+
+      fileChange:function(files){
+        console.log(files)
+
+        for(let i in files){
+          if ( /\.(jpe?g|png|gif)$/i.test(files[i].name) ) {
+            let reader  = new FileReader();
+                reader.addEventListener("load", (e)=> {
+
+                  //  downscaleImage(e.target.result,1200,"image/jpeg",0.7,(compressed)=>{ Promos.NewPromo.images.push(compressed)
+                  //  console.log(Promos.NewPromo)
+                  // })
+
+                  Promos.NewPromo.images.push(e.target.result)
+                  console.log(Promos.NewPromo)
+
+                }, false);
+
+              reader.readAsDataURL(files[i]);
+          }
+        }
+      },
+
+  oncreate: function() {
+      // initialize the images arrays...
+      Promos.NewPromo.images = [];
+  },
   view: function(vnode) {
     return (
       <section class="">
@@ -66,7 +92,7 @@ var NewPromo = {
                 <label class="f4 gray pv2 dib">Old Price:</label>
                 <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
-                    Promos.NewPromo.old_price = parseInt(value);
+                    Promos.NewPromo.old_price = parseInt(value,10);
                 })}
                 />
             </div>
@@ -74,23 +100,23 @@ var NewPromo = {
                 <label class="f4 gray pv2 dib">New Price:</label>
                 <input type="text" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
-                    Promos.NewPromo.new_price = parseInt(value);
+                    Promos.NewPromo.new_price = parseInt(value,10);
                 })}
                 />
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Start Date:</label>
-                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
+                <input type="date" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
-                    Promos.NewPromo.start_date = value;
+                    Promos.NewPromo.start_date = moment(value, moment.ISO_8601);
                 })}
                 />
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">End Date:</label>
-                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
+                <input type="date" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
-                    Promos.NewPromo.end_date = value;
+                    Promos.NewPromo.end_date = moment(value, moment.ISO_8601);
                 })}
                 />
             </div>
@@ -103,28 +129,20 @@ var NewPromo = {
                 />
             </div>
             <div class="pa2">
-                <div class="pa2 w-100 bg-navy">
-                    <div class="tc">
-                        <label for="images" class="pointer">
-                            <div class="dib ba b--navy bg-white pa2 shadow-4 br2">
-                                <p class="navy mv0">Choose Files to upload</p>
-                                <input type="file" name="images" id="images" class="dn" onchange={this.AddPreview} multiple/>
-                            </div>
-                        </label>
+                <div class=" w-100 ">
+                    <label for="imagesInput" class="pointer w-100  dib ba b--dashed tc pa3">
+                            <p>Drag and Drop files here, or<br/> click to select file</p>
+                    </label>
+                    <input type="file" name="imagesInput" id="imagesInput" class="dn" onchange={m.withAttr("files",NewPromo.fileChange)} multiple/>
+
+                    <div id="preview" class="mv3 cf ">
+                      {
+                        Promos.NewPromo.images?Promos.NewPromo.images.map((image)=>{
+                          return (<img class="fl w-25" id="image_1" src={image} alt="image"/>)
+                        }):""
+                      }
                     </div>
-                    <hr class="light"/>
-                    <div id="preview">
-                        <div class="w-25 dib mh2 ba b--light-gray pa1">
-                            <div class="tc overflow-hidden">
-                                <img class="" id="image_1" src="/assets/img/user.jpg" alt="image"/>
-                            </div>
-                        </div>
-                        <div class="w-25 dib mh2 ba b--light-gray pa1">
-                            <div class="tc overflow-hidden">
-                                <img class="" id="image_1" src="/assets/img/merchant_login_bg.jpg" alt="image"/>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <div class="pa2  pv3 mt2 tr">

@@ -9,6 +9,10 @@ import (
 	"github.com/tonyalaribe/mybonways/actions"
 )
 
+func init() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+}
+
 func main() {
 	port := envy.Get("PORT", "3000")
 	log.Printf("Starting mybonways on port %s\n", port)

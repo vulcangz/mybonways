@@ -41,10 +41,10 @@ export var MerchantModel = {
     Login:function(merchant){
       console.log(merchant)
       return m.request({
-          url: "/api/merchants/login",
-          method: "POST",
-          data: merchant
-      })
+              url: "/api/merchants/login",
+              method: "POST",
+              data: merchant
+          })
           .then(function(response) {
             console.log(response);
             var cookie = getCookie("X-MERCHANT-TOKEN")
@@ -52,9 +52,9 @@ export var MerchantModel = {
             return localforage.setItem('AuthMerchant', response.merchant)
           })
           .then(function(){
-            return MerchantModel.GetUserfromStorage().then(function(){
-              m.route.set("/")
-            })
+             MerchantModel.GetUserfromStorage()
+            m.route.set("/")
+
         })
     },
     Logout:function(){

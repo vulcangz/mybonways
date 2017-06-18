@@ -6,6 +6,7 @@ import AdminShell from './containers/adminShell.js';
 import Branches from './containers/branches.js';
 import NewBranch from './containers/newbranch.js';
 import EditBranch from './containers/editbranch.js';
+import EditPromo from './containers/editpromo.js';
 
 import Categories from './containers/categories.js';
 import {MerchantAuth} from './components/auth.js';
@@ -46,6 +47,15 @@ m.route(root, '/', {
           return m(MerchantAuth,vnode.attrs,
             m(AdminShell, vnode.attrs,
               m(NewPromo, vnode.attrs)
+            )
+          )
+      }
+  },
+  '/promos/edit/:id': {
+      view: function(vnode) {
+          return m(MerchantAuth,vnode.attrs,
+            m(AdminShell, vnode.attrs,
+              m(EditPromo, vnode.attrs)
             )
           )
       }

@@ -1,22 +1,4 @@
 import m from 'mithril';
-
-function genFakePromos(n) {
-    var fakePromos = [];
-    for (var i = 1; i < n; i++) {
-        var p = {};
-        p.ID = i;
-        p.Name = "Name " + i;
-        p.Category = "Category " + i;
-        p.OldPrice = 1000 * i;
-        p.NewPrice = p.OldPrice - 500;
-        p.Description = "Description " + i;
-        p.StartDate = "12/09/2017";
-        p.EndDate = "19/09/2017";
-
-        fakePromos.push(p);
-    }
-    return fakePromos;
-}
 /*
     {
   "item_name":"my item"
@@ -55,6 +37,16 @@ export var Promos = {
         }).then(function(response) {
             console.log("New promo Response: ", response);
             // if successful, add the new promo to the promo list
+        })
+    },
+    Update: function(promo) {
+        console.log(promo);
+        m.request({
+            method: "PUT",
+            url: "/api/merchant/promo",
+            data: promo
+        }).then(function(response) {
+            console.log(response);
         })
     }
 }

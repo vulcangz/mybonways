@@ -1,4 +1,5 @@
 import m from 'mithril';
+import {search} from '../models/search.js';
 
 var HotPromosPage = {
   oncreate:function(vnode){
@@ -36,7 +37,15 @@ var HotPromosPage = {
                 <span class="dib searchbtn z-3 pv1 " style="padding-top:0.60rem">
                   <img src="/assets/img/svg/location.svg" class="" style="height:0.8rem;"/>
                 </span>
-                <input type="search" class="w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent "  placeholder="area"/>
+                <input type="search" class="w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent"  placeholder="area"
+                oninput={m.withAttr("value", function(value) {
+                  search.searchData = value;
+                })}/>
+                <span class="dib z-3 pv1 ph3 pointer bg-light-gray hover-bg-navy" style="padding-top:0.60rem" onclick={function() {
+                  m.route.set("/search/"+ search.searchData);
+                }}>
+                  <img src="/assets/img/svg/search.svg" class="" style="height:0.8rem;"/>
+                </span>
               </div>
             </div>
           </div>

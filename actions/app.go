@@ -58,12 +58,15 @@ func App() *buffalo.App {
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
 		app.Resource("/api/merchants", &MerchantsResource{})
 		app.POST("/api/merchants/login", MerchantLogin)
+		app.GET("/api/search/area/{area}", AreaSearchHandler)
+
 		g.Resource("/branch", &BranchResource{})
 		g.Resource("/promo", &PromoResource{})
-		// app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
-		// 	c.Render(404, spa.HTML("index.html"))
-		// 	return nil
-		// }
+
+		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
+			c.Render(200, spa.HTML("index.html"))
+			return nil
+		}
 	}
 
 	return app

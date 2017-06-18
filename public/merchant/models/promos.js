@@ -42,7 +42,7 @@ export var Promos = {
         // TODO:: Save a new promo.
         return m.request({
             method: "POST",
-            url: "/api/merchants/promo",
+            url: "/api/merchant/promo",
             data: Promos.NewPromo
         }).then(function(response) {
             console.log("New promo Response: ", response);

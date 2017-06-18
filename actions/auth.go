@@ -72,11 +72,13 @@ func MerchantLogin(c buffalo.Context) error {
 }
 
 func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
+	log.Println("LOGIN MIDDLEWARE")
 	return func(c buffalo.Context) error {
 		req := c.Request()
 		if req.Method != "GET" {
 			b, err := json.Marshal(req.Form)
 			if err == nil {
+				log.Println("not get")
 				c.LogField("form", string(b))
 			}
 		}
@@ -113,6 +115,8 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 			}
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+				log.Printf("\nmerchant is set... %T \n %#v\n", claims["Merchant"], claims["Merchant"])
+
 				c.Set("Merchant", claims["Merchant"])
 			} else {
 				log.Println("not ok: ", err)

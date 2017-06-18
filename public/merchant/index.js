@@ -5,6 +5,7 @@ import OffCanvasMenu from './components/offCanvasMenu.js';
 import AdminShell from './containers/adminShell.js';
 import Branches from './containers/branches.js';
 import NewBranch from './containers/newbranch.js';
+import EditBranch from './containers/editbranch.js';
 
 import Categories from './containers/categories.js';
 import {MerchantAuth} from './components/auth.js';
@@ -63,6 +64,15 @@ m.route(root, '/', {
       return m(MerchantAuth,vnode.attrs,
             m(AdminShell, vnode.attrs,
               m(NewBranch, vnode.attrs)
+            )
+          )
+    }
+  },
+  '/branches/edit/:id': {
+    view: function(vnode) {
+      return m(MerchantAuth,vnode.attrs,
+            m(AdminShell, vnode.attrs,
+              m(EditBranch, vnode.attrs)
             )
           )
     }

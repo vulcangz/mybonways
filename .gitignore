@@ -8,3 +8,4 @@ node_modules/
 .sass-cache/
 *-packr.go
 mybonways
+public/js/*-bundle.js

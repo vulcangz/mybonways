@@ -50,8 +50,8 @@ var AdminShell = {
   view:function(vnode){
 	return (
 	  <section>
-  		<section class="  pt3-ns   ph5-ns black-80  bg-light-red-custom1 ">
-  		  <div class={"pa2 pv3-ns  w-100  z-5 "+(vnode.state.fixNav===true?"fixed top-0 left-0  bg-light-red-custom1 shadow-4":"relative-ns")} id="fixedNav">
+  		<section class="  pt3-ns   ph5-ns black-80  bg-light-gray-custom1 ">
+  		  <div class={"pa2 pv3-ns  w-100  z-5 "+(vnode.state.fixNav===true?"fixed top-0 left-0  bg-light-gray-custom1 shadow-4":"relative-ns")} id="fixedNav">
     			<div class="dib relative">
             <a href="#" class="dib dn-ns black link v-mid mr3  pa2 ba relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>☰</a>
               <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 "+(vnode.state.showNav?"db":"dn")}>

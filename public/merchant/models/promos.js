@@ -15,6 +15,7 @@ import m from 'mithril';
 
 
 export var Promos = {
+    itemID:{},
     AllPromos: [],
     NewPromo: {},
     GetAllPromos: function() {

@@ -5,19 +5,20 @@ import moment from 'moment';
 var EditPromo = {
     oninit: function(vnode) {
         console.log("init")
-        if(typeof Promos.AllPromos[vnode.attrs.id] == 'undefined'){
+        var promoID = Promos.itemID[vnode.attrs.id];
+        if(typeof Promos.AllPromos[promoID] == 'undefined'){
             // redirect if there is no value...
-            console.log("undefined here")
+            console.log("undefined here");
             m.route.set("/promos/");
         } else {
-            EditPromo.p = Promos.AllPromos[vnode.attrs.id]
+            EditPromo.p = Promos.AllPromos[promoID];
         }
     },
     updatebutton: true,
     AddPreview: function(e) {
         EditPromo.updatebutton = false;
         var image = document.getElementById("feature_image").files[0];
-        // var preview = document.getElementById("preview");
+        var preview = document.getElementById("preview");
 
         function readAndPreview() {
             // Make sure `file.name` matches our extensions criteria
@@ -27,7 +28,7 @@ var EditPromo = {
                 reader.addEventListener("load", function (f) {
                     // preview.src = this.result;
                     EditPromo.p.featured_image = this.result;
-                    image.src = this.result;
+                    preview.src = this.result;
                     console.log(EditPromo.p);
                 }, false);
 
@@ -40,7 +41,10 @@ var EditPromo = {
         }
     },
     view: function(vnode) {
-        // var p = Promos.AllPromos[vnode.attrs.id];
+        // var p = Promos.AllPromos[vnode.attrs.id];\
+        if (typeof EditPromo.p == 'undefined') {
+            return
+        }
         return (
             <section>
                 <div class="ph4 pv4 bg-white shadow-m2 ">
@@ -50,7 +54,7 @@ var EditPromo = {
                 </div>
                 <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
                     <div class="">
-                        <img class=""  id="preview" width="100%" src={EditPromo.p.featured_image_b64 != 'null'?EditPromo.p.featured_image_b64:"/assets/img/800x450.png"} alt=""/>
+                        <img class="" id="preview" width="100%" src={!EditPromo.p.featured_image_b64 || EditPromo.p.featured_image_b64 == 'null'?"/assets/img/800x450.png":EditPromo.p.featured_image_b64} alt=""/>
                     </div>
                     <div class="w-100 tc mv3">
                         <label for="feature_image" class="mv3 ba b--navy white pointer bg-navy pv2 ph3 w-100">

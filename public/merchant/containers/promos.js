@@ -1,12 +1,24 @@
 import m from "mithril";
 import {Promos} from "../models/promos.js";
 import moment from "moment"
+
 var PromosTable = {
   oncreate:function(){
     Promos.GetAllPromos()
   },
+  randomID: function(length, c) {
+        var text = "promo_item_";
+        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for(var i = 0; i < length; i++) {
+            text += characters. charAt(Math. floor(Math. random() * characters.length));
+        }
+        Promos.itemID[text] = c;
+        console.log(Promos.itemID[text], " : ", text, " : ", c);
+        return text;
+    },
   view:function(){
     var p = Promos.AllPromos
+    console.log("p: ", p)
     return (
       <section>
         <div class="ph4 pv4 bg-white shadow-m2 ">
@@ -43,7 +55,7 @@ var PromosTable = {
                             <span class="db ">{moment(promo.end_date).format("L")}</span>
                           </td>
                           <td class="pv3 pr3 bb b--black-20 tc">
-                            <a href={"/promos/edit/" + i} class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>View</a>
+                            <a href={"/promos/edit/" + PromosTable.randomID(5, i)} class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>View</a>
 
                             <a href="#!" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Delete</a>
 

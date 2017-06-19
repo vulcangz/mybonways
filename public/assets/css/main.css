@@ -266,7 +266,11 @@ body {
 }
 
 .bg-light-red-custom1{
-  background-color:#95a5a6;
+  background-color:#F1A9A0;
+}
+
+.min-w4{
+  min-width:2rem;
 }
 
 hr.light {

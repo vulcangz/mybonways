@@ -8,15 +8,8 @@ var MenuComponent = {
     return (
       <div class="">
         <a class="dn pa2 bb b--light-gray hover-bg-light-gray link navy " href="/" oncreate={m.route.link}>Dashboard</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/categories" oncreate={m.route.link}>Categories</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/adverts" oncreate={m.route.link}>Adverts</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/branches" oncreate={m.route.link}>Branches</a>
-        <div class=" bb b--light-gray">
-          <a class="db pa2  hover-bg-light-gray link navy" href="/listings/new" oncreate={m.route.link}> Add Listing</a>
-          <a class="db pa2 hover-bg-light-gray link navy" href="/listings/unapproved" oncreate={m.route.link}>  Unapproved Listings</a>
-          <a class="db pa2 hover-bg-light-gray link navy " href="/listings/find" oncreate={m.route.link}> Find Listings</a>
-        </div>
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/promos/" oncreate={m.route.link}>Promos</a>
+        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/branches" oncreate={m.route.link}>Branches</a>
       </div>
     );
   }
@@ -57,8 +50,8 @@ var AdminShell = {
   view:function(vnode){
 	return (
 	  <section>
-  		<section class="  pt3-ns   ph5-ns black-80 bg-light-red-custom1">
-  		  <div class={"pa2 pv3-ns  w-100  z-5 "+(vnode.state.fixNav===true?"fixed top-0 left-0 bg-light-red-custom1 shadow-4":"relative-ns")} id="fixedNav">
+  		<section class="  pt3-ns   ph5-ns black-80  bg-light-red-custom1 ">
+  		  <div class={"pa2 pv3-ns  w-100  z-5 "+(vnode.state.fixNav===true?"fixed top-0 left-0  bg-light-red-custom1 shadow-4":"relative-ns")} id="fixedNav">
     			<div class="dib relative">
             <a href="#" class="dib dn-ns black link v-mid mr3  pa2 ba relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>☰</a>
               <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 "+(vnode.state.showNav?"db":"dn")}>
@@ -108,7 +101,7 @@ var AdminShell = {
     					{Analytics.Data.UsersCount || 0}
             </span>
     				  <strong class="db">
-    					Users
+    					Views
             </strong>
     				</div>
     			  </div>

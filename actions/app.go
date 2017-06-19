@@ -53,7 +53,7 @@ func App() *buffalo.App {
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
 
 		// if this is merchants the middleware does not work, so i changed it to merchant
-		g := app.Group("/api/merchant")
+		g := app.Group("/api/merchants")
 		g.Use(MerchantLoginCheckMiddleware)
 
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
@@ -66,10 +66,13 @@ func App() *buffalo.App {
 
 		app.Resource("/api/merchants", &MerchantsResource{})
 
+		app.Resource("/categories", CategoriesResource{&buffalo.BaseResource{}})
+
 		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
 			c.Render(200, spa.HTML("index.html"))
 			return nil
 		}
+
 	}
 
 	return app

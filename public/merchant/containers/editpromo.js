@@ -1,5 +1,6 @@
 import m from 'mithril';
 import {Promos} from "../models/promos.js";
+import moment from 'moment';
 
 var EditPromo = {
     oninit: function(vnode) {
@@ -7,7 +8,7 @@ var EditPromo = {
         if(typeof Promos.AllPromos[vnode.attrs.id] == 'undefined'){
             // redirect if there is no value...
             console.log("undefined here")
-            m.route.set("/promos");
+            m.route.set("/promos/");
         } else {
             EditPromo.p = Promos.AllPromos[vnode.attrs.id]
         }
@@ -25,7 +26,8 @@ var EditPromo = {
 
                 reader.addEventListener("load", function (f) {
                     // preview.src = this.result;
-                    EditPromo.p.feature_image = this.result;
+                    EditPromo.p.featured_image = this.result;
+                    image.src = this.result;
                     console.log(EditPromo.p);
                 }, false);
 
@@ -48,7 +50,7 @@ var EditPromo = {
                 </div>
                 <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
                     <div class="">
-                        <img class=""  id="preview" width="100%" src={EditPromo.p.feature_image?EditPromo.p.feature_image:"/assets/img/800x450.png"} alt=""/>
+                        <img class=""  id="preview" width="100%" src={EditPromo.p.featured_image_b64 != 'null'?EditPromo.p.featured_image_b64:"/assets/img/800x450.png"} alt=""/>
                     </div>
                     <div class="w-100 tc mv3">
                         <label for="feature_image" class="mv3 ba b--navy white pointer bg-navy pv2 ph3 w-100">
@@ -72,22 +74,22 @@ var EditPromo = {
                         <p class="pa2 bt b--gray cf">New Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.new_price}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.new_price = val;
+                            EditPromo.p.new_price = parseInt(val, 10);
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Old Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.old_price}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.old_price = val;
+                            EditPromo.p.old_price = parseInt(val, 10);
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Start Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.start_date}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.start_date = val;
+                            EditPromo.p.start_date = moment(val, moment.ISO_8601);
                         })}/></p>
                         <p class="pa2 bt b--gray cf">End Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.end_date}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            EditPromo.p.end_date = val;
+                            EditPromo.p.end_date = moment(val, moment.ISO_8601);
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Description: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.description}
                         oninput={m.withAttr("value", function(val) {

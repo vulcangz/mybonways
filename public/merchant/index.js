@@ -75,7 +75,7 @@ m.route(root, '/', {
             m(AdminShell, vnode.attrs,
               m(NewBranch, vnode.attrs)
             )
-          )
+          ) 
     }
   },
   '/branches/edit/:id': {

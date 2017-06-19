@@ -52,7 +52,8 @@ func App() *buffalo.App {
 
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
 
-		g := app.Group("/api/merchants")
+		// if this is merchants the middleware does not work, so i changed it to merchant
+		g := app.Group("/api/merchant")
 		g.Use(MerchantLoginCheckMiddleware)
 
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)

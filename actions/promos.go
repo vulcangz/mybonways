@@ -66,7 +66,48 @@ func (pr *PromoResource) Update(c buffalo.Context) error {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
-	//
+	tx := c.Value("tx").(*pop.Connection)
+	// send the featured image to s3 bucket
+	// But first of all check if the featured image name is in the db
+	promo := &models.MerchantPromo{}
+	err = tx.Where("id = ?", mp.ID).First(promo)
+	if err != nil {
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+	if mp.FeaturedImage != promo.FeaturedImage {
+		// push the image to s3 bucket...
+		imgUUID := uuid.NewV1().String()
+		imagename := "promo_images/" + imgUUID
+		log.Println("b64error xx")
+		imagepath, err := UploadBase64Image(s3bucket, mp.FeaturedImage, imagename)
+		if err != nil {
+			log.Println("b64error")
+			return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+		}
+		// create a blurred image of the featured image to save in the db...
+		log.Println(mp.FeaturedImage)
+		B64, err := CompressAndBlurImageAndReturnBase64(mp.FeaturedImage)
+		if err != nil {
+			log.Println("compress error", err)
+			return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+		}
+		log.Println(string(B64))
+		mp.FeaturedImageB64 = string(B64)
+		mp.FeaturedImage = imagepath
+	}
+
+	log.Println("no up load b64 error")
+
+	err = tx.Update(&mp)
+	if err != nil {
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+	// just to be sure
+	err = tx.Reload(&mp)
+	if err != nil {
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+	// successful update
 	return c.Render(http.StatusOK, render.JSON(mp))
 
 }

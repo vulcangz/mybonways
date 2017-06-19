@@ -1,6 +1,6 @@
 import m from 'mithril';
 
-import LoginPage from './containers/LoginPage.js';
+import LoginPage from './containers/loginPage.js';
 import OffCanvasMenu from './components/offCanvasMenu.js';
 import AdminShell from './containers/adminShell.js';
 import Branches from './containers/branches.js';

@@ -53,21 +53,8 @@ var HotPromosPage = {
             <div class="w-100 pa1">
               <img src="/assets/img/ad/5.jpg" class="w-100 br3"/>
             </div>
-            <div class="pa2 ">
-              <div class="dib w-50 br b--transparent">
-                <img src="/assets/img/ad/1.png" class="w-100 br3 b--light-gray-custom" />
-              </div><div class="dib w-50 bl b--transparent">
-                <img src="/assets/img/ad/2.png" class="w-100 br3 b--light-gray-custom" />
-              </div>
-            </div>
           </section>
-          <section class="bg-light-gray-custom pv3">
-              <div class="pa2">
-                <span class="dib ph2">
-                  <img src="/assets/img/svg/star.svg" class="dib " style="height:0.8rem;"/>
-                </span>
-                <span class="red-custom dib pt1">Popular</span>
-              </div>
+          <section class="bg-light-gray-custom pv2">
               <div class="">
                 <div class="pv1 cf">
                   <div class="dib w-50 pa1 fl" >

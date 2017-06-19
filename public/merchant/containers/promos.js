@@ -6,16 +6,6 @@ var PromosTable = {
   oncreate:function(){
     Promos.GetAllPromos()
   },
-  randomID: function(length, c) {
-        var text = "promo_item_";
-        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for(var i = 0; i < length; i++) {
-            text += characters. charAt(Math. floor(Math. random() * characters.length));
-        }
-        Promos.itemID[text] = c;
-        console.log(Promos.itemID[text], " : ", text, " : ", c);
-        return text;
-    },
   view:function(){
     var p = Promos.AllPromos
     console.log("p: ", p)

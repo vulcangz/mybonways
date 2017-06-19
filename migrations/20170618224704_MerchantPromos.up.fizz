@@ -1,0 +1,2 @@
+add_column("merchant_promos", "featured_image", "text", {"default": null})
+add_column("merchant_promos", "featured_image_b64", "text", {"default": null})

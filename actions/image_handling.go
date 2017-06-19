@@ -44,7 +44,8 @@ func UploadImageObjectToS3(bucket *s3.Bucket, b []byte, imagename string) (strin
 }
 
 //CompressAndBlurImageAndReturnBase64 Helper turns compresses and blurs image, then turns it to base64 string of less than 1kb
-func CompressAndBlurImageAndReturnBase64(byt []byte) (string, error) {
+func CompressAndBlurImageAndReturnBase64(image string) (string, error) {
+	byt, err := base64.StdEncoding.DecodeString(strings.Split(image, "base64,")[1])
 	opt := bimg.Options{
 		Width: 25,
 		GaussianBlur: bimg.GaussianBlur{

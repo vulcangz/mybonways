@@ -258,7 +258,15 @@ body {
 .bg-red-gradient{
   background:rgba(246,46,36,1);
   background:-webkit-linear-gradient(top,#f74c4c 0%,#D82125 100%);
-  background:linear-gradient(to bottom,#f74c4c 0%,#D82125 100%;;
+  background:linear-gradient(to bottom,#f74c4c 0%,#D82125 100%);
+}
+
+.bg-light-gray-custom1{
+  background-color:#95a5a6;
+}
+
+.bg-light-red-custom1{
+  background-color:#95a5a6;
 }
 
 hr.light {

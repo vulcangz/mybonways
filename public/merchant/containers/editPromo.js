@@ -5,13 +5,19 @@ import moment from 'moment';
 var EditPromo = {
     oninit: function(vnode) {
         console.log("init")
-        if(typeof Promos.AllPromos[vnode.attrs.id] == 'undefined'){
-            // redirect if there is no value...
-            console.log("undefined here");
+        if(Promos.AllPromos.length < 1) {
+            console.log("No promos");
             m.route.set("/promos/");
-        } else {
-            EditPromo.p = Promos.AllPromos[vnode.attrs.id];
+            return;
         }
+        for (var j = 0; j < Promos.AllPromos.length; j++){
+            if (Promos.AllPromos[j].slug == vnode.attrs.slug){
+                EditPromo.p = Promos.AllPromos[j];
+                return;
+            }
+        }
+        // if none of the return is called then there is no promo to edit...
+        m.route.set("/promos/");
     },
     updatebutton: true,
     AddPreview: function(e) {

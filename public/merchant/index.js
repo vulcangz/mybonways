@@ -41,7 +41,7 @@ m.route(root, '/promos', {
           )
       }
   },
-  '/promos/edit/:id': {
+  '/promos/edit/:slug': {
       view: function(vnode) {
           return m(MerchantAuth,vnode.attrs,
             m(AdminShell, vnode.attrs,

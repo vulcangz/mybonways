@@ -25,6 +25,7 @@ type MerchantPromo struct {
 	PromoImages      string    `json:"promo_images" db:"promo_images"`
 	FeaturedImage    string    `json:"featured_image" db:"featured_image"`
 	FeaturedImageB64 string    `json:"featured_image_b64" db:"featured_image_b64"`
+	Slug             string    `json:"slug" db:"slug"`
 }
 
 // String is not required by pop and may be deleted

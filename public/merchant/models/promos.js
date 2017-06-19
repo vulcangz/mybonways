@@ -24,8 +24,8 @@ export var Promos = {
             url: "/api/merchants/promo"
         }).then(function(response) {
             console.log("get promo Response: ", response);
-            Promos.AllPromos = response
-            m.redraw()
+            Promos.AllPromos = response;
+            m.redraw();
             // if successful, add the new promo to the promo list
         })
     },

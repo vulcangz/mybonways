@@ -21,7 +21,7 @@ export var Promos = {
     GetAllPromos: function() {
         return m.request({
             method: "GET",
-            url: "/api/merchant/promo"
+            url: "/api/merchants/promo"
         }).then(function(response) {
             console.log("get promo Response: ", response);
             Promos.AllPromos = response;
@@ -33,7 +33,7 @@ export var Promos = {
         // TODO:: Save a new promo.
         return m.request({
             method: "POST",
-            url: "/api/merchant/promo",
+            url: "/api/merchants/promo",
             data: Promos.NewPromo
         }).then(function(response) {
             console.log("New promo Response: ", response);
@@ -50,7 +50,7 @@ export var Promos = {
         console.log("Updated promo: ",promo);
         return m.request({
             method: "PUT",
-            url: "/api/merchant/promo/" + promo.id,
+            url: "/api/merchants/promo/" + promo.id,
             data: promo
         }).then(function(response) {
             console.log(response);

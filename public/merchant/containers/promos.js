@@ -1,12 +1,14 @@
 import m from "mithril";
 import {Promos} from "../models/promos.js";
 import moment from "moment"
+
 var PromosTable = {
   oncreate:function(){
     Promos.GetAllPromos()
   },
   view:function(){
     var p = Promos.AllPromos
+    console.log("p: ", p)
     return (
       <section>
         <div class="ph4 pv4 bg-white shadow-m2 ">
@@ -43,7 +45,7 @@ var PromosTable = {
                             <span class="db ">{moment(promo.end_date).format("L")}</span>
                           </td>
                           <td class="pv3 pr3 bb b--black-20 tc">
-                            <a href={"/promos/view/" + i} class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>View</a>
+                            <a href={"/promos/view/" + promo.slug} class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>View</a>
 
                             <a href="#!" class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Delete</a>
 

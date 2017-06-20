@@ -8,6 +8,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
+	"github.com/gosimple/slug"
 	"github.com/markbates/pop"
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
@@ -27,6 +28,7 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
+	mp.Slug = slug.Make(mp.ItemName) + "_" + RandStringBytes(5)
 
 	PromoImages := make([]string, 10)
 

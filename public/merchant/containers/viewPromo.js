@@ -4,14 +4,28 @@ import moment from 'moment';
 
 var ViewPromo = {
     oninit: function(vnode) {
-        console.log("init")
-        if(typeof Promos.AllPromos[vnode.attrs.id] == 'undefined'){
-            // redirect if there is no value...
-            console.log("undefined here")
+        console.log("init viewpromo")
+        if(Promos.AllPromos.length < 1) {
+            console.log("No promos");
             m.route.set("/promos/");
-        } else {
-           ViewPromo.p = Promos.AllPromos[vnode.attrs.id]
+            return;
         }
+        for (var j = 0; j < Promos.AllPromos.length; j++){
+            if (Promos.AllPromos[j].slug == vnode.attrs.slug){
+                console.log("promo found: ", vnode.attrs.slug);
+                ViewPromo.p = Promos.AllPromos[j];
+                return;
+            }
+        }
+        // if none of the return is called then there is no promo to edit...
+        m.route.set("/promos/");
+        // if(typeof Promos.AllPromos[vnode.attrs.id] == 'undefined'){
+        //     // redirect if there is no value...
+        //     console.log("undefined here")
+        //     m.route.set("/promos/");
+        // } else {
+        //    ViewPromo.p = Promos.AllPromos[vnode.attrs.id]
+        // }
     },
     updatebutton: true,
     AddPreview: function(e) {
@@ -57,7 +71,7 @@ var ViewPromo = {
               <div class="ph4 pv4 bg-white shadow-m2 ">
                 <div class="">
                   <span  class="fw6 f3"> {ViewPromo.p.item_name} </span>
-                  <a href={"/promos/edit/"+"0"} class="fr ph3 pv2 bg-navy white-90 grow pointer no-underline shadow-4" oncreate={m.route.link}>Edit Promo</a>
+                  <a href={"/promos/edit/"+ViewPromo.p.slug} class="fr ph3 pv2 bg-navy white-90 grow pointer no-underline shadow-4" oncreate={m.route.link}>Edit Promo</a>
                   </div>
               </div>
                 <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">

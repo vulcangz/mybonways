@@ -24,10 +24,11 @@ export var CategoriesModel = {
         url: '/api/categories',
         data: CategoriesModel.NewCategory,
       })
-      .then(function(response) {
-        console.log("new category: ", response);
-        CategoriesModel.Categories.unshift({Category:reponse})
-
+      .then(function(responseCategory) {
+        console.log("new category: ", responseCategory);
+        console.log(CategoriesModel.Categories)
+        CategoriesModel.Categories.unshift(responseCategory)
+        m.redraw()
       })
       .catch(function(error) {
         console.error(error);
@@ -41,7 +42,7 @@ export var CategoriesModel = {
     }).then(function(response){
       console.log("deleted: ", response)
       CategoriesModel.GetCategories();
-      
+
     })
   }
 }

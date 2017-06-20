@@ -21,7 +21,7 @@ export var Promos = {
     GetAllPromos: function() {
         return m.request({
             method: "GET",
-            url: "/api/merchants/promo"
+            url: "/api/merchant/promo"
         }).then(function(response) {
             console.log("get promo Response: ", response);
             Promos.AllPromos = response;
@@ -33,10 +33,16 @@ export var Promos = {
         // TODO:: Save a new promo.
         return m.request({
             method: "POST",
-            url: "/api/merchants/promo",
+            url: "/api/merchant/promo",
             data: Promos.NewPromo
         }).then(function(response) {
             console.log("New promo Response: ", response);
+            if (response.hasOwnProperty("id")){
+                Promos.GetAllPromos()
+                // indicate on the UI the new promo has been added
+                // Infact just redirect to view promo page
+                m.route.set("/promos/view/" + response.slug)
+            }
             // if successful, add the new promo to the promo list
         })
     },
@@ -44,7 +50,7 @@ export var Promos = {
         console.log("Updated promo: ",promo);
         return m.request({
             method: "PUT",
-            url: "/api/merchants/promo/" + promo.id,
+            url: "/api/merchant/promo/" + promo.id,
             data: promo
         }).then(function(response) {
             console.log(response);

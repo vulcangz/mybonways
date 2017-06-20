@@ -28,7 +28,7 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	mp.Slug = slug.Make(mp.ItemName)
+	mp.Slug = slug.Make(mp.ItemName) + "_" + RandStringBytes(5)
 
 	PromoImages := make([]string, 10)
 

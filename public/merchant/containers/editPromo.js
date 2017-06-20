@@ -4,7 +4,7 @@ import moment from 'moment';
 
 var EditPromo = {
     oninit: function(vnode) {
-        console.log("init")
+        console.log("init editpromo")
         if(Promos.AllPromos.length < 1) {
             console.log("No promos");
             m.route.set("/promos/");
@@ -93,11 +93,13 @@ var EditPromo = {
                         <p class="pa2 bt b--gray cf">Start Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.start_date}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
+                            console.log(moment(val, moment.ISO_8601))
                             EditPromo.p.start_date = moment(val, moment.ISO_8601);
                         })}/></p>
                         <p class="pa2 bt b--gray cf">End Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.end_date}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
+                            console.log(moment(val, moment.ISO_8601))
                             EditPromo.p.end_date = moment(val, moment.ISO_8601);
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Description: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.description}

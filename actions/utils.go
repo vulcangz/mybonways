@@ -1,11 +1,14 @@
 package actions
 
 import (
+	"math/rand"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/tonyalaribe/mybonways/models"
 )
+
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 // GenerateJWT generates a jwt token for the user
 func GenerateJWT(m models.Merchant) (map[string]interface{}, error) {
@@ -37,4 +40,13 @@ func GenerateJWT(m models.Merchant) (map[string]interface{}, error) {
 	resp["token"] = tokenString
 
 	return resp, err
+}
+
+// RandStringBytes generates random string...(for appending to slugs)
+func RandStringBytes(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+	return string(b)
 }

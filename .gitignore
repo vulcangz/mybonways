@@ -8,5 +8,4 @@ node_modules/
 .sass-cache/
 *-packr.go
 mybonways
-public/assets/js/admin-bundle.js
 public/assets/js/

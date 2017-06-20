@@ -2,6 +2,7 @@ package actions
 
 import (
 	"errors"
+	"log"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gosimple/slug"
@@ -71,20 +72,23 @@ func (v CategoriesResource) Create(c buffalo.Context) error {
 	// Bind category to the html form elements
 	err := c.Bind(category)
 	if err != nil {
+		log.Println("Bind error:", err)
 		return err
 	}
 
-	category.Slug = slug.Make(category.Name)
+	category.Slug = slug.Make(category.Name) + "_" + RandStringBytes(5)
 
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)
 	// Validate the data from the html form
 	verrs, err := tx.ValidateAndCreate(category)
 	if err != nil {
+		log.Println("validate and create error : ", err)
 		return err
 	}
 	if verrs.HasAny() {
 		// Render errors as JSON
+		log.Println("has any error", verrs)
 		return c.Render(400, r.JSON(verrs))
 	}
 	// Success!
@@ -134,10 +138,12 @@ func (v CategoriesResource) Destroy(c buffalo.Context) error {
 	// To find the Category the parameter category_id is used.
 	err := tx.Find(category, c.Param("category_id"))
 	if err != nil {
+		log.Println("find err: ", err)
 		return err
 	}
 	err = tx.Destroy(category)
 	if err != nil {
+		log.Println("destroy error: ", err)
 		return err
 	}
 	// Success!

@@ -1,6 +1,7 @@
 import m from "mithril";
 export var CategoriesModel = {
   Categories:[],
+  NewCategory:{},
   GetCategories:function(){
     return  m
       .request({
@@ -8,26 +9,39 @@ export var CategoriesModel = {
         url: '/api/categories',
       })
       .then(function(response) {
+        console.log("all cat. response: ", response);
         CategoriesModel.Categories = response;
       })
       .catch(function(error) {
         console.error(error);
       });
   },
-  AddCategory:function(category){
-    var data  = {Category:category}
+  AddCategory:function(){
+    // var data  = {Category:CategoriesModel.NewCategory}
     return m
       .request({
         method: 'POST',
         url: '/api/categories',
-        data:data,
+        data: CategoriesModel.NewCategory,
       })
       .then(function(response) {
-        CategoriesModel.Categories.unshift(data)
+        console.log("new category: ", response);
+        CategoriesModel.Categories.unshift({Category:reponse})
 
       })
       .catch(function(error) {
         console.error(error);
       });
+  },
+  Delete: function(e) {
+    console.log("delete: ", CategoriesModel.Categories[e.target.id]);
+    return m.request({
+      method: "DELETE",
+      url: "/api/categories/" + CategoriesModel.Categories[e.target.id].id
+    }).then(function(response){
+      console.log("deleted: ", response)
+      CategoriesModel.GetCategories();
+      
+    })
   }
 }

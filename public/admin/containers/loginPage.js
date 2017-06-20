@@ -1,8 +1,8 @@
 import m from 'mithril';
-import {MerchantModel} from '../models/merchant.js';
+import {AdminModel} from '../models/admin.js';
 
 var LoginPage = {
-  LoginMerchant:{},
+  LoginAdmin:{},
   oncreate:function(vnode){
     console.log(vnode)
   },
@@ -21,25 +21,19 @@ var LoginPage = {
                     <a href="#" class="dib  black link v-mid mr3  pa2  relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>login</a>
                     <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 w5 "+(vnode.state.showNav?"db":"dn")}>
                         <div class="db pv1">
-                          <input type="text" placeholder="company id" class="input-reset ba b--black-20 db w-100 pv2 ph3"
-                          oninput={m.withAttr("value", function(value) {
-                            LoginPage.LoginMerchant.company_id = value.trim();
-                          })}/>
-                        </div>
-                        <div class="db pv1">
                           <input type="email" placeholder="email" class="input-reset ba b--black-20 db w-100 pv2 ph3"
                           oninput={m.withAttr("value", function(value) {
-                            LoginPage.LoginMerchant.merchant_email = value.trim();
+                            LoginPage.LoginAdmin.email = value.trim();
                           })}/>
                         </div>
                         <div class="db pv1">
                           <input type="password" placeholder="password" class="input-reset ba b--black-20 db w-100 pv2 ph3"
                           oninput={m.withAttr("value", function(value) {
-                            LoginPage.LoginMerchant.merchant_password = value.trim();
+                            LoginPage.LoginAdmin.password = value.trim();
                           })}/>
                         </div>
                         <div class="db tr">
-                          <button class="pv2 ph3 bg-navy bw0 shadow grow white-80" onclick={function(){ MerchantModel.Login(LoginPage.LoginMerchant) }}>Login</button>
+                          <button class="pv2 ph3 bg-navy bw0 shadow grow white-80" onclick={function(){ MerchantModel.Login(LoginPage.LoginAdmin) }}>Login</button>
                         </div>
                       </div>
                   </div>
@@ -58,34 +52,21 @@ var LoginPage = {
                   <section class=" pa3 pa4-ns bg-white br2 dib w-100 w-40-ns ">
                     <div class="">
                       <div class="pv2">
-                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Store Name"
+                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="email" placeholder="Admin Email"
                         oninput={m.withAttr("value", function(value) {
-                          LoginPage.LoginMerchant.company_name = value.trim();
-                        })} />
-                      </div>
-                      <div class="pv2">
-                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Company ID"
-                        oninput={m.withAttr("value", function(value) {
-                          LoginPage.LoginMerchant.company_id = value.trim();
+                          LoginPage.LoginAdmin.email = value.trim();
                         })}
                         />
                       </div>
                       <div class="pv2">
-                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="email" placeholder="Merchant Email"
+                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="password" placeholder="Admin Password"
                         oninput={m.withAttr("value", function(value) {
-                          LoginPage.LoginMerchant.merchant_email = value.trim();
-                        })}
-                        />
-                      </div>
-                      <div class="pv2">
-                        <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="password" placeholder="Merchant Password"
-                        oninput={m.withAttr("value", function(value) {
-                          LoginPage.LoginMerchant.merchant_password = value.trim();
+                          LoginPage.LoginAdmin.password = value.trim();
                         })}
                         />
                       </div>
                       <div class="tr pv2">
-                        <button class="pv3 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={function(){ MerchantModel.Login(LoginPage.LoginMerchant) }}>signup</button>
+                        <button class="pv3 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={function(){ AdminModel.Login(LoginPage.LoginAdmin) }}>login</button>
                       </div>
                     </div>
                   </section>

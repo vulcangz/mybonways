@@ -1,16 +1,16 @@
 import m from 'mithril';
 import localforage from 'localforage';
-import {MerchantModel, getCookie} from '../models/merchant.js';
+import {AdminModel, getCookie} from '../models/admin.js';
 
 export var MerchantAuth = {
  oncreate:function(){
-   MerchantModel.GetUserfromStorage()
+   AdminModel.GetUserfromStorage()
 
  },
  view:function(vnode){
-  var cookie = getCookie("X-MERCHANT-TOKEN")
+  var cookie = getCookie("X-ADMIN-TOKEN")
   if (cookie === ""){
-    m.route.set("/signup")
+    m.route.set("/login")
     return m("div")
   }
    return m("div",vnode.attrs,m.fragment(vnode.attrs,[vnode.children]));

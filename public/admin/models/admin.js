@@ -21,55 +21,45 @@ export function deleteCookie(name) {
 }
 
 
-export var MerchantModel = {
-    Merchant: {},
+export var AdminModel = {
+    Admin: {},
     Token: "",
     GetUserfromStorage: function(){
-      if (!MerchantModel.Merchant || !MerchantModel.Merchant.merchant_email){
-        return localforage.getItem('AuthMerchant').then(function(merchant){
-          console.log(merchant)
-          if (merchant!=null){
-            MerchantModel.Merchant = merchant
+      if (!AdminModel.Admin || !AdminModel.Admin.email){
+        return localforage.getItem('AuthAdmin').then(function(admin){
+          console.log(admin)
+          if (admin!=null){
+            AdminModel.Admin = admin
             m.redraw()
             return
           }
-          MerchantModel.Merchant = null
+          AdminModel.Admin = null
           m.redraw()
         })
       }
     },
-    Login:function(merchant){
-      console.log(merchant)
+    Login:function(admin){
+      console.log(admin)
       return m.request({
-              url: "/api/merchants/login",
+              url: "/api/admin/login",
               method: "POST",
-              data: merchant
+              data: admin
           })
           .then(function(response) {
             console.log(response);
-            var cookie = getCookie("X-MERCHANT-TOKEN")
+            var cookie = getCookie("X-ADMIN-TOKEN")
             console.log("cookie:", cookie)
-            return localforage.setItem('AuthMerchant', response.merchant)
+            return localforage.setItem('AuthAdmin', response.admin)
           })
           .then(function(){
-             MerchantModel.GetUserfromStorage()
+             AdminModel.GetUserfromStorage()
             m.route.set("/")
 
         })
     },
     Logout:function(){
-      m.route.set("/signup")
-      localforage.removeItem("AuthMerchant")
-      deleteCookie("X-MERCHANT-TOKEN")
+      m.route.set("/login")
+      localforage.removeItem("AuthAdmin")
+      deleteCookie("X-ADMIN-TOKEN")
     },
-    Signup: function(merchant) {
-        console.log("signup: ", merchant);
-        return m.request({
-            url: "/api/merchants",
-            method: "POST",
-            data: merchant
-        }).then(function(response) {
-            console.log("response: ", response);
-        })
-    }
 }

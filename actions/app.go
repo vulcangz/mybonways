@@ -59,6 +59,7 @@ func App() *buffalo.App {
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
 
 		app.POST("/api/merchants/login", MerchantLogin)
+		app.POST("/api/admin/login", AdminLogin)
 		app.GET("/api/search/area/{area}", AreaSearchHandler)
 
 		g.Resource("/branch", &BranchResource{})
@@ -73,6 +74,7 @@ func App() *buffalo.App {
 			return nil
 		}
 
+		app.Resource("/admins", AdminsResource{&buffalo.BaseResource{}})
 	}
 
 	return app

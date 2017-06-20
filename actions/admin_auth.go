@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gobuffalo/buffalo"
@@ -15,18 +16,16 @@ import (
 )
 
 // Login contains login details
-type MerchantLoginStruct struct {
-	// PasswordHash []byte
-	CompanyID        string `json:"company_id"`
-	MerchantEmail    string `json:"merchant_email"`
-	MerchantPassword string `json:"merchant_password"`
+type AdminLoginStruct struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
-// MerchantLogin handles login for merchants...
-func MerchantLogin(c buffalo.Context) error {
+// AdminLogin handles login for merchants...
+func AdminLogin(c buffalo.Context) error {
 	// get the post parameters...
-	login := &MerchantLoginStruct{}
-	err := c.Bind(login)
+	login := AdminLoginStruct{}
+	err := c.Bind(&login)
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -35,34 +34,34 @@ func MerchantLogin(c buffalo.Context) error {
 
 	tx := c.Value("tx").(*pop.Connection)
 	query := pop.Q(tx)
-	query = tx.Where("company_id = ?", login.CompanyID).Where("merchant_email = ?", login.MerchantEmail)
-	m := models.Merchant{}
+	query = tx.Where("email = ?", login.Email)
+	admin := models.Admin{}
 
-	err = query.First(&m)
+	err = query.First(&admin)
 	if err != nil {
-		log.Printf("first error: %#v \n ", m)
+		log.Printf("first error: %#v \n ", admin)
 		log.Println("err", err)
 		return c.Error(http.StatusNotFound, errors.WithStack(err))
 	}
 
 	// check if the password is correct:
-	err = bcrypt.CompareHashAndPassword(m.MerchantPassword, []byte(login.MerchantPassword))
+	err = bcrypt.CompareHashAndPassword(admin.Password, []byte(login.Password))
 	if err != nil {
-		log.Printf("first error: %#v \n ", m)
+		log.Printf("first error: %#v \n ", admin)
 		log.Println("err", err)
 		return c.Error(http.StatusNotAcceptable, errors.WithStack(err))
 	}
 
-	log.Printf("Login merchant: %#v \n ", m)
+	log.Printf("Login merchant: %#v \n ", admin)
 	/// since the person is in the database...generate a token for him/her
-	token, err := GenerateJWT(m)
+	token, err := GenerateAdminJWT(admin)
 	if err != nil {
 		log.Println("GenJwt error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	cookie := &http.Cookie{
-		Name:  "X-MERCHANT-TOKEN",
+		Name:  "X-ADMIN-TOKEN",
 		Value: token["token"].(string),
 		Path:  "/",
 	}
@@ -71,7 +70,7 @@ func MerchantLogin(c buffalo.Context) error {
 	return c.Render(http.StatusOK, render.JSON(token))
 }
 
-func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
+func AdminLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 	log.Println("LOGIN MIDDLEWARE")
 	return func(c buffalo.Context) error {
 		req := c.Request()
@@ -87,7 +86,7 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 			c.LogField("params", string(b))
 		}
 
-		cookie, err := req.Cookie("X-MERCHANT-TOKEN")
+		cookie, err := req.Cookie("X-ADMIN-TOKEN")
 		if err != nil {
 			c.LogField("auth", "not authenticated. No cookie")
 			return c.Error(http.StatusForbidden, errors.WithStack(err))
@@ -115,9 +114,9 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 			}
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				log.Printf("\nmerchant is set... %T \n %#v\n", claims["Merchant"], claims["Merchant"])
+				log.Printf("\nmerchant is set... %T \n %#v\n", claims["Admin"], claims["Admin"])
 
-				c.Set("Merchant", claims["Merchant"])
+				c.Set("Admin", claims["Admin"])
 			} else {
 				log.Println("not ok: ", err)
 				return c.Error(http.StatusForbidden, errors.WithStack(err))
@@ -131,4 +130,36 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 
 		// return next(c)
 	}
+}
+
+// GenerateMerchantJWT generates a jwt token for the user
+func GenerateAdminJWT(admin models.Admin) (map[string]interface{}, error) {
+	claims := jwt.MapClaims{}
+
+	resp := make(map[string]interface{})
+
+	// create claims
+	claims["Admin"] = admin
+	claims["AdminEmail"] = admin.Email
+
+	// set the expiration to 1 year in milliseconds
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 30 * 12).Unix()
+
+	t := jwt.NewWithClaims(jwt.GetSigningMethod("RS256"), claims)
+
+	// pub, err := jwt.ParseRSAPrivateKeyFromPEM(config.Get().Encryption.Private)
+	pub, err := jwt.ParseRSAPrivateKeyFromPEM(encryption.Bytes("private.pem"))
+	if err != nil {
+		return resp, err
+	}
+	tokenString, err := t.SignedString(pub)
+	if err != nil {
+		return resp, err
+	}
+
+	resp["admin"] = admin
+	resp["message"] = "Token successfully generated"
+	resp["token"] = tokenString
+
+	return resp, err
 }

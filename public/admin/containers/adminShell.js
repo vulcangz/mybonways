@@ -1,7 +1,7 @@
 import m from "mithril";
 import localforage from 'localforage';
 import {Analytics} from '../models/analytics.js';
-import {MerchantModel} from '../models/merchant.js';
+import {AdminModel} from '../models/admin.js';
 
 var MenuComponent = {
   view:function(){
@@ -9,14 +9,6 @@ var MenuComponent = {
       <div class="">
         <a class="dn pa2 bb b--light-gray hover-bg-light-gray link navy " href="/" oncreate={m.route.link}>Dashboard</a>
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/categories" oncreate={m.route.link}>Categories</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/adverts" oncreate={m.route.link}>Adverts</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/branches" oncreate={m.route.link}>Branches</a>
-        <div class=" bb b--light-gray">
-          <a class="db pa2  hover-bg-light-gray link navy" href="/listings/new" oncreate={m.route.link}> Add Listing</a>
-          <a class="db pa2 hover-bg-light-gray link navy" href="/listings/unapproved" oncreate={m.route.link}>  Unapproved Listings</a>
-          <a class="db pa2 hover-bg-light-gray link navy " href="/listings/find" oncreate={m.route.link}> Find Listings</a>
-        </div>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/promos/" oncreate={m.route.link}>Promos</a>
       </div>
     );
   }
@@ -73,12 +65,12 @@ var AdminShell = {
           <div class="dib v-mid pv2 fr pointer">
             <div class="dib">
               <a onclick={()=>vnode.state.showProfileNav=!vnode.state.showProfileNav}>
-        			  <span class="dib v-mid">{MerchantModel.Merchant.company_id}</span>
+        			  <span class="dib v-mid">admin</span>
                 <small class="dib v-mid ph2" style="font-size:8px;">▼</small>
               </a>
               <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 "+(vnode.state.showProfileNav?"db":"dn")}>
                 <div class="">
-                  <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy pointer" onclick={()=>MerchantModel.Logout()} >logout</a>
+                  <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy pointer" onclick={()=>AdminModel.Logout()} >logout</a>
                 </div>
               </div>
             </div>

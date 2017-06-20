@@ -1,0 +1,2 @@
+drop_column("merchant_promos", "slug")
+add_column("merchant_promos", "slug", "string", {"default": ""})

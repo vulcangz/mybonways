@@ -114,7 +114,7 @@ func AdminLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 			}
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				log.Printf("\nmerchant is set... %T \n %#v\n", claims["Admin"], claims["Admin"])
+				log.Printf("\nAdmin is set... %T \n %#v\n", claims["Admin"], claims["Admin"])
 
 				c.Set("Admin", claims["Admin"])
 			} else {

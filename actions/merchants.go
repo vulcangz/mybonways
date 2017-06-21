@@ -23,6 +23,7 @@ func (mr *MerchantsResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	err := tx.All(&m)
 	if err != nil {
+		log.Println("list err: ", err)
 		return c.Error(404, errors.WithStack(err))
 	}
 
@@ -31,7 +32,14 @@ func (mr *MerchantsResource) List(c buffalo.Context) error {
 
 // Show renders a target user
 func (mr *MerchantsResource) Show(c buffalo.Context) error {
-	return c.Render(200, render.JSON(c.Value("user")))
+	m := &models.Merchant{}
+	tx := c.Value("tx").(*pop.Connection)
+	err := tx.Find(m, c.Param("merchant_id"))
+	if err != nil {
+		log.Println("Show err: ", err)
+		return c.Error(404, errors.WithStack(err))
+	}
+	return c.Render(200, render.JSON(m))
 }
 
 // Create a user
@@ -49,8 +57,6 @@ func (mr *MerchantsResource) Create(c buffalo.Context) error {
 	m.MerchantPasswordString = ""
 	c.Logger().Infof("merchant: %#v \n ", m)
 	tx := c.Value("tx").(*pop.Connection)
-
-	m.Slug = m.CompanyID + "_" + RandStringBytes(5)
 
 	err = tx.Create(m)
 	if err != nil {

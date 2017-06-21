@@ -2,8 +2,8 @@ import m from "mithril";
 import {MerchantsModel} from '../models/merchants.js';
 
 var Merchants = {
-    oninit: function() {
-        MerchantsModel.GetAllMerhcants();
+    oncreate: function() {
+        MerchantsModel.GetAllMerchants();
     },
     view: function () {
         var AllMerchants = MerchantsModel.AllMerchants.map(function(merchant, key) {
@@ -12,10 +12,11 @@ var Merchants = {
                 <td class="pv3 pr3 bb b--black-20 tc">{key + 1}</td>
                 <td class="pv3 pr3 bb b--black-20 tc">{merchant.company_id}</td>
                 <td class="pv3 pr3 bb b--black-20 tc">{merchant.merchant_email}</td>
-                <td class="pv3 pr3 bb b--black-20 tc"><a href={"/merchants/view/" + merchant.slug} class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>View</a></td>
-                <td class="pv3 pr3 bb b--black-20 tc"><a href={"/merchants/delete" + merchant.slug} class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>Delete</a></td>
+                <td class="pv3 pr3 bb b--black-20 tc"><a href={"/merchants/view/" + merchant.id} class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>View</a></td>
+                <td class="pv3 pr3 bb b--black-20 tc"><button class="ba b--navy ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" onclick={function() {
+                    MerchantsModel.DeleteMerchant(merchant.id);
+                }}>Delete</button></td>
             </tr>
-
             )
         })
         // var AllMerchants = MerchantsModel.AllMerchants

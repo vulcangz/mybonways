@@ -77,8 +77,8 @@ func App() *buffalo.App {
 		// 	c.Render(200, spa.HTML("index.html"))
 		// 	return nil
 		// }
-		// TODO:: AdminLoginCheckMiddleware
-		adminGroup.GET("/merchants", merchantsResource.List)
+
+		adminGroup.Resource("/merchants", merchantsResource)
 		app.Resource("/admins", AdminsResource{&buffalo.BaseResource{}})
 	}
 

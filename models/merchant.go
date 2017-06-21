@@ -19,7 +19,6 @@ type Merchant struct {
 	MerchantEmail          string    `json:"merchant_email" db:"merchant_email"`
 	MerchantPassword       []byte    `json:"-" db:"merchant_password"`
 	MerchantPasswordString string    `json:"merchant_password" db:"-"`
-	Slug                   string    `json:"slug" db:"slug"`
 }
 
 // String is not required by pop and may be deleted

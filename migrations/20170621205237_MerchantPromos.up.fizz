@@ -1,0 +1,4 @@
+drop_column("merchant_promos", "promo_images")
+add_column("merchant_promos", "promo_images", "text", {"default": ""})
+drop_column("merchant_promos", "description")
+add_column("merchant_promos", "description", "text", {"default": ""})

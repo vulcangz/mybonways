@@ -23,12 +23,12 @@ type PromoResource struct {
 // Create a MerchantPromo
 func (pr *PromoResource) Create(c buffalo.Context) error {
 	log.Println("create promo")
-	mp := &models.MerchantPromo{}
+	mp := models.MerchantPromo{}
 	err := c.Bind(&mp)
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	mp.Slug = slug.Make(mp.ItemName) + "_" + RandStringBytes(5)
+	mp.Slug = slug.Make(mp.ItemName) + "-" + RandStringBytes(5)
 
 	PromoImages := make([]string, 10)
 
@@ -36,10 +36,9 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	for _, v := range mp.Images {
 		imgUUID := uuid.NewV1().String()
 		imagename := "promo_images/" + imgUUID
-		log.Println("b64error xx")
 		imagepath, err := UploadBase64Image(s3bucket, v, imagename)
 		if err != nil {
-			log.Println("b64error")
+			log.Printf("b64error err: ", err)
 			return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 		}
 
@@ -47,17 +46,50 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 		PromoImages = append(PromoImages, imagepath)
 	}
 
+	mp.Images = []string{}
+
 	log.Println("after mp images")
 	mp.PromoImages = strings.Trim(strings.Join(strings.Fields(fmt.Sprint(PromoImages)), ", "), "[]")
 
-	log.Printf("MerchantPromo: %#v \n ", mp)
-	tx := c.Value("tx").(*pop.Connection)
-	err = tx.Create(mp)
+	featured_imgUUID := uuid.NewV1().String()
+	imagename := "featured_images/" + featured_imgUUID
+	log.Println("b64error xx")
+	mp.FeaturedImage, err = UploadBase64Image(s3bucket, mp.FeaturedImageB64, imagename)
 	if err != nil {
+		log.Println("b64error")
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
+	mp.FeaturedImageB64, err = CompressAndBlurImageAndReturnBase64(mp.FeaturedImageB64)
+
+	log.Printf("MerchantPromo: %#v \n ", mp)
+	tx := c.Value("tx").(*pop.Connection)
+	err = tx.Create(&mp)
+	if err != nil {
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+	tx.Reload(&mp)
+	log.Println(mp)
 	return c.Render(http.StatusOK, render.JSON(mp))
+}
+
+// Show gets the data for one Promo. This function is mapped to
+// the path GET /merchants/promos/{slug}
+func (v *PromoResource) Show(c buffalo.Context) error {
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	// Allocate an empty Category
+	merchantPromo := models.MerchantPromo{}
+
+	query := pop.Q(tx)
+	query = tx.Where("slug = ?", c.Param("promo_id"))
+
+	err := query.First(&merchantPromo)
+	if err != nil {
+		return c.Error(404, errors.WithStack(err))
+	}
+
+	return c.Render(200, r.JSON(merchantPromo))
 }
 
 // Update a promo

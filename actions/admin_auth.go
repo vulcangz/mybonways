@@ -71,7 +71,7 @@ func AdminLogin(c buffalo.Context) error {
 }
 
 func AdminLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
-	log.Println("LOGIN MIDDLEWARE")
+	log.Println("ADMIN LOGIN MIDDLEWARE")
 	return func(c buffalo.Context) error {
 		req := c.Request()
 		if req.Method != "GET" {

@@ -60,6 +60,26 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	return c.Render(http.StatusOK, render.JSON(mp))
 }
 
+// Show gets the data for one Promo. This function is mapped to
+// the path GET /merchants/promos/{slug}
+func (v *PromoResource) Show(c buffalo.Context) error {
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	// Allocate an empty Category
+	merchantPromo := models.MerchantPromo{}
+
+	query := pop.Q(tx)
+	query = tx.Where("slug = ?", c.Param("slug"))
+
+	err := query.First(&merchantPromo)
+	if err != nil {
+		return c.Error(404, errors.WithStack(err))
+	}
+
+	log.Println(merchantPromo)
+	return c.Render(200, r.JSON(merchantPromo))
+}
+
 // Update a promo
 func (pr *PromoResource) Update(c buffalo.Context) error {
 	mp := &models.MerchantPromo{}

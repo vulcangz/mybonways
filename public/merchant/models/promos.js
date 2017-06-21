@@ -18,6 +18,7 @@ export var Promos = {
     itemID:{},
     AllPromos: [],
     NewPromo: {},
+    CurrentPromo:{promo_images:""},
     GetAllPromos: function() {
         return m.request({
             method: "GET",
@@ -27,6 +28,16 @@ export var Promos = {
             Promos.AllPromos = response;
             m.redraw();
             // if successful, add the new promo to the promo list
+        })
+    },
+    GetPromo: function(slug) {
+        return m.request({
+            method: "GET",
+            url: "/api/merchants/promo/"+slug
+        }).then(function(response) {
+            console.log("get promo Response: ", response);
+            Promos.CurrentPromo = response;
+            m.redraw();
         })
     },
     SaveNew: function() {

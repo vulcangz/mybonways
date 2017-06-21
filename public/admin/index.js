@@ -3,6 +3,7 @@ import m from 'mithril';
 import LoginPage from './containers/loginPage.js';
 import OffCanvasMenu from './components/offCanvasMenu.js';
 import AdminShell from './containers/adminShell.js';
+import Merchants from './containers/merchants.js';
 
 import Categories from './containers/categories.js';
 import {MerchantAuth} from './components/auth.js';
@@ -27,5 +28,16 @@ m.route(root, '/', {
       return  m(LoginPage, vnode.attrs)
       },
 
+  },
+  '/merchants': {
+    view: function(vnode) {
+      return m(MerchantAuth,vnode.attrs,
+          m(OffCanvasMenu,vnode.attrs,
+              m(AdminShell,vnode.attrs,
+                m(Merchants,vnode.attrs)
+              )
+          )
+        );
+    }
   }
 });

@@ -50,6 +50,8 @@ func (mr *MerchantsResource) Create(c buffalo.Context) error {
 	c.Logger().Infof("merchant: %#v \n ", m)
 	tx := c.Value("tx").(*pop.Connection)
 
+	m.Slug = m.CompanyID + "_" + RandStringBytes(5)
+
 	err = tx.Create(m)
 	if err != nil {
 		return errors.WithStack(err)

@@ -12,7 +12,6 @@ import (
 
 //UploadBase64Image resizes image and puts it into s3 bucket
 func UploadBase64Image(bucket *s3.Bucket, image string, imagename string) (string, error) {
-	log.Println("UploadBase64Image called")
 	byt, err := base64.StdEncoding.DecodeString(strings.Split(image, "base64,")[1])
 	if err != nil {
 		log.Println(err)

@@ -5,6 +5,7 @@ import moment from 'moment';
 var ViewPromo = {
     oncreate:function(vnode){
       var slug = m.route.param("slug")
+      console.log(slug)
       Promos.GetPromo(slug)
     },
     updatebutton: true,

@@ -5,66 +5,54 @@ import {downscaleImage} from '../utils';
 import moment from 'moment';
 
 var NewPromo = {
-    AddPreview: function() {
-        var images = document.getElementById("imagesInput").files;
-        var preview = document.getElementById("preview");
+  featuredImageChange:function(files){
 
-        function readAndPreview(image) {
-            // Make sure `file.name` matches our extensions criteria
-            if ( /\.(jpe?g|png|gif)$/i.test(image.name) ) {
-                var reader = new FileReader();
+      if ( /\.(jpe?g|png|gif)$/i.test(files[0].name) ) {
+        let reader  = new FileReader();
+        reader.addEventListener("load", (e)=> {
 
-                reader.addEventListener("load", function (f) {
-                    console.log(f)
-                    var file = new Image();
-                    file.height = 150;
-                    file.title = image.name;
-                    file.src = this.result;
-                    preview.appendChild( image );
-                    Promos.NewPromo.images.push(this.result);
-                }, false);
+            //  downscaleImage(e.target.result,1200,"image/jpeg",0.7,(compressed)=>{ Promos.NewPromo.images.push(compressed)
+            //  console.log(Promos.NewPromo)
+            // })
 
-                reader.readAsDataURL(image);
-            }
+            Promos.NewPromo.featured_image_b64 = e.target.result
+            m.redraw()
+            console.log(Promos.NewPromo)
+
+        }, false);
+
+        reader.readAsDataURL(files[0]);
+      }
+  },
+    promoImagesChange:function(files){
+      console.log(files)
+      for(let i in files){
+        if ( /\.(jpe?g|png|gif)$/i.test(files[i].name) ) {
+          let reader  = new FileReader();
+          reader.addEventListener("load", (e)=> {
+
+              //  downscaleImage(e.target.result,1200,"image/jpeg",0.7,(compressed)=>{ Promos.NewPromo.images.push(compressed)
+              //  console.log(Promos.NewPromo)
+              // })
+
+              Promos.NewPromo.images.push(e.target.result)
+              console.log(Promos.NewPromo)
+              m.redraw()
+
+          }, false);
+
+          reader.readAsDataURL(files[i]);
         }
-        // reader.addEventListener("load", function() {
-        //     Promos.NewPromo[e.target.name] = reader.result;
-        //     img.src = reader.result;
-        // })
-
-        if(images) {
-            [].forEach.call(images, readAndPreview);
-            // reader.readAsDataURL(image);
-        }
+      }
     },
-
-      fileChange:function(files){
-        console.log(files)
-
-        for(let i in files){
-          if ( /\.(jpe?g|png|gif)$/i.test(files[i].name) ) {
-            let reader  = new FileReader();
-            reader.addEventListener("load", (e)=> {
-
-                //  downscaleImage(e.target.result,1200,"image/jpeg",0.7,(compressed)=>{ Promos.NewPromo.images.push(compressed)
-                //  console.log(Promos.NewPromo)
-                // })
-
-                Promos.NewPromo.images.push(e.target.result)
-                console.log(Promos.NewPromo)
-
-            }, false);
-
-            reader.readAsDataURL(files[i]);
-          }
-        }
-      },
 
   oncreate: function() {
       // initialize the images arrays...
       Promos.NewPromo.images = [];
+      Promos.GetCategories()
   },
   view: function(vnode) {
+    console.log(Promos.Categories)
     return (
       <section class="">
         <div class="ph4 pv4 bg-white shadow-m2 ">
@@ -82,11 +70,17 @@ var NewPromo = {
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Item Category:</label>
-                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
-                oninput={m.withAttr("value", function(value) {
-                    Promos.NewPromo.category = value;
-                })}
-                />
+                  <select class="ba b--light-silver bw1 pa2 w-100" onchange={m.withAttr("value", function(value) {
+                      Promos.NewPromo.category = value;
+                  })}>
+                    <option>-- Select Category --</option>
+                    {Promos.Categories.map(function(category, i){
+                      return (<option value={category.slug} key={i} >
+                        {category.name}
+                      </option>)
+                    })}
+
+                  </select>
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Old Price:</label>
@@ -122,27 +116,41 @@ var NewPromo = {
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Description:</label>
-                <input type="text" class="ba b--light-silver bw1 pa2 w-100"
+                <textarea  class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.description = value;
                 })}
-                />
+                ></textarea>
             </div>
             <div class="pa2">
+                <label class="f4 gray pv2 dib">Promo Featured Image:</label>
+                <div class=" w-100 ">
+                    <label for="featuredImageInput" class="pointer w-100  dib ba b--dashed tc pa3">
+                            <p>Drag and Drop image here, or<br/> click to select image</p>
+                    </label>
+                    <input type="file" name="featuredImageInput" id="featuredImageInput" class="dn" onchange={m.withAttr("files",NewPromo.featuredImageChange)} />
+
+                    {Promos.NewPromo.featured_image_b64&&Promos.NewPromo.featured_image_b64!==""?
+                    <div id="preview" class="mv3 cf ">
+                      <img class="fl w-25" src={Promos.NewPromo.featured_image_b64} alt="image"/>
+                    </div>:""}
+                </div>
+            </div>
+            <div class="pa2">
+                <label class="f4 gray pv2 dib">Promo Images:</label>
                 <div class=" w-100 ">
                     <label for="imagesInput" class="pointer w-100  dib ba b--dashed tc pa3">
-                            <p>Drag and Drop files here, or<br/> click to select file</p>
+                            <p>Drag and Drop images here, or<br/> click to select images</p>
                     </label>
-                    <input type="file" name="imagesInput" id="imagesInput" class="dn" onchange={m.withAttr("files",NewPromo.fileChange)} multiple/>
+                    <input type="file" name="imagesInput" id="imagesInput" class="dn" onchange={m.withAttr("files",NewPromo.promoImagesChange)} multiple/>
 
                     <div id="preview" class="mv3 cf ">
                       {
                         Promos.NewPromo.images?Promos.NewPromo.images.map((image)=>{
-                          return (<img class="fl w-25" id="image_1" src={image} alt="image"/>)
+                          return (<img class="fl w-25" src={image} alt="image"/>)
                         }):""
                       }
                     </div>
-
                 </div>
             </div>
             <div class="pa2  pv3 mt2 tr">

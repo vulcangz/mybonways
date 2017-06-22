@@ -52,8 +52,8 @@ export var MerchantModel = {
             return localforage.setItem('AuthMerchant', response.merchant)
           })
           .then(function(){
-            //  MerchantModel.GetUserfromStorage()
-            // m.route.set("/")
+            MerchantModel.GetUserfromStorage()
+            m.route.set("/")
 
         })
     },

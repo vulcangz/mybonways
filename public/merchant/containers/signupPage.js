@@ -7,11 +7,13 @@ var SignupPage = {
   oncreate:function(vnode){
     console.log(vnode)
   },
-  signupLoader : false,
-  loginLoader : false,
-  loginError : "",
-  signupError: "",
-  signupMessage: "",
+  state: {
+    signupLoader : false,
+    loginLoader : false,
+    loginError : "",
+    signupError: "",
+    signupMessage: "",
+  },
   view: function(vnode) {
     return (
       <section>
@@ -26,24 +28,27 @@ var SignupPage = {
                   <div class="dib relative">
                     <a href="#" class="dib  black link v-mid mr3  pa2  relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>login</a>
                     <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 w5 "+(vnode.state.showNav?"db":"dn")}>
-                        {SignupPage.loginError? m("p.bg-red.white.pv1.w-100.mv0.tc.br2", SignupPage.loginError): null}
+                        {SignupPage.state.loginError? m("p.bg-red.white.pv1.w-100.mv0.tc.br2", SignupPage.state.loginError): ""}
                         <div class="db pv1">
                           <input type="text" placeholder="company id" class="input-reset ba b--black-20 db w-100 pv2 ph3"
                           oninput={m.withAttr("value", function(value) {
                             SignupPage.LoginMerchant.company_id = value.trim();
-                          })}/>
+                          })}
+                          value={SignupPage.LoginMerchant.company_id}/>
                         </div>
                         <div class="db pv1">
                           <input type="email" placeholder="email" class="input-reset ba b--black-20 db w-100 pv2 ph3"
                           oninput={m.withAttr("value", function(value) {
                             SignupPage.LoginMerchant.merchant_email = value.trim();
-                          })}/>
+                          })}
+                          value={SignupPage.LoginMerchant.merchant_email}/>
                         </div>
                         <div class="db pv1">
                           <input type="password" placeholder="password" class="input-reset ba b--black-20 db w-100 pv2 ph3"
                           oninput={m.withAttr("value", function(value) {
                             SignupPage.LoginMerchant.merchant_password = value.trim();
-                          })}/>
+                          })}
+                          value={SignupPage.LoginMerchant.merchant_password}/>
                         </div>
                         <div class="db tr">
                           <button class="pv2 ph4 bg-navy bw0 shadow grow white-80" onclick={function(){
@@ -51,25 +56,22 @@ var SignupPage = {
                             console.log("login: ", SignupPage.LoginMerchant)
                             if (Object.getOwnPropertyNames(SignupPage.LoginMerchant).length == 0 || SignupPage.LoginMerchant.company_id == "" || SignupPage.LoginMerchant.merchant_email == ""
                             || SignupPage.LoginMerchant.merchant_password == "") {
-                              SignupPage.loginError = "Please all fields are required";
+                              SignupPage.state.loginError = "Please all fields are required";
                               return;
                             }
-                            SignupPage.loginLoader = true;
+                            SignupPage.state.loginLoader = true;
                             MerchantModel.Login(SignupPage.LoginMerchant).then(function() {
                               // clear the forms
-                              [].forEach.call(document.getElementsByClassName("input-reset"), function(element){
-                                  element.value = "";
-                              })
                               // house keeping...
                               SignupPage.LoginMerchant = {}
-                              SignupPage.loginError = "";
-                              SignupPage.loginLoader = false;
+                              SignupPage.state.loginError = "";
+                              SignupPage.state.loginLoader = false;
                             }).catch(function(error){
-                              SignupPage.loginError = "Username or Password is incorrect.";
-                              SignupPage.loginLoader = false;                              
+                              SignupPage.state.loginError = "Username or Password is incorrect.";
+                              SignupPage.state.loginLoader = false;                              
                             });
                             }}>
-                            {SignupPage.loginLoader ? m(".loader") : "Login"}</button>
+                            {SignupPage.state.loginLoader ? m(".loader") : "Login"}</button>
                         </div>
                       </div>
                   </div>
@@ -87,56 +89,62 @@ var SignupPage = {
                   </section>
                   <section class=" pa3 pa4-ns bg-white br2 dib w-100 w-40-ns ">
                     <div class="">
-                      {SignupPage.signupError? m("p.bg-red.white.pv1.w-100.mv0.tc.br2", SignupPage.signupError) : null}
-                      {SignupPage.signupMessage? m("p.bg-navy.white.pv1.w-100.mv0.tc.br2", SignupPage.signupMessage) : null}
+                      {SignupPage.state.signupError? m("p.bg-red.white.pv1.w-100.mv0.tc.br2", SignupPage.state.signupError) : ""}
+                      {SignupPage.state.signupMessage? m("p.bg-navy.white.pv1.w-100.mv0.tc.br2", SignupPage.state.signupMessage) : ""}
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Store Name"
                         oninput={m.withAttr("value", function(value) {
                           SignupPage.SignupMerchant.company_name = value.trim();
-                        })} />
+                        })}
+                        value={SignupPage.SignupMerchant.company_name} />
                       </div>
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Store ID"
                         oninput={m.withAttr("value", function(value) {
                           SignupPage.SignupMerchant.company_id = value.trim();
                         })}
-                        />
+                        value={SignupPage.SignupMerchant.company_id }/>
                       </div>
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="email" placeholder="Merchant Email"
                         oninput={m.withAttr("value", function(value) {
                           SignupPage.SignupMerchant.merchant_email = value.trim();
                         })}
-                        />
+                        value={SignupPage.SignupMerchant.merchant_email}/>
                       </div>
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="password" placeholder="Merchant Password"
                         oninput={m.withAttr("value", function(value) {
                           SignupPage.SignupMerchant.merchant_password = value.trim();
                         })}
-                        />
+                        value={SignupPage.SignupMerchant.merchant_password}/>
                       </div>
                       <div class="tr pv2">
                         <button class="pv2 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={() => {
-                          if(Object.getOwnPropertyNames(SignupPage.SignupMerchant).length == 0 ||
-                          SignupPage.SignupMerchant.company_name == "" || SignupPage.SignupMerchant.company_id == ""
-                          || SignupPage.SignupMerchant.merchant_email == "" || SignupPage.SignupMerchant.merchant_password == "") {
-                              SignupPage.signupError = "All required fields must be provided.";
+                          if(!SignupPage.SignupMerchant.company_name || !SignupPage.SignupMerchant.company_id
+                          || !SignupPage.SignupMerchant.merchant_email || !SignupPage.SignupMerchant.merchant_password) {
+                              
+                              SignupPage.state.signupMessage = "";
+                              SignupPage.state.signupError = "All required fields must be provided.";
                               return;
                           }
-                            SignupPage.signupLoader = true;
+                            SignupPage.state.signupLoader = true;
                             MerchantModel.Signup(SignupPage.SignupMerchant).then(function(){
-                              SignupPage.signupMessage = "Login to your email to verify your account.";
-                              SignupPage.signupLoader = false;
+                              
+                              SignupPage.state.signupError = "";
+                              SignupPage.state.signupMessage = "Login to your email to verify your account.";
+                              SignupPage.state.signupLoader = false;
                               // clear the forms
-                              [].forEach.call(document.getElementsByClassName("input-reset"), function(element){
-                                element.value = "";
-                              })
+                              SignupPage.SignupMerchant = {}
+
                             }).catch(function(error){
-                              SignupPage.signupError = "Could not sign you up at this moment please try again.";
-                              SignupPage.signupLoader = false;
+
+                              SignupPage.state.signupMessage = "";
+                              SignupPage.state.signupError = "Could not sign you up at this moment please try again.";
+                              SignupPage.state.signupLoader = false;
+                              
                             });
-                          }}>{SignupPage.signupLoader? m(".loader") : "Signup"}</button>
+                          }}>{SignupPage.state.signupLoader? m(".loader") : "Signup"}</button>
                       </div>
                     </div>
                   </section>

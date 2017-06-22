@@ -87,6 +87,8 @@ var SignupPage = {
                   </section>
                   <section class=" pa3 pa4-ns bg-white br2 dib w-100 w-40-ns ">
                     <div class="">
+                      {SignupPage.signupError? m("p.bg-red.white.pv1.w-100.mv0.tc.br2", SignupPage.signupError) : null}
+                      {SignupPage.signupMessage? m("p.bg-navy.white.pv1.w-100.mv0.tc.br2", SignupPage.signupMessage) : null}
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Store Name"
                         oninput={m.withAttr("value", function(value) {

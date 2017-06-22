@@ -51,6 +51,9 @@ var NewPromo = {
       Promos.NewPromo.images = [];
       Promos.GetCategories()
   },
+  Loader: false,
+  signupError : "",
+  newpromoError :"",
   view: function(vnode) {
     console.log(Promos.Categories)
     return (
@@ -73,7 +76,7 @@ var NewPromo = {
                   <select class="ba b--light-silver bw1 pa2 w-100" onchange={m.withAttr("value", function(value) {
                       Promos.NewPromo.category = value;
                   })}>
-                    <option>-- Select Category --</option>
+                    <option disabled selected>-- Select Category --</option>
                     {Promos.Categories.map(function(category, i){
                       return (<option value={category.slug} key={i} >
                         {category.name}
@@ -158,7 +161,7 @@ var NewPromo = {
                     // set company id before submission
                     Promos.NewPromo.company_id = MerchantModel.Merchant.company_id;
                     Promos.SaveNew();
-                }}>submit promo</button>
+                }}>{NewPromo.Loader? m(".loader") : "submit promo"}</button>
             </div>
         </div>
       </section>

@@ -8,7 +8,7 @@ var PromosTable = {
   },
   view:function(){
     var p = Promos.AllPromos
-    console.log("p: ", p)
+    // console.log("p: ", p)
     return (
       <section>
         <div class="ph4 pv4 bg-white shadow-m2 ">

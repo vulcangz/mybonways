@@ -14,6 +14,51 @@ var SignupPage = {
     signupError: "",
     signupMessage: "",
   },
+  validateLogin: function(){
+      // validate input
+      console.log("login: ", SignupPage.LoginMerchant)
+      if (!SignupPage.LoginMerchant.company_id || !SignupPage.LoginMerchant.merchant_email
+      || !SignupPage.LoginMerchant.merchant_password) {
+          SignupPage.state.loginError = "Please all fields are required";
+          return;
+      }
+      SignupPage.state.loginLoader = true;
+      MerchantModel.Login(SignupPage.LoginMerchant).then(function() {
+        // clear the forms
+        // house keeping...
+        SignupPage.LoginMerchant = {}
+        SignupPage.state.loginError = "";
+        SignupPage.state.loginLoader = false;
+      }).catch(function(error){
+        SignupPage.state.loginError = "Username or Password is incorrect.";
+        SignupPage.state.loginLoader = false;                              
+      });
+  },
+  validateSignup: () => {
+      if(!SignupPage.SignupMerchant.company_name || !SignupPage.SignupMerchant.company_id
+      || !SignupPage.SignupMerchant.merchant_email || !SignupPage.SignupMerchant.merchant_password) {
+          
+          SignupPage.state.signupMessage = "";
+          SignupPage.state.signupError = "All required fields must be provided.";
+          return;
+      }
+      SignupPage.state.signupLoader = true;
+      MerchantModel.Signup(SignupPage.SignupMerchant).then(function(){
+        
+        SignupPage.state.signupError = "";
+        SignupPage.state.signupMessage = "Login to your email to verify your account.";
+        SignupPage.state.signupLoader = false;
+        // clear the forms
+        SignupPage.SignupMerchant = {}
+
+      }).catch(function(error){
+
+        SignupPage.state.signupMessage = "";
+        SignupPage.state.signupError = "Could not sign you up at this moment please try again.";
+        SignupPage.state.signupLoader = false;
+
+      });
+  },
   view: function(vnode) {
     return (
       <section>
@@ -51,26 +96,9 @@ var SignupPage = {
                           value={SignupPage.LoginMerchant.merchant_password}/>
                         </div>
                         <div class="db tr">
-                          <button class="pv2 ph4 bg-navy bw0 shadow grow white-80" onclick={function(){
-                            // validate input
-                            console.log("login: ", SignupPage.LoginMerchant)
-                            if (Object.getOwnPropertyNames(SignupPage.LoginMerchant).length == 0 || SignupPage.LoginMerchant.company_id == "" || SignupPage.LoginMerchant.merchant_email == ""
-                            || SignupPage.LoginMerchant.merchant_password == "") {
-                              SignupPage.state.loginError = "Please all fields are required";
-                              return;
-                            }
-                            SignupPage.state.loginLoader = true;
-                            MerchantModel.Login(SignupPage.LoginMerchant).then(function() {
-                              // clear the forms
-                              // house keeping...
-                              SignupPage.LoginMerchant = {}
-                              SignupPage.state.loginError = "";
-                              SignupPage.state.loginLoader = false;
-                            }).catch(function(error){
-                              SignupPage.state.loginError = "Username or Password is incorrect.";
-                              SignupPage.state.loginLoader = false;                              
-                            });
-                            }}>
+                          <button class="pv2 ph4 bg-navy bw0 shadow grow white-80" onclick={function() {
+                            SignupPage.validateLogin();
+                          }}>
                             {SignupPage.state.loginLoader ? m(".loader") : "Login"}</button>
                         </div>
                       </div>
@@ -120,31 +148,9 @@ var SignupPage = {
                         value={SignupPage.SignupMerchant.merchant_password}/>
                       </div>
                       <div class="tr pv2">
-                        <button class="pv2 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={() => {
-                          if(!SignupPage.SignupMerchant.company_name || !SignupPage.SignupMerchant.company_id
-                          || !SignupPage.SignupMerchant.merchant_email || !SignupPage.SignupMerchant.merchant_password) {
-                              
-                              SignupPage.state.signupMessage = "";
-                              SignupPage.state.signupError = "All required fields must be provided.";
-                              return;
-                          }
-                            SignupPage.state.signupLoader = true;
-                            MerchantModel.Signup(SignupPage.SignupMerchant).then(function(){
-                              
-                              SignupPage.state.signupError = "";
-                              SignupPage.state.signupMessage = "Login to your email to verify your account.";
-                              SignupPage.state.signupLoader = false;
-                              // clear the forms
-                              SignupPage.SignupMerchant = {}
-
-                            }).catch(function(error){
-
-                              SignupPage.state.signupMessage = "";
-                              SignupPage.state.signupError = "Could not sign you up at this moment please try again.";
-                              SignupPage.state.signupLoader = false;
-                              
-                            });
-                          }}>{SignupPage.state.signupLoader? m(".loader") : "Signup"}</button>
+                        <button class="pv2 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={function() {
+                          SignupPage.validateSignup();
+                        }}>{SignupPage.state.signupLoader? m(".loader") : "Signup"}</button>
                       </div>
                     </div>
                   </section>

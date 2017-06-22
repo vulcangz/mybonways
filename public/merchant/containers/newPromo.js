@@ -193,6 +193,7 @@ var NewPromo = {
                     }).catch(function(error) {
                         NewPromo.state.newpromoError = "An error occured adding this promo. Try Again.";
                         window.scrollTo(0, 100);
+                        NewPromo.state.Loader = false;
                     });
                 }}>{NewPromo.state.Loader ? m(".loader") : "Submit Promo"}</button>
             </div>

@@ -11,6 +11,7 @@ var SignupPage = {
   loginLoader : false,
   loginError : "",
   signupError: "",
+  signupMessage: "",
   view: function(vnode) {
     return (
       <section>
@@ -55,6 +56,12 @@ var SignupPage = {
                             }
                             SignupPage.loginLoader = true;
                             MerchantModel.Login(SignupPage.LoginMerchant).then(function() {
+                              // clear the forms
+                              [].forEach.call(document.getElementsByClassName("input-reset"), function(element){
+                                  element.value = "";
+                              })
+                              // house keeping...
+                              SignupPage.LoginMerchant = {}
                               SignupPage.loginError = "";
                               SignupPage.loginLoader = false;
                             }).catch(function(error){
@@ -109,9 +116,24 @@ var SignupPage = {
                       </div>
                       <div class="tr pv2">
                         <button class="pv2 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={() => {
+                          if(Object.getOwnPropertyNames(SignupPage.SignupMerchant).length == 0 ||
+                          SignupPage.SignupMerchant.company_name == "" || SignupPage.SignupMerchant.company_id == ""
+                          || SignupPage.SignupMerchant.merchant_email == "" || SignupPage.SignupMerchant.merchant_password == "") {
+                              SignupPage.signupError = "All required fields must be provided.";
+                              return;
+                          }
                             SignupPage.signupLoader = true;
-                            m.redraw()
-                            MerchantModel.Signup(SignupPage.SignupMerchant);
+                            MerchantModel.Signup(SignupPage.SignupMerchant).then(function(){
+                              SignupPage.signupMessage = "Login to your email to verify your account.";
+                              SignupPage.signupLoader = false;
+                              // clear the forms
+                              [].forEach.call(document.getElementsByClassName("input-reset"), function(element){
+                                element.value = "";
+                              })
+                            }).catch(function(error){
+                              SignupPage.signupError = "Could not sign you up at this moment please try again.";
+                              SignupPage.signupLoader = false;
+                            });
                           }}>{SignupPage.signupLoader? m(".loader") : "Signup"}</button>
                       </div>
                     </div>

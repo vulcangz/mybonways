@@ -54,9 +54,9 @@ var PromoDetailPage = {
               </div>
             </div>
           </div>
-          <section class="bg-white pa3 dib-ns v-mid">
-            <div class="dib v-mid ba">
-              <img src={Promos.Promo.featured_image} class=""/>
+          <section class="bg-white  dib-ns v-mid">
+            <div class="dib v-mid  w-100">
+              <img src={Promos.Promo.featured_image} class="w-100 "/>
             </div>
           </section>
           <section class="pv3 dib-ns f6 ph2 gray">

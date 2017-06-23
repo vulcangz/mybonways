@@ -63,15 +63,17 @@ var HotPromosPage = {
                   Promos.FeaturedPromos.map((promo, index) => {
                     return (
                       <div class="dib w-50 pa1 fl" >
-                        <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100" href="/promo/s" oncreate={m.route.link}>
+                        <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100" href={"/promo/"+promo.slug} oncreate={m.route.link}>
                           <div class="f8 pv1 tr pa1">
                             <img src="/assets/img/svg/cart.svg" style="height:0.6rem;"/>
                             <span class="red-custom">
                               {promo.company_id}
                             </span>
                           </div>
-                          <div class="w-100">
-                            <img src={promo.featured_image || promo.featured_image_b64} class="w-100 br2" />
+                          <div class="w-100 cover overflow-hidden" style={"background-image:url("+promo.featured_image_b64+")"} oncreate={(vnode)=>{
+                              vnode.dom.style.height = (vnode.dom.offsetWidth/1.5)+"px"
+                            }}>
+                            <img src={promo.featured_image} class="w-100 br2" />
                           </div>
                           <span class="f7 lh-title dib pa1 ">{promo.item_name}</span>
                           <div class="f8 pa1 tr cf">

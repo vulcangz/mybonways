@@ -52,7 +52,9 @@ func App() *buffalo.App {
 
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
 
+		promoResource := &PromoResource{}
 		merchantsResource := &MerchantsResource{}
+
 		// if this is merchants the middleware does not work, so i changed it to merchant
 		merchantGroup := app.Group("/api/merchants")
 		merchantGroup.Use(MerchantLoginCheckMiddleware)
@@ -64,10 +66,16 @@ func App() *buffalo.App {
 
 		app.POST("/api/merchants/login", MerchantLogin)
 		app.POST("/api/admin/login", AdminLogin)
+
+		app.GET("/api/featuredpromos", promoResource.ListFeaturedPromos)
+
+		app.GET("/api/promo/{slug}", promoResource.GetPromoBySlug)
+		app.GET("/api/merchant/{company_id}", merchantsResource.GetByCompanyID)
+
 		app.GET("/api/search/area/{area}", AreaSearchHandler)
 
 		merchantGroup.Resource("/branch", &BranchResource{})
-		merchantGroup.Resource("/promo", &PromoResource{})
+		merchantGroup.Resource("/promo", promoResource)
 
 		app.Resource("/api/merchants", merchantsResource)
 

@@ -7,7 +7,7 @@ import SearchArea from './containers/searcharea.js';
 
 var root = document.getElementById('appContainer');
 
-m.route.prefix('');
+m.route.prefix('#');
 m.route(root, '/', {
   '/':{
     view: function(vnode){

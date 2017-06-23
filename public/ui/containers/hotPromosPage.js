@@ -1,9 +1,11 @@
 import m from 'mithril';
 import {search} from '../models/search.js';
+import {Promos} from '../models/promos.js';
 
 var HotPromosPage = {
   oncreate:function(vnode){
     console.log(vnode)
+    Promos.GetFeaturedPromos();
   },
   view: function(vnode) {
     return (
@@ -57,25 +59,29 @@ var HotPromosPage = {
           <section class="bg-light-gray-custom pv2">
               <div class="">
                 <div class="pv1 cf">
-                  <div class="dib w-50 pa1 fl" >
-                    <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link" href="/promo/s" oncreate={m.route.link}>
-                      <div class="f8 pv1 tr pa1">
+                {// loop through the result here
+                  Promos.FeaturedPromos.map((promo, index) => {
+                    return (
+                  <div class="dib w-50 pa3 fr" >
+                    <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link" href={"/promo/" + promo.slug} oncreate={m.route.link}>
+                      <div class="f5 pv1 tr pa1">
                         <img src="/assets/img/svg/cart.svg" style="height:0.6rem;"/>
-                        <span class="red-custom">
-                          super mercado
-                        </span>
+                        <span class="red-custom"> Add To Cart </span>
                       </div>
-                      <div class="w-100">
-                        <img src="/assets/img/ad/3.png" class="w-100 br2" />
+                      <div class="w-100 overflow-hidden" style="max-height: 25rem;">
+                        <img src={promo.featured_image || "/assets/img/ad/3.png"} class="w-100 br2" />
                       </div>
-                      <span class="f7 lh-title dib pa1 ">Ticket to Cruise</span>
+                      <span class="f3 lh-title dib pa1 ">{promo.item_name}</span>
                       <div class="f8 pa1 tr cf">
                         <div class="dib w-50 fl">
-                          <span class=" red-custom db fw6 f5">50%</span>
+                          <span class=" red-custom db fw6 f5">
+                            {(((parseInt(promo.old_price) - parseInt(promo.new_price))/parseInt(promo.old_price)) * 100).toFixed(1) }
+                            % off
+                          </span>
                         </div>
                         <div class="dib w-50 fl">
-                          <strong class="dark-gray db">20000CFA</strong>
-                          <span class="strike db">10000CFA</span>
+                          <strong class="dark-gray db">{promo.new_price}CFA</strong>
+                          <span class="strike db">{promo.old_price}CFA</span>
                         </div>
                       </div>
                       <div class="f8 pa1 pv2 ">
@@ -90,112 +96,13 @@ var HotPromosPage = {
                       </div>
                     </a>
                   </div>
-                  <div class="dib w-50 pa1 fl" >
-                    <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link" href="/promo/s" oncreate={m.route.link}>
-                      <div class="f8 pv1 tr pa1">
-                        <img src="/assets/img/svg/cart.svg" style="height:0.6rem;"/>
-                        <span class="red-custom">
-                          super mercado
-                        </span>
-                      </div>
-                      <div class="w-100">
-                        <img src="/assets/img/ad/3.png" class="w-100 br2" />
-                      </div>
-                      <span class="f7 lh-title dib pa1 ">Ticket to Cruise</span>
-                      <div class="f8 pa1 tr cf">
-                        <div class="dib w-50 fl">
-                          <span class=" red-custom db fw6 f5">50%</span>
-                        </div>
-                        <div class="dib w-50 fl">
-                          <strong class="dark-gray db">20000CFA</strong>
-                          <span class="strike db">10000CFA</span>
-                        </div>
-                      </div>
-                      <div class="f8 pa1 pv2 ">
-                        <span class="pa1">
-                          <img src="/assets/img/svg/like-hollow.svg" class="dib pr1" style="height:0.5rem;"/>
-                          <span class="dib">200</span>
-                        </span>
-                        <span class="pa1">
-                          <img src="/assets/img/svg/comment.svg" class="pr1" style="height:0.5rem;"/>
-                          <span class="dib">12</span>
-                        </span>
-                      </div>
-                    </a>
-                  </div>
+                  )
+                  })
+                }
                 </div>
-                <div class="pv1 cf">
-                  <div class="dib w-50 pa1 fl">
-                      <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link" href="/promo/s" oncreate={m.route.link}>
-                        <div class="f8 pv1 tr pa1">
-                          <img src="/assets/img/svg/cart.svg" style="height:0.6rem;"/>
-                          <span class="red-custom">
-                            super mercado
-                          </span>
-                        </div>
-                        <div class="w-100">
-                          <img src="/assets/img/ad/3.png" class="w-100 br2" />
-                        </div>
-                        <span class="f7 lh-title dib pa1 ">Ticket to Cruise</span>
-                        <div class="f8 pa1 tr cf">
-                          <div class="dib w-50 fl">
-                            <span class=" red-custom db fw6 f5">50%</span>
-                          </div>
-                          <div class="dib w-50 fl">
-                            <strong class="dark-gray db">20000CFA</strong>
-                            <span class="strike db">10000CFA</span>
-                          </div>
-                        </div>
-                        <div class="f8 pa1 pv2 ">
-                          <span class="pa1">
-                            <img src="/assets/img/svg/like-hollow.svg" class="dib pr1" style="height:0.5rem;"/>
-                            <span class="dib">200</span>
-                          </span>
-                          <span class="pa1">
-                            <img src="/assets/img/svg/comment.svg" class="pr1" style="height:0.5rem;"/>
-                            <span class="dib">12</span>
-                          </span>
-                        </div>
-                      </a>
-                  </div>
-                  <div class="dib w-50 pa1 fl">
-                      <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link" href="/promo/s" oncreate={m.route.link}>
-                        <div class="f8 pv1 tr pa1">
-                          <img src="/assets/img/svg/cart.svg" style="height:0.6rem;"/>
-                          <span class="red-custom">
-                            super mercado
-                          </span>
-                        </div>
-                        <div class="w-100">
-                          <img src="/assets/img/ad/3.png" class="w-100 br2" />
-                        </div>
-                        <span class="f7 lh-title dib pa1 ">Ticket to Cruise</span>
-                        <div class="f8 pa1 tr cf">
-                          <div class="dib w-50 fl">
-                            <span class=" red-custom db fw6 f5">50%</span>
-                          </div>
-                          <div class="dib w-50 fl">
-                            <strong class="dark-gray db">20000CFA</strong>
-                            <span class="strike db">10000CFA</span>
-                          </div>
-                        </div>
-                        <div class="f8 pa1 pv2 ">
-                          <span class="pa1">
-                            <img src="/assets/img/svg/like-hollow.svg" class="dib pr1" style="height:0.5rem;"/>
-                            <span class="dib">200</span>
-                          </span>
-                          <span class="pa1">
-                            <img src="/assets/img/svg/comment.svg" class="pr1" style="height:0.5rem;"/>
-                            <span class="dib">12</span>
-                          </span>
-                        </div>
-                      </a>
-                  </div>
-                </div>
-
               </div>
               <div class="tc pv3">
-                <button class="ba b--red-custom bg-transparent pv2 ph3">load more</button>
+                <button class="ba b--red-custom bg-transparent pv2 ph3">Load More</button>
               </div>
           </section>
         </section>

@@ -10,15 +10,17 @@ import (
 )
 
 type Branch struct {
-	ID        uuid.UUID `json:"id" db:"id"`
-	CreatedAt time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
-	CompanyID string    `json:"company_id" db:"company_id"`
-	Address   string    `json:"address" db:"address"`
-	City      string    `json:"city" db:"city"`
-	State     string    `json:"state" db:"state"`
-	Country   string    `json:"country" db:"country"`
-	Location  Location  `json:"location" db:"-"`
+	ID            uuid.UUID `json:"id" db:"id"`
+	CreatedAt     time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at" db:"updated_at"`
+	CompanyID     string    `json:"company_id" db:"company_id"`
+	Address       string    `json:"address" db:"address"`
+	Neighbourhood string    `json:"neighbourhood" db:"neighbourhood"`
+	City          string    `json:"city" db:"city"`
+	Country       string    `json:"country" db:"country"`
+	Latitude      float64   `json:"latitude" db:"latitude"`
+	Longitude     float64   `json:"longitude" db:"longitude"`
+	Location      Location  `json:"location" db:"-"`
 }
 
 // String is not required by pop and may be deleted

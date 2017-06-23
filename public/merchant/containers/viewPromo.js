@@ -43,7 +43,7 @@ var ViewPromo = {
             return
           }
           return (
-            <div>
+            <div class="dib fl">
               <img src={pi} class="h4 bg-light-gray-custom1 min-w4"/>
             </div>
           )
@@ -79,14 +79,18 @@ var ViewPromo = {
                         <strong>Description:</strong>
                         <p> {CurrentPromo.description}</p>
                       </div>
-                      {CurrentPromo.feature_image!==""&&CurrentPromo.feature_image!==" "?
+                      {CurrentPromo.featured_image&&CurrentPromo.featured_image!==""?
                       <div class="pa2  cf">
-                        <strong class="db">Featured Image:</strong>
-                        <img src={CurrentPromo.feature_image} class="h4 bg-light-gray-custom1 min-w4"/>
+                        <strong class="db pv1">Featured Image:</strong>
+                        <img src={CurrentPromo.featured_image} class="h4 bg-light-gray-custom1 min-w4"/>
                       </div>
                       :""
                     }
-                    {promo_images}
+                    <div class="pa2  cf">
+                      <strong class="db pv1">Promo Images:</strong>
+                      {promo_images}
+                    </div>
+
                     </div>
                     <button class= {ViewPromo.updatebutton?"dn":" ba b--navy white pointer bg-navy pv2 ph3 w-100"}
                     onclick={function() {

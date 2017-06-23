@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/gobuffalo/buffalo"
@@ -52,9 +53,9 @@ func (br *BranchResource) Show(c buffalo.Context) error {
 	err := tx.Where("branches.id = ?", c.Param("branch_id")).First(&b)
 	if err != nil {
 		log.Println("error show:", err)
-		return c.Render(201, render.JSON(struct{ Err string }{"no branch"}))
+		return c.Render(200, render.JSON(struct{ Err string }{"no branch"}))
 	}
-	return c.Render(201, render.JSON(b))
+	return c.Render(200, render.JSON(b))
 }
 
 // Create a branch
@@ -64,46 +65,31 @@ func (br *BranchResource) Create(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	log.Printf("\nBRANCH: %#v\n", b)
-	tx := c.Value("tx").(*pop.Connection)
+	log.Printf("b: %#v", b)
 
-	err = tx.Create(b)
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	queryString := fmt.Sprintf(`INSERT INTO public.branches(
+            created_at, updated_at, id, company_id, address, city, country, neighbourhood,latitude, longitude, location)
+    VALUES ( current_timestamp, current_timestamp, uuid_in(md5(random()::text || clock_timestamp()::text)::cstring), ?, ?, ?, ?,
+            ?, ?, ?, ST_GeomFromText('POINT(%f %f)'));
+`, b.Latitude, b.Longitude)
+	query := tx.RawQuery(queryString, b.CompanyID, b.Address, b.City, b.Country, b.Neighbourhood, b.Latitude, b.Longitude)
+	err = query.Exec()
 	if err != nil {
 		log.Println("create errror:", err)
 		return errors.WithStack(err)
 	}
-	log.Println("created branch")
 
-	component := make(map[maps.Component]string)
-	if b.Country != "" {
-		component["country"] = b.Country
-	}
-	if b.Location.Area == "" {
-		log.Println("no area provided")
-		return c.Render(201, render.JSON(struct{ Err string }{Err: "No area provided"}))
-	}
-	component["locality"] = b.Location.Area
-	l := &models.Location{}
-	l = &b.Location
-	l.BranchID = b.ID
-	// get coordinate from the api using the area provided by the merchant
-	lng, lat, err := GetLongAndLatFromArea(b.Location.Area, component)
-	if err != nil {
-		return c.Render(201, render.JSON(struct{ Err string }{Err: "no result"}))
-	}
-	log.Println("\nlocation: ", l, "\n")
-	l.Longtitude = lng // longtitude
-	l.Latitude = lat   // latitude
-
-	err = tx.Create(l)
-	if err != nil {
-		log.Println("create location errror: ", err)
-		return errors.WithStack(err)
-	}
-
-	c.Logger().Infof("Branch: %#v \n location: %#v", b, l)
-
-	return c.Render(201, render.JSON(b))
+	// log.Printf("\nBRANCH: %#v\n", b)
+	// tx := c.Value("tx").(*pop.Connection)
+	//
+	// err = tx.Create(b)
+	// if err != nil {
+	// 	log.Println("create errror:", err)
+	// 	return errors.WithStack(err)
+	// }
+	return c.Render(200, render.JSON(b))
 }
 
 // Update a target branch
@@ -153,7 +139,7 @@ func (br *BranchResource) Update(c buffalo.Context) error {
 		}
 		if location.Area == "" {
 			log.Println("no area provided")
-			return c.Render(201, render.JSON(struct{ Err string }{Err: "No area provided"}))
+			return c.Render(200, render.JSON(struct{ Err string }{Err: "No area provided"}))
 		}
 		component["locality"] = location.Area
 		// l = &branch.Location

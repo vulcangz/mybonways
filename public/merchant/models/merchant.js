@@ -46,13 +46,13 @@ export var MerchantModel = {
               data: merchant
           })
           .then(function(response) {
-            console.log(response);
+            console.log("Login response#: ", response);
             var cookie = getCookie("X-MERCHANT-TOKEN")
             console.log("cookie:", cookie)
             return localforage.setItem('AuthMerchant', response.merchant)
           })
           .then(function(){
-             MerchantModel.GetUserfromStorage()
+            MerchantModel.GetUserfromStorage()
             m.route.set("/")
 
         })

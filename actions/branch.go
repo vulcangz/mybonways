@@ -73,7 +73,7 @@ func (br *BranchResource) Create(c buffalo.Context) error {
             created_at, updated_at, id, company_id, address, city, country, neighbourhood,latitude, longitude, location)
     VALUES ( current_timestamp, current_timestamp, uuid_in(md5(random()::text || clock_timestamp()::text)::cstring), ?, ?, ?, ?,
             ?, ?, ?, ST_GeomFromText('POINT(%f %f)'));
-`, b.Latitude, b.Longitude)
+`, b.Longitude, b.Latitude)
 	query := tx.RawQuery(queryString, b.CompanyID, b.Address, b.City, b.Country, b.Neighbourhood, b.Latitude, b.Longitude)
 	err = query.Exec()
 	if err != nil {

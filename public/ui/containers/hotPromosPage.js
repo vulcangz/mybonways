@@ -62,13 +62,6 @@ var HotPromosPage = {
                 {// loop through the result here
                   Promos.FeaturedPromos.map((promo, index) => {
                     return (
-<<<<<<< HEAD
-                  <div class="dib w-50 pa1 fl" >
-                    <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link" href={"/promo/" + promo.slug} oncreate={m.route.link}>
-                      <div class="f5 pv1 tr pa1">
-                        <img src="/assets/img/svg/cart.svg" style="height:0.6rem;"/>
-                        <span class="red-custom"> Add To Cart </span>
-=======
                       <div class="dib w-50 pa1 fl" >
                         <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100" href="/promo/s" oncreate={m.route.link}>
                           <div class="f8 pv1 tr pa1">
@@ -101,7 +94,6 @@ var HotPromosPage = {
                             </span>
                           </div>
                         </a>
->>>>>>> f4c4d3a1f030e306463efbe8aa1b590dc5c4b7c3
                       </div>
 
                   )

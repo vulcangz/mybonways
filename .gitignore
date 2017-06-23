@@ -9,3 +9,4 @@ node_modules/
 *-packr.go
 mybonways
 public/assets/js/
+npm-debug.log*

@@ -62,7 +62,7 @@ var HotPromosPage = {
                 {// loop through the result here
                   Promos.FeaturedPromos.map((promo, index) => {
                     return (
-                  <div class="dib w-50 pa3 fr" >
+                  <div class="dib w-50 pa1 fl" >
                     <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link" href={"/promo/" + promo.slug} oncreate={m.route.link}>
                       <div class="f5 pv1 tr pa1">
                         <img src="/assets/img/svg/cart.svg" style="height:0.6rem;"/>
@@ -102,7 +102,9 @@ var HotPromosPage = {
                 </div>
               </div>
               <div class="tc pv3">
-                <button class="ba b--red-custom bg-transparent pv2 ph3">Load More</button>
+                <button class="ba b--red-custom bg-transparent pv2 ph3" onclick={() => {
+                    Promos.LoadMore();
+                  }}>Load More</button>
               </div>
           </section>
         </section>

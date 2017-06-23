@@ -4,15 +4,32 @@ export var Promos = {
     FeaturedPromos : [],
     Promo: {promo_images:""},
     PromoMerchant: {},
+    PerPage: 2,
+    Page: 1,
     GetFeaturedPromos: () => {
         return m.request({
             method: "GET",
-            url: "/api/featuredpromos",
+            url: "/api/featuredpromos/" + Promos.PerPage,
         }).then((response) => {
             console.log("featured promos response:", response);
             Promos.FeaturedPromos = response;
         }).catch((error) => {
             console.error("featured promos error: ", error)
+        })
+    },
+    LoadMore: () => {
+        return m.request({
+            method: "GET",
+            url: "/api/featuredpromos/" + Promos.PerPage + "/" + ++Promos.Page
+        }).then((response) => {
+            console.log("more promos: ", response);
+            if(response.length > 0 ) {
+                Promos.FeaturedPromos.push.apply(Promos.FeaturedPromos, response);
+                // Promos.FeaturedPromos = Promos.FeaturedPromos.concat(response);
+            }
+            
+        }).catch((error) => {
+            console.error("more promos Error: ", error);
         })
     },
     GetPromo: (slug) => {

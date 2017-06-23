@@ -4,12 +4,11 @@ export var Promos = {
     FeaturedPromos : [],
     Promo: {promo_images:""},
     PromoMerchant: {},
-    PerPage: 2,
     Page: 1,
     GetFeaturedPromos: () => {
         return m.request({
             method: "GET",
-            url: "/api/featuredpromos/" + Promos.PerPage,
+            url: "/api/featuredpromos",
         }).then((response) => {
             console.log("featured promos response:", response);
             Promos.FeaturedPromos = response;
@@ -20,7 +19,7 @@ export var Promos = {
     LoadMore: () => {
         return m.request({
             method: "GET",
-            url: "/api/featuredpromos/" + Promos.PerPage + "/" + ++Promos.Page
+            url: "/api/featuredpromos/" + ++Promos.Page
         }).then((response) => {
             console.log("more promos: ", response);
             if(response.length > 0 ) {

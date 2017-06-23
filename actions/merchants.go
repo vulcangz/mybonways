@@ -145,3 +145,14 @@ func VerifyMerchant(c buffalo.Context) error {
 
 	return c.Render(200, render.JSON(m))
 }
+
+func (mr *MerchantsResource) GetByCompanyID(c buffalo.Context) error {
+	m := &models.Merchant{}
+	tx := c.Value("tx").(*pop.Connection)
+	err := tx.Where("company_id = ?", c.Param("company_id")).First(m)
+	if err != nil {
+		log.Println("Show err: ", err)
+		return c.Error(404, errors.WithStack(err))
+	}
+	return c.Render(200, render.JSON(m))
+}

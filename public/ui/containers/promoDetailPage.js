@@ -1,10 +1,24 @@
 import m from 'mithril';
+import {Promos} from '../models/promos.js';
 
 var PromoDetailPage = {
   oncreate:function(vnode){
-    console.log(vnode)
+    console.log("vnode")
+    Promos.GetPromo(vnode.attrs.slug);
   },
   view: function(vnode) {
+    let CurrentPromo = Promos.Promo;
+
+    var promo_images = CurrentPromo.promo_images.split(",").map(function(pi, i){
+      if (pi===""||pi===" "){
+        return
+      }
+      return (
+        <div class="dib w-50 br b--transparent">
+          <img src={pi} class="w-100  b--light-gray-custom" />
+        </div>
+      )
+    })
     return (
       <section>
         <section>
@@ -30,22 +44,22 @@ var PromoDetailPage = {
                 <span class="dib searchbtn z-3 pv1 " style="padding-top:0.60rem">
                   <img src="/assets/img/svg/search.svg" class="" style="height:0.8rem;"/>
                 </span>
-                <input type="search" class="w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent "  placeholder="search"/>
+                <input type="search" class="w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent"  placeholder="search"/>
               </div>
               <div class="dib ml2 flex relative" style="flex:3">
                 <span class="dib searchbtn z-3 pv1 " style="padding-top:0.60rem">
                   <img src="/assets/img/svg/location.svg" class="" style="height:0.8rem;"/>
                 </span>
-                <input type="search" class="w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent "  placeholder="area"/>
+                <input type="search" class="w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent"  placeholder="area"/>
               </div>
             </div>
           </div>
-          <section class="bg-white ">
-            <div class="  w-100 ">
-              <img src="/assets/img/ad/1.png" class="w-100 "/>
+          <section class="bg-white pa3 dib-ns v-mid">
+            <div class="dib v-mid ba">
+              <img src={Promos.Promo.featured_image} class=""/>
             </div>
           </section>
-          <section class="pv3 f6 ph2 gray">
+          <section class="pv3 dib-ns f6 ph2 gray">
             <section class="pb3">
               <div class="dib fr">
                 <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
@@ -59,14 +73,14 @@ var PromoDetailPage = {
                 </a>
               </div>
               <div class="ph2">
-                <span class="dib red-custom pv1">Buy 2 and get 5 free cokes</span>
+                <span class="dib red-custom pv1">{Promos.Promo.item_name}</span>
                 <div class="pt1">
                   <span>Original Price: </span>
-                  <span>34334CFA</span>
+                  <span>{Promos.Promo.old_price}CFA</span>
                 </div>
                 <div class="pt1">
                   <span>Current Price: </span>
-                  <span>34334CFA</span>
+                  <span>{Promos.Promo.new_price}CFA</span>
                 </div>
               </div>
             </section>
@@ -83,14 +97,15 @@ var PromoDetailPage = {
                 </div>
               </div>
               <div class="pa1">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
+                <p> {Promos.Promo.description} </p>
                 <div class=" ">
-                  <div class="dib w-50 br b--transparent">
+                  {promo_images}
+                  {/*<div class="dib w-50 br b--transparent">
                     <img src="/assets/img/ad/1.png" class="w-100  b--light-gray-custom" />
-                  </div><div class="dib w-50 bl b--transparent">
-                    <img src="/assets/img/ad/2.png" class="w-100  b--light-gray-custom" />
                   </div>
+                  <div class="dib w-50 bl b--transparent">
+                    <img src="/assets/img/ad/2.png" class="w-100  b--light-gray-custom" />
+                  </div>*/}
                 </div>
               </div>
             </section>

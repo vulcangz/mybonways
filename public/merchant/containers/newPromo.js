@@ -56,6 +56,40 @@ var NewPromo = {
     newpromoMessage:"",
     newpromoError :"",
   },
+  validateNewPromo: () => {
+    // check if old price is greater or equal to new price...
+    if (pareseInt(Promos.NewPromo.old_price, 10) <= pareseInt(Promos.NewPromo.new_price, 10)) {
+        NewPromo.state.newpromoError = "You should probable make the new price lower than the old price.";
+        window.scrollTo(0, 100);
+        return;
+    }
+    // validate the form inputs...
+    if(!Promos.NewPromo.item_name || !Promos.NewPromo.category ||
+    !Promos.NewPromo.old_price || !Promos.NewPromo.new_price ||
+    !Promos.NewPromo.start_date || !Promos.NewPromo.end_date ||
+    !Promos.NewPromo.description || !Promos.NewPromo.featured_image_b64 ||
+    !Promos.NewPromo.images.length) {
+        // console.log("#1 new promo to be submitted: ", Promos.NewPromo);
+        NewPromo.state.newpromoError = "All Details must be filled out correctly.";
+        // scroll to the top to view the error message...
+        window.scrollTo(0, 100);
+        return;
+    }
+    NewPromo.state.Loader = true;
+    //console.log("#2 new promo to be submitted: ", Promos.NewPromo)
+    // set company id before submission
+    Promos.NewPromo.company_id = MerchantModel.Merchant.company_id;
+    
+    Promos.SaveNew().then(function(){
+        NewPromo.state.newpromoMessage = "New Promo added!";
+        window.scrollTo(0, 100);
+        NewPromo.state.Loader = false;
+    }).catch(function(error) {
+        NewPromo.state.newpromoError = "An error occured adding this promo. Try Again.";
+        window.scrollTo(0, 100);
+        NewPromo.state.Loader = false;
+    });
+  },
   view: function(vnode) {
     // console.log(Promos.Categories)
     return (
@@ -163,38 +197,7 @@ var NewPromo = {
             </div>
             <div class="pa2  pv3 mt2 tr">
                 <button  class=" ph3 pv2 bg-navy white-90 grow pointer no-underline shadow-4 bw0 " onclick={function() {
-                    // check if old price is greater or equal to new price...
-                    if (pareseInt(Promos.NewPromo.old_price, 10) <= pareseInt(Promos.NewPromo.new_price, 10)) {
-                        NewPromo.state.newpromoError = "You should probable make the new price lower than the old price.";
-                        window.scrollTo(0, 100);
-                        return;
-                    }
-                    // validate the form inputs...
-                    if(!Promos.NewPromo.item_name || !Promos.NewPromo.category ||
-                    !Promos.NewPromo.old_price || !Promos.NewPromo.new_price ||
-                    !Promos.NewPromo.start_date || !Promos.NewPromo.end_date ||
-                    !Promos.NewPromo.description || !Promos.NewPromo.featured_image_b64 ||
-                    !Promos.NewPromo.images.length) {
-                        // console.log("#1 new promo to be submitted: ", Promos.NewPromo);
-                        NewPromo.state.newpromoError = "All Details must be filled out correctly.";
-                        // scroll to the top to view the error message...
-                        window.scrollTo(0, 100);
-                        return;
-                    }
-                    NewPromo.state.Loader = true;
-                    //console.log("#2 new promo to be submitted: ", Promos.NewPromo)
-                    // set company id before submission
-                    Promos.NewPromo.company_id = MerchantModel.Merchant.company_id;
-                    
-                    Promos.SaveNew().then(function(){
-                        NewPromo.state.newpromoMessage = "New Promo added!";
-                        window.scrollTo(0, 100);
-                        NewPromo.state.Loader = false;
-                    }).catch(function(error) {
-                        NewPromo.state.newpromoError = "An error occured adding this promo. Try Again.";
-                        window.scrollTo(0, 100);
-                        NewPromo.state.Loader = false;
-                    });
+                    NewPromo.validateNewPromo();
                 }}>{NewPromo.state.Loader ? m(".loader") : "Submit Promo"}</button>
             </div>
         </div>

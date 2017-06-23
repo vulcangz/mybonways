@@ -62,40 +62,48 @@ var HotPromosPage = {
                 {// loop through the result here
                   Promos.FeaturedPromos.map((promo, index) => {
                     return (
+<<<<<<< HEAD
                   <div class="dib w-50 pa1 fl" >
                     <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link" href={"/promo/" + promo.slug} oncreate={m.route.link}>
                       <div class="f5 pv1 tr pa1">
                         <img src="/assets/img/svg/cart.svg" style="height:0.6rem;"/>
                         <span class="red-custom"> Add To Cart </span>
+=======
+                      <div class="dib w-50 pa1 fl" >
+                        <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100" href="/promo/s" oncreate={m.route.link}>
+                          <div class="f8 pv1 tr pa1">
+                            <img src="/assets/img/svg/cart.svg" style="height:0.6rem;"/>
+                            <span class="red-custom">
+                              {promo.company_id}
+                            </span>
+                          </div>
+                          <div class="w-100">
+                            <img src={promo.featured_image || promo.featured_image_b64} class="w-100 br2" />
+                          </div>
+                          <span class="f7 lh-title dib pa1 ">{promo.item_name}</span>
+                          <div class="f8 pa1 tr cf">
+                            <div class="dib w-50 fl">
+                              <span class=" red-custom db fw6 f5">{(((parseInt(promo.old_price) - parseInt(promo.new_price))/parseInt(promo.old_price)) * 100).toFixed(1) }%</span>
+                            </div>
+                            <div class="dib w-50 fl">
+                              <strong class="dark-gray db">{promo.new_price}CFA</strong>
+                              <span class="strike db">{promo.old_price}CFA</span>
+                            </div>
+                          </div>
+                          <div class="f8 pa1 pv2 ">
+                            <span class="pa1">
+                              <img src="/assets/img/svg/like-hollow.svg" class="dib pr1" style="height:0.5rem;"/>
+                              <span class="dib">200</span>
+                            </span>
+                            <span class="pa1">
+                              <img src="/assets/img/svg/comment.svg" class="pr1" style="height:0.5rem;"/>
+                              <span class="dib">12</span>
+                            </span>
+                          </div>
+                        </a>
+>>>>>>> f4c4d3a1f030e306463efbe8aa1b590dc5c4b7c3
                       </div>
-                      <div class="w-100 overflow-hidden" style="max-height: 25rem;">
-                        <img src={promo.featured_image || "/assets/img/ad/3.png"} class="w-100 br2" />
-                      </div>
-                      <span class="f3 lh-title dib pa1 ">{promo.item_name}</span>
-                      <div class="f8 pa1 tr cf">
-                        <div class="dib w-50 fl">
-                          <span class=" red-custom db fw6 f5">
-                            {(((parseInt(promo.old_price) - parseInt(promo.new_price))/parseInt(promo.old_price)) * 100).toFixed(1) }
-                            % off
-                          </span>
-                        </div>
-                        <div class="dib w-50 fl">
-                          <strong class="dark-gray db">{promo.new_price}CFA</strong>
-                          <span class="strike db">{promo.old_price}CFA</span>
-                        </div>
-                      </div>
-                      <div class="f8 pa1 pv2 ">
-                        <span class="pa1">
-                          <img src="/assets/img/svg/like-hollow.svg" class="dib pr1" style="height:0.5rem;"/>
-                          <span class="dib">200</span>
-                        </span>
-                        <span class="pa1">
-                          <img src="/assets/img/svg/comment.svg" class="pr1" style="height:0.5rem;"/>
-                          <span class="dib">12</span>
-                        </span>
-                      </div>
-                    </a>
-                  </div>
+
                   )
                   })
                 }

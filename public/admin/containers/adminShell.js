@@ -9,6 +9,7 @@ var MenuComponent = {
       <div class="">
         <a class="dn pa2 bb b--light-gray hover-bg-light-gray link navy " href="/" oncreate={m.route.link}>Dashboard</a>
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/categories" oncreate={m.route.link}>Categories</a>
+        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/merchants" oncreate={m.route.link}>Merchants</a>
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import m from 'mithril';
-import LocationModel from '../models/locationmodel.js';
+import {LocationModel} from '../models/locationmodel.js';
 
 var Locations = {
     view: (vnode) => {
@@ -10,48 +10,25 @@ var Locations = {
                 </div>
                 <div class="pa3 bg-white shadow-m2 mt3 cf">
                     <div class="">
-                        <label class="f4">Country: </label><br/>
-                        <input type="text" placeholder="Country" class="pa2 ba b--gray w5 bw1 mr2-ns mv1 mv0-ns"
+                        {/*<label class="f4 mv2">Country: </label><br/>*/}
+                        <input type="text" placeholder="Country" class="pa2 ba b--gray w5 bw1 mv1"
                         oninput={m.withAttr("value", function(value){
-                                LocationModel.NewCountry.name = value;
-                            })}/>
-                        <button type="button" class="ba b--navy bg-navy pa2 white shadow-3 ml2-ns pointer mv1 mv0-ns" onclick={() => {
-                                console.log("Add Country clicked");
-                                LocationModel.AddCountry();
-                            }}>Add Country:</button>
-                    </div><br/>
-                    <hr class="light"/>
-                    <br/>
-                    <div class="">
-                        <select class="pa2 bg-white ba b--gray mr2-ns mb1">
-                            <option disabled selected>-- Select Country --</option>
-                            <option value="Cameroon">Cameroon</option>
-                            <option value="Nigeria">Nigeria</option>
-                        </select><br/>
-                        <input class="pa2 ba b--gray w5 bw1" placeholder="City" />
-                        <button type="button" class="ba b--navy bg-navy pa2 white shadow-3 ml2-ns pointer mv1 mv0-ns" onclick={() => {
-                                console.log("Add City clicked");
-                                {/*LocationModel.AddCity();*/}
-                            }}>Add City:</button>
-                    </div><br/>
-                    <hr class="light"/>
-                    <br/>
-                    <div class="">
-                        <select class="pa2 bg-white ba b--gray mr2-ns mv1">
-                            <option disabled selected>-- Select Country --</option>
-                            <option value="Cameroon">Cameroon</option>
-                            <option value="Nigeria">Nigeria</option>
-                        </select>
-                        <select class="pa2 bg-white ba b--gray mr2-ns mv1">
-                            <option disabled selected>-- Select City --</option>
-                            <option value="Cameroon">City one</option>
-                            <option value="Nigeria">City two</option>
-                        </select><br/>
-                        <input class="pa2 ba b--gray w5 bw1" placeholder="Neigbourhood" />
-                        <button type="button" class="ba b--navy bg-navy pa2 white shadow-3 ml2-ns pointer mv1 mv0-ns" onclick={() => {
-                                console.log("Add neigbour hood clicked");
-                                {/*LocationModel.AddNeighbourhood();*/}
-                            }}>Add Neighbourhood:</button>
+                                LocationModel.NewLocation.country = value;
+                            })}/><br/>
+                        {/*<label class="f4 mv2">City: </label><br/>*/}
+                        <input class="pa2 ba b--gray w5 bw1 mv1" placeholder="City"
+                        oninput={m.withAttr("value", function(value){
+                                LocationModel.NewLocation.city = value;
+                            })}/><br/>
+                        {/*<label class="f4 mv2">Neighbourhood: </label><br/>*/}
+                        <input class="pa2 ba b--gray w5 bw1 mv1" placeholder="Neigbourhood"
+                        oninput={m.withAttr("value", function(value){
+                                LocationModel.NewLocation.neighbourhood = value;
+                            })} /><br/>
+                        <button type="button" class="ba b--navy bg-navy pa2 white shadow-3 pointer mv1" onclick={() => {
+                                console.log("Add Location clicked");
+                                LocationModel.AddLocation();
+                            }}>Add Location</button>
                     </div>
                 </div>
                 <section class="pa3 bg-white shadow-m2 mt3 cf" >

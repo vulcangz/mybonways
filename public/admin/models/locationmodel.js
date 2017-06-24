@@ -1,40 +1,16 @@
 import m from 'mithril';
 
 export var LocationModel = {
-    NewCountry: {},
-    NewCity: {},
-    Neighbourhood: {},
-    AddCountry: () => {
+    NewLocation: {},
+    AddLocation: () => {
         m.request({
             method: "POST",
-            url: "/api/admins/locations/country",
-            data: LocationModel.NewCountry
+            url: "/api/admins/locations/neighbourhood",
+            data: LocationModel.NewLocation
         }).then((response) => {
-            console.log("Add country response: ", response);
+            console.log("Add location response: ", response);
         }).catch((error) => {
-            console.error("Add country error: ", error);
-        })
-    },
-    AddCity: () => {
-        m.request({
-            method: "POST",
-            url: "/api/admins/locations/addcity",
-            data: {}
-        }).then((response) => {
-            console.log("Add city response: ", response);
-        }).catch((error) => {
-            console.error("Add city error: ", error);
-        })
-    },
-    AddNeighbourhood: () => {
-        m.request({
-            method: "POST",
-            url: "/api/admins/locations/addneighbourhood",
-            data: {}
-        }).then((response) => {
-            console.log("Add neighbourhood response: ", response);
-        }).catch((error) => {
-            console.error("Add neighbourhood error: ", error);
+            console.error("Add location error: ", error);
         })
     }
 }

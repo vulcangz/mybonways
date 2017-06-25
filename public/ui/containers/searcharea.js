@@ -110,11 +110,13 @@ var SearchArea = {
                             </div>
                           </a>
                         </div>
-
                     )
                     })}
                     </div>
                 </section>
+                <div class="tc">
+                    <p class="pa3 ba b--red">Load More</p>
+                </div>
             </section>
         )
     }

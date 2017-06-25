@@ -57,6 +57,7 @@ func (br *BranchResource) Show(c buffalo.Context) error {
 
 // Create a branch
 func (br *BranchResource) Create(c buffalo.Context) error {
+	log.Println("inside create")
 	b := &models.Branch{}
 	err := c.Bind(b)
 	if err != nil {

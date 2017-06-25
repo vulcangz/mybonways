@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
@@ -14,6 +15,8 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"github.com/tonyalaribe/mybonways/models"
 )
+
+const perPage = 1
 
 // PromoResource allows CRUD with HTTP against the Promo model
 type PromoResource struct {
@@ -178,6 +181,10 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	//
 	// }
 
+	page, err := strconv.Atoi(c.Param("p"))
+	if err != nil {
+		return c.Error(404, errors.WithStack(err))
+	}
 	m := []models.MerchantPromoSearchResult{}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -197,11 +204,11 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?);
 	`
 
-	query := tx.RawQuery(queryString, searchLatitude, searchLongitude, searchTerms)
+	query := tx.Paginate(page, perPage).RawQuery(queryString, searchLatitude, searchLongitude, searchTerms)
 	// sql, x := query.ToSQL(model)
 	// log.Println(sql)
 	// log.Printf("%#v", x)
-	err := query.All(&m)
+	err = query.All(&m)
 	if err != nil {
 		log.Println("promo_resource error: ", err)
 		return c.Error(404, errors.WithStack(err))

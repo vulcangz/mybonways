@@ -2,7 +2,7 @@ import m from "mithril";
 import {br} from "../models/branches.js";
 
 var Branches = {
-    oninit: function() {
+    oncreate: function() {
         br.GetAllBranches();
     },
     view: function() {

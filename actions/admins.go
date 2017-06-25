@@ -26,6 +26,7 @@ type AdminsResource struct {
 	buffalo.Resource
 }
 
+// THIS ROUTE SHOULD BE REMOVED, FOR SECURITY REASONS, IT LISTS ALL ADMINS TO WHOMEVER GET /admins without authentication
 // List gets all Admins. This function is mapped to the the path
 // GET /admins
 func (v AdminsResource) List(c buffalo.Context) error {

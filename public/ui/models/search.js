@@ -11,7 +11,11 @@ export var search = {
             url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&p=${++search.page}`
         }).then(function(response) {
             console.log("response : ", response);
-            search.mysearch = response;
+            if(response.length){
+                search.mysearch.push.apply(search.mysearch, response);
+            } else {
+                console.log("no other response");
+            }
         })
     }
 }

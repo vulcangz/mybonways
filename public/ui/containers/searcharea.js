@@ -115,7 +115,9 @@ var SearchArea = {
                     </div>
                 </section>
                 <div class="tc">
-                    <p class="pa3 ba b--red">Load More</p>
+                    <p class="dib pa3 ba b--red pointer" onclick={()=>{
+                        search.searchFor(vnode.attrs.q, vnode.attrs.lat, vnode.attrs.lng)
+                    }}>Load More</p>
                 </div>
             </section>
         )

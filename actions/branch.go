@@ -1,18 +1,15 @@
 package actions
 
 import (
-	"context"
 	"fmt"
 	"log"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
-	"github.com/gobuffalo/envy"
 	"github.com/markbates/pop"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 	"github.com/tonyalaribe/mybonways/models"
-	"googlemaps.github.io/maps"
 )
 
 // BranchResource allows CRUD with HTTP against the User model
@@ -101,11 +98,7 @@ func (br *BranchResource) Update(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	// log.Println()
-	// log.Println("branch: ", branch)
-	// log.Println()
-	location := branch.Location
-	country := branch.Country
+
 	verrs, err := branch.ValidateUpdate(tx)
 	if err != nil {
 		return errors.WithStack(err)
@@ -128,43 +121,7 @@ func (br *BranchResource) Update(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	component := make(map[maps.Component]string)
-	// l := &models.Location{}
-	// update location
-	log.Println("location.area: ", location)
-	if location.Area != "" {
-		log.Println("location.area: ", location.Area)
-		if country != "" {
-			component["country"] = country
-		}
-		if location.Area == "" {
-			log.Println("no area provided")
-			return c.Render(200, render.JSON(struct{ Err string }{Err: "No area provided"}))
-		}
-		component["locality"] = location.Area
-		// l = &branch.Location
-		// the merchant wants to update the area...
-		// get the long and lat from area provided...
-		location.Longtitude, location.Latitude, err = GetLongAndLatFromArea(location.Area, component)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		verrs, err := location.ValidateUpdate(tx)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		if verrs.HasAny() {
-			c.Set("verrs", verrs.Errors)
-			return c.Render(422, render.JSON(verrs))
-		}
-		err = tx.Update(&location)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		log.Println()
-		log.Println("location updated")
-		log.Println()
-	}
+
 	return c.Render(200, render.JSON(branch))
 }
 
@@ -180,30 +137,30 @@ func (br *BranchResource) Destroy(c buffalo.Context) error {
 	return c.Render(200, render.JSON(b))
 }
 
-func GetLongAndLatFromArea(area string, component map[maps.Component]string) (lng float64, lat float64, err error) {
+// func GetLongAndLatFromArea(area string, component map[maps.Component]string) (lng float64, lat float64, err error) {
 
-	APIKey := envy.Get("GEOCODE_API_KEY", "key")
-	gmap, err := maps.NewClient(maps.WithAPIKey(APIKey))
-	if err != nil {
-		log.Println("gmap error: ", err)
-		return 0, 0, err
-	}
+// 	APIKey := envy.Get("GEOCODE_API_KEY", "key")
+// 	gmap, err := maps.NewClient(maps.WithAPIKey(APIKey))
+// 	if err != nil {
+// 		log.Println("gmap error: ", err)
+// 		return 0, 0, err
+// 	}
 
-	r := &maps.GeocodingRequest{
-		Address:    area,
-		Components: component,
-	}
+// 	r := &maps.GeocodingRequest{
+// 		Address:    area,
+// 		Components: component,
+// 	}
 
-	result, err := gmap.Geocode(context.Background(), r)
-	if err != nil {
-		log.Println("result err: ", err)
-		return 0, 0, err
-	}
-	if len(result) < 1 {
-		log.Println("No result...")
-		return 0, 0, errors.New("No result")
-	}
-	lng = result[0].Geometry.Location.Lng
-	lat = result[0].Geometry.Location.Lat
-	return lng, lat, nil
-}
+// 	result, err := gmap.Geocode(context.Background(), r)
+// 	if err != nil {
+// 		log.Println("result err: ", err)
+// 		return 0, 0, err
+// 	}
+// 	if len(result) < 1 {
+// 		log.Println("No result...")
+// 		return 0, 0, errors.New("No result")
+// 	}
+// 	lng = result[0].Geometry.Location.Lng
+// 	lat = result[0].Geometry.Location.Lat
+// 	return lng, lat, nil
+// }

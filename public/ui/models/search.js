@@ -3,13 +3,11 @@ import m from 'mithril';
 export var search = {
     searchData:"",
     mysearch: [],
-    searchFor: function () {
+    searchFor: function (query, lat, lng) {
         // search for a particular area
-        console.log("search data: ", encodeURI(search.searchData))
         m.request({
             method: "GET",
-            url: "/api/search/area/" + encodeURI(search.searchData),
-            data:{}
+            url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}`
         }).then(function(response) {
             console.log("response : ", response);
             search.mysearch = response;

@@ -58,7 +58,7 @@ var NewPromo = {
   },
   validateNewPromo: () => {
     // check if old price is greater or equal to new price...
-    if (pareseInt(Promos.NewPromo.old_price, 10) <= pareseInt(Promos.NewPromo.new_price, 10)) {
+    if (parseInt(Promos.NewPromo.old_price, 10) <= parseInt(Promos.NewPromo.new_price, 10)) {
         NewPromo.state.newpromoError = "You should probable make the new price lower than the old price.";
         window.scrollTo(0, 100);
         return;
@@ -79,7 +79,7 @@ var NewPromo = {
     //console.log("#2 new promo to be submitted: ", Promos.NewPromo)
     // set company id before submission
     Promos.NewPromo.company_id = MerchantModel.Merchant.company_id;
-    
+
     Promos.SaveNew().then(function(){
         NewPromo.state.newpromoMessage = "New Promo added!";
         window.scrollTo(0, 100);

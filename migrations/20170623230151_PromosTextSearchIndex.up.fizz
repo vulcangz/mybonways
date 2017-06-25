@@ -1,0 +1,16 @@
+add_column("merchant_promos", "weighted_tsv", "tsvector", {"default":""})
+
+raw(`CREATE FUNCTION promo_weighted_tsv_trigger() RETURNS trigger AS $$
+begin
+  new.weighted_tsv :=
+     setweight(to_tsvector('english', COALESCE(new.item_name,'')), 'A') ||
+     setweight(to_tsvector('english', COALESCE(new.description,'')), 'D');
+  return new;
+end
+$$ LANGUAGE plpgsql;`)
+
+raw(`CREATE TRIGGER upd_tsvector BEFORE INSERT OR UPDATE
+ON merchant_promos
+FOR EACH ROW EXECUTE PROCEDURE promo_weighted_tsv_trigger();`)
+
+raw(`CREATE INDEX weighted_tsv_idx ON merchant_promos USING GIST (weighted_tsv);`)

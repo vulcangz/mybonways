@@ -69,6 +69,8 @@ func App() *buffalo.App {
 
 		app.GET("/api/featuredpromos", promoResource.ListFeaturedPromos)
 
+		app.GET("/api/promo/search", promoResource.Search)
+
 		app.GET("/api/promo/{slug}", promoResource.GetPromoBySlug)
 		app.GET("/api/merchant/{company_id}", merchantsResource.GetByCompanyID)
 
@@ -81,10 +83,10 @@ func App() *buffalo.App {
 
 		app.Resource("/api/categories", CategoriesResource{&buffalo.BaseResource{}})
 
-		// app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
-		// 	c.Render(200, spa.HTML("index.html"))
-		// 	return nil
-		// }
+		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
+			c.Render(200, spa.HTML("index.html"))
+			return nil
+		}
 
 		adminGroup.Resource("/merchants", merchantsResource)
 		app.Resource("/admins", AdminsResource{&buffalo.BaseResource{}})

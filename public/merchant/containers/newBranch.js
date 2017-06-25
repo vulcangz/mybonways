@@ -1,10 +1,14 @@
 import m from "mithril";
 import {br} from "../models/branches.js";
 import {MerchantModel} from '../models/merchant.js';
+import {Locations} from '../models/locations.js';
 
 var NewBranch = {
   state:{place:{}},
   oncreate:function(){
+    // get the available locations
+    Locations.GetCountries();
+
     let card = document.getElementById("map-controls")
     let input = document.getElementById("mapsAutocomplete")
 
@@ -72,14 +76,14 @@ var NewBranch = {
           (place.address_components[2] && place.address_components[2].short_name || '')
         ].join(' ');
       }
-console.log(place.geometry?place.geometry.location.lat():"")
-br.NewBranch.latitude = 0.00
-br.NewBranch.longitude = 0.00
-if (place.geometry){
-  br.NewBranch.latitude = place.geometry.location.lat()
-    br.NewBranch.longitude = place.geometry.location.lng()
+      console.log(place.geometry?place.geometry.location.lat():"")
+      br.NewBranch.latitude = 0.00
+      br.NewBranch.longitude = 0.00
+      if (place.geometry){
+        br.NewBranch.latitude = place.geometry.location.lat()
+          br.NewBranch.longitude = place.geometry.location.lng()
 
-}
+      }
         return (
             <section class="">
                 <div class="ph4 pv4 bg-white shadow-m2 ">
@@ -118,25 +122,60 @@ if (place.geometry){
                         })} />
                     </div>
                     <div class="pa2">
-                        <label class="f4 gray pv2 dib">Neighbourhood:</label><br></br>
-                        <input type="text" class="ba b--light-silver w-100 pa2 bw1"
+                        <label class="f4 gray pv2 dib">Country:</label><br></br>
+                        <select class="pa2 ba b--gray bg-white"
+                        onchange={(e) => {
+                          console.log("E: ", e.target.value)
+                          br.NewBranch.country = e.target.value;
+                          // go and retrieve the cities for this country:
+                          Locations.GetCities(e.target.value)
+                        }}>
+                          <option disabled selected>-- Select Country --</option>
+                          {Locations.AllCountries.map((location) => {
+                            return (
+                              <option value={location.country}>{location.country}</option>
+                            )
+                          })}
+                        </select>
+                        {/*<input type="text" class="ba b--light-silver w-100 pa2 bw1"
                         oninput={m.withAttr("value", function(value) {
-                            br.NewBranch.neighbourhood = value;
-                        })} />
+                            br.NewBranch.country = value;
+                        })} />*/}
                     </div>
                     <div class="pa2">
                         <label class="f4 gray pv2 dib">City:</label><br></br>
-                        <input type="text" class="ba b--light-silver w-100 pa2 bw1"
+                        <select class="pa2 ba b--gray bg-white"
+                        onchange={(e)=>{
+                          console.log("E:",e);
+                          br.NewBranch.city = e.target.value;
+                          // go and retrieve the neighbourhoods for this city and country
+                          Locations.GetNeighbourhoods();
+                        }}>
+                          <option disabled selected>{Locations.AllCities.length?"-- Select City --":"Select country first"}</option>
+                          {Locations.AllCities.map((city)=>{
+                            return (<option value={city.city}>{city.city}</option>)
+                          })}
+                        </select>
+                        {/*<input type="text" class="ba b--light-silver w-100 pa2 bw1"
                         oninput={m.withAttr("value", function(value) {
                             br.NewBranch.city = value;
-                        })} />
+                        })} />*/}
                     </div>
                     <div class="pa2">
-                        <label class="f4 gray pv2 dib">Country:</label><br></br>
-                        <input type="text" class="ba b--light-silver w-100 pa2 bw1"
+                        <label class="f4 gray pv2 dib">Neighbourhood:</label><br></br>
+                        <select class="pa2 ba b--gray bg-white"
+                        onchange={(e)=>{
+                          br.NewBranch.neighbourhood = e.target.value;
+                        }}>
+                          <option disabled selected>{Locations.AllNeighbourhoods.length?"-- Select Neighbourhood --":"select a city first"}</option>
+                          {Locations.AllNeighbourhoods.map((neighbourhood)=>{
+                            return (<option value={neighbourhood.neighbourhood}>{neighbourhood.neighbourhood}</option>)
+                          })}
+                        </select>
+                        {/*<input type="text" class="ba b--light-silver w-100 pa2 bw1"
                         oninput={m.withAttr("value", function(value) {
-                            br.NewBranch.country = value;
-                        })} />
+                            br.NewBranch.neighbourhood = value;
+                        })} />*/}
                     </div>
 
                     <div class="pa2  pv3 mt2 tr">

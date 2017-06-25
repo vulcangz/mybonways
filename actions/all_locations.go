@@ -5,6 +5,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/markbates/pop"
+	"github.com/pkg/errors"
 	"github.com/tonyalaribe/mybonways/models"
 )
 
@@ -186,4 +187,57 @@ func (v AllLocationsResource) Destroy(c buffalo.Context) error {
 	c.Flash().Add("success", "AllLocation was destroyed successfully")
 	// Redirect to the all_locations index page
 	return c.Redirect(302, "/all_locations")
+}
+
+func (v AllLocationsResource) GetCountries(c buffalo.Context) error {
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	allLocations := &models.AllLocations{}
+	// You can order your list here. Just change
+
+	err := tx.RawQuery("SELECT DISTINCT country FROM all_locations").All(allLocations)
+	// to:
+	// err := tx.Order("(case when completed then 1 else 2 end) desc, lower([sort_parameter]) asc").All(allLocations)
+	// Don't forget to change [sort_parameter] to the parameter of
+	// your model, which should be used for sorting.
+	if err != nil {
+		return c.Error(404, errors.WithStack(err))
+	}
+	// Make AllLocations available inside the html template
+	c.Set("allLocations", allLocations)
+	return c.Render(201, r.JSON(allLocations))
+}
+
+func (v AllLocationsResource) GetCities(c buffalo.Context) error {
+	log.Println("c.Param('country'): ", c.Param("country"))
+	country := c.Param("country")
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	allLocations := &models.AllLocations{}
+
+	err := tx.RawQuery("SELECT DISTINCT city FROM all_locations").Where("country = ?", country).All(allLocations)
+	if err != nil {
+		return c.Error(404, errors.WithStack(err))
+	}
+
+	return c.Render(201, r.JSON(allLocations))
+}
+
+func (v AllLocationsResource) GetNeighbourhood(c buffalo.Context) error {
+	log.Println("c.Param('country'): ", c.Param("country"))
+	country := c.Param("country")
+	city := c.Param("city")
+	if city == "" || country == "" {
+
+	}
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	allLocations := &models.AllLocations{}
+
+	err := tx.RawQuery("SELECT neighbourhood FROM all_locations").Where("country = ? AND city = ?", country, city).All(allLocations)
+	if err != nil {
+		return c.Error(404, errors.WithStack(err))
+	}
+
+	return c.Render(201, r.JSON(allLocations))
 }

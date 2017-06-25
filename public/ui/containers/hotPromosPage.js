@@ -70,7 +70,7 @@ var HotPromosPage = {
               <div class="">
                 <div class="pv1 cf">
                 {// loop through the result here
-                  Promos.FeaturedPromos.map((promo, index) => {
+                  Promos.FeaturedPromos.map((promo, i) => {
                     return (
                       <div class="dib w-50 pa1 fl" key={i}>
                         <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100" href={"/promo/"+promo.slug} oncreate={m.route.link}>

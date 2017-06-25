@@ -24,6 +24,9 @@ var SearchArea = {
         let {q, lat, lng} = vnode.attrs;
         search.searchFor(q, lat, lng);
     },
+    state:{
+        loader: false
+    },
     view: function(vnode){
         return (
             <section>
@@ -115,9 +118,12 @@ var SearchArea = {
                     </div>
                 </section>
                 <div class="tc">
-                    <p class="dib pa3 ba b--red pointer" onclick={()=>{
-                        search.searchFor(vnode.attrs.q, vnode.attrs.lat, vnode.attrs.lng)
-                    }}>Load More</p>
+                    <p class="dib pv3 ph4 ba b--red bg-red white pointer shadow-2 hover-shadow-m3" onclick={()=>{
+                        SearchArea.state.loader = true;
+                        search.searchFor(vnode.attrs.q, vnode.attrs.lat, vnode.attrs.lng).then(()=>{
+                            SearchArea.state.loader = false;
+                        }).catch((error)=>{SearchArea.state.loader = false;})
+                    }}>{SearchArea.state.loader ? m(".loader"):"Load More"}</p>
                 </div>
             </section>
         )

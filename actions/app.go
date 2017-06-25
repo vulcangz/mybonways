@@ -95,7 +95,9 @@ func App() *buffalo.App {
 
 		adminGroup.Resource("/merchants", merchantsResource)
 
-		app.Resource("/admins", AdminsResource{&buffalo.BaseResource{}})
+		admin := app.Group("/admins")
+		admin.Use(AdminLoginCheckMiddleware)
+		admin.Resource("/", AdminsResource{&buffalo.BaseResource{}})
 
 		// app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
 		// 	c.Render(200, spa.HTML("index.html"))

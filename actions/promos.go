@@ -64,7 +64,9 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	}
 
 	mp.FeaturedImageB64, err = CompressAndBlurImageAndReturnBase64(mp.FeaturedImageB64)
-
+	if err != nil {
+		log.Println("compress error: ", err)
+	}
 	log.Printf("MerchantPromo: %#v \n ", mp)
 
 	tx := c.Value("tx").(*pop.Connection)

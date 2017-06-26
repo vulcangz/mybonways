@@ -1,11 +1,5 @@
 package actions_test
 
-import (
-	"testing"
-
-	"github.com/stretchr/testify/require"
-)
-
 func (as *ActionSuite) Test_LocationsResource_List() {
 	as.Fail("Not Implemented!")
 }

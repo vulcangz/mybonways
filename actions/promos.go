@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
@@ -14,6 +15,8 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"github.com/tonyalaribe/mybonways/models"
 )
+
+const perPage = 1
 
 // PromoResource allows CRUD with HTTP against the Promo model
 type PromoResource struct {
@@ -178,6 +181,10 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	//
 	// }
 
+	page, err := strconv.Atoi(c.Param("p"))
+	if err != nil || page < 1 {
+		return c.Error(404, errors.WithStack(err))
+	}
 	m := []models.MerchantPromoSearchResult{}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -194,14 +201,14 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 			WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10 * 1609.34
 			GROUP BY company_id,neighbourhood,city,country
 		) y
-		ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?);
+		ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 	`
-
-	query := tx.RawQuery(queryString, searchLatitude, searchLongitude, searchTerms)
+	// ORDER BY created_at desc LIMIT 2 OFFSET 2
+	query := tx.RawQuery(queryString, searchLatitude, searchLongitude, searchTerms, perPage, (page-1)*perPage)
 	// sql, x := query.ToSQL(model)
 	// log.Println(sql)
 	// log.Printf("%#v", x)
-	err := query.All(&m)
+	err = query.All(&m)
 	if err != nil {
 		log.Println("promo_resource error: ", err)
 		return c.Error(404, errors.WithStack(err))

@@ -1,24 +1,52 @@
 import m from 'mithril';
 import { Promos } from '../models/promos.js';
 
+var Details = {
+  onbeforeremove: (vnode) => {
+    vnode.dom.classList.add("slideOutLeft")
+    return new Promise(function (resolve) { setTimeout(resolve, 1000) })
+  },
+  oncreate: (vnode) => { vnode.dom.classList.add("slideInRight") },
+  view: () => {
+    var promo_images = Promos.Promo.promo_images.split(",").map(function (pi, i) {
+      if (pi === "" || pi === " ") { return }
+      return (<div class="dib w-25 br b--transparent"><img src={pi} class="w-100  b--light-gray-custom" />
+      </div>)
+    })
+    return (<div class="animated"><p>{Promos.Promo.description}</p>
+      <div class=""> {promo_images} </div> </div>)
+  }
+}
+
+var Map = {
+  onbeforeremove: (vnode) => {
+    vnode.dom.classList.add("slideOutLeft")
+    return new Promise(function (resolve) { setTimeout(resolve, 1000) })
+  },
+  oncreate: (vnode) => { vnode.dom.classList.add("slideInRight") },
+  view: () => {
+    return (<div class="red animated"> <p>Maps Goes Here with GPS coordinate of the branches...</p> </div>)
+  }
+}
+var Locations = {
+  onbeforeremove: (vnode) => {
+    vnode.dom.classList.add("slideOutLeft")
+    return new Promise(function (resolve) { setTimeout(resolve, 1000) })
+  },
+  oncreate: (vnode) => { vnode.dom.classList.add("slideInRight") },
+  view: () => {
+    return (<div class="red animated"> <p>Locations Goes here!</p> </div>)
+  }
+}
+
 var PromoDetailPage = {
   oncreate: function (vnode) {
     console.log("vnode")
     Promos.GetPromo(vnode.attrs.slug);
   },
+  tab: "Details",
   view: function (vnode) {
     let CurrentPromo = Promos.Promo;
-
-    var promo_images = CurrentPromo.promo_images.split(",").map(function (pi, i) {
-      if (pi === "" || pi === " ") {
-        return
-      }
-      return (
-        <div class="dib w-25 br b--transparent">
-          <img src={pi} class="w-100  b--light-gray-custom" />
-        </div>
-      )
-    })
     return (
       <section>
         <section>
@@ -56,8 +84,8 @@ var PromoDetailPage = {
           </div>
           <section class="cf">
             <section class="bg-white pa4 tc">
-              <div class="w-50 tc dib cover overflow-hidden br2" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ")"} oncreate={(vnode) => {
-                vnode.dom.style.height = (vnode.dom.offsetWidth/1.5)+"px"
+              <div class="shadow-3 w-50 tc dib cover overflow-hidden br2" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ")"} oncreate={(vnode) => {
+                vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
               }}>
                 <img src={Promos.Promo.featured_image} class="w-100 " />
               </div>
@@ -90,26 +118,29 @@ var PromoDetailPage = {
               <section class="pv2">
                 <div class="flex flex-row flex-auto bt bb b--red-custom">
                   <div class="flex flex-auto  justify-center tc">
-                    <a class="pa1 dib w-100  bg-red-custom white">details</a>
+                    <button class={(PromoDetailPage.tab == "Details" ? "bg-red-custom " : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer hover-light-red"}
+                      onclick={() => {
+                        PromoDetailPage.tab = "Details";
+                      }}>Details</button>
                   </div>
                   <div class="flex flex-auto  justify-center tc">
-                    <a class="pa1 dib w-100  red-custom">map</a>
+                    <button class={(PromoDetailPage.tab == "Map" ? "bg-red-custom " : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer hover-light-red mh1"}
+                      onclick={() => {
+                        PromoDetailPage.tab = "Map";
+                      }}>Map</button>
                   </div>
                   <div class="flex flex-auto  justify-center tc">
-                    <a class="pa1 dib w-100 red-custom ">locations</a>
+                    <button class={(PromoDetailPage.tab == "Locations" ? "bg-red-custom " : "bg-white ") + " pa1 dib w-100 ba b--transparent hover-light-red pointer"}
+                      onclick={() => {
+                        PromoDetailPage.tab = "Locations";
+                      }}>Locations</button>
                   </div>
                 </div>
                 <div class="pa1">
-                  <p> {Promos.Promo.description} </p>
-                  <div class=" ">
-                    {promo_images}
-                    {/*<div class="dib w-50 br b--transparent">
-                      <img src="/assets/img/ad/1.png" class="w-100  b--light-gray-custom" />
-                    </div>
-                    <div class="dib w-50 bl b--transparent">
-                      <img src="/assets/img/ad/2.png" class="w-100  b--light-gray-custom" />
-                    </div>*/}
-                  </div>
+                  {PromoDetailPage.tab == "Details" ? m(Details) : ""}
+                  {PromoDetailPage.tab == "Map" ? m(Map) : ""}
+                  {PromoDetailPage.tab == "Locations" ? m(Locations) : ""}
+                  {/*<Details/>*/}
                 </div>
               </section>
             </section>

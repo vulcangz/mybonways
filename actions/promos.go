@@ -16,7 +16,7 @@ import (
 	"github.com/tonyalaribe/mybonways/models"
 )
 
-const perPage = 1
+const perPage = 5
 
 // PromoResource allows CRUD with HTTP against the Promo model
 type PromoResource struct {
@@ -198,10 +198,10 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	queryString := `
 	SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug FROM merchant_promos x
 		LEFT OUTER JOIN (
-			SELECT company_id as cid,neighbourhood,city,country
+			SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 			FROM branches
 			WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10 * 1609.34
-			GROUP BY company_id,neighbourhood,city,country
+			GROUP BY company_id,neighbourhood,city,country,longitude,latitude
 		) y
 		ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 	`
@@ -216,6 +216,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		return c.Error(404, errors.WithStack(err))
 	}
 	log.Println("after query")
+	log.Println("MerchantPromoSearchResult:: ", m)
 	return c.Render(200, render.JSON(m))
 }
 

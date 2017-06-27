@@ -10,6 +10,9 @@ export var search = {
             method: "GET",
             url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&p=${++search.page}`
         }).then(function(response) {
+            response.map((r) => {
+                console.log(r.longitude + " lng : lat " + r.latitude);
+            })
             console.log("response : ", response);
             if(response.length){
                 search.mysearch.push.apply(search.mysearch, response);

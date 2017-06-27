@@ -46,10 +46,12 @@ type MerchantPromoSearchResult struct {
 	FeaturedImageB64 string    `json:"featured_image_b64" db:"featured_image_b64"`
 	Slug             string    `json:"slug" db:"slug"`
 
-	Neighbourhood string `json:"neighbourhood" db:"neighbourhood"`
-	City          string `json:"city" db:"city"`
-	Country       string `json:"country" db:"country"`
-	WeightedTSV   string `json:"weighed_tsv" db:"weighted_tsv"`
+	Neighbourhood string  `json:"neighbourhood" db:"neighbourhood"`
+	City          string  `json:"city" db:"city"`
+	Country       string  `json:"country" db:"country"`
+	Longitude     float64 `json:"longitude" db:"longitude"`
+	Latitude      float64 `json:"latitude" db:"latitude"`
+	WeightedTSV   string  `json:"weighed_tsv" db:"weighted_tsv"`
 }
 
 // String is not required by pop and may be deleted

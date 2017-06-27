@@ -8,7 +8,7 @@ var hotPromos = {
     vnode.dom.classList.add("slideOutUp")
     return new Promise(function (resolve) { setTimeout(resolve, 1000) })
   },
-  oncreate: (vnode) => { vnode.dom.classList.add("slideInUp") },
+  oncreate: (vnode) => { vnode.dom.classList.add("slideInDown") },
   view: () => {
     return (
     <section class="animated">
@@ -77,7 +77,7 @@ var DoublePromos = {
     vnode.dom.classList.add("slideOutUp")
     return new Promise(function (resolve) { setTimeout(resolve, 1000) })
   },
-  oncreate: (vnode) => { vnode.dom.classList.add("slideInUp") },
+  oncreate: (vnode) => { vnode.dom.classList.add("slideOutDown") },
   view: () => {
     return (
       <section class="animated">
@@ -107,7 +107,7 @@ var HotPromosPage = {
         m.redraw()
       });
   },
-  tab: "Hot",
+  tab: "Map",
   view: function(vnode) {
     return (
       <section>

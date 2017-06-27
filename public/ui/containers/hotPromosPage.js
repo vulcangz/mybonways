@@ -107,7 +107,7 @@ var HotPromosPage = {
         m.redraw()
       });
   },
-  tab: "Map",
+  tab: "Hot",
   view: function(vnode) {
     return (
       <section>
@@ -118,21 +118,21 @@ var HotPromosPage = {
             </div>
             <div class="flex flex-row flex-auto">
               <div class="flex flex-auto  justify-center pa1 tc">
-                <button class={(HotPromosPage.tab == "Map" ? "bg-red-custom " : "bg-white ")+ " pa1 dib w-100 ba b--transparent  black pointer"}
+                <button class={(HotPromosPage.tab == "Map" ? "bg-red-custom white" : "bg-white black")+ " pa1 dib w-100 ba b--transparent pointer"}
                 onclick={()=>{
                   console.log("clicked button: ", HotPromosPage.tab)
                   HotPromosPage.tab = "Map";
                 }}>Map</button>
               </div>
               <div class="flex flex-auto justify-center pa1 tc">
-                <button class={(HotPromosPage.tab == "Hot" ? "bg-red-custom " : "bg-white ")+ " pa1 dib w-100 ba b--transparent  black pointer"}
+                <button class={(HotPromosPage.tab == "Hot" ? "bg-red-custom white" : "bg-white black")+ " pa1 dib w-100 ba b--transparent pointer"}
                 onclick={()=>{
                   console.log("clicked button: ", HotPromosPage.tab)
                   HotPromosPage.tab = "Hot";
                 }}>Hot</button>
               </div>
               <div class="flex flex-auto justify-center pa1 tc">
-                <button class={(HotPromosPage.tab == "2in1" ? "bg-red-custom " : "bg-white ")+ " pa1 dib w-100 ba b--transparent  black pointer"}
+                <button class={(HotPromosPage.tab == "2in1" ? "bg-red-custom white" : "bg-white black")+ " pa1 dib w-100 ba b--transparent pointer"}
                 onclick={()=>{
                   console.log("clicked button: ", HotPromosPage.tab)
                   HotPromosPage.tab = "2in1";

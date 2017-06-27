@@ -84,7 +84,7 @@ var PromoDetailPage = {
           </div>
           <section class="cf">
             <section class="bg-white pa4 tc">
-              <div class="shadow-3 w-50 tc dib cover overflow-hidden br2" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ")"} oncreate={(vnode) => {
+              <div class="dib v-mid w-100" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ")"} oncreate={(vnode) => {
                 vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
               }}>
                 <img src={Promos.Promo.featured_image} class="w-100 " />
@@ -118,19 +118,19 @@ var PromoDetailPage = {
               <section class="pv2">
                 <div class="flex flex-row flex-auto bt bb b--red-custom">
                   <div class="flex flex-auto  justify-center tc">
-                    <button class={(PromoDetailPage.tab == "Details" ? "bg-red-custom " : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer hover-light-red"}
+                    <button class={(PromoDetailPage.tab == "Details" ? "bg-red-custom white" : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer"}
                       onclick={() => {
                         PromoDetailPage.tab = "Details";
                       }}>Details</button>
                   </div>
                   <div class="flex flex-auto  justify-center tc">
-                    <button class={(PromoDetailPage.tab == "Map" ? "bg-red-custom " : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer hover-light-red mh1"}
+                    <button class={(PromoDetailPage.tab == "Map" ? "bg-red-custom white" : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer mh1"}
                       onclick={() => {
                         PromoDetailPage.tab = "Map";
                       }}>Map</button>
                   </div>
                   <div class="flex flex-auto  justify-center tc">
-                    <button class={(PromoDetailPage.tab == "Locations" ? "bg-red-custom " : "bg-white ") + " pa1 dib w-100 ba b--transparent hover-light-red pointer"}
+                    <button class={(PromoDetailPage.tab == "Locations" ? "bg-red-custom white" : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer"}
                       onclick={() => {
                         PromoDetailPage.tab = "Locations";
                       }}>Locations</button>

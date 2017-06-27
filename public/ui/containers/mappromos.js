@@ -130,7 +130,7 @@ var MapPromos = {
             </div>
           </div>
         </div>
-        <div class="fixed top-0 dn-ns">
+        <div class="fixed top-0 dn">
           <button class="ba b--red br--left bg-red white pa1" onclick={()=>{
             // set either the branches view or map view to show...
           }}>Map</button>

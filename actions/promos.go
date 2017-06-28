@@ -182,11 +182,11 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	// m := []struct{
 	//
 	// }
-
 	page, err := strconv.Atoi(c.Param("p"))
 	if err != nil || page < 1 {
 		page = 1
 	}
+
 	m := []models.MerchantPromoSearchResult{}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -196,7 +196,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	searchLongitude := c.Request().URL.Query().Get("lng")
 
 	queryString := `
-	SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug FROM merchant_promos x
+	SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug,neighbourhood,city,country,longitude,latitude FROM merchant_promos x
 		LEFT OUTER JOIN (
 			SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 			FROM branches

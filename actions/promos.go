@@ -206,7 +206,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 	`
 	// ORDER BY created_at desc LIMIT 2 OFFSET 2
-	query := tx.RawQuery(queryString, searchLatitude, searchLongitude, searchTerms, perPage, (page-1)*perPage)
+	query := tx.RawQuery(queryString, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
 	// sql, x := query.ToSQL(model)
 	// log.Println(sql)
 	// log.Printf("%#v", x)

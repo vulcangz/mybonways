@@ -12,7 +12,8 @@ var MapPromos = {
   },
   getLocation: () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(MapPromos.showPosition);
+      navigator.geolocation.getCurrentPosition(MapPromos.showPosition, (error) =>{ console.log("Error getting the position: ", error); },
+      {enableHighAccuracy: true});
     } else {
       //x.innerHTML = "Geolocation is not supported by this browser.";
     }
@@ -22,6 +23,7 @@ var MapPromos = {
     console.log(position)
     MapPromos.Position = position;
     // The nearby locations of all available branches...
+    console.log("POSITION: ", position);
     // TODO:: I NEED A WILD CARD FOR THIS SEARCH...
     search.searchFor("laptop", position.coords.latitude, position.coords.longitude).then(()=>{
       MapPromos.Locations = search.mysearch.map((promo)=>{
@@ -29,13 +31,16 @@ var MapPromos = {
       })
       m.redraw();
       MapPromos.DrawMap(position);
+    }).catch((error) => {
+      console.log("error no promos found...");
+      MapPromos.DrawMap(position);
     })
   },
   DrawMap: (position) => {
     var mylocation = { lat: position.coords.latitude, lng: position.coords.longitude };
     console.log("mylocation::=> ", mylocation);
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
+      zoom: 5,
       center: mylocation
     });
 
@@ -64,7 +69,7 @@ var MapPromos = {
     // ADD THE USERS LOCATION TO THE MARKERS...
     markers.push(new google.maps.Marker({
         position: mylocation,
-        label: "me"
+        label: "Me"
       }))
     // Add a marker clusterer to manage the markers.
     var markerCluster = new MarkerClusterer(map, markers,

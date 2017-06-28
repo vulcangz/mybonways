@@ -6,6 +6,7 @@ export var search = {
     mysearch: [],
     searchFor: function (query, lat, lng) {
         // search for a particular area
+        console.log("Search Params: q: ", query, " lat: ", lat, " lng: ", lng);
         return m.request({
             method: "GET",
             url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&p=${++search.page}`

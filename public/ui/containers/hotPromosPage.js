@@ -107,7 +107,7 @@ var HotPromosPage = {
         m.redraw()
       });
   },
-  tab: "Hot",
+  tab: "Map",
   view: function(vnode) {
     return (
       <section>

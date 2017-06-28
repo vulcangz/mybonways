@@ -5,10 +5,10 @@ import MapPromos from './mappromos.js';
 
 var hotPromos = {
   onbeforeremove: (vnode) => {
-    vnode.dom.classList.add("slideOutUp")
+    vnode.dom.classList.add("fadeOut")
     return new Promise(function (resolve) { setTimeout(resolve, 1000) })
   },
-  oncreate: (vnode) => { vnode.dom.classList.add("slideInDown") },
+  oncreate: (vnode) => { vnode.dom.classList.add("fadeIn") },
   view: () => {
     return (
     <section class="animated">
@@ -74,10 +74,10 @@ var hotPromos = {
 
 var DoublePromos = {
   onbeforeremove: (vnode) => {
-    vnode.dom.classList.add("slideOutUp")
+    vnode.dom.classList.add("fadeOut")
     return new Promise(function (resolve) { setTimeout(resolve, 1000) })
   },
-  oncreate: (vnode) => { vnode.dom.classList.add("slideOutDown") },
+  oncreate: (vnode) => { vnode.dom.classList.add("fadeIn") },
   view: () => {
     return (
       <section class="animated">
@@ -118,25 +118,25 @@ var HotPromosPage = {
             </div>
             <div class="flex flex-row flex-auto">
               <div class="flex flex-auto  justify-center pa1 tc">
-                <button class={(HotPromosPage.tab == "Map" ? "bg-red-custom white" : "bg-white black")+ " pa1 dib w-100 ba b--transparent pointer"}
+                <a class={(HotPromosPage.tab == "Map" ? "bg-red-custom white" : "bg-white red-custom")+ " pa1 dib w-100 br-pill"}
                 onclick={()=>{
                   console.log("clicked button: ", HotPromosPage.tab)
                   HotPromosPage.tab = "Map";
-                }}>Map</button>
+                }}>Map</a>
               </div>
               <div class="flex flex-auto justify-center pa1 tc">
-                <button class={(HotPromosPage.tab == "Hot" ? "bg-red-custom white" : "bg-white black")+ " pa1 dib w-100 ba b--transparent pointer"}
+                <a class={(HotPromosPage.tab == "Hot" ? "bg-red-custom white" : "bg-white red-custom")+ " pa1 dib w-100  br-pill "}
                 onclick={()=>{
                   console.log("clicked button: ", HotPromosPage.tab)
                   HotPromosPage.tab = "Hot";
-                }}>Hot</button>
+                }}>Hot</a>
               </div>
               <div class="flex flex-auto justify-center pa1 tc">
-                <button class={(HotPromosPage.tab == "2in1" ? "bg-red-custom white" : "bg-white black")+ " pa1 dib w-100 ba b--transparent pointer"}
+                <a class={(HotPromosPage.tab == "2in1" ? "bg-red-custom white" : "bg-white red-custom")+ " pa1 dib w-100 br-pill"}
                 onclick={()=>{
                   console.log("clicked button: ", HotPromosPage.tab)
                   HotPromosPage.tab = "2in1";
-                }}>2 in 1</button>
+                }}>2 in 1</a>
               </div>
             </div>
           </div>

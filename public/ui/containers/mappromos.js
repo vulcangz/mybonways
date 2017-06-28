@@ -3,11 +3,11 @@ import {search} from '../models/search.js';
 
 var MapPromos = {
   onbeforeremove: (vnode) => {
-    vnode.dom.classList.add("slideOutUp")
+    vnode.dom.classList.add("fadeOut")
     return new Promise(function (resolve) { setTimeout(resolve, 1000) })
   },
   oncreate: (vnode) => {
-    vnode.dom.classList.add("slideInUp");
+    vnode.dom.classList.add("fadeIn");
     MapPromos.getLocation();
   },
   getLocation: () => {

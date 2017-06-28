@@ -185,7 +185,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 
 	page, err := strconv.Atoi(c.Param("p"))
 	if err != nil || page < 1 {
-		return c.Error(404, errors.WithStack(err))
+		page = 1
 	}
 	m := []models.MerchantPromoSearchResult{}
 

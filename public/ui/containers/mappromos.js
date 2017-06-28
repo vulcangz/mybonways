@@ -32,7 +32,9 @@ var MapPromos = {
       m.redraw();
       MapPromos.DrawMap(position);
     }).catch((error) => {
+      MapPromos.NoPromos = "No promos found around this location."
       console.log("error no promos found...");
+
       MapPromos.DrawMap(position);
     })
   },
@@ -82,12 +84,14 @@ var MapPromos = {
     // });
   },
   Position: {},
-  view: () => {
+  NoPromos: "",
+  view: (vnode) => {
     return (
       <section class="animated">
+        {m.fragment(vnode.attrs, vnode.children)}
         <div class="cf shadow-4 pa2">
           <div class="fl w-100 w-50-ns cf">
-            <p class="mv0 pa2 tc white bg-red">List Of all branches...</p>
+            <p class="mv0 pa2 tc white bg-red">{ MapPromos.NoPromos ? MapPromos.NoPromos : "List Of all branches..."}</p>
             {search.mysearch.map(function(promo, i) {
                 return (
                   <div class="dib w-50 pa1 fl" key={i}>

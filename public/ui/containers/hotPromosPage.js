@@ -14,7 +14,7 @@ var hotPromos = {
       <section class="animated">
         <section class="bg-white ">
           <div class="w-100 pa1">
-            <img src="/assets/img/ad/5.jpg" class="w-100 br3" />
+            <a href="/promo/laptop-thyos" oncreate={m.route.link}><img src="/assets/img/ad/5.jpg" class="w-100 br3" /></a>
           </div>
         </section>
         <section class="bg-light-gray-custom pv2">

@@ -1,0 +1,9 @@
+import m from 'mithril';
+
+export var Slides = {
+    NewSlide: {},
+    AddNewSlide: () => {
+        console.log("New Slide: ", Slide.NewSlide);
+        
+    }
+}

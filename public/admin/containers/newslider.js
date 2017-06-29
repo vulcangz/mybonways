@@ -59,7 +59,9 @@ var NewSlider = {
                         })}/>
                     </div>
                     <div class="tr">
-                        <button class="bg-navy white grow pa2 ba b--transparent mh2 pointer">ADD</button>
+                        <button class="bg-navy white grow pa2 ba b--transparent mh2 pointer" onclick={()=>{
+                            Slides.AddNewSlide();    
+                        }}>ADD</button>
                     </div>
                 </div>
             </section>

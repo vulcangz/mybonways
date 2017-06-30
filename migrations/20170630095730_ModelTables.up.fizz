@@ -28,6 +28,8 @@ create_table("merchant_promos", func(t) {
 	t.Column("weighted_tsv", "tsvector", {"default":""})
 })
 
+raw("CREATE EXTENSION postgis;")
+
 create_table("branches", func(t) {
 	t.Column("id", "uuid", {"primary": true})
 	t.Column("company_id", "string", {"default":""})
@@ -65,7 +67,6 @@ create_table("slides", func(t) {
 	t.Column("image", "string", {})
 })
 
-raw("CREATE EXTENSION postgis;")
 
 raw(`CREATE FUNCTION promo_weighted_tsv_trigger() RETURNS trigger AS $$
 begin

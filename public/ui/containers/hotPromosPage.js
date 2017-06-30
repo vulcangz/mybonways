@@ -50,7 +50,7 @@ var HotPromosPage = {
                 <div class="slider overflow-hidden js_slider relative"  oncreate={(vnode) => {
                             vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
                           }}>
-                  <div class="frame js_frame">
+                  <div class="frame js_frame pa3">
                     <ul class="slides js_slides pa0 ma0 w-100">
                       {Slides.AllSlides.length ?
                         Slides.AllSlides.map((slide) => {

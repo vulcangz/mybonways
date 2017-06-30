@@ -16,7 +16,7 @@ import (
 	"github.com/tonyalaribe/mybonways/models"
 )
 
-const perPage = 1
+const perPage = 5
 
 // PromoResource allows CRUD with HTTP against the Promo model
 type PromoResource struct {
@@ -64,7 +64,9 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	}
 
 	mp.FeaturedImageB64, err = CompressAndBlurImageAndReturnBase64(mp.FeaturedImageB64)
-
+	if err != nil {
+		log.Println("compress error: ", err)
+	}
 	log.Printf("MerchantPromo: %#v \n ", mp)
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -180,11 +182,11 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	// m := []struct{
 	//
 	// }
-
 	page, err := strconv.Atoi(c.Param("p"))
 	if err != nil || page < 1 {
-		return c.Error(404, errors.WithStack(err))
+		page = 1
 	}
+
 	m := []models.MerchantPromoSearchResult{}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -194,17 +196,17 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	searchLongitude := c.Request().URL.Query().Get("lng")
 
 	queryString := `
-	SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug FROM merchant_promos x
+	SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug,neighbourhood,city,country,longitude,latitude FROM merchant_promos x
 		LEFT OUTER JOIN (
-			SELECT company_id as cid,neighbourhood,city,country
+			SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 			FROM branches
 			WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10 * 1609.34
-			GROUP BY company_id,neighbourhood,city,country
+			GROUP BY company_id,neighbourhood,city,country,longitude,latitude
 		) y
 		ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 	`
 	// ORDER BY created_at desc LIMIT 2 OFFSET 2
-	query := tx.RawQuery(queryString, searchLatitude, searchLongitude, searchTerms, perPage, (page-1)*perPage)
+	query := tx.RawQuery(queryString, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
 	// sql, x := query.ToSQL(model)
 	// log.Println(sql)
 	// log.Printf("%#v", x)
@@ -214,6 +216,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		return c.Error(404, errors.WithStack(err))
 	}
 	log.Println("after query")
+	log.Println("MerchantPromoSearchResult:: ", m)
 	return c.Render(200, render.JSON(m))
 }
 

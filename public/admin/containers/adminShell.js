@@ -11,6 +11,7 @@ var MenuComponent = {
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/categories" oncreate={m.route.link}>Categories</a>
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/merchants" oncreate={m.route.link}>Merchants</a>
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/locations" oncreate={m.route.link}>Locations</a>
+        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/slider" oncreate={m.route.link}>Sliders</a>
       </div>
     );
   }

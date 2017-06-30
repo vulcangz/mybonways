@@ -1,7 +1,6 @@
 import m from 'mithril';
 import { search } from '../models/search.js';
 import { Promos } from '../models/promos.js';
-import MapPromos from './mappromos.js';
 import { Slides } from '../models/slides.js';
 
 var HotPromosPage = {
@@ -52,7 +51,7 @@ var HotPromosPage = {
                             vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
                           }}>
                   <div class="frame js_frame">
-                    <ul class="slides js_slides pa0 ma0">
+                    <ul class="slides js_slides pa0 ma0 w-100">
                       {Slides.AllSlides.length ?
                         Slides.AllSlides.map((slide) => {
                           return (<li class="js_slide w-100"><a href={slide.url} class="w-100 dib v-top" oncreate={m.route.link}><img src={slide.image} class="w-100 br3" /></a></li>)

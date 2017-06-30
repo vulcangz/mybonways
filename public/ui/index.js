@@ -5,7 +5,7 @@ import PromoDetailPage from './containers/promoDetailPage.js';
 import OffCanvasMenu from './components/offCanvasMenu.js';
 import SearchArea from './containers/searcharea.js';
 import searchNav from './components/searchNav.js';
-import MapPromos from './containers/mappromos.js';
+import MapPromos from './components/mappromos.js';
 import DoublePromos from './containers/doublePromos.js';
 
 var root = document.getElementById('appContainer');

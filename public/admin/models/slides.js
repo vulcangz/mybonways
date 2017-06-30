@@ -46,10 +46,10 @@ export var Slides = {
     DeleteSlide: (id) => {
         return m.request({
             method: "DELETE",
-            url: "/api/admins/slides" + id
+            url: "/api/admins/slides/" + id
         }).then((response) => {
             console.log("Delete slide response: ", response);
-
+            Slides.GetAllSlides();
         })
     }
 }

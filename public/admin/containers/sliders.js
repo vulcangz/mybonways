@@ -5,6 +5,7 @@ var Slider = {
     oncreate: () => {
         Slides.GetAllSlides();
     },
+    loader: false,
     view: (vnode) =>{ 
         return (
             <section>
@@ -25,10 +26,15 @@ var Slider = {
                                 <img src={slide.image} alt="image" />
                             </div>
                             <div class="pa2 tr">
-                                <a href={"/slider/edit/"+slide.id} class="bg-navy white pa2 ba b--transparent no-underline mh2 pointer" oncreate={m.route.link}>Edit</a>
-                                <button class="bg-navy white pa2 ba b--transparent mh2 pointer" onclick={()=>{
-                                        Slides.Delete(slide.id);
-                                    }}>Delete</button>
+                                <a href={"/slider/edit/"+slide.id} class="bg-navy dib v-mid white pv1 ph2 w3 tc ba b--transparent no-underline mh2 pointer" oncreate={m.route.link}>Edit</a>
+                                <button class="bg-navy white dib v-mid w3 pv1 ph2 ba b--transparent mh2 pointer" onclick={()=>{
+                                        Slider.loader = true;
+                                        Slides.DeleteSlide(slide.id).then(()=> {
+                                            Slider.loader = false;
+                                        }).catch(()=>{
+                                            Slider.loader = false;
+                                        });
+                                    }}>{Slider.loader?m(".loader"):"Delete"}</button>
                             </div>
                         </div>)
                     })}

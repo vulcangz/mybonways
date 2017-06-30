@@ -81,4 +81,3 @@ ON merchant_promos
 FOR EACH ROW EXECUTE PROCEDURE promo_weighted_tsv_trigger();`)
 
 raw(`CREATE INDEX weighted_tsv_idx ON merchant_promos USING GIST (weighted_tsv);`)
-add_column("merchant_promos", "description", "text", {"default":""})

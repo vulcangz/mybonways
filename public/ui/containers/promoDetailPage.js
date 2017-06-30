@@ -10,7 +10,7 @@ var Details = {
   view: () => {
     var promo_images = Promos.Promo.promo_images.split(",").map(function (pi, i) {
       if (pi === "" || pi === " ") { return }
-      return (<div class="dib w-25 br b--transparent"><img src={pi} class="w-100  b--light-gray-custom" />
+      return (<div class="dib w-50 br b--transparent"><img src={pi} class="w-100  b--light-gray-custom" />
       </div>)
     })
     return (<div class="animated"><p>{Promos.Promo.description}</p>
@@ -56,13 +56,13 @@ var PromoDetailPage = {
             </div>
             <div class="flex flex-row flex-auto">
               <div class="flex flex-auto  justify-center pa1 tc">
-                <a class="pa1 dib w-100  red-custom link" href="/" oncreate={m.route.link}>map</a>
+                <a class="pa1 dib w-100 br-pill red-custom link" href="/" oncreate={m.route.link}>map</a>
               </div>
               <div class="flex flex-auto  justify-center pa1 tc">
                 <a class="pa1 dib w-100  br-pill bg-red-custom white link" href="/" oncreate={m.route.link}>hot</a>
               </div>
               <div class="flex flex-auto  justify-center pa1 tc">
-                <a class="pa1 dib w-100 red-custom link" href="/" oncreate={m.route.link}>2 in 1</a>
+                <a class="pa1 dib w-100 br-pill red-custom link" href="/" oncreate={m.route.link}>2 in 1</a>
               </div>
             </div>
           </div>
@@ -83,9 +83,9 @@ var PromoDetailPage = {
             </div>
           </div>
           <section class="cf">
-            <section class="bg-white pa4 tc">
-              <div class="shadow-3 w-50 tc dib cover overflow-hidden br2" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ")"} oncreate={(vnode) => {
-                vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
+            <section class="bg-white ">
+              <div class="w-100" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ")"} oncreate={(vnode) => {
+                {/*vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"*/}
               }}>
                 <img src={Promos.Promo.featured_image} class="w-100 " />
               </div>
@@ -118,19 +118,19 @@ var PromoDetailPage = {
               <section class="pv2">
                 <div class="flex flex-row flex-auto bt bb b--red-custom">
                   <div class="flex flex-auto  justify-center tc">
-                    <button class={(PromoDetailPage.tab == "Details" ? "bg-red-custom " : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer hover-light-red"}
+                    <button class={(PromoDetailPage.tab == "Details" ? "bg-red-custom white" : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer"}
                       onclick={() => {
                         PromoDetailPage.tab = "Details";
                       }}>Details</button>
                   </div>
                   <div class="flex flex-auto  justify-center tc">
-                    <button class={(PromoDetailPage.tab == "Map" ? "bg-red-custom " : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer hover-light-red mh1"}
+                    <button class={(PromoDetailPage.tab == "Map" ? "bg-red-custom white" : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer mh1"}
                       onclick={() => {
                         PromoDetailPage.tab = "Map";
                       }}>Map</button>
                   </div>
                   <div class="flex flex-auto  justify-center tc">
-                    <button class={(PromoDetailPage.tab == "Locations" ? "bg-red-custom " : "bg-white ") + " pa1 dib w-100 ba b--transparent hover-light-red pointer"}
+                    <button class={(PromoDetailPage.tab == "Locations" ? "bg-red-custom white" : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer"}
                       onclick={() => {
                         PromoDetailPage.tab = "Locations";
                       }}>Locations</button>

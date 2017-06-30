@@ -63,17 +63,12 @@ var SearchArea = {
                                     oninput={m.withAttr("value", function(value) {
                                         search.searchData = value;
                                     })}/>
-                                <span class="dib z-3 pv1 ph3 pointer bg-light-gray hover-bg-navy" style="padding-top:0.60rem" onclick={function() {
-                                        search.searchFor();
-                                        m.route.set("/search/" + search.searchData);
-                                    }}>
-                                    <img src="/assets/img/svg/search.svg" class="" style="height:0.8rem;"/>
-                                </span>
+                                
                             </div>
                         </div>
                     </div>
                     <div class="cf">
-                        <h3 class="tc pa2">Search Area: <span class="navy underline">{vnode.attrs.area}</span></h3>
+                        <h3 class="tc pa2">Search For {vnode.attrs.q}: <span class="navy underline">{vnode.attrs.area}</span></h3>
                     </div>
                     <div class="cf">
                     {search.mysearch.map(function(promo, i) {

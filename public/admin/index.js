@@ -6,6 +6,9 @@ import AdminShell from './containers/adminShell.js';
 import Merchants from './containers/merchants.js';
 import ViewMerchant from './containers/viewmerchant.js';
 import Locations from './containers/locations.js';
+import Sliders from './containers/sliders.js';
+import NewSlider from './containers/newslider.js';
+import EditSlide from './containers/editslide.js';
 
 import Categories from './containers/categories.js';
 import {MerchantAuth} from './components/auth.js';
@@ -59,6 +62,39 @@ m.route(root, '/', {
           m(OffCanvasMenu,vnode.attrs,
               m(AdminShell,vnode.attrs,
                 m(Locations,vnode.attrs)
+              )
+          )
+        );
+    }
+  },
+  '/slider': {
+    view: function(vnode) {
+      return m(MerchantAuth,vnode.attrs,
+          m(OffCanvasMenu,vnode.attrs,
+              m(AdminShell,vnode.attrs,
+                m(Sliders, vnode.attrs)
+              )
+          )
+        );
+    }
+  },
+  '/slider/new': {
+    view: function(vnode) {
+      return m(MerchantAuth,vnode.attrs,
+          m(OffCanvasMenu,vnode.attrs,
+              m(AdminShell,vnode.attrs,
+                m(NewSlider, vnode.attrs)
+              )
+          )
+        );
+    }
+  },
+  '/slider/edit/:id': {
+    view: function(vnode) {
+      return m(MerchantAuth,vnode.attrs,
+          m(OffCanvasMenu,vnode.attrs,
+              m(AdminShell,vnode.attrs,
+                m(EditSlide, vnode.attrs)
               )
           )
         );

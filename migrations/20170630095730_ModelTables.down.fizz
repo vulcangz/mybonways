@@ -1,0 +1,8 @@
+drop_table("merchants")
+drop_table("verification_codes")
+drop_table("merchant_promos")
+drop_table("branches")
+drop_table("categories")
+drop_table("admins")
+drop_table("locations")
+drop_table("slides")

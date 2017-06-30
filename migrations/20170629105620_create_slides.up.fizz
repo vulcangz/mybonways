@@ -1,5 +1,0 @@
-create_table("slides", func(t) {
-	t.Column("id", "uuid", {"primary": true})
-	t.Column("url", "string", {})
-	t.Column("image", "string", {})
-})

@@ -1,6 +1,0 @@
-create_table("locations", func(t) {
-	t.Column("id", "uuid", {"primary": true})
-	t.Column("country", "string", {})
-	t.Column("city", "string", {})
-	t.Column("neighbourhood", "string", {})
-})

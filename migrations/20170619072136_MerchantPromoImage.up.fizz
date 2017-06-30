@@ -1,4 +1,0 @@
-drop_column("merchant_promos", "featured_image")
-drop_column("merchant_promos", "featured_image_b64")
-add_column("merchant_promos", "featured_image", "text", {"default": ""})
-add_column("merchant_promos", "featured_image_b64", "text", {"default": ""})

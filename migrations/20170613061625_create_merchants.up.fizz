@@ -1,8 +1,0 @@
-create_table("merchants", func(t) {
-	t.Column("id", "uuid", {"primary": true})
-	t.Column("approved", "bool", {})
-	t.Column("company_name", "string", {})
-	t.Column("company_id", "string", {})
-	t.Column("merchant_email", "string", {})
-	t.Column("merchant_password", "string", {})
-})

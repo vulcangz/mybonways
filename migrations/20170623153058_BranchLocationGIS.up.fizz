@@ -1,7 +1,0 @@
-raw("CREATE EXTENSION postgis;")
-drop_column("branches", "state")
-add_column("branches", "neighbourhood", "string", {})
-add_column("branches", "location", "geometry", {})
-
-add_column("branches", "latitude", "float", {"default":0})
-add_column("branches", "longitude", "float", {"default":0})

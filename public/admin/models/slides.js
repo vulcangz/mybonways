@@ -2,6 +2,7 @@ import m from 'mithril';
 
 export var Slides = {
     NewSlide: {},
+    Slide: {},
     AllSlides: [],
     AddNewSlide: () => {
         console.log("New Slide: ", Slides.NewSlide);
@@ -22,6 +23,33 @@ export var Slides = {
         }).then((response) => {
             console.log("slides response: ", response);
             Slides.AllSlides = response;
+        })
+    },
+    GetSlide: (id) => {
+        return m.request({
+            method: "GET",
+            url: "/api/admins/slides/" + id
+        }).then((response)=>{
+            console.log("Slide response: ", response);
+            Slides.Slide = response;
+        })
+    },
+    Update: () => {
+        return m.request({
+            method: "PUT",
+            url: "/api/admins/slides/" + Slides.Slide.id,
+            data: Slides.Slide
+        }).then((response) => {
+            console.log("Update response: ", response);
+        })
+    },
+    DeleteSlide: (id) => {
+        return m.request({
+            method: "DELETE",
+            url: "/api/admins/slides" + id
+        }).then((response) => {
+            console.log("Delete slide response: ", response);
+
         })
     }
 }

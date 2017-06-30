@@ -25,8 +25,10 @@ var Slider = {
                                 <img src={slide.image} alt="image" />
                             </div>
                             <div class="pa2 tr">
-                                <a href="" class="bg-navy white pa2 ba b--transparent no-underline mh2 pointer">Edit</a>
-                                <button class="bg-navy white pa2 ba b--transparent mh2 pointer">Delete</button>
+                                <a href={"/slider/edit/"+slide.id} class="bg-navy white pa2 ba b--transparent no-underline mh2 pointer" oncreate={m.route.link}>Edit</a>
+                                <button class="bg-navy white pa2 ba b--transparent mh2 pointer" onclick={()=>{
+                                        Slides.Delete(slide.id);
+                                    }}>Delete</button>
                             </div>
                         </div>)
                     })}

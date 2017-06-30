@@ -64,7 +64,7 @@ func (v SlidesResource) Show(c buffalo.Context) error {
 	}
 	// Make slide available inside the html template
 	c.Set("slide", slide)
-	return c.Render(200, r.HTML("slides/show.html"))
+	return c.Render(http.StatusOK, render.JSON(slide))
 }
 
 // New renders the formular for creating a new slide.
@@ -139,19 +139,29 @@ func (v SlidesResource) Edit(c buffalo.Context) error {
 // Update changes a slide in the DB. This function is mapped to
 // the path PUT /slides/{slide_id}
 func (v SlidesResource) Update(c buffalo.Context) error {
-	// Get the DB connection from the context
-	tx := c.Value("tx").(*pop.Connection)
+
 	// Allocate an empty Slide
 	slide := &models.Slide{}
-	err := tx.Find(slide, c.Param("slide_id"))
-	if err != nil {
-		return err
-	}
+
 	// Bind slide to the html form elements
-	err = c.Bind(slide)
+	err := c.Bind(slide)
 	if err != nil {
 		return err
 	}
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	// err = tx.Find(slide, c.Param("slide_id"))
+	// if err != nil {
+	// 	return err
+	// }
+	imgUUID := uuid.NewV1().String()
+	imagename := "slide_images/" + imgUUID
+	slide.Image, err = UploadBase64Image(s3bucket, slide.Image, imagename)
+	if err != nil {
+		log.Printf("b64error err: %#v\n", err)
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+
 	verrs, err := tx.ValidateAndUpdate(slide)
 	if err != nil {
 		return err
@@ -167,8 +177,8 @@ func (v SlidesResource) Update(c buffalo.Context) error {
 	}
 	// If there are no errors set a success message
 	c.Flash().Add("success", "Slide was updated successfully")
-	// and redirect to the slides index page
-	return c.Redirect(302, "/slides/%s", slide.ID)
+
+	return c.Render(http.StatusOK, render.JSON(slide))
 }
 
 // Destroy deletes a slide from the DB. This function is mapped
@@ -188,7 +198,6 @@ func (v SlidesResource) Destroy(c buffalo.Context) error {
 		return err
 	}
 	// If there are no errors set a flash message
-	c.Flash().Add("success", "Slide was destroyed successfully")
-	// Redirect to the slides index page
-	return c.Redirect(302, "/slides")
+	// c.Flash().Add("success", "Slide was destroyed successfully")
+	return c.Render(http.StatusOK, render.JSON(slide))
 }

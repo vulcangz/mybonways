@@ -120,9 +120,6 @@ var HotPromosPage = {
               </div>
             </section>
           </section>
-          {/*{m(hotPromos)}*/}
-          {/*{HotPromosPage.tab == "Map" ? m(MapPromos) : ""}
-          {HotPromosPage.tab == "2in1" ? m(DoublePromos) : ""}*/}
         </section>
         <section class="bg-dark-gray  cf f5">
           <div class="tc pv3 white-80 bg-black">

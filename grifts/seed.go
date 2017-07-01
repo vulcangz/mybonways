@@ -1,9 +1,14 @@
 package grifts
 
 import (
+	"fmt"
+	"io/ioutil"
 	"math/rand"
 	"strconv"
+	"strings"
 	"time"
+
+	"log"
 
 	"github.com/markbates/grift/grift"
 	"github.com/markbates/pop"
@@ -29,7 +34,8 @@ var _ = grift.Add("db:seed:admin", func(c *grift.Context) error {
 	}
 	admin.PasswordString = ""
 	db := models.DB
-	if tx := c.Get("tx"); tx != nil {
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
 	return db.Create(&admin)
@@ -39,7 +45,8 @@ var _ = grift.Add("db:seed:locations", func(c *grift.Context) error {
 	// countries := []string{"Cameroon", "Nigeria"}
 	// cities := []string{"Garoua", "Yaounde", "Douala", "Abuja", "Calabar", "Benin"}
 	db := models.DB
-	if tx := c.Get("tx"); tx != nil {
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
 	locations := make([]models.Location, 6)
@@ -63,7 +70,8 @@ var _ = grift.Add("db:seed:merchants", func(c *grift.Context) error {
 
 	var err error
 	db := models.DB
-	if tx := c.Get("tx"); tx != nil {
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
 	// Add DB seeding stuff here
@@ -110,13 +118,32 @@ var _ = grift.Add("db:seed:branches", func(c *grift.Context) error {
 	}
 	// 9.076139, 7.399947
 	db := models.DB
-	if tx := c.Get("tx"); tx != nil {
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-	var err error
+	err := db.RawQuery("ALTER TABLE branches ADD COLUMN latitude float NOT NULL DEFAULT 0;").Exec()
+	if err != nil {
+		log.Println("add latitude error: ", err)
+		return err
+	}
 	for _, branch := range branches {
-		err = db.Create(&branch)
-
+		// err = db.Create(&branch)
+		// if err != nil {
+		// 	log.Println("error branch: ", err)
+		// 	return err
+		// }
+		queryString := fmt.Sprintf(`INSERT INTO branches(
+					created_at, updated_at, id, company_id, address, city, country, neighbourhood,latitude, longitude, location)
+			VALUES ( current_timestamp, current_timestamp, uuid_in(md5(random()::text || clock_timestamp()::text)::cstring), ?, ?, ?, ?,
+					?, ?, ?, ST_GeomFromText('POINT(%f %f)'));
+		`, branch.Longitude, branch.Latitude)
+		query := db.RawQuery(queryString, branch.CompanyID, branch.Address, branch.City, branch.Country, branch.Neighbourhood, branch.Latitude, branch.Longitude)
+		err = query.Exec()
+		if err != nil {
+			log.Println("create errror:", err)
+			return errors.WithStack(err)
+		}
 	}
 	return err
 })
@@ -133,31 +160,42 @@ func RandStringBytes(n int) string {
 var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 	// promos := make([]models.MerchantPromo, 7)
 	db := models.DB
-	if tx := c.Get("tx"); tx != nil {
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
 	var err error
-
+	file, err := ioutil.ReadFile("./grifts/AllPicss.txt")
+	if err != nil {
+		log.Println("error for reading file: ", err)
+		return err
+	}
+	fileString := strings.Split(string(file), "\n")
 	items := []string{"laptop", "shirt", "bed", "house", "books", "chairs", "table"}
 	promo := models.MerchantPromo{}
 	for j := 1; j < 3; j++ {
 		for i := 1; i < 8; i++ {
+			fileIndex := i - 1
+			if i > 5 {
+				fileIndex = 0
+			}
 			promo = models.MerchantPromo{
-				ItemName:         items[i],
+				ItemName:         items[i-1],
 				CompanyID:        "braze" + strconv.Itoa(j),
 				Category:         "category",
 				OldPrice:         i * 1000,
 				NewPrice:         (i * 1000) / 2,
 				StartDate:        time.Now(),
 				EndDate:          time.Now().Local().Add(time.Hour * time.Duration(24*i)),
-				Description:      "Demo Description for " + items[i],
-				PromoImages:      "",
-				FeaturedImage:    "",
-				FeaturedImageB64: "",
-				Slug:             items[i] + "_" + RandStringBytes(6),
+				Description:      "Demo Description for " + items[i-1],
+				PromoImages:      fileString[fileIndex],
+				FeaturedImage:    fileString[fileIndex],
+				FeaturedImageB64: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAFoAkQMBIgACEQEDEQH/xAAZAAACAwEAAAAAAAAAAAAAAAACBAABAwX/xAAhEAACAgEFAQEBAQAAAAAAAAAAAQIDYQQREhMhMVFBFP/EABcBAAMBAAAAAAAAAAAAAAAAAAABAgP/xAAYEQEBAQEBAAAAAAAAAAAAAAAAARECEv/aAAwDAQACEQMRAD8A6mno+eHQpowTT1D9VZsyZ104N40r8N4QNYwGC6pL6sDSii+ADCnUR1YG+BXEBhR1YKdWBviC4gWFerBXUNOJXEaSjqBdXnwbcQeIyKSqwYzpH3EznACcuykSuowdmyApdX58ENcjpX4Qf68EDDdOiHiHq4+CtCHYITRpCJrFAxRohmiRNgiwAGimg2CBaFoFhMFsC0LBZbYLY02oUTcorEWqYEkGwZDLWFiFLo+Dsha0nAU2IGQMB6j+DlYnT/ByDJat4hoziaIY0RCbkDC1GCyNgtjxN6VIBsuTM5MeIvSNgblSYLZWJvQtybgbk3DE+htgtlblNhh6GQtabyYvaxHrHchRAPTlPwbgxGmXiHK5GbYzFmiZhFmiZUKtNy9zPkTkNFomwWwXICUisZ2rlIylIqUjKUhyItE2DuZuRXIaNabl7mXIvkB613KbA5FOQKiTYtazScha2RNXA7lmPIgjN0z8Q5XM5FFvz0drsM27oxmGpiUbQ+zJUTTfMpzFe1foLtKZUzKwzlYLyuMpXZGzpiVhnKwWldkyldkaKadhXYJu70ncMsOqwJTEVav0NWgqHOYLmK9oMribVRvOwVusBncKXXE2rjXsIJ9pCVY1pvHK7zi0jlbJjZ1Y6jIa1BzYh7spFPu/ID1GRJsCQ9RYblqMmUtRkUkzGbHqMNy1GTOWoyJSb/TNsNLD3+jJa1GTn7l7hox0VqAlqDnRYSYaMdDvyC9RkS3BfwWqkNWX5Fbb8mU2LWMm1cjfvyWJEFtVj//Z",
+				Slug:             items[i-1] + "_" + RandStringBytes(6),
 			}
 			err = db.Create(&promo)
 			if err != nil {
+				log.Println("create error: ", err)
 				return err
 			}
 		}
@@ -189,8 +227,15 @@ var _ = grift.Add("db:seed", func(c *grift.Context) error {
 		}
 		err = grift.Run("db:seed:branches", c)
 		if err != nil {
+			log.Println("catch error1: ", err)
 			return errors.WithStack(err)
 		}
+		err = grift.Run("db:seed:promos", c)
+		if err != nil {
+			log.Println("catch error2: ", err)
+			return errors.WithStack(err)
+		}
+		log.Println("about to close")
 		return nil
 
 	})

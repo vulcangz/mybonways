@@ -1,0 +1,5 @@
+https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7ac809e1-5de0-11e7-877f-78acc0541b73
+https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7cacad0a-5de0-11e7-877f-78acc0541b73
+https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7e998b1f-5de0-11e7-877f-78acc0541b73
+https://s3-us-west-2.amazonaws.com/test-past3/promo_images/80432cd9-5de0-11e7-877f-78acc0541b73
+https://s3-us-west-2.amazonaws.com/test-past3/promo_images/837fc7c7-5de0-11e7-877f-78acc0541b73

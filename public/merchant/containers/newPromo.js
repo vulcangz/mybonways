@@ -58,7 +58,7 @@ var NewPromo = {
   },
   validateNewPromo: () => {
     // check if old price is greater or equal to new price...
-    if (pareseInt(Promos.NewPromo.old_price, 10) <= pareseInt(Promos.NewPromo.new_price, 10)) {
+    if (parseInt(Promos.NewPromo.old_price, 10) <= parseInt(Promos.NewPromo.new_price, 10)) {
         NewPromo.state.newpromoError = "You should probable make the new price lower than the old price.";
         window.scrollTo(0, 100);
         return;
@@ -79,11 +79,14 @@ var NewPromo = {
     //console.log("#2 new promo to be submitted: ", Promos.NewPromo)
     // set company id before submission
     Promos.NewPromo.company_id = MerchantModel.Merchant.company_id;
-    
+
     Promos.SaveNew().then(function(){
         NewPromo.state.newpromoMessage = "New Promo added!";
         window.scrollTo(0, 100);
         NewPromo.state.Loader = false;
+        Promos.NewPromo = {};
+        NewPromo.state.newpromoMessage = "";
+        NewPromo.state.newpromoError = "";
     }).catch(function(error) {
         NewPromo.state.newpromoError = "An error occured adding this promo. Try Again.";
         window.scrollTo(0, 100);
@@ -196,7 +199,7 @@ var NewPromo = {
                 </div>
             </div>
             <div class="pa2  pv3 mt2 tr">
-                <button  class=" ph3 pv2 bg-navy white-90 grow pointer no-underline shadow-4 bw0 " onclick={function() {
+                <button  class="ph4 pv2 bg-navy white-90 grow pointer no-underline shadow-4 bw0 " onclick={function() {
                     NewPromo.validateNewPromo();
                 }}>{NewPromo.state.Loader ? m(".loader") : "Submit Promo"}</button>
             </div>

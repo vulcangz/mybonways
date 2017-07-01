@@ -20,7 +20,6 @@ type Branch struct {
 	Country       string    `json:"country" db:"country"`
 	Latitude      float64   `json:"latitude" db:"latitude"`
 	Longitude     float64   `json:"longitude" db:"longitude"`
-	Location      Location  `json:"location" db:"-"`
 }
 
 // String is not required by pop and may be deleted

@@ -20,4 +20,6 @@ func init() {
 	}
 
 	pop.Debug = env == "development"
+
+	pop.MapTableName("merchant_promo_search_results", "merchant_promos")
 }

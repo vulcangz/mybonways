@@ -19,9 +19,13 @@ var SearchArea = {
             title: title
         });
     },
-    oninit: function(vnode) {
-        search.searchData = vnode.attrs.area;
-        search.searchFor();
+    oncreate: function(vnode) {
+        console.log(vnode)
+        let {q, lat, lng} = vnode.attrs;
+        search.searchFor(q, lat, lng);
+    },
+    state:{
+        loader: false
     },
     view: function(vnode){
         return (
@@ -59,37 +63,63 @@ var SearchArea = {
                                     oninput={m.withAttr("value", function(value) {
                                         search.searchData = value;
                                     })}/>
-                                <span class="dib z-3 pv1 ph3 pointer bg-light-gray hover-bg-navy" style="padding-top:0.60rem" onclick={function() {
-                                        search.searchFor();
-                                        m.route.set("/search/" + search.searchData);
-                                    }}>
-                                    <img src="/assets/img/svg/search.svg" class="" style="height:0.8rem;"/>
-                                </span>
+                                
                             </div>
                         </div>
                     </div>
                     <div class="cf">
-                        <h3 class="tc pa2">Search Area: <span class="navy underline">{vnode.attrs.area}</span></h3>
+                        <h3 class="tc pa2">Search For {vnode.attrs.q}: <span class="navy underline">{vnode.attrs.area}</span></h3>
                     </div>
                     <div class="cf">
-                    {search.mysearch.map(function(location, i) {
-                        return (
-                        <div class="fl w-third-l w-50-m pa2 cf">
-                            <div class="pa2 ma2 ba b--light-gray hover-shadow-m3 br3">
-                                <div id={"map"+ i}></div>
-                                <img src="/assets/img/800x450.png" width="100%" alt="map"/>
-                                <div class="">
-                                    <p>Company id: {location.company_id}</p>
-                                    <p>branch location(lat : lng): {location.latitude + " : " + location.longtitude}</p>
-                                    <p>branch Area: {location.area}</p>
-                                </div>
+                    {search.mysearch.map(function(promo, i) {
+                      return (
+                        <div class="dib w-50 pa1 fl" key={i}>
+                          <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100" href={"/promo/"+promo.slug} oncreate={m.route.link}>
+                            <div class="f8 pv1 tr pa1">
+                              <img src="/assets/img/svg/cart.svg" style="height:0.6rem;" class="pr1"/>
+                              <span class="red-custom">
+                                {promo.company_id}
+                              </span>
                             </div>
-                            {/*this.initMap({lat: location.latitude, lng: location.longtitude}, i, location.area)*/}
+                            <div class="w-100 cover overflow-hidden" style={"background-image:url("+promo.featured_image_b64+")"} oncreate={(vnode)=>{
+                                vnode.dom.style.height = (vnode.dom.offsetWidth/1.5)+"px"
+                              }}>
+                              <img src={promo.featured_image} class="w-100 br2" />
+                            </div>
+                            <span class="f7 lh-title dib pa1 ">{promo.item_name}</span>
+                            <div class="f8 pa1 tr cf">
+                              <div class="dib w-50 fl">
+                                <span class=" red-custom db fw6 f5">{(((parseInt(promo.old_price) - parseInt(promo.new_price))/parseInt(promo.old_price)) * 100).toFixed(1) }%</span>
+                              </div>
+                              <div class="dib w-50 fl">
+                                <strong class="dark-gray db">{promo.new_price}CFA</strong>
+                                <span class="strike db">{promo.old_price}CFA</span>
+                              </div>
+                            </div>
+                            <div class="f8 pa1 pv2 ">
+                              <span class="pa1">
+                                <img src="/assets/img/svg/like-hollow.svg" class="dib pr1" style="height:0.5rem;"/>
+                                <span class="dib">200</span>
+                              </span>
+                              <span class="pa1">
+                                <img src="/assets/img/svg/comment.svg" class="pr1" style="height:0.5rem;"/>
+                                <span class="dib">12</span>
+                              </span>
+                            </div>
+                          </a>
                         </div>
-                        )
+                    )
                     })}
                     </div>
                 </section>
+                <div class="tc">
+                    <p class="dib pv3 ph4 ba b--red bg-red white pointer shadow-2 hover-shadow-m3" onclick={()=>{
+                        SearchArea.state.loader = true;
+                        search.searchFor(vnode.attrs.q, vnode.attrs.lat, vnode.attrs.lng).then(()=>{
+                            SearchArea.state.loader = false;
+                        }).catch((error)=>{SearchArea.state.loader = false;})
+                    }}>{SearchArea.state.loader ? m(".loader"):"Load More"}</p>
+                </div>
             </section>
         )
     }

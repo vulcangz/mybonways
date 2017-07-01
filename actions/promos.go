@@ -16,7 +16,8 @@ import (
 	"github.com/tonyalaribe/mybonways/models"
 )
 
-const perPage = 2
+
+const perPage = 6
 
 // PromoResource allows CRUD with HTTP against the Promo model
 type PromoResource struct {
@@ -64,13 +65,17 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	}
 
 	mp.FeaturedImageB64, err = CompressAndBlurImageAndReturnBase64(mp.FeaturedImageB64)
-
+	if err != nil {
+		log.Println("compress error: ", err)
+	}
 	log.Printf("MerchantPromo: %#v \n ", mp)
+
 	tx := c.Value("tx").(*pop.Connection)
 	err = tx.Create(&mp)
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
+
 	tx.Reload(&mp)
 	log.Println(mp)
 	return c.Render(http.StatusOK, render.JSON(mp))
@@ -171,14 +176,59 @@ func (pr *PromoResource) List(c buffalo.Context) error {
 	return c.Render(200, render.JSON(m))
 }
 
-func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
-	log.Println("IN list featured promos")
-	m := models.MerchantPromos{}
+// List renders all Promos
+func (pr *PromoResource) Search(c buffalo.Context) error {
+	// m := models.MerchantPromos{}
+	// x := make(map[string]interface{})
+	// m := []struct{
+	//
+	// }
+	page, err := strconv.Atoi(c.Param("p"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	m := []models.MerchantPromoSearchResult{}
 
 	tx := c.Value("tx").(*pop.Connection)
 
-	query := pop.Q(tx)
-	query = tx.Order("created_at desc").Limit(perPage)
+	searchTerms := c.Request().URL.Query().Get("q")
+	searchLatitude := c.Request().URL.Query().Get("lat")
+	searchLongitude := c.Request().URL.Query().Get("lng")
+
+	queryString := `
+	SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug,neighbourhood,city,country,longitude,latitude FROM merchant_promos x
+		LEFT OUTER JOIN (
+			SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
+			FROM branches
+			WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10 * 1609.34
+			GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+		) y
+		ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
+	`
+	// ORDER BY created_at desc LIMIT 2 OFFSET 2
+	query := tx.RawQuery(queryString, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
+	// sql, x := query.ToSQL(model)
+	// log.Println(sql)
+	// log.Printf("%#v", x)
+	err = query.All(&m)
+	if err != nil {
+		log.Println("promo_resource error: ", err)
+		return c.Error(404, errors.WithStack(err))
+	}
+	log.Println("after query")
+	log.Println("MerchantPromoSearchResult:: ", m)
+	return c.Render(200, render.JSON(m))
+}
+
+func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
+	log.Println("IN list featured promos")
+	m := []models.MerchantPromo{}
+
+	tx := c.Value("tx").(*pop.Connection)
+
+  query := tx.Order("created_at desc").Limit(perPage)
+
 
 	err := query.All(&m)
 	if err != nil {

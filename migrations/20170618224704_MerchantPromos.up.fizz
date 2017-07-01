@@ -1,2 +1,0 @@
-add_column("merchant_promos", "featured_image", "text", {"null": true})
-add_column("merchant_promos", "featured_image_b64", "text", {"null": true})

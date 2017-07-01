@@ -54,6 +54,8 @@ func App() *buffalo.App {
 
 		promoResource := &PromoResource{}
 		merchantsResource := &MerchantsResource{}
+		locationsResource := LocationsResource{&buffalo.BaseResource{}}
+		slidesResource := SlidesResource{&buffalo.BaseResource{}}
 
 		// if this is merchants the middleware does not work, so i changed it to merchant
 		merchantGroup := app.Group("/api/merchants")
@@ -70,10 +72,10 @@ func App() *buffalo.App {
 		app.GET("/api/featuredpromos", promoResource.ListFeaturedPromos)
 		app.GET("/api/featuredpromos/{page}", promoResource.ListFeaturedPromosPage)
 
+		app.GET("/api/promo/search", promoResource.Search)
+
 		app.GET("/api/promo/{slug}", promoResource.GetPromoBySlug)
 		app.GET("/api/merchant/{company_id}", merchantsResource.GetByCompanyID)
-
-		app.GET("/api/search/area/{area}", AreaSearchHandler)
 
 		merchantGroup.Resource("/branch", &BranchResource{})
 		merchantGroup.Resource("/promo", promoResource)
@@ -82,13 +84,29 @@ func App() *buffalo.App {
 
 		app.Resource("/api/categories", CategoriesResource{&buffalo.BaseResource{}})
 
-		// app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
-		// 	c.Render(200, spa.HTML("index.html"))
-		// 	return nil
-		// }
+		// This handles adding a location by the admin...
+		adminGroup.Resource("/locations/neighbourhood", locationsResource)
+
+		// these handle queries for all locations (country, city and neighbourhood)
+		// gets list of countries...
+		app.GET("/api/locations/countries", locationsResource.GetCountries)
+		// gets list of cities of a particular country: /api/cities?country=country_name
+		app.GET("/api/locations/cities", locationsResource.GetCities)
+		// gets list of neighbourhoods of a particular city in a country: /api/cities?country=country_name&city=city_name
+		app.GET("/api/locations/neighbourhood", locationsResource.GetNeighbourhood)
 
 		adminGroup.Resource("/merchants", merchantsResource)
-		app.Resource("/admins", AdminsResource{&buffalo.BaseResource{}})
+
+		admin := app.Group("/admins")
+		admin.Use(AdminLoginCheckMiddleware)
+		admin.Resource("/", AdminsResource{&buffalo.BaseResource{}})
+
+		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
+			c.Render(200, spa.HTML("index.html"))
+			return nil
+		}
+		app.GET("/api/slides", slidesResource.List)
+		adminGroup.Resource("/slides", slidesResource)
 	}
 
 	return app

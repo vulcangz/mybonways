@@ -1,0 +1,83 @@
+create_table("merchants", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("approved", "bool", {})
+	t.Column("company_name", "string", {})
+	t.Column("company_id", "string", {})
+	t.Column("merchant_email", "string", {})
+	t.Column("merchant_password", "string", {})
+})
+create_table("verification_codes", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("company_id", "string", {})
+	t.Column("code", "string", {})
+})
+create_table("merchant_promos", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("slug", "string", {"default": ""})
+	t.Column("item_name", "string", {})
+	t.Column("company_id", "string", {})
+	t.Column("category", "string", {})
+	t.Column("old_price", "integer", {})
+	t.Column("new_price", "integer", {})
+	t.Column("start_date", "datetime", {})
+	t.Column("end_date", "datetime", {})
+	t.Column("description", "text", {"default":""})
+	t.Column("promo_images", "text", {"default":""})
+	t.Column("featured_image", "text", {"default": ""})
+	t.Column("featured_image_b64", "text", {"default": ""})
+	t.Column("weighted_tsv", "tsvector", {"default":""})
+})
+
+create_table("branches", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("company_id", "string", {"default":""})
+	t.Column("address", "string", {"default":""})
+	t.Column("neighbourhood", "string", {"default":""})
+	t.Column("city", "string", {"default":""})
+	t.Column("country", "string", {"default":""})
+	t.Column("longitude", "float", {"default":0})
+	t.Column("location", "geometry", {})
+})
+
+create_table("categories", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("name", "string", {})
+	t.Column("slug", "string", {})
+})
+
+create_table("admins", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("email", "string", {})
+	t.Column("password", "string", {})
+})
+
+create_table("locations", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("country", "string", {})
+	t.Column("city", "string", {})
+	t.Column("neighbourhood", "string", {})
+})
+
+
+create_table("slides", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("url", "string", {})
+	t.Column("image", "string", {})
+})
+
+raw("CREATE EXTENSION postgis;")
+
+raw(`CREATE FUNCTION promo_weighted_tsv_trigger() RETURNS trigger AS $$
+begin
+  new.weighted_tsv :=
+     setweight(to_tsvector('english', COALESCE(new.item_name,'')), 'A') ||
+     setweight(to_tsvector('english', COALESCE(new.description,'')), 'D');
+  return new;
+end
+$$ LANGUAGE plpgsql;`)
+
+raw(`CREATE TRIGGER upd_tsvector BEFORE INSERT OR UPDATE
+ON merchant_promos
+FOR EACH ROW EXECUTE PROCEDURE promo_weighted_tsv_trigger();`)
+
+raw(`CREATE INDEX weighted_tsv_idx ON merchant_promos USING GIST (weighted_tsv);`)

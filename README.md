@@ -37,6 +37,12 @@ and install it's dependencies (```go get ./...```)
 
 	$ go get ./...
 
+
+Add data to the database for development:
+
+	$ buffalo task db:seed
+
+
 Finally, start the application (in the repository directory $GOPATH/src/github.com/tonyalaribe/mybonways):
 
 	$ buffalo dev

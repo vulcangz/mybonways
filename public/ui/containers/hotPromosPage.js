@@ -115,7 +115,9 @@ var HotPromosPage = {
                 </div>
               </div>
               <div class="tc pv3">
-                <button class="ba b--red-custom bg-transparent pv2 ph3">Load More</button>
+                <button class="ba b--red-custom bg-transparent pv2 ph3" onclick={() => {
+                    Promos.LoadMore();
+                  }}>Load More</button>
               </div>
             </section>
           </section>

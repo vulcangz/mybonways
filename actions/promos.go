@@ -16,7 +16,8 @@ import (
 	"github.com/tonyalaribe/mybonways/models"
 )
 
-const perPage = 5
+
+const perPage = 6
 
 // PromoResource allows CRUD with HTTP against the Promo model
 type PromoResource struct {
@@ -226,9 +227,33 @@ func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 
 	tx := c.Value("tx").(*pop.Connection)
 
-	query := tx.Order("created_at desc").Limit(10)
+  query := tx.Order("created_at desc").Limit(perPage)
+
 
 	err := query.All(&m)
+	if err != nil {
+		log.Println("feature promo error: ", err)
+		return c.Error(404, errors.WithStack(err))
+	}
+	log.Println("after query")
+	return c.Render(200, render.JSON(m))
+}
+
+func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
+	log.Println("IN list Page featured promos")
+	m := models.MerchantPromos{}
+
+	tx := c.Value("tx").(*pop.Connection)
+
+	query := pop.Q(tx)
+	page, err := strconv.Atoi(c.Param("page"))
+	if err != nil {
+		log.Println("incorrect params")
+		return c.Error(404, errors.WithStack(err))
+	}
+	query = tx.Order("created_at desc").Paginate(page, perPage)
+
+	err = query.All(&m)
 	if err != nil {
 		log.Println("feature promo error: ", err)
 		return c.Error(404, errors.WithStack(err))

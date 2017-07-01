@@ -4,6 +4,7 @@ export var Promos = {
     FeaturedPromos : [],
     Promo: {promo_images:""},
     PromoMerchant: {},
+    Page: 1,
     GetFeaturedPromos: () => {
         return m.request({
             method: "GET",
@@ -13,6 +14,21 @@ export var Promos = {
             Promos.FeaturedPromos = response;
         }).catch((error) => {
             console.error("featured promos error: ", error)
+        })
+    },
+    LoadMore: () => {
+        return m.request({
+            method: "GET",
+            url: "/api/featuredpromos/" + ++Promos.Page
+        }).then((response) => {
+            console.log("more promos: ", response);
+            if(response.length > 0 ) {
+                Promos.FeaturedPromos.push.apply(Promos.FeaturedPromos, response);
+                // Promos.FeaturedPromos = Promos.FeaturedPromos.concat(response);
+            }
+            
+        }).catch((error) => {
+            console.error("more promos Error: ", error);
         })
     },
     GetPromo: (slug) => {

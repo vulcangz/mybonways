@@ -70,6 +70,7 @@ func App() *buffalo.App {
 		app.POST("/api/admin/login", AdminLogin)
 
 		app.GET("/api/featuredpromos", promoResource.ListFeaturedPromos)
+		app.GET("/api/featuredpromos/{page}", promoResource.ListFeaturedPromosPage)
 
 		app.GET("/api/promo/search", promoResource.Search)
 

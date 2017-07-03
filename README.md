@@ -37,6 +37,13 @@ and install it's dependencies (```go get ./...```)
 
 	$ go get ./...
 
+### Download and install POSTGIS extension for postgresql before porceeding to the next step
+
+
+Create the tables by running the migrations:
+
+	$ buffalo db migrate up
+
 
 Add data to the database for development:
 

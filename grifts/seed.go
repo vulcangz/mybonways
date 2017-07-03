@@ -203,6 +203,35 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 	return nil
 })
 
+var _ = grift.Add("db:seed:slides", func(c *grift.Context) error {
+	db := models.DB
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
+		db = tx.(*pop.Connection)
+	}
+	items := []string{"laptop", "shirt", "bed"}
+	var err error
+	file, err := ioutil.ReadFile("./grifts/slides.txt")
+	if err != nil {
+		log.Println("error for reading file: ", err)
+		return err
+	}
+	imagesURLs := strings.Split(string(file), "\n")
+	// slide := models.Slide{}
+	for i, v := range imagesURLs {
+		slide := models.Slide{
+			Image: v,
+			Url:   "/promos/" + items[i] + "_" + RandStringBytes(6),
+		}
+		err = db.Create(&slide)
+		if err != nil {
+			log.Println("create error: ", err)
+			return err
+		}
+	}
+	return nil
+})
+
 var _ = grift.Add("db:seed", func(c *grift.Context) error {
 	// return errors if any...
 	return models.DB.Transaction(func(tx *pop.Connection) error {
@@ -233,6 +262,11 @@ var _ = grift.Add("db:seed", func(c *grift.Context) error {
 		err = grift.Run("db:seed:promos", c)
 		if err != nil {
 			log.Println("catch error2: ", err)
+			return errors.WithStack(err)
+		}
+		err = grift.Run("db:seed:slides", c)
+		if err != nil {
+			log.Println("catch error slides: ", err)
 			return errors.WithStack(err)
 		}
 		log.Println("about to close")

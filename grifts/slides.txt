@@ -1,0 +1,3 @@
+https://s3-us-west-2.amazonaws.com/test-past3/slide_images/8a1518ed-5f9d-11e7-9eb3-78acc0541b73
+https://s3-us-west-2.amazonaws.com/test-past3/slide_images/8cab7ab9-5f9d-11e7-9eb3-78acc0541b73
+https://s3-us-west-2.amazonaws.com/test-past3/slide_images/8efe6ccf-5f9d-11e7-9eb3-78acc0541b73

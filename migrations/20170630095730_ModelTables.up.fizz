@@ -38,6 +38,7 @@ create_table("branches", func(t) {
 	t.Column("city", "string", {"default":""})
 	t.Column("country", "string", {"default":""})
 	t.Column("longitude", "float", {"default":0})
+	t.Column("latitude", "float", {"default":0})
 	t.Column("location", "geometry", {})
 })
 

@@ -2,10 +2,8 @@ package grifts
 
 import (
 	"fmt"
-	"io/ioutil"
 	"math/rand"
 	"strconv"
-	"strings"
 	"time"
 
 	"log"
@@ -122,11 +120,7 @@ var _ = grift.Add("db:seed:branches", func(c *grift.Context) error {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-	err := db.RawQuery("ALTER TABLE branches ADD COLUMN latitude float NOT NULL DEFAULT 0;").Exec()
-	if err != nil {
-		log.Println("add latitude error: ", err)
-		return err
-	}
+	var err error
 	for _, branch := range branches {
 		// err = db.Create(&branch)
 		// if err != nil {
@@ -165,12 +159,13 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 		db = tx.(*pop.Connection)
 	}
 	var err error
-	file, err := ioutil.ReadFile("./grifts/AllPicss.txt")
-	if err != nil {
-		log.Println("error for reading file: ", err)
-		return err
+	fileString := []string{
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7ac809e1-5de0-11e7-877f-78acc0541b73",
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7cacad0a-5de0-11e7-877f-78acc0541b73",
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7e998b1f-5de0-11e7-877f-78acc0541b73",
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/80432cd9-5de0-11e7-877f-78acc0541b73",
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/837fc7c7-5de0-11e7-877f-78acc0541b73",
 	}
-	fileString := strings.Split(string(file), "\n")
 	items := []string{"laptop", "shirt", "bed", "house", "books", "chairs", "table"}
 	promo := models.MerchantPromo{}
 	for j := 1; j < 3; j++ {
@@ -211,17 +206,19 @@ var _ = grift.Add("db:seed:slides", func(c *grift.Context) error {
 	}
 	items := []string{"laptop", "shirt", "bed"}
 	var err error
-	file, err := ioutil.ReadFile("./grifts/slides.txt")
-	if err != nil {
-		log.Println("error for reading file: ", err)
-		return err
+
+	imagesURLs := []string{
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7ac809e1-5de0-11e7-877f-78acc0541b73",
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7cacad0a-5de0-11e7-877f-78acc0541b73",
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7e998b1f-5de0-11e7-877f-78acc0541b73",
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/80432cd9-5de0-11e7-877f-78acc0541b73",
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/837fc7c7-5de0-11e7-877f-78acc0541b73",
 	}
-	imagesURLs := strings.Split(string(file), "\n")
 	// slide := models.Slide{}
-	for i, v := range imagesURLs {
+	for i, v := range items {
 		slide := models.Slide{
-			Image: v,
-			Url:   "/promos/" + items[i] + "_" + RandStringBytes(6),
+			Image: imagesURLs[i],
+			Url:   "/promos/" + v + "_" + RandStringBytes(6),
 		}
 		err = db.Create(&slide)
 		if err != nil {

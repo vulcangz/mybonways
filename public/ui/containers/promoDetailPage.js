@@ -84,8 +84,9 @@ var PromoDetailPage = {
           </div>
           <section class="cf">
             <section class="bg-white ">
-              <div class="w-100" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ")"} oncreate={(vnode) => {
-                {/*vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"*/}
+              <div class="w-100 cover overflow-hidden" id="featured_image" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ");min-height:150px"} oncreate={(vnode) => {
+
+                vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
               }}>
                 <img src={Promos.Promo.featured_image} class="w-100 " />
               </div>

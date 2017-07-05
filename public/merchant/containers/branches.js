@@ -1,9 +1,9 @@
 import m from "mithril";
-import {br} from "../models/branches.js";
+import {branch} from "../models/branches.js";
 
 var Branches = {
     oncreate: function() {
-        br.GetAllBranches();
+        branch.GetAllBranches();
     },
     view: function() {
         return (
@@ -26,7 +26,7 @@ var Branches = {
                                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Edit</th>
                             </thead>
                             <tbody>
-                                {br.AllBranches.map(function(b, i) {
+                                {branch.AllBranches.map(function(b, i) {
                                     return (
                                     <tr>
                                         <td class="pv3 pr3 bb b--black-20 tc">{i + 1}</td>
@@ -39,7 +39,7 @@ var Branches = {
 
                                             <button class="ph2 pv1 ba b--navy bg-navy white-90 grow pointer no-underline ma1 shadow-4"
                                             onclick={()=>{
-                                                br.DeleteBranch(b.id, i)
+                                                branch.DeleteBranch(b.id, i)
                                                 }}>Delete</button>
                                         </td>
                                     </tr>

@@ -1,6 +1,6 @@
 import m from 'mithril';
 
-export var br = {
+export var branch = {
     NewBranch:{
         location:{}
     },
@@ -14,18 +14,18 @@ export var br = {
             data:{}
         }).then(function(response) {
             console.log("all branches: ", response);
-            br.AllBranches = response;
+            branch.AllBranches = response;
         })
     },
     SaveNewBranch: function() {
-        console.log("new branch: ", br.NewBranch);
-        m.request({
+        console.log("new branch: ", branch.NewBranch);
+        return m.request({
             method:"POST",
             url:"/api/merchants/branch",
-            data: br.NewBranch
+            data: branch.NewBranch
         }).then(function(response) {
             console.log(response);
-            br.AllBranches.push(response);
+            branch.AllBranches.push(response);
             // m.redraw()
         })
     },
@@ -39,14 +39,14 @@ export var br = {
             data:{}
         }).then(function(response) {
             console.log(response);
-            br.editBranch = response
+            branch.editBranch = response
         })
     },
     UpdateBranch: () => {
         m.request({
             method: "PUT",
-            url: "/api/merchants/branch/" + br.editBranch.id,
-            data: br.editBranch
+            url: "/api/merchants/branch/" + branch.editBranch.id,
+            data: branch.editBranch
         }).then(function(response) {
             console.log("response: ", response);
             // display success message
@@ -62,7 +62,7 @@ export var br = {
             console.log("delete: ", response);
             if (response.hasOwnProperty("id")) {
                 if(i > -1) {
-                    br.AllBranches.splice(i, 1);
+                    branch.AllBranches.splice(i, 1);
                     m.redraw()
                 }
             }

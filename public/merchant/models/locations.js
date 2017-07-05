@@ -1,5 +1,5 @@
 import m from 'mithril';
-import {br} from "./branches.js";
+import {branch} from "./branches.js";
 
 export var Locations = {
     AllCountries: [],
@@ -30,7 +30,7 @@ export var Locations = {
     GetNeighbourhoods: () => {
         return m.request({
             method: "GET",
-            url: "/api/locations/neighbourhood?country=" + br.NewBranch.country + "&city=" + br.NewBranch.city
+            url: "/api/locations/neighbourhood?country=" + branch.NewBranch.country + "&city=" + branch.NewBranch.city
         }).then((response)=>{
             console.log("response: ", response)
             Locations.AllNeighbourhoods = response;

@@ -4,7 +4,9 @@ import moment from "moment"
 
 var PromosTable = {
   oncreate:function(){
-    Promos.GetAllPromos()
+    Promos.GetAllPromos().then(() => {
+      m.redraw();
+    })
   },
   view:function(){
     var p = Promos.AllPromos

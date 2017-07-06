@@ -31,44 +31,9 @@ var SearchArea = {
         return (
             <section>
                 <section>
-                    <div class="flex flex-row pv1 ph2">
-                        {/*<div class="flex pa1 pr3">
-                            <a class="red-custom f3" onclick={()=>vnode.attrs.slideout.toggle()}>☰</a>
-                        </div>*/}
-                        <div class="flex flex-row flex-auto">
-                            <div class="flex flex-auto  justify-center pa1 tc">
-                                <a class="pa1 dib w-100  red-custom link" href="/" oncreate={m.route.link}>map</a>
-                            </div>
-                            <div class="flex flex-auto  justify-center pa1 tc">
-                                <a class="pa1 dib w-100  br-pill bg-red-custom white link" href="/" oncreate={m.route.link}>hot</a>
-                            </div>
-                            <div class="flex flex-auto  justify-center pa1 tc">
-                                <a class="pa1 dib w-100 red-custom link" href="/" oncreate={m.route.link}>2 in 1</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pa2">
-                        <div class=" cf flex justify-between relative">
-                            <div class="dib   flex relative " style="flex:7">
-                                <span class="dib searchbtn z-3 pv1 " style="padding-top:0.60rem">
-                                    <img src="/assets/img/svg/search.svg" class="" style="height:0.8rem;"/>
-                                </span>
-                                <input type="search" class="w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent "  placeholder="search"/>
-                            </div>
-                            <div class="dib ml2 flex relative" style="flex:3">
-                                <span class="dib searchbtn z-3 pv1 " style="padding-top:0.60rem">
-                                    <img src="/assets/img/svg/location.svg" class="" style="height:0.8rem;"/>
-                                </span>
-                                <input type="search" class="w-100 pa1 input-reset searchinput bg-light-gray-custom bw2 b--transparent "  placeholder="area"
-                                    oninput={m.withAttr("value", function(value) {
-                                        search.searchData = value;
-                                    })}/>
-                                
-                            </div>
-                        </div>
-                    </div>
+                    {m.fragment(vnode.attrs, vnode.children)}
                     <div class="cf">
-                        <h3 class="tc pa2">Search For {vnode.attrs.q}: <span class="navy underline">{vnode.attrs.area}</span></h3>
+                        <h3 class="tc pa2">Search For <span class="underline">{vnode.attrs.q}</span>:</h3>
                     </div>
                     <div class="cf">
                     {search.mysearch.map(function(promo, i) {
@@ -115,7 +80,7 @@ var SearchArea = {
                 <div class="tc">
                     <p class="dib pv3 ph4 ba b--red bg-red white pointer shadow-2 hover-shadow-m3" onclick={()=>{
                         SearchArea.state.loader = true;
-                        search.searchFor(vnode.attrs.q, vnode.attrs.lat, vnode.attrs.lng).then(()=>{
+                        search.loadMore(vnode.attrs.q, vnode.attrs.lat, vnode.attrs.lng).then(()=>{
                             SearchArea.state.loader = false;
                         }).catch((error)=>{SearchArea.state.loader = false;})
                     }}>{SearchArea.state.loader ? m(".loader"):"Load More"}</p>

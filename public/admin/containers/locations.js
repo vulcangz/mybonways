@@ -13,6 +13,8 @@ var Locations = {
             Locations.state.NewLocationError = "";
             Locations.state.NewLocationMessage = "New Location Added.";
             Locations.state.Loader = false;
+            LocationModel.NewLocation = {};
+            m.redraw();
         }).catch((error) => {
             console.error("Add location error: ", error);
             Locations.state.NewLocationMessage = "";
@@ -39,17 +41,20 @@ var Locations = {
                         <input type="text" placeholder="Country" class="pa2 ba b--gray w5 bw1 mv1"
                         oninput={m.withAttr("value", function(value){
                                 LocationModel.NewLocation.country = value;
-                            })}/><br/>
+                            })}
+                            value={LocationModel.NewLocation.country}/><br/>
                         {/*<label class="f4 mv2">City: </label><br/>*/}
                         <input class="pa2 ba b--gray w5 bw1 mv1" placeholder="City"
                         oninput={m.withAttr("value", function(value){
                                 LocationModel.NewLocation.city = value;
-                            })}/><br/>
+                            })}
+                            value={LocationModel.NewLocation.city}/><br/>
                         {/*<label class="f4 mv2">Neighbourhood: </label><br/>*/}
                         <input class="pa2 ba b--gray w5 bw1 mv1" placeholder="Neigbourhood"
                         oninput={m.withAttr("value", function(value){
                                 LocationModel.NewLocation.neighbourhood = value;
-                            })} /><br/>
+                            })}
+                            value={LocationModel.NewLocation.neighbourhood} /><br/>
                         <button type="button" class="ba b--navy bg-navy pv2 ph4 white shadow-3 pointer mv1" onclick={() => {
                                 console.log("Add Location clicked");
                                 Locations.VerifyNewLocation();

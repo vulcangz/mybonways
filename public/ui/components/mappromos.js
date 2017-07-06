@@ -12,7 +12,7 @@ var MapPromos = {
   },
   getLocation: () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(MapPromos.showPosition, (error) =>{ console.log("Error getting the position: ", error); },
+      navigator.geolocation.getCurrentPosition(MapPromos.showPosition, (error) =>{ console.log("Error Occured getting the position: ", error); },
       {enableHighAccuracy: true});
     } else {
       //x.innerHTML = "Geolocation is not supported by this browser.";
@@ -20,15 +20,22 @@ var MapPromos = {
   },
   Locations: [],
   showPosition: (position) => {
-    console.log(position)
     MapPromos.Position = position;
     // The nearby locations of all available branches...
     console.log("POSITION: ", position);
-    // TODO:: I NEED A WILD CARD FOR THIS SEARCH...
-    search.searchFor("laptop", position.coords.latitude, position.coords.longitude).then(()=>{
+    // TODO:: ANOTHER SEARCH QUERY FOR MAPS
+    search.searchFor("*", position.coords.latitude, position.coords.longitude).then(()=>{
       MapPromos.Locations = search.mysearch.map((promo)=>{
-        return {lng: promo.longitude, lat: promo.latitude}
+        return {lng: promo.longitude, lat: promo.latitude, id: promo.company_id}
       })
+      // ommit duplicate
+      search.mysearch.forEach((promo) => {
+        for (var i = 0; i < MapPromos.Promos.length; i++) {
+          if (MapPromos.Promos[i].slug == promo.slug) { return }
+        }
+        MapPromos.Promos.push(promo)
+      })
+
       m.redraw();
       MapPromos.DrawMap(position);
     }).catch((error) => {
@@ -42,22 +49,14 @@ var MapPromos = {
     var mylocation = { lat: position.coords.latitude, lng: position.coords.longitude };
     console.log("mylocation::=> ", mylocation);
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 5,
+      zoom: 10,
       center: mylocation
     });
 
     // get all locations near this user...
-    //define locations here...
-    // USING MOCK LOCATIONS TO TEST
-    // var locations = [
-    //   { lat: position.coords.latitude, lng: position.coords.longitude },
-    //   { lat: position.coords.latitude + 0.1, lng: position.coords.longitude - 0.2 },
-    //   { lat: position.coords.latitude + 0.14, lng: position.coords.longitude + 0.23 }
-    // ]
 
     // Create an array of alphabetical characters used to label the markers.
     var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    // console.log("labels check:::=> ", labels[0 % 26], ";; modulus: ", 0 % 26)
     // Add some markers to the map.
     // Note: The code uses the JavaScript Array.prototype.map() method to
     // create an array of markers based on a given "locations" array.
@@ -65,87 +64,113 @@ var MapPromos = {
     var markers = MapPromos.Locations.map(function (location, i) {
       return new google.maps.Marker({
         position: location,
-        label: labels[i % labels.length]
+        label: labels[i % labels.length],
+        title: location.id,
+        map: map,
+        infoWindow: new google.maps.InfoWindow({
+          content: '<div id="content">'+
+          '<h1 id="firstHeading" class="firstHeading"><a href="/merchant/' + location.id + '">'+ location.id +'</a> Promos</h1>'+
+            '<div id="bodyContent">'+
+            MapPromos.Promos.map((promo) => {
+              if (location.id !== promo.company_id) { return }
+              return "<div class='dib bg-red w4 h4 pa2 white mr1'>"+
+              "<a href='/promos/" + promo.slug + "'>"+
+                "<p class='mv0 pb1'>"+ promo.item_name + "</p>"+
+                "<img class='w-100' src='" + promo.featured_image + "'/>"+
+              "</a></div>"
+            })
+            .join("")+
+            '</div>'+
+          '</div>',
+          maxWidth: 350
+        })
       });
     });
+    // var infowindow = new google.maps.InfoWindow({
+    //       content: contentString
+    //     });
+    // [].
+    markers.forEach((marker) => {
+      marker.addListener('click', () => {
+        marker.infoWindow.open(map, marker)
+        console.log("Marker clicked: ", marker.title);
+        // m.route.set("/merchant/" + marker.title)
+      })
+    })
     // ADD THE USERS LOCATION TO THE MARKERS...
     markers.push(new google.maps.Marker({
         position: mylocation,
-        label: "Me"
+        label: "Me",
+        map: map,
+		title: "My Location"
       }))
+      
     // Add a marker clusterer to manage the markers.
-    var markerCluster = new MarkerClusterer(map, markers,
-      { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
-
-    // var placeService = new google.maps.places.PlacesService(map);
-    // var marker = new google.maps.Marker({
-    //   map: map,
-    //   position: mylocation
-    // });
+    // var markerCluster = new MarkerClusterer(map, markers,
+    //   { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
   },
   Position: {},
   NoPromos: "",
+  Promos:[],
   view: (vnode) => {
     return (
       <section class="animated">
         {m.fragment(vnode.attrs, vnode.children)}
         <div class="cf shadow-4 pa2">
-          <div class="fl w-100 w-50-ns cf">
-            <p class="mv0 pa2 tc white bg-red">{ MapPromos.NoPromos ? MapPromos.NoPromos : "List Of all branches..."}</p>
-            {search.mysearch.map(function(promo, i) {
-                return (
-                  <div class="dib w-50 pa1 fl" key={i}>
-                    <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100" href={"/promo/"+promo.slug} oncreate={m.route.link}>
-                      <div class="f8 pv1 tr pa1">
-                        <img src="/assets/img/svg/cart.svg" style="height:0.6rem;" class="pr1"/>
-                        <span class="red-custom">
-                          {promo.company_id}
-                        </span>
-                      </div>
-                      <div class="w-100 cover overflow-hidden" style={"background-image:url("+promo.featured_image_b64+")"} oncreate={(vnode)=>{
-                          vnode.dom.style.height = (vnode.dom.offsetWidth/1.5)+"px"
-                        }}>
-                        <img src={promo.featured_image} class="w-100 br2" />
-                      </div>
-                      <span class="f7 lh-title dib pa1 ">{promo.item_name}</span>
-                      <div class="f8 pa1 tr cf">
-                        <div class="dib w-50 fl">
-                          <span class=" red-custom db fw6 f5">{(((parseInt(promo.old_price) - parseInt(promo.new_price))/parseInt(promo.old_price)) * 100).toFixed(1) }%</span>
+          {/*<div class="fl w-100 w-50-ns">
+            <div class="cf">
+              <p class="mv0 pa2 tc white bg-red">{ MapPromos.NoPromos ? MapPromos.NoPromos : "List Of all branches..."}</p>
+              {MapPromos.Promos.length? MapPromos.Promos.map(function(promo, i) {
+                  return (
+                    <div class="dib w-50 pa1 fl" key={i}>
+                      <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100" href={"/promo/"+promo.slug} oncreate={m.route.link}>
+                        <div class="f8 pv1 tr pa1">
+                          <img src="/assets/img/svg/cart.svg" style="height:0.6rem;" class="pr1"/>
+                          <span class="red-custom">
+                            {promo.company_id}
+                          </span>
                         </div>
-                        <div class="dib w-50 fl">
-                          <strong class="dark-gray db">{promo.new_price}CFA</strong>
-                          <span class="strike db">{promo.old_price}CFA</span>
+                        <div class="w-100 cover overflow-hidden" style={"background-image:url("+promo.featured_image_b64+")"} oncreate={(vnode)=>{
+                            vnode.dom.style.height = (vnode.dom.offsetWidth/1.5)+"px"
+                          }}>
+                          <img src={promo.featured_image} class="w-100 br2" />
                         </div>
-                      </div>
-                      <div class="f8 pa1 pv2 ">
-                        <span class="pa1">
-                          <img src="/assets/img/svg/like-hollow.svg" class="dib pr1" style="height:0.5rem;"/>
-                          <span class="dib">200</span>
-                        </span>
-                        <span class="pa1">
-                          <img src="/assets/img/svg/comment.svg" class="pr1" style="height:0.5rem;"/>
-                          <span class="dib">12</span>
-                        </span>
-                      </div>
-                    </a>
-                  </div>
-              )
-              })}
-          </div>
-          <div class="fl w-50 db-ns dn ph3">
+                        <span class="f7 lh-title dib pa1 ">{promo.item_name}</span>
+                        <div class="f8 pa1 tr cf">
+                          <div class="dib w-50 fl">
+                            <span class=" red-custom db fw6 f5">{(((parseInt(promo.old_price) - parseInt(promo.new_price))/parseInt(promo.old_price)) * 100).toFixed(1) }%</span>
+                          </div>
+                          <div class="dib w-50 fl">
+                            <strong class="dark-gray db">{promo.new_price}CFA</strong>
+                            <span class="strike db">{promo.old_price}CFA</span>
+                          </div>
+                        </div>
+                        <div class="f8 pa1 pv2 ">
+                          <span class="pa1">
+                            <img src="/assets/img/svg/like-hollow.svg" class="dib pr1" style="height:0.5rem;"/>
+                            <span class="dib">200</span>
+                          </span>
+                          <span class="pa1">
+                            <img src="/assets/img/svg/comment.svg" class="pr1" style="height:0.5rem;"/>
+                            <span class="dib">12</span>
+                          </span>
+                        </div>
+                      </a>
+                    </div>
+                )
+                }) : (<div class=""><div class="loader" style="color: red !important;"></div></div>)}
+            </div>
+            <div class="tc pv3">
+              <button class="ba b--red-custom bg-transparent pv2 ph3 pointer" onclick={() => {
+                }}>Load More</button>
+            </div>
+          </div>*/}
+          <div class="ph1">
             <div class="shadow-4">
-              <p class="bg-red tc white br--top mv0 pv2">Maps of nearby branches...</p>
-              <div id="map" class="vh-50 w-100 bg-gray"></div>
+              <p class="bg-red tc white br--top mv0 pv2">Branches near you. (Click on marker to view details)</p>
+              <div id="map" class="vh-75 w-100 bg-gray"></div>
             </div>
           </div>
-        </div>
-        <div class="fixed top-0 dn">
-          <button class="ba b--red br--left bg-red white pa1" onclick={()=>{
-            // set either the branches view or map view to show...
-          }}>Map</button>
-          <button class="ba b--red br--right bg-red white pa1" onclick={()=>{
-            // set either the branches view or map view to show...
-          }}>Promos</button>
         </div>
       </section>
     )

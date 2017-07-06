@@ -16,7 +16,6 @@ import (
 	"github.com/tonyalaribe/mybonways/models"
 )
 
-
 const perPage = 6
 
 // PromoResource allows CRUD with HTTP against the Promo model
@@ -195,19 +194,35 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	searchTerms := c.Request().URL.Query().Get("q")
 	searchLatitude := c.Request().URL.Query().Get("lat")
 	searchLongitude := c.Request().URL.Query().Get("lng")
-
-	queryString := `
-	SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug,neighbourhood,city,country,longitude,latitude FROM merchant_promos x
-		LEFT OUTER JOIN (
-			SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
-			FROM branches
-			WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10 * 1609.34
-			GROUP BY company_id,neighbourhood,city,country,longitude,latitude
-		) y
-		ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
-	`
+	var queryString string
+	var query *pop.Query
+	if searchTerms == "*" {
+		queryString = `
+			SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug,neighbourhood,city,country,longitude,latitude FROM merchant_promos x
+				LEFT OUTER JOIN (
+					SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
+					FROM branches
+					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10 * 1609.34
+					GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+				) y
+				ON x.company_id = y.cid ORDER BY x.created_at desc LIMIT ? OFFSET ?;
+			`
+		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, perPage, (page-1)*perPage)
+	} else {
+		queryString = `
+		SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug,neighbourhood,city,country,longitude,latitude FROM merchant_promos x
+			LEFT OUTER JOIN (
+				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
+				FROM branches
+				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10 * 1609.34
+				GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+			) y
+			ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
+		`
+		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
+	}
 	// ORDER BY created_at desc LIMIT 2 OFFSET 2
-	query := tx.RawQuery(queryString, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
+
 	// sql, x := query.ToSQL(model)
 	// log.Println(sql)
 	// log.Printf("%#v", x)
@@ -221,14 +236,15 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	return c.Render(200, render.JSON(m))
 }
 
+// TODO PREVENT EXPIRED PROMOS FROM BEING LISTED...
+
 func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 	log.Println("IN list featured promos")
 	m := []models.MerchantPromo{}
 
 	tx := c.Value("tx").(*pop.Connection)
 
-  query := tx.Order("created_at desc").Limit(perPage)
-
+	query := tx.Order("created_at desc").Limit(perPage)
 
 	err := query.All(&m)
 	if err != nil {

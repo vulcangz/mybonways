@@ -60,6 +60,7 @@ export var MerchantModel = {
     Logout:function(){
       m.route.set("/signup")
       localforage.removeItem("AuthMerchant")
+      MerchantModel.Merchant = {}
       deleteCookie("X-MERCHANT-TOKEN")
     },
     Signup: function(merchant) {

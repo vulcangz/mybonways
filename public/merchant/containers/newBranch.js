@@ -34,13 +34,9 @@ var NewBranch = {
       });
 
       map.addListener('click', function(e) {
-        // placeMarkerAndPanTo(e.latLng, map);
-        console.log(e)
-        console.log(marker)
         marker.setPosition(e.latLng);
         marker.setVisible(true);
         map.panTo(e.latLng);
-        console.log(map)
         placeService
       });
 
@@ -76,7 +72,7 @@ var NewBranch = {
       || !branch.NewBranch.neighbourhood || !branch.NewBranch.longitude || !branch.NewBranch.latitude) {
         NewBranch.state.NewBranchMessage = "";
         NewBranch.state.NewBranchError = "All field must be filled correctly.";
-		window.scrollTo(0, 100);
+		    window.scrollTo(0, 100);
         return;
       }
       NewBranch.state.loader = true;
@@ -102,7 +98,6 @@ var NewBranch = {
           (place.address_components[2] && place.address_components[2].short_name || '')
         ].join(' ');
       }
-      // console.log(place.geometry?place.geometry.location.lat():"")
       branch.NewBranch.latitude = 0.00
       branch.NewBranch.longitude = 0.00
       if (place.geometry){

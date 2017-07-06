@@ -2,6 +2,7 @@ import m from 'mithril';
 import { search } from '../models/search.js';
 import { Promos } from '../models/promos.js';
 import { Slides } from '../models/slides.js';
+import { lory } from 'lory.js';
 
 var HotPromosPage = {
   slideIndex: 1,
@@ -24,21 +25,6 @@ var HotPromosPage = {
     })
     console.log(vnode)
     Promos.GetFeaturedPromos();
-    // let input = document.getElementById("areaInput")
-    // var autocomplete = new google.maps.places.Autocomplete(input);
-    // autocomplete.addListener('place_changed', function () {
-    //   var place = autocomplete.getPlace();
-    //   console.log(place)
-
-    //   if (!place.geometry) {
-    //     // User entered the name of a Place that was not suggested and
-    //     // pressed the Enter key, or the Place Details request failed.
-    //     console.log("No details available for input: '" + place.name + "'");
-    //     return;
-    //   }
-
-    //   m.redraw()
-    // });
   },
   view: function (vnode) {
     return (
@@ -46,15 +32,19 @@ var HotPromosPage = {
         <section>
           {m.fragment(vnode.attrs, vnode.children)}
           <section class="animated">
-            <section class="bg-white ">
+            <section class="bg-white pa3">
                 <div class="slider overflow-hidden js_slider relative"  oncreate={(vnode) => {
                             vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
                           }}>
-                  <div class="frame js_frame pa3">
+                  <div class="frame js_frame">
                     <ul class="slides js_slides pa0 ma0 w-100">
                       {Slides.AllSlides.length ?
                         Slides.AllSlides.map((slide) => {
-                          return (<li class="js_slide w-100"><a href={slide.url} class="w-100 dib v-top" oncreate={m.route.link}><img src={slide.image} class="w-100 br3" /></a></li>)
+                          return (<li class="js_slide w-100">
+                            <a href={slide.url} class="w-100 dib v-top" oncreate={m.route.link}>
+                              <img src={slide.image} class="w-100 br3" />
+                              </a>
+                            </li>)
                         })
                         : "" }
                     </ul>

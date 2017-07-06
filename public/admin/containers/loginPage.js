@@ -6,6 +6,26 @@ var LoginPage = {
   oncreate:function(vnode){
     console.log(vnode)
   },
+  state : {
+    loader : false,
+    LoginError: "",
+  },
+  ValidateLogin : () => {
+    if(!LoginPage.LoginAdmin.email || !LoginPage.LoginAdmin.password) {
+      LoginPage.state.LoginError = "Please all fields are required.";
+      return;
+    }
+	LoginPage.state.loader = true;
+    AdminModel.Login(LoginPage.LoginAdmin).then(() => {
+		LoginPage.state.LoginError = "";
+		LoginPage.state.loader = false;
+		m.route.set("/")
+	}).catch((error) => {
+		LoginPage.state.loader = false;
+		console.log("Admin Login Error: ", error);
+		LoginPage.state.LoginError = "Email or password is incorrect.";
+	})
+  },
   view: function(vnode) {
     return (
       <section>
@@ -20,6 +40,7 @@ var LoginPage = {
                   <div class="dib relative">
                     <a href="#" class="dib  black link v-mid mr3  pa2  relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>login</a>
                     <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 w5 "+(vnode.state.showNav?"db":"dn")}>
+						{LoginPage.state.LoginError? m("p.bg-red.white.tc.mv0.pa1", LoginPage.state.LoginError) : ""}
                         <div class="db pv1">
                           <input type="email" placeholder="email" class="input-reset ba b--black-20 db w-100 pv2 ph3"
                           oninput={m.withAttr("value", function(value) {
@@ -33,7 +54,11 @@ var LoginPage = {
                           })}/>
                         </div>
                         <div class="db tr">
-                          <button class="pv2 ph3 bg-navy bw0 shadow grow white-80" onclick={function(){ MerchantModel.Login(LoginPage.LoginAdmin) }}>Login</button>
+                          <button class="pv2 ph3 bg-navy bw0 shadow grow white-80 pointer w4"
+						  	  onclick={function(){
+									{/*console.log("login clicked");*/}
+									LoginPage.ValidateLogin();
+                          }}>{ LoginPage.state.loader? m(".loader") : "Login"}</button>
                         </div>
                       </div>
                   </div>
@@ -51,6 +76,7 @@ var LoginPage = {
                   </section>
                   <section class=" pa3 pa4-ns bg-white br2 dib w-100 w-40-ns ">
                     <div class="">
+						{LoginPage.state.LoginError? m("p.bg-red.white.tc.mv0.pa1", LoginPage.state.LoginError) : ""}
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="email" placeholder="Admin Email"
                         oninput={m.withAttr("value", function(value) {
@@ -66,7 +92,11 @@ var LoginPage = {
                         />
                       </div>
                       <div class="tr pv2">
-                        <button class="pv3 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={function(){ AdminModel.Login(LoginPage.LoginAdmin) }}>login</button>
+                        <button class="pv3 ph4 bg-navy white-90 bw0 shadow-4 grow pointer w4"
+                          onclick={function(){
+							  {/*console.log("login clicked");*/}
+                            LoginPage.ValidateLogin();
+                          }}>{ LoginPage.state.loader? m(".loader") : "Login"}</button>
                       </div>
                     </div>
                   </section>

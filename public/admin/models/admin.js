@@ -53,8 +53,6 @@ export var AdminModel = {
           })
           .then(function(){
              AdminModel.GetUserfromStorage()
-            m.route.set("/")
-
         })
     },
     Logout:function(){

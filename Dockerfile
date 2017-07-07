@@ -1,7 +1,7 @@
 FROM gobuffalo/buffalo:latest
 RUN mkdir -p $GOPATH/src/github.com/tonyalaribe/mybonways
 WORKDIR $GOPATH/src/github.com/tonyalaribe/mybonways
-RUN apt-get install automake build-essential git gobject-introspection \
+RUN apt-get install -y automake build-essential git gobject-introspection \
   libglib2.0-dev gtk-doc-tools
 RUN git clone https://github.com/jcupitt/libvips.git
 RUN  cd libvips

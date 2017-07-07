@@ -1,0 +1,9 @@
+FROM gobuffalo/buffalo:latest
+RUN mkdir -p $GOPATH/src/github.com/tonyalaribe/mybonways
+WORKDIR $GOPATH/src/github.com/tonyalaribe/mybonways
+RUN apt-get install libvips
+ADD package.json .
+RUN npm install
+ADD . .
+RUN buffalo build -o bin/app
+CMD ./bin/app

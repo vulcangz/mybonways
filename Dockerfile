@@ -2,7 +2,7 @@ FROM gobuffalo/buffalo:latest
 RUN mkdir -p $GOPATH/src/github.com/tonyalaribe/mybonways
 WORKDIR $GOPATH/src/github.com/tonyalaribe/mybonways
 RUN apt-get install automake build-essential git gobject-introspection \
-  libglib2.0-dev libjpeg-turbo8-dev libpng12-dev gtk-doc-tools
+  libglib2.0-dev gtk-doc-tools
 RUN git clone https://github.com/jcupitt/libvips.git
 RUN  cd libvips
 RUN  ./bootstrap.sh

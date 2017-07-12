@@ -44,6 +44,7 @@ var NewBranch = {
       // add another button
       modal.addFooterBtn('go back', 'tingle-btn tingle-btn--danger', function() {
           // here goes some logic
+          m.route.set("/branches")
           modal.close();
       });
       // add a button
@@ -59,6 +60,7 @@ var NewBranch = {
               },
               (error)=>{
                 console.log(error)
+                m.route.set("/branches")
               },
               {
                 enableHighAccuracy: true,
@@ -67,6 +69,7 @@ var NewBranch = {
               });
           } else {
               console.log("no geolocation support")
+              m.route.set("/branches")
           }
       });
       // open modal
@@ -78,7 +81,7 @@ var NewBranch = {
             let card = document.getElementById("map-controls")
             let input = document.getElementById("mapsAutocomplete")
 
-            var uluru = {
+            var position = {
               lat: NewBranch.state.coordinates.latitude,
               lng: NewBranch.state.coordinates.longitude
             };
@@ -96,7 +99,7 @@ var NewBranch = {
             });
             autocomplete.bindTo('bounds', map);
             var marker = new google.maps.Marker({
-              position: uluru,
+              position: position,
               map: map
             });
 

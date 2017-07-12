@@ -2,6 +2,7 @@ import m from "mithril";
 import localforage from 'localforage';
 import {Analytics} from '../models/analytics.js';
 import {MerchantModel} from '../models/merchant.js';
+import {isEmptyObject} from '../../util/utils.js';
 
 var MenuComponent = {
   view:function(){
@@ -10,6 +11,7 @@ var MenuComponent = {
         <a class="dn pa2 bb b--light-gray hover-bg-light-gray link navy " href="/" oncreate={m.route.link}>Dashboard</a>
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/promos/" oncreate={m.route.link}>Promos</a>
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/branches" oncreate={m.route.link}>Branches</a>
+        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/reservations" oncreate={m.route.link}>Reservations</a>
       </div>
     );
   }
@@ -66,7 +68,7 @@ var AdminShell = {
           <div class="dib v-mid pv2 fr pointer">
             <div class="dib">
               <a onclick={()=>vnode.state.showProfileNav=!vnode.state.showProfileNav}>
-        			  <span class="dib v-mid">{MerchantModel.Merchant.company_id}</span>
+        			  <span class="dib v-mid">{!isEmptyObject(MerchantModel.Merchant)?MerchantModel.Merchant.company_id:""}</span>
                 <small class="dib v-mid ph2" style="font-size:8px;">▼</small>
               </a>
               <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 "+(vnode.state.showProfileNav?"db":"dn")}>

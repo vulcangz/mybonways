@@ -19,7 +19,9 @@ func init() {
 		log.Fatal(err)
 	}
 
-	pop.Debug = env == "development"
+	debug := envy.Get("DEBUG", "true")
+
+	pop.Debug = env == "development" || debug == "true"
 
 	pop.MapTableName("merchant_promo_search_results", "merchant_promos")
 }

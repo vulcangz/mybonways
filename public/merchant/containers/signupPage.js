@@ -30,7 +30,7 @@ var SignupPage = {
         SignupPage.state.loginError = "";
         SignupPage.state.loginLoader = false;
       }).catch(function(error){
-        SignupPage.state.loginError = "Username or Password is incorrect.";
+        SignupPage.state.loginError = error.Error || "Username or Password is incorrect.";
         SignupPage.state.loginLoader = false;                              
       });
   },

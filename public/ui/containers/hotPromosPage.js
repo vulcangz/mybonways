@@ -73,9 +73,7 @@ var HotPromosPage = {
                             </span>
                           </div>
                           <div class="w-100 cover overflow-hidden" style={"background-image:url(" + promo.featured_image_b64 + ")"} oncreate={(vnode) => {
-                            
-                            vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
-                          }}>
+                            vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px" }}>
                             <img src={promo.featured_image} class="w-100 br2" />
                           </div>
                           <span class="f7 lh-title dib pa1 ">{promo.item_name}</span>

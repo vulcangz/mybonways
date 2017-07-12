@@ -1,0 +1,9 @@
+create_table("reservations", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("user_id", "uuid", {})
+	t.Column("company_id", "string", {})
+	t.Column("code", "string", {})
+	t.Column("promo_id", "uuid", {})
+	t.Column("promo_slug", "string", {})
+	t.Column("status", "string", {})
+})

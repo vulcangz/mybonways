@@ -1,6 +1,6 @@
 import m from 'mithril';
 import {Promos} from "../models/promos.js";
-import moment from 'moment';
+
 
 var ViewPromo = {
     oncreate:function(vnode){

@@ -2,6 +2,7 @@ package actions
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/markbates/pop"
@@ -200,7 +201,7 @@ func (v LocationsResource) GetCountries(c buffalo.Context) error {
 	// Don't forget to change [sort_parameter] to the parameter of
 	// your model, which should be used for sorting.
 	if err != nil {
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusNoContent, errors.WithStack(err))
 	}
 	// Make AllLocations available inside the html template
 	c.Set("locations:: ", locations)
@@ -215,9 +216,9 @@ func (v LocationsResource) GetCities(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	locations := &models.Locations{}
 
-	err := tx.RawQuery("SELECT DISTINCT city FROM locations").Where("country = ?", country).All(locations)
+	err := tx.RawQuery("SELECT DISTINCT city FROM locations WHERE country = ?", country).All(locations)
 	if err != nil {
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusNoContent, errors.WithStack(err))
 	}
 
 	return c.Render(201, r.JSON(locations))
@@ -229,15 +230,15 @@ func (v LocationsResource) GetNeighbourhood(c buffalo.Context) error {
 	country := c.Param("country")
 	city := c.Param("city")
 	if city == "" || country == "" {
-
+		return c.Error(http.StatusBadRequest, errors.WithStack(errors.New("Invalid Request")))
 	}
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)
 	locations := &models.Locations{}
 
-	err := tx.RawQuery("SELECT neighbourhood FROM locations").Where("country = ? AND city = ?", country, city).All(locations)
+	err := tx.RawQuery("SELECT neighbourhood FROM locations WHERE country = ? AND city = ?", country, city).All(locations)
 	if err != nil {
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusNoContent, errors.WithStack(err))
 	}
 
 	return c.Render(201, r.JSON(locations))

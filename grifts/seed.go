@@ -167,6 +167,7 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/837fc7c7-5de0-11e7-877f-78acc0541b73",
 	}
 	items := []string{"laptop", "shirt", "bed", "house", "books", "chairs", "table"}
+	cat := []string{"Computers", "Furniture", "Groceries", "Apparels"}
 	promo := models.MerchantPromo{}
 	for j := 1; j < 3; j++ {
 		for i := 1; i < 8; i++ {
@@ -177,7 +178,7 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 			promo = models.MerchantPromo{
 				ItemName:         items[i-1],
 				CompanyID:        "baze" + strconv.Itoa(j),
-				Category:         "category",
+				Category:         cat[j-1],
 				OldPrice:         i * 1000,
 				NewPrice:         (i * 1000) / 2,
 				StartDate:        time.Now(),
@@ -196,6 +197,29 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 		}
 	}
 	return nil
+})
+
+var _ = grift.Add("db:seed:categories", func(c *grift.Context) error {
+	db := models.DB
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
+		db = tx.(*pop.Connection)
+	}
+	cat := []string{"Computers", "Furniture", "Groceries", "Apparels"}
+	var err error
+	category := models.Category{}
+	for _, c := range cat {
+		category = models.Category{
+			Name: c,
+			Slug: c + "_" + RandStringBytes(6),
+		}
+		err = db.Create(&category)
+		if err != nil {
+			log.Println("create error: ", err)
+			return err
+		}
+	}
+	return err
 })
 
 var _ = grift.Add("db:seed:slides", func(c *grift.Context) error {
@@ -286,12 +310,12 @@ var _ = grift.Add("db:seed", func(c *grift.Context) error {
 	return models.DB.Transaction(func(tx *pop.Connection) error {
 
 		// remove all previously existing values...
-		// err := tx.TruncateAll()
-		// if err != nil {
-		// 	return errors.WithStack(err)
-		// }
+		err := tx.TruncateAll()
+		if err != nil {
+			return errors.WithStack(err)
+		}
 		c.Set("tx", tx)
-		err := grift.Run("db:seed:admin", c)
+		err = grift.Run("db:seed:admin", c)
 		if err != nil {
 			return errors.WithStack(err)
 		}
@@ -318,7 +342,6 @@ var _ = grift.Add("db:seed", func(c *grift.Context) error {
 			log.Println("catch error slides: ", err)
 			return errors.WithStack(err)
 		}
-
 		err = grift.Run("db:seed:categories", c)
 		if err != nil {
 			log.Println("catch error cateories: ", err)

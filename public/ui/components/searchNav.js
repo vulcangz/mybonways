@@ -1,5 +1,7 @@
 import m from 'mithril';
 import {search} from '../models/search.js';
+import {UserModel} from '../models/user.js';
+import {getCookie} from '../../util/cookie.js';
 
 var searchNav = {
   searchError: "",
@@ -34,13 +36,20 @@ var searchNav = {
       m.route.set("/search?" + querystring);
       m.redraw()
     });
+    // var cookie = getCookie("X-USER-TOKEN");
+    // if (cookie === ""){
+    //   console.log("X-USER-TOKEN: ", cookie, " user:", UserModel.User);
+    // } else {
+    //   console.log(cookie)
+    // }
   },
+  // Loggedin: false,
   view: (vnode) => {
     return (
     <section>
       <div class="flex flex-row pv1 ph2">
         <div class="flex pa1 pr3">
-          <a class="red-custom f3" onclick={() => vnode.attrs.slideout.toggle()}>☰</a>
+          <a class="red-custom f3 pointer" onclick={() => vnode.attrs.slideout.toggle()}>☰</a>
         </div>
         <div class="flex flex-row flex-auto">
           <div class="flex flex-auto  justify-center pa1 tc">

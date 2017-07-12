@@ -2,6 +2,7 @@ package actions
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
@@ -50,13 +51,20 @@ func (mr *MerchantsResource) Create(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
+	tx := c.Value("tx").(*pop.Connection)
+
+	err = tx.Where("merchant_email = ? OR company_id = ?", m.MerchantEmail, m.CompanyID).First(m)
+	if err == nil {
+		log.Println("Merchant exists: ", m)
+		return c.Render(http.StatusBadRequest, render.JSON(struct{ Error string }{Error: "Email or Company ID already Exists"}))
+	}
+
 	m.MerchantPassword, err = bcrypt.GenerateFromPassword([]byte(m.MerchantPasswordString), bcrypt.DefaultCost)
 	if err != nil {
 		return errors.WithStack(err)
 	}
 	m.MerchantPasswordString = ""
 	c.Logger().Infof("merchant: %#v \n ", m)
-	tx := c.Value("tx").(*pop.Connection)
 
 	err = tx.Create(m)
 	if err != nil {

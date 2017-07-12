@@ -24,6 +24,7 @@ export function deleteCookie(name) {
 export var MerchantModel = {
     Merchant: {},
     Token: "",
+    Reservations: [],
     GetUserfromStorage: function(){
       if (!MerchantModel.Merchant || !MerchantModel.Merchant.merchant_email){
         return localforage.getItem('AuthMerchant').then(function(merchant){
@@ -71,6 +72,15 @@ export var MerchantModel = {
             data: merchant
         }).then(function(response) {
             console.log("response: ", response);
+        })
+    },
+    GetReservations: () => {
+        return m.request({
+            method: "GET",
+            url: "/api/merchants/reservations"
+        }).then((response) => {
+            console.log("Merchant Reservation response: ", response);
+            MerchantModel.Reservations = response;
         })
     }
 }

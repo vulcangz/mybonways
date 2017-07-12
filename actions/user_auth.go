@@ -6,27 +6,24 @@ import (
 	"net/http"
 	"time"
 
+	"golang.org/x/crypto/bcrypt"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/markbates/pop"
 	"github.com/pkg/errors"
 	"github.com/tonyalaribe/mybonways/models"
-	"golang.org/x/crypto/bcrypt"
 )
 
-// Login contains login details
-type MerchantLoginStruct struct {
-	// PasswordHash []byte
-	CompanyID        string `json:"company_id"`
-	MerchantEmail    string `json:"merchant_email"`
-	MerchantPassword string `json:"merchant_password"`
+type UserLoginStruct struct {
+	Email    string `json:"email"`
+	Password string `json:"user_password"`
 }
 
-// MerchantLogin handles login for merchants...
-func MerchantLogin(c buffalo.Context) error {
+func UserLogin(c buffalo.Context) error {
 	// get the post parameters...
-	login := &MerchantLoginStruct{}
+	login := &UserLoginStruct{}
 	err := c.Bind(login)
 	if err != nil {
 		return errors.WithStack(err)
@@ -36,38 +33,36 @@ func MerchantLogin(c buffalo.Context) error {
 
 	tx := c.Value("tx").(*pop.Connection)
 	query := pop.Q(tx)
-	query = tx.Where("company_id = ?", login.CompanyID).Where("merchant_email = ?", login.MerchantEmail)
-	m := models.Merchant{}
+	query = tx.Where("email = ?", login.Email)
+	u := models.User{}
 
-	err = query.First(&m)
+	err = query.First(&u)
 	if err != nil {
-		log.Printf("first error: %#v \n ", m)
+		log.Printf("first error: %#v \n ", u)
 		log.Println("err", err)
 		return c.Error(http.StatusNotFound, errors.WithStack(err))
 	}
-
-	if !m.Approved {
+	if !u.Approved {
 		return c.Render(http.StatusUnauthorized, render.JSON(struct{ Error string }{"Account has not been verified"}))
 	}
-
 	// check if the password is correct:
-	err = bcrypt.CompareHashAndPassword(m.MerchantPassword, []byte(login.MerchantPassword))
+	err = bcrypt.CompareHashAndPassword(u.UserPassword, []byte(login.Password))
 	if err != nil {
-		log.Printf("first error: %#v \n ", m)
+		log.Printf("first error: %#v \n ", u)
 		log.Println("err", err)
 		return c.Error(http.StatusNotAcceptable, errors.WithStack(err))
 	}
 
-	log.Printf("Login merchant: %#v \n ", m)
+	log.Printf("Login User: %#v \n ", u)
 	/// since the person is in the database...generate a token for him/her
-	token, err := GenerateMerchantJWT(m)
+	token, err := GenerateUserJWT(u)
 	if err != nil {
 		log.Println("GenJwt error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	cookie := &http.Cookie{
-		Name:  "X-MERCHANT-TOKEN",
+		Name:  "X-USER-TOKEN",
 		Value: token["token"].(string),
 		Path:  "/",
 	}
@@ -76,7 +71,7 @@ func MerchantLogin(c buffalo.Context) error {
 	return c.Render(http.StatusOK, render.JSON(token))
 }
 
-func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
+func UserLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 	log.Println("LOGIN MIDDLEWARE")
 	return func(c buffalo.Context) error {
 		req := c.Request()
@@ -92,7 +87,7 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 			c.LogField("params", string(b))
 		}
 
-		cookie, err := req.Cookie("X-MERCHANT-TOKEN")
+		cookie, err := req.Cookie("X-USER-TOKEN")
 		if err != nil {
 			c.LogField("auth", "not authenticated. No cookie")
 			return c.Error(http.StatusForbidden, errors.WithStack(err))
@@ -120,9 +115,9 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 			}
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				log.Printf("\nmerchant is set... %T \n %#v\n", claims["Merchant"], claims["Merchant"])
+				log.Printf("\nUser is set... %T \n %#v\n Claims: %#v", claims["user"], claims["user"], claims)
 
-				c.Set("Merchant", claims["Merchant"])
+				c.Set("user", claims["user"])
 			} else {
 				log.Println("not ok: ", err)
 				return c.Error(http.StatusForbidden, errors.WithStack(err))
@@ -138,15 +133,15 @@ func MerchantLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 	}
 }
 
-// GenerateMerchantJWT generates a jwt token for the user
-func GenerateMerchantJWT(m models.Merchant) (map[string]interface{}, error) {
+// GenerateUserJWT generates a jwt token for the user
+func GenerateUserJWT(u models.User) (map[string]interface{}, error) {
 	claims := jwt.MapClaims{}
 
 	resp := make(map[string]interface{})
 
 	// create claims
-	claims["Merchant"] = m
-	claims["MerchantEmail"] = m.MerchantEmail
+	claims["user"] = u
+	claims["UserEmail"] = u.Email
 
 	// set the expiration to 1 year in milliseconds
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 30 * 12).Unix()
@@ -163,7 +158,7 @@ func GenerateMerchantJWT(m models.Merchant) (map[string]interface{}, error) {
 		return resp, err
 	}
 
-	resp["merchant"] = m
+	resp["user"] = u
 	resp["message"] = "Token successfully generated"
 	resp["token"] = tokenString
 

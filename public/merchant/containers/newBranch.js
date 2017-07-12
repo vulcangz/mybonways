@@ -2,9 +2,35 @@ import m from "mithril";
 import {branch} from "../models/branches.js";
 import {MerchantModel} from '../models/merchant.js';
 import {Locations} from '../models/locations.js';
+import tingle from 'tingle.js';
+import {settings} from '../models/settings.js';
+
+// instanciate new modal
+var modal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'button', 'escape'],
+    closeLabel: "Close",
+    cssClass: ['custom-class-1', 'custom-class-2'],
+    onOpen: function() {
+        console.log('modal open');
+    },
+    onClose: function() {
+        console.log('modal closed');
+    },
+    beforeClose: function() {
+        // here's goes some logic
+        // e.g. save content before closing the modal
+        return true; // close the modal
+    	return false; // nothing happens
+    }
+});
+
 
 var NewBranch = {
     state:{
+      coordinates:{},
+      useLocation:false,
       place:{},
       loader : false,
       NewBranchError : "",
@@ -12,59 +38,100 @@ var NewBranch = {
     },
     oncreate:function(){
       // get the available locations
-      Locations.GetCountries();
 
-      let card = document.getElementById("map-controls")
-      let input = document.getElementById("mapsAutocomplete")
-
-      var uluru = {lat: 4.023368, lng: 9.700488};
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: uluru
+      // set content
+      modal.setContent('<h1>MyBonWays will need your gps location to access this page</h1>');
+      // add another button
+      modal.addFooterBtn('go back', 'tingle-btn tingle-btn--danger', function() {
+          // here goes some logic
+          modal.close();
       });
+      // add a button
+      modal.addFooterBtn('continue', 'tingle-btn tingle-btn--primary tingle-btn--pull-right', function() {
+          // here goes some logic
 
-      var placeService = new google.maps.places.PlacesService(map);
-
-      // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
-      var autocomplete = new google.maps.places.Autocomplete(input);
-      autocomplete.bindTo('bounds', map);
-      var marker = new google.maps.Marker({
-        position: uluru,
-        map: map
-      });
-
-      map.addListener('click', function(e) {
-        marker.setPosition(e.latLng);
-        marker.setVisible(true);
-        map.panTo(e.latLng);
-        placeService
-      });
-
-      autocomplete.addListener('place_changed', function() {
-          marker.setVisible(false);
-          var place = autocomplete.getPlace();
-          NewBranch.state.place = place;
-
-          if (!place.geometry) {
-            // User entered the name of a Place that was not suggested and
-            // pressed the Enter key, or the Place Details request failed.
-            console.log("No details available for input: '" + place.name + "'");
-            return;
-          }
-
-          // If the place has a geometry, then present it on a map.
-          if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition((position)=>{
+                console.log(position)
+                NewBranch.state.coordinates = position.coords;
+                NewBranch.MapSetup()
+                modal.close();
+              },
+              (error)=>{
+                console.log(error)
+              },
+              {
+                enableHighAccuracy: true,
+                maximumAge        : 30000,
+                timeout           : 27000
+              });
           } else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(17);  // Why 17? Because it looks good.
+              console.log("no geolocation support")
           }
-          marker.setPosition(place.geometry.location);
-          marker.setVisible(true);
+      });
+      // open modal
+      modal.open();
+    },
+    MapSetup:function(){
+            Locations.GetCountries();
 
-          console.log(place)
-          m.redraw()
-        });
+            let card = document.getElementById("map-controls")
+            let input = document.getElementById("mapsAutocomplete")
+
+            var uluru = {
+              lat: NewBranch.state.coordinates.latitude,
+              lng: NewBranch.state.coordinates.longitude
+            };
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 15,
+              center: uluru
+            });
+
+            var placeService = new google.maps.places.PlacesService(map);
+
+            // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
+            var autocomplete = new google.maps.places.Autocomplete(input, {
+              types: ['establishment'],
+              componentRestrictions: {country: settings.countryCode}
+            });
+            autocomplete.bindTo('bounds', map);
+            var marker = new google.maps.Marker({
+              position: uluru,
+              map: map
+            });
+
+            map.addListener('click', function(e) {
+              marker.setPosition(e.latLng);
+              marker.setVisible(true);
+              map.panTo(e.latLng);
+              placeService
+            });
+
+            autocomplete.addListener('place_changed', function() {
+                marker.setVisible(false);
+                var place = autocomplete.getPlace();
+                NewBranch.state.place = place;
+
+                if (!place.geometry) {
+                  // User entered the name of a Place that was not suggested and
+                  // pressed the Enter key, or the Place Details request failed.
+                  console.log("No details available for input: '" + place.name + "'");
+                  return;
+                }
+
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                  map.fitBounds(place.geometry.viewport);
+                } else {
+                  map.setCenter(place.geometry.location);
+                  map.setZoom(17);  // Why 17? Because it looks good.
+                }
+                marker.setPosition(place.geometry.location);
+                marker.setVisible(true);
+
+                console.log(place)
+                m.redraw()
+              });
 
     },
     AddBranch: () => {
@@ -89,7 +156,7 @@ var NewBranch = {
 		})
     },
     view: function() {
-      let {place} = NewBranch.state;
+      let {place, useLocation} = NewBranch.state;
       place.address = '';
       if (place.address_components) {
         place.address = [
@@ -103,31 +170,54 @@ var NewBranch = {
       if (place.geometry){
         branch.NewBranch.latitude = place.geometry.location.lat()
         branch.NewBranch.longitude = place.geometry.location.lng()
-
+      }
+      if (useLocation){
+        branch.NewBranch.latitude = NewBranch.state.coordinates.latitude;
+        branch.NewBranch.longitude = NewBranch.state.coordinates.longitude;
+      }
+      if (place.geometry&&!useLocation){
+        console.log(branch.NewBranch.title)
+        branch.NewBranch.title = place.name
+        console.log(branch.NewBranch.title)
       }
       return (
           <section class="">
-              <div class="ph4 pv4 bg-white shadow-m2 ">
+              <div class="ph4 pv4 bg-white shadow-m2  ">
                   <div class="">
                       <span  class="fw6 f3">New Branch </span>
                   </div>
               </div>
+              <section>
+                <div class="w-50 pr2 dib v-top">
+                  <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf ">
+                    <h3>Find your business on google map:</h3>
+                    <div id="map-controls">
+                      <input  type="text" placeholder="Enter a location" id="mapsAutocomplete" class="ph3 pv2 w-100"/>
+                    </div>
+                    <h4 class="tc">Or</h4>
+                    <div>
+                      <input type="checkbox"  class="ph1 dib v-top" onclick={m.withAttr("checked", (selected)=>{NewBranch.state.useLocation = selected})} />
+                      <label class="dib v-top">save current location as business.<small class="db">(only accurate on mobile devices)</small></label>
+                    </div>
+                    <div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="w-50 pr2 dib v-top">
+                  <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf ">
+                    <div id="map" class="vh-50 w-100 bg-gray"></div>
+                  </div>
+                </div>
+              </section>
               <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
 
                 <div>
                   {NewBranch.state.NewBranchError ? m('p.white.bg-red.pa1.mv0.tc', NewBranch.state.NewBranchError):""}
                   {NewBranch.state.NewBranchMessage ? m('p.white.bg-navy.pa1.mv0.tc', NewBranch.state.NewBranchMessage):""}
-                  <div id="map-controls">
-                    <input  type="text" placeholder="Enter a location" id="mapsAutocomplete" class="ph3 pv2 w-100"/>
-                  </div>
-                  <div id="map" class="vh-50 w-100 bg-gray"></div>
                 </div>
-                <div>
-                  <h4>Selected Location</h4>
-                  <div>
-                    <strong>Name: </strong>
-                    <span>{place.name}</span>
-                  </div>
+                <h4>Selected Location:</h4>
+                <div class="pa2">
                   <div>
                     <strong>Latitute: </strong>
                     <span>{branch.NewBranch.latitude}</span>
@@ -136,6 +226,13 @@ var NewBranch = {
                     <strong>Longitude: </strong>
                     <span>{branch.NewBranch.longitude}</span>
                   </div>
+                </div>
+                <div class="pa2">
+                    <label class="f4 gray pv2 dib">Name:</label><br></br>
+                    <input type="text" class="ba b--light-silver w-100 pa2 bw1" value={branch.NewBranch.title }
+                    oninput={m.withAttr("value", function(value) {
+                        branch.NewBranch.title = value;
+                    })} />
                 </div>
                 <div class="pa2">
                     <label class="f4 gray pv2 dib">Address:</label><br></br>

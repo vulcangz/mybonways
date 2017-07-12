@@ -14,6 +14,7 @@ type Branch struct {
 	CreatedAt     time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at" db:"updated_at"`
 	CompanyID     string    `json:"company_id" db:"company_id"`
+	Title         string    `json:"title" db:"title"`
 	Address       string    `json:"address" db:"address"`
 	Neighbourhood string    `json:"neighbourhood" db:"neighbourhood"`
 	City          string    `json:"city" db:"city"`

@@ -4,11 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "date-fns": "^1.28.5",
     "izitoast": "^1.1.1",
     "localforage": "^1.5.0",
     "lory.js": "^2.2.1",
     "mithril": "^1.0.1",
-    "moment": "^2.18.1",
     "pica": "^3.0.4",
     "slideout": "^1.0.1"
   },
@@ -34,6 +34,7 @@
     "sass-loader": "^6.0.5",
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.8",
-    "webpack": "~2.3.0"
+    "webpack": "~2.3.0",
+    "webpack-bundle-analyzer": "^2.8.2"
   }
 }

@@ -46,6 +46,10 @@ func MerchantLogin(c buffalo.Context) error {
 		return c.Error(http.StatusNotFound, errors.WithStack(err))
 	}
 
+	if !m.Approved {
+		return c.Render(http.StatusUnauthorized, render.JSON(struct{ Error string }{"Account has not been verified"}))
+	}
+
 	// check if the password is correct:
 	err = bcrypt.CompareHashAndPassword(m.MerchantPassword, []byte(login.MerchantPassword))
 	if err != nil {

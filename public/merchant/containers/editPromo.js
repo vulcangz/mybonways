@@ -1,6 +1,7 @@
 import m from 'mithril';
 import {Promos} from "../models/promos.js";
-import moment from 'moment';
+
+import format from 'date-fns/format';
 
 var EditPromo = {
     oninit: function(vnode) {
@@ -93,14 +94,14 @@ var EditPromo = {
                         <p class="pa2 bt b--gray cf">Start Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.start_date}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            console.log(moment(val, moment.ISO_8601))
-                            EditPromo.p.start_date = moment(val, moment.ISO_8601);
+                            console.log(format(val, "YYYY-MM-DD"))
+                            EditPromo.p.start_date = format(val, "YYYY-MM-DD");
                         })}/></p>
                         <p class="pa2 bt b--gray cf">End Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.end_date}
                         oninput={m.withAttr("value", function(val) {
                             EditPromo.updatebutton = false;
-                            console.log(moment(val, moment.ISO_8601))
-                            EditPromo.p.end_date = moment(val, moment.ISO_8601);
+                            console.log(format(val, "YYYY-MM-DD"))
+                            EditPromo.p.end_date = format(val, "YYYY-MM-DD");
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Description: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.description}
                         oninput={m.withAttr("value", function(val) {

@@ -8,6 +8,11 @@ import searchNav from './components/searchNav.js';
 import MapPromos from './components/mappromos.js';
 import DoublePromos from './containers/doublePromos.js';
 import MerchantPromos from './containers/merchantpromos.js';
+import SignupPage from './containers/signuppage.js';
+import Dashboard from './containers/dashboard.js';
+import Profile from './containers/profile.js';
+import Favourites from './containers/favourites.js';
+import {UserAuth} from './components/auth.js';
 
 var root = document.getElementById('appContainer');
 
@@ -51,6 +56,25 @@ m.route(root, '/', {
       return m(OffCanvasMenu,vnode.attrs,
           m(MerchantPromos, vnode.attrs, m(searchNav, vnode.attrs))
         );
+      },
+  },
+  '/dashboard': {
+    view: (vnode) => {
+      return m(UserAuth, vnode.attrs,
+      m(OffCanvasMenu,vnode.attrs,
+      m(Dashboard, vnode.attrs, m(searchNav, vnode.attrs))))
+    }
+  },
+  '/dashboard/favourites': {
+    view: (vnode) => {
+      return m(UserAuth, vnode.attrs,
+      m(OffCanvasMenu,vnode.attrs,
+      m(Favourites, vnode.attrs, m(searchNav, vnode.attrs))))
+    }
+  },
+  '/signup': {
+    view: (vnode) => {
+        return m(SignupPage, vnode.attrs)
       },
   }
 });

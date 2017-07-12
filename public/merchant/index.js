@@ -13,6 +13,7 @@ import EditPromo from './containers/editPromo.js';
 import {MerchantAuth} from './components/auth.js';
 import PromosTable from './containers/promos.js';
 import NewPromo from './containers/newPromo.js';
+import Reservations from './containers/reservations.js';
 
 var root = document.getElementById('appContainer');
 
@@ -82,6 +83,15 @@ m.route(root, '/promos', {
       return m(MerchantAuth,vnode.attrs,
             m(AdminShell, vnode.attrs,
               m(EditBranch, vnode.attrs)
+            )
+          )
+    }
+  },
+  '/reservations': {
+    view: function(vnode) {
+      return m(MerchantAuth,vnode.attrs,
+            m(AdminShell, vnode.attrs,
+              m(Reservations, vnode.attrs)
             )
           )
     }

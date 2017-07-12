@@ -1,2 +1,2 @@
-web: mybonways
+web: bin/mybonways
 

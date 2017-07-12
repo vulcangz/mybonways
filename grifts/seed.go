@@ -253,6 +253,58 @@ var _ = grift.Add("db:seed:slides", func(c *grift.Context) error {
 	return nil
 })
 
+var _ = grift.Add("db:seed:categories", func(c *grift.Context) error {
+	db := models.DB
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
+		db = tx.(*pop.Connection)
+	}
+	cat := []string{"Computers", "Furniture", "Groceries", "Apparels"}
+	var err error
+	category := models.Category{}
+	for _, c := range cat {
+		category = models.Category{
+			Name: c,
+			Slug: c + "_" + RandStringBytes(6),
+		}
+		err = db.Create(&category)
+		if err != nil {
+			log.Println("create error: ", err)
+			return err
+		}
+	}
+	return err
+})
+
+var _ = grift.Add("db:seed:user", func(c *grift.Context) error {
+	db := models.DB
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
+		db = tx.(*pop.Connection)
+	}
+	var err error
+	user := models.User{
+		Approved: true,
+		FullName: "John Doe",
+		Email:    "john@doe.com",
+		Password: "password",
+		Image:    "",
+		Provider: "email",
+	}
+	user.UserPassword, err = bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Println("bcrypt error: ", err)
+		return err
+	}
+	user.Password = ""
+	err = db.Create(&user)
+	if err != nil {
+		log.Println("create error: ", err)
+		return err
+	}
+	return err
+})
+
 var _ = grift.Add("db:seed", func(c *grift.Context) error {
 	// return errors if any...
 	return models.DB.Transaction(func(tx *pop.Connection) error {
@@ -277,12 +329,12 @@ var _ = grift.Add("db:seed", func(c *grift.Context) error {
 		}
 		err = grift.Run("db:seed:branches", c)
 		if err != nil {
-			log.Println("catch error1: ", err)
+			log.Println("catch error branches: ", err)
 			return errors.WithStack(err)
 		}
 		err = grift.Run("db:seed:promos", c)
 		if err != nil {
-			log.Println("catch error2: ", err)
+			log.Println("catch error promos: ", err)
 			return errors.WithStack(err)
 		}
 		err = grift.Run("db:seed:slides", c)
@@ -292,7 +344,12 @@ var _ = grift.Add("db:seed", func(c *grift.Context) error {
 		}
 		err = grift.Run("db:seed:categories", c)
 		if err != nil {
-			log.Println("catch error slides: ", err)
+			log.Println("catch error cateories: ", err)
+			return errors.WithStack(err)
+		}
+		err = grift.Run("db:seed:user", c)
+		if err != nil {
+			log.Println("catch error user: ", err)
 			return errors.WithStack(err)
 		}
 		log.Println("about to close")

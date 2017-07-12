@@ -9,7 +9,7 @@ import {settings} from '../models/settings.js';
 var modal = new tingle.modal({
     footer: true,
     stickyFooter: false,
-    closeMethods: ['overlay', 'button', 'escape'],
+    closeMethods: [],
     closeLabel: "Close",
     cssClass: ['custom-class-1', 'custom-class-2'],
     onOpen: function() {
@@ -46,6 +46,7 @@ var NewBranch = {
           // here goes some logic
           m.route.set("/branches")
           modal.close();
+          modal.destroy();
       });
       // add a button
       modal.addFooterBtn('continue', 'tingle-btn tingle-btn--primary tingle-btn--pull-right', function() {
@@ -61,6 +62,7 @@ var NewBranch = {
               (error)=>{
                 console.log(error)
                 m.route.set("/branches")
+                modal.destroy();
               },
               {
                 enableHighAccuracy: true,
@@ -70,6 +72,7 @@ var NewBranch = {
           } else {
               console.log("no geolocation support")
               m.route.set("/branches")
+              modal.destroy();
           }
       });
       // open modal
@@ -191,7 +194,7 @@ var NewBranch = {
                   </div>
               </div>
               <section>
-                <div class="w-50 pr2 dib v-top">
+                <div class="w-100 w-50-ns pr2 dib v-top">
                   <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf ">
                     <h3>Find your business on google map:</h3>
                     <div id="map-controls">
@@ -207,7 +210,7 @@ var NewBranch = {
                     </div>
                   </div>
                 </div>
-                <div class="w-50 pr2 dib v-top">
+                <div class="w-100 w-50-ns pr2 dib v-top">
                   <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf ">
                     <div id="map" class="vh-50 w-100 bg-gray"></div>
                   </div>

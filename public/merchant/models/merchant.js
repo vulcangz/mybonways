@@ -82,5 +82,15 @@ export var MerchantModel = {
             console.log("Merchant Reservation response: ", response);
             MerchantModel.Reservations = response;
         })
+    },
+    ClaimReservation: (id) =>{
+        return m.request({
+            method: "POST",
+            url: "/api/merchants/claimreservation/" + id,
+            data: {}
+        }).then((response) => {
+            console.log("claim reservation response: ", response);
+            MerchantModel.Reservations = response;
+        })
     }
 }

@@ -34,7 +34,7 @@ var Locations = {
                     <h3>Add Locations</h3>
                 </div>
                 <div class="pa3 bg-white shadow-m2 mt3 cf">
-                    {Locations.state.NewLocationError?m("p.pa1.bg-red.mv0.white.w5.br1.tc", Locations.state.NewLocationError):""}
+                    {Locations.state.NewLocationError?m("p.pa1.bg-red-custom.mv0.white.w5.br1.tc", Locations.state.NewLocationError):""}
                     {Locations.state.NewLocationMessage?m("p.pa1.bg-navy.mv0.white.w5.br1.tc", Locations.state.NewLocationMessage):""}
                     <div class="">
                         {/*<label class="f4 mv2">Country: </label><br/>*/}

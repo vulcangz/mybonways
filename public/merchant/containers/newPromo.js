@@ -103,7 +103,7 @@ var NewPromo = {
             </div>
         </div>
         <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
-            {NewPromo.state.newpromoError ? m("p.pa1.tc.white.bg-red.br1", NewPromo.state.newpromoError): ""}
+            {NewPromo.state.newpromoError ? m("p.pa1.tc.white.bg-red-custom.br1", NewPromo.state.newpromoError): ""}
             {NewPromo.state.newpromoMessage ? m("p.pa1.tc.white.bg-navy.br1", NewPromo.state.newpromoMessage): ""}
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Item Name:</label><br></br>

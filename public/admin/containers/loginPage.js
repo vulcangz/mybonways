@@ -40,7 +40,7 @@ var LoginPage = {
                   <div class="dib relative">
                     <a href="#" class="dib  black link v-mid mr3  pa2  relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>login</a>
                     <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 w5 "+(vnode.state.showNav?"db":"dn")}>
-						{LoginPage.state.LoginError? m("p.bg-red.white.tc.mv0.pa1", LoginPage.state.LoginError) : ""}
+						{LoginPage.state.LoginError? m("p.bg-red-custom.white.tc.mv0.pa1", LoginPage.state.LoginError) : ""}
                         <div class="db pv1">
                           <input type="email" placeholder="email" class="input-reset ba b--black-20 db w-100 pv2 ph3"
                           oninput={m.withAttr("value", function(value) {
@@ -76,7 +76,7 @@ var LoginPage = {
                   </section>
                   <section class=" pa3 pa4-ns bg-white br2 dib w-100 w-40-ns ">
                     <div class="">
-						{LoginPage.state.LoginError? m("p.bg-red.white.tc.mv0.pa1", LoginPage.state.LoginError) : ""}
+						{LoginPage.state.LoginError? m("p.bg-red-custom.white.tc.mv0.pa1", LoginPage.state.LoginError) : ""}
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="email" placeholder="Admin Email"
                         oninput={m.withAttr("value", function(value) {

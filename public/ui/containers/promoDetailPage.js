@@ -66,7 +66,7 @@ var PromoDetailPage = {
             <section class="pv3 f6 ph2 gray">
               <section class="pb3">
                 <div class="dib fr">
-                  <a class={(!isEmptyObject(Promos.Promo.reservation)? " bg-red " : " bg-transparent " ) + " pa1 b--light-gray bw1 ba mh1 red-custom br2"}
+                  <a class={(!isEmptyObject(Promos.Promo.reservation)? " bg-red-custom " : " bg-transparent " ) + " pa1 b--light-gray bw1 ba mh1 red-custom br2"}
                   onclick={() => {
                     if (!isEmptyObject(UserModel.User)) {
                       if (isEmptyObject(Promos.Promo.reservation)) {

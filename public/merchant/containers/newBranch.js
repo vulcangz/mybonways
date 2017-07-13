@@ -219,7 +219,7 @@ var NewBranch = {
               <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
 
                 <div>
-                  {NewBranch.state.NewBranchError ? m('p.white.bg-red.pa1.mv0.tc', NewBranch.state.NewBranchError):""}
+                  {NewBranch.state.NewBranchError ? m('p.white.bg-red-custom.pa1.mv0.tc', NewBranch.state.NewBranchError):""}
                   {NewBranch.state.NewBranchMessage ? m('p.white.bg-navy.pa1.mv0.tc', NewBranch.state.NewBranchMessage):""}
                 </div>
                 <h4>Selected Location:</h4>

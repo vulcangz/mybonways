@@ -9,7 +9,7 @@ var MerchantPromos = {
                 </section>
                 <section>
                     <div class="pa1">
-                        <p class="mv0 pa2 bg-red white">Mechant details:</p>
+                        <p class="mv0 pa2 bg-red-custom white">Mechant details:</p>
                     </div>
                 </section>
             </section>

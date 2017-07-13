@@ -3,7 +3,9 @@ import {Promos} from '../models/promos.js';
 import {MerchantModel} from '../models/merchant.js';
 import {downscaleImage} from '../utils';
 import format from 'date-fns/format';
-const flatpickr = require('flatpickr');
+import Flatpickr from 'flatpickr';
+import confirmDatePlugin from 'flatpickr/src/plugins/confirmDate/confirmDate.js'
+// const flatpickr = require('flatpickr');
 
 var NewPromo = {
   featuredImageChange:function(files){
@@ -51,7 +53,21 @@ var NewPromo = {
       // initialize the images arrays...
       Promos.NewPromo.images = [];
       Promos.GetCategories()
-      flatpickr(".flatpickr", {enableTime: true})
+
+
+const datePickerBeginInput = document.getElementById("beginDate");
+const datePickerEndInput = document.getElementById("endDate");
+
+const fp1 = new Flatpickr(datePickerBeginInput, {
+    "enableTime": true,
+    "plugins": [new confirmDatePlugin({})]
+  });  // Flatpickr
+const fp2 = new Flatpickr(datePickerEndInput, {
+    "enableTime": true,
+    "plugins": [new confirmDatePlugin({})]
+});  // Flatpickr
+
+      // flatpickr(".flatpickr", {enableTime: true})
   },
   state: {
     Loader: false,
@@ -147,19 +163,19 @@ var NewPromo = {
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Start Date:</label>
-                <input type="text" class="flatpickr ba b--light-silver bw1 pa2 w-100"
+                <input type="text" id="beginDate" class=" ba b--light-silver bw1 pa2 w-100 relative"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.start_date = format(value, "YYYY-MM-DD")
                 })}
-                data-input data-toggle/>
+                />
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">End Date:</label>
-                <input type="text" class="flatpickr ba b--light-silver bw1 pa2 w-100"
+                <input type="text" id="endDate" class=" ba b--light-silver bw1 pa2 w-100 relative"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.end_date = format(value, "YYYY-MM-DD")
                 })}
-                data-input data-toggle/>
+                />
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Description:</label>

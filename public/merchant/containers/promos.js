@@ -4,12 +4,9 @@ import format from 'date-fns/format';
 
 var PromosTable = {
   oncreate:function(){
-    Promos.GetAllPromos().then(() => {
-      m.redraw();
-    })
+    Promos.GetAllPromos();
   },
   view:function(){
-    var p = Promos.AllPromos
     return (
       <section>
         <div class="ph4 pv4 bg-white shadow-m2 ">
@@ -30,7 +27,7 @@ var PromosTable = {
                       <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Actions</th>
                   </thead>
                   <tbody class="lh-copy">
-                      {p.map(function(promo,i) {
+                      {Promos.AllPromos.length?Promos.AllPromos.map(function(promo,i) {
                         return (<tr class="">
                           <td class="pv3 pr3 bb b--black-20 tc">{i+1}</td>
                           <td class="pv3 pr3 bb b--black-20 tc">{promo.item_name}</td>
@@ -41,9 +38,9 @@ var PromosTable = {
                             <span class="db strike">{promo.old_price}</span>
                           </td>
                           <td class="pv3 pr3 bb b--black-20 tc">
-                            <span class="db">{format(promo.start_date, "YYYY-MM-DD")}</span>
+                            <span class="db">{format(promo.start_date, "YYYY-MM-DD h:mm a")}</span>
                             <span class="db">to</span>
-                            <span class="db ">{format(promo.end_date, "YYYY-MM-DD")}</span>
+                            <span class="db ">{format(promo.end_date, "YYYY-MM-DD h:mm a")}</span>
                           </td>
                           <td class="pv3 pr3 bb b--black-20 tc">
                             <a href={"/promos/view/" + promo.slug} class="ph2 pv1 bg-navy white-90 grow pointer no-underline ma1 shadow-4" oncreate={m.route.link}>View</a>
@@ -52,7 +49,7 @@ var PromosTable = {
 
                           </td>
                         </tr>);
-                      })}
+                      }):""}
                   </tbody>
               </table>
             </div>

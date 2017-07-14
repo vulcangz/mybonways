@@ -15,6 +15,8 @@ export var branch = {
         }).then(function(response) {
             console.log("all branches: ", response);
             branch.AllBranches = response;
+        }).catch((error) => {
+            console.log("Get branches error: ", error)
         })
     },
     SaveNewBranch: function() {

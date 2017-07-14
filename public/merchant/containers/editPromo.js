@@ -1,7 +1,8 @@
 import m from 'mithril';
 import {Promos} from "../models/promos.js";
-
 import format from 'date-fns/format';
+import Flatpickr from 'flatpickr';
+import confirmDatePlugin from 'flatpickr/src/plugins/confirmDate/confirmDate.js'
 
 var EditPromo = {
     oninit: function(vnode) {
@@ -20,9 +21,13 @@ var EditPromo = {
         // if none of the return is called then there is no promo to edit...
         m.route.set("/promos/");
     },
-    updatebutton: true,
+    state: {
+        updatebutton: true,
+        startDate: {},
+        endDate: {}
+    },
     AddPreview: function(e) {
-        EditPromo.updatebutton = false;
+        EditPromo.state.updatebutton = false;
         var image = document.getElementById("feature_image").files[0];
         var preview = document.getElementById("preview");
 
@@ -45,6 +50,21 @@ var EditPromo = {
         if(image) {
             readAndPreview();
         }
+    },
+    oncreate: () => {
+        const datePickerBeginInput = document.getElementById("beginDate");
+        const datePickerEndInput = document.getElementById("endDate");
+
+        EditPromo.state.startDate = new Flatpickr(datePickerBeginInput, {
+            "enableTime": true,
+            "plugins": [new confirmDatePlugin({})]
+        });  // Flatpickr
+        EditPromo.state.endDate = new Flatpickr(datePickerEndInput, {
+            "enableTime": true,
+            "plugins": [new confirmDatePlugin({})]
+        });  // Flatpickr
+        // EditPromo.state.startDate = fp1;
+        // EditPromo.state.endDate = fp2;
     },
     view: function(vnode) {
         // var p = Promos.AllPromos[vnode.attrs.id];\
@@ -73,43 +93,43 @@ var EditPromo = {
                     <div class="">
                         <p class="pa2 bt b--gray cf">Item Name: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.item_name}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
+                            EditPromo.state.updatebutton = false;
                             EditPromo.p.item_name = val;
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Category: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.category}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
+                            EditPromo.state.updatebutton = false;
                             EditPromo.p.category = val;
                         })}/></p>
                         <p class="pa2 bt b--gray cf">New Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.new_price}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
+                            EditPromo.state.updatebutton = false;
                             EditPromo.p.new_price = parseInt(val, 10);
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Old Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.old_price}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
+                            EditPromo.state.updatebutton = false;
                             EditPromo.p.old_price = parseInt(val, 10);
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Start Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.start_date}
+                        <p class="pa2 bt b--gray cf">Start Date: <input type="text" id="beginDate" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.start_date}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
-                            console.log(format(val, "YYYY-MM-DD"))
-                            EditPromo.p.start_date = format(val, "YYYY-MM-DD");
+                            EditPromo.state.updatebutton = false;
+                            {/*console.log(format(val, "YYYY-MM-DD"))
+                            EditPromo.p.start_date = format(val, "YYYY-MM-DD");*/}
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">End Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.end_date}
+                        <p class="pa2 bt b--gray cf">End Date: <input type="date" id="endDate" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.end_date}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
-                            console.log(format(val, "YYYY-MM-DD"))
-                            EditPromo.p.end_date = format(val, "YYYY-MM-DD");
+                            EditPromo.state.updatebutton = false;
+                            {/*console.log(format(val, "YYYY-MM-DD"))
+                            EditPromo.p.end_date = format(val, "YYYY-MM-DD");*/}
                         })}/></p>
                         <p class="pa2 bt b--gray cf">Description: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.description}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
+                            EditPromo.state.updatebutton = false;
                             EditPromo.p.description = val;
                         })}/></p>
                     </div>
-                    <button class={EditPromo.updatebutton?"dn":" ba b--navy white pointer bg-navy pv2 ph3 w-100"}
+                    <button class={EditPromo.state.updatebutton?"dn":" ba b--navy white pointer bg-navy pv2 ph3 w-100"}
                     onclick={function() {
                         Promos.Update(EditPromo.p);
                     }}> UPDATE</button>

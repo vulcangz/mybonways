@@ -119,10 +119,10 @@ func App() *buffalo.App {
 		adminGroup.Resource("/slides", slidesResource)
 		app.POST("/api/users/signup", usersResource.Create)
 
-		// app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
-		// 	c.Render(200, spa.HTML("index.html"))
-		// 	return nil
-		// }
+		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
+			c.Render(200, spa.HTML("index.html"))
+			return nil
+		}
 		reservationsGroup.Resource("/", reservationResource)
 		reservationsGroup.GET("/isreserved/{promo_id}", reservationResource.isReserved)
 		// reservationsResources.GET("/")

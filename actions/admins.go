@@ -2,6 +2,7 @@ package actions
 
 import (
 	"errors"
+	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -62,7 +63,7 @@ func (v AdminsResource) Show(c buffalo.Context) error {
 
 // New default implementation. Returns a 404
 func (v AdminsResource) New(c buffalo.Context) error {
-	return c.Error(404, errors.New("not available"))
+	return c.Error(http.StatusUnauthorized, errors.New("not available"))
 }
 
 // Create adds a admin to the DB. This function is mapped to the
@@ -99,7 +100,7 @@ func (v AdminsResource) Create(c buffalo.Context) error {
 
 // Edit default implementation. Returns a 404
 func (v AdminsResource) Edit(c buffalo.Context) error {
-	return c.Error(404, errors.New("not available"))
+	return c.Error(http.StatusUnauthorized, errors.New("not available"))
 }
 
 // Update changes a admin in the DB. This function is mapped to

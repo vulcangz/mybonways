@@ -78,7 +78,7 @@ var SearchArea = {
                     </div>
                 </section>
                 <div class="tc">
-                    <p class="dib pv3 ph4 ba b--red bg-red-custom white pointer shadow-2 hover-shadow-m3" onclick={()=>{
+                    <p class="dib pv2 ph3 pv3-ns ph4-ns ba b--red bg-red-custom white pointer shadow-2 hover-shadow-m3" onclick={()=>{
                         SearchArea.state.loader = true;
                         search.loadMore(vnode.attrs.q, vnode.attrs.lat, vnode.attrs.lng).then(()=>{
                             SearchArea.state.loader = false;

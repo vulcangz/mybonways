@@ -3,6 +3,7 @@ package actions
 import (
 	"errors"
 	"log"
+	"net/http"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gosimple/slug"
@@ -61,7 +62,7 @@ func (v CategoriesResource) Show(c buffalo.Context) error {
 
 // New default implementation. Returns a 404
 func (v CategoriesResource) New(c buffalo.Context) error {
-	return c.Error(404, errors.New("not available"))
+	return c.Error(http.StatusUnauthorized, errors.New("not available"))
 }
 
 // Create adds a category to the DB. This function is mapped to the
@@ -97,7 +98,7 @@ func (v CategoriesResource) Create(c buffalo.Context) error {
 
 // Edit default implementation. Returns a 404
 func (v CategoriesResource) Edit(c buffalo.Context) error {
-	return c.Error(404, errors.New("not available"))
+	return c.Error(http.StatusUnauthorized, errors.New("not available"))
 }
 
 // Update changes a category in the DB. This function is mapped to

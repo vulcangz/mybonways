@@ -19,6 +19,15 @@ type Location struct {
 	Neighbourhood string    `json:"neighbourhood" db:"neighbourhood"`
 }
 
+type LocationUpdate struct {
+	NewCountry       string `json:"new_country" db:"new_country"`
+	NewCity          string `json:"new_city" db:"new_city"`
+	NewNeighbourhood string `json:"new_neighbourhood" db:"new_neighbourhood"`
+	OldCountry       string `json:"old_country" db:"old_country"`
+	OldCity          string `json:"old_city" db:"old_city"`
+	OldNeighbourhood string `json:"old_neighbourhood" db:"old_neighbourhood"`
+}
+
 // String is not required by pop and may be deleted
 func (l Location) String() string {
 	jl, _ := json.Marshal(l)

@@ -54,7 +54,7 @@ var SignupPage = {
       }).catch(function(error){
 
         SignupPage.state.signupMessage = "";
-        SignupPage.state.signupError = "Could not sign you up at this moment please try again.";
+        SignupPage.state.signupError = error.Error || "Could not sign you up at this moment please try again.";
         SignupPage.state.signupLoader = false;
 
       });

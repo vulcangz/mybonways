@@ -3,7 +3,7 @@ import {search} from '../models/search.js';
 import {UserModel} from '../models/user.js';
 import {getCookie} from '../../util/cookie.js';
 import tingle from 'tingle.js';
-
+import {settings} from '../../merchant/models/settings.js';
 
 
 window.setLocation = function(){
@@ -104,7 +104,11 @@ var searchNav = {
   searchError: "",
   oncreate: (vnode) => {
     let input = document.getElementById("areaInput")
-    var autocomplete = new google.maps.places.Autocomplete(input);
+    var autocomplete = new google.maps.places.Autocomplete(input,
+      {
+        types: ['geocode'],
+        componentRestrictions: {country: settings.countryCode}
+      });
     autocomplete.addListener('place_changed', function () {
       var place = autocomplete.getPlace();
       console.log(place.geometry.location)

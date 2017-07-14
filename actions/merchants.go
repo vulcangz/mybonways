@@ -53,7 +53,7 @@ func (mr *MerchantsResource) Create(c buffalo.Context) error {
 
 	tx := c.Value("tx").(*pop.Connection)
 
-	err = tx.Where("merchant_email = ? OR company_id = ?", m.MerchantEmail, m.CompanyID).First(m)
+	err = tx.Where("merchant_email = ? AND company_id = ?", m.MerchantEmail, m.CompanyID).First(m)
 	if err == nil {
 		log.Println("Merchant exists: ", m)
 		return c.Render(http.StatusBadRequest, render.JSON(struct{ Error string }{Error: "Email or Company ID already Exists"}))
@@ -74,6 +74,12 @@ func (mr *MerchantsResource) Create(c buffalo.Context) error {
 	v := &models.VerificationCode{}
 	v.CompanyID = m.CompanyID
 	v.Code = uuid.NewV1().String()
+	code := "https://mybonways.com/api/accounts/verify/" + v.Code
+	log.Println(code)
+	mailContext := make(map[string]interface{})
+	mailContext["verification_url"] = code
+	mailContext["account_email"] = m.MerchantEmail
+	SendMail(EMAIL_VERIFICATION, mailContext, m.MerchantEmail)
 
 	err = tx.Create(v)
 	if err != nil {

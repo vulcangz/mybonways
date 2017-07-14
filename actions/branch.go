@@ -3,6 +3,7 @@ package actions
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
@@ -35,7 +36,7 @@ func (br *BranchResource) List(c buffalo.Context) error {
 	// err = tx.Where("locations.company_id = ?", merchant["company_id"]).All(&m)
 	if err != nil {
 		log.Println("branch error: ", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	return c.Render(200, render.JSON(b))

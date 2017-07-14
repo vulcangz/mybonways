@@ -93,7 +93,7 @@ func (v *PromoResource) Show(c buffalo.Context) error {
 
 	err := query.First(&merchantPromo)
 	if err != nil {
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	return c.Render(200, r.JSON(merchantPromo))
@@ -169,7 +169,7 @@ func (pr *PromoResource) List(c buffalo.Context) error {
 	err := query.All(&m)
 	if err != nil {
 		log.Println("promo_resource error: ", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	log.Println("after query")
 	return c.Render(200, render.JSON(m))
@@ -229,7 +229,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	err = query.All(&m)
 	if err != nil {
 		log.Println("promo_resource error: ", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	log.Println("after query")
 	log.Println("MerchantPromoSearchResult:: ", m)
@@ -249,7 +249,7 @@ func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 	err := query.All(&m)
 	if err != nil {
 		log.Println("feature promo error: ", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	log.Println("after query")
 	return c.Render(200, render.JSON(m))
@@ -265,14 +265,14 @@ func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
 	page, err := strconv.Atoi(c.Param("page"))
 	if err != nil {
 		log.Println("incorrect params")
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	query = tx.Order("created_at desc").Paginate(page, perPage)
 
 	err = query.All(&m)
 	if err != nil {
 		log.Println("feature promo error: ", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	log.Println("after query")
 	return c.Render(200, render.JSON(m))
@@ -289,7 +289,7 @@ func (v *PromoResource) GetPromoBySlug(c buffalo.Context) error {
 
 	err := query.First(&merchantPromo)
 	if err != nil {
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	return c.Render(200, r.JSON(merchantPromo))

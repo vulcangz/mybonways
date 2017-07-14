@@ -102,9 +102,10 @@ func (v *PromoResource) Show(c buffalo.Context) error {
 // Update a promo
 func (pr *PromoResource) Update(c buffalo.Context) error {
 	mp := &models.MerchantPromo{}
-	err := c.Bind(&mp)
+	err := c.Bind(mp)
 	if err != nil {
-		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+		log.Printf("Cannot get the promo: %#v", err)
+		return c.Error(http.StatusBadRequest, errors.WithStack(err))
 	}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -113,6 +114,7 @@ func (pr *PromoResource) Update(c buffalo.Context) error {
 	promo := &models.MerchantPromo{}
 	err = tx.Where("id = ?", mp.ID).First(promo)
 	if err != nil {
+		log.Printf("Cannot find the promo: %#v", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	if mp.FeaturedImage != promo.FeaturedImage {
@@ -139,13 +141,15 @@ func (pr *PromoResource) Update(c buffalo.Context) error {
 
 	log.Println("no up load b64 error")
 
-	err = tx.Update(&mp)
+	err = tx.Update(mp)
 	if err != nil {
+		log.Printf("Cannot update the promo: %#v", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	// just to be sure
-	err = tx.Reload(&mp)
+	err = tx.Reload(mp)
 	if err != nil {
+		log.Printf("Cannot reload the promo: %#v", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	// successful update

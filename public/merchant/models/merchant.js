@@ -86,7 +86,7 @@ export var MerchantModel = {
     ClaimReservation: (id) =>{
         return m.request({
             method: "POST",
-            url: "/api/merchants/claimreservation/" + id,
+            url: "/api/merchants/reservations/claim/" + id,
             data: {}
         }).then((response) => {
             console.log("claim reservation response: ", response);

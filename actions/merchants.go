@@ -74,7 +74,7 @@ func (mr *MerchantsResource) Create(c buffalo.Context) error {
 	v := &models.VerificationCode{}
 	v.CompanyID = m.CompanyID
 	v.Code = uuid.NewV1().String()
-	code := "https://mybonways.com/api/accounts/verify/" + v.Code
+	code := "https://mybonways.com/api/merchants/verify/" + v.Code
 	log.Println(code)
 	mailContext := make(map[string]interface{})
 	mailContext["verification_url"] = code

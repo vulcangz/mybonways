@@ -119,7 +119,7 @@ func (v UsersResource) Create(c buffalo.Context) error {
 	verifyModel.CompanyID = user.Email
 	verifyModel.Code = uuid.NewV1().String()
 	log.Printf("\nUser Verification code: %s\n", verifyModel.Code)
-	code := "https://mybonways.com/api/accounts/verify/" + verifyModel.Code
+	code := "https://mybonways.com/api/users/verify/" + verifyModel.Code
 	log.Println(code)
 	mailContext := make(map[string]interface{})
 	mailContext["account_email"] = user.Email

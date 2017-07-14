@@ -76,7 +76,8 @@ export var Promos = {
         }).then((response) => {
             console.log("Promo branches response: ", response);
             Promos.PromoBranches = response;
-        },
+        })
+    },
     Reserve: (id) => {
         console.log("Reserve this promo. UserID: ", id);
         return m.request({

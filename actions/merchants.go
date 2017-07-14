@@ -126,15 +126,19 @@ func VerifyMerchant(c buffalo.Context) error {
 	log.Printf("code: %#v \n ", code)
 	v := models.VerificationCode{}
 	tx := c.Value("tx").(*pop.Connection)
+
+	c.Set("status", "error")
+
 	query := pop.Q(tx)
 	query = tx.Where("code = ?", code)
 
 	err := query.First(&v)
 	if err != nil {
-		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+		return c.Render(200, r.HTML("verification/merchant.html"))
+		// return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
-	log.Printf("verifivation: %#v \n ", v)
+	log.Printf("verification: %#v \n ", v)
 
 	query2 := pop.Q(tx)
 	query2 = tx.Where("company_id = ?", v.CompanyID)
@@ -142,22 +146,28 @@ func VerifyMerchant(c buffalo.Context) error {
 	m := models.Merchant{}
 	err = query2.First(&m)
 	if err != nil {
-		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+		return c.Render(200, r.HTML("verification/merchant.html"))
+		// return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	m.Approved = true
 	err = tx.Update(&m)
 	log.Println(err)
 	if err != nil {
-		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+		return c.Render(200, r.HTML("verification/merchant.html"))
+		// return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
-	err = tx.Reload(&m)
-	if err != nil {
-		return errors.WithStack(err)
-	}
+	// err = tx.Reload(&m)
+	// if err != nil {
 
-	return c.Render(200, render.JSON(m))
+	// 	return errors.WithStack(err)
+	// }
+	c.Set("status", "successful")
+	c.Set("companyname", m.CompanyName)
+	c.Set("email", m.MerchantEmail)
+	return c.Render(200, r.HTML("verification/merchant.html"))
+	// return c.Render(200, render.JSON(m))
 }
 
 func (mr *MerchantsResource) GetByCompanyID(c buffalo.Context) error {

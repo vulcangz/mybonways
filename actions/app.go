@@ -58,6 +58,7 @@ func App() *buffalo.App {
 		merchantsResource := &MerchantsResource{}
 		locationsResource := LocationsResource{&buffalo.BaseResource{}}
 		slidesResource := SlidesResource{&buffalo.BaseResource{}}
+		branchResources := &BranchResource{}
 		usersResource := UsersResource{&buffalo.BaseResource{}}
 		reservationResource := ReservationsResource{&buffalo.BaseResource{}}
 
@@ -88,6 +89,7 @@ func App() *buffalo.App {
 
 		app.GET("/api/promo/{slug}", promoResource.GetPromoBySlug)
 		app.GET("/api/merchant/{company_id}", merchantsResource.GetByCompanyID)
+		app.GET("/api/promo/branches/{company_id}", branchResources.GetBranchByCompanyID)
 
 		merchantGroup.Resource("/branch", &BranchResource{})
 		merchantGroup.Resource("/promo", promoResource)
@@ -101,13 +103,19 @@ func App() *buffalo.App {
 		// This handles adding a location by the admin...
 		adminGroup.Resource("/locations/neighbourhood", locationsResource)
 
+		locationsGroup := app.Group("/api/locations")
+		locationsGroup.Use(AdminLoginCheckMiddleware)
 		// these handle queries for all locations (country, city and neighbourhood)
 		// gets list of countries...
 		app.GET("/api/locations/countries", locationsResource.GetCountries)
-		// gets list of cities of a particular country: /api/cities?country=country_name
+		// gets list of cities of a particular country: /api/locations/cities?country=country_name
 		app.GET("/api/locations/cities", locationsResource.GetCities)
-		// gets list of neighbourhoods of a particular city in a country: /api/cities?country=country_name&city=city_name
+		// gets list of neighbourhoods of a particular city in a country: /api/locations/neighbourhood?country=country_name&city=city_name
 		app.GET("/api/locations/neighbourhood", locationsResource.GetNeighbourhood)
+
+		locationsGroup.PUT("/neighbourhood", locationsResource.UpdateNeighbourhood)
+		locationsGroup.PUT("/country", locationsResource.UpdateCountry)
+		locationsGroup.PUT("/city", locationsResource.UpdateCity)
 
 		adminGroup.Resource("/merchants", merchantsResource)
 

@@ -18,11 +18,6 @@ type BranchResource struct {
 	buffalo.BaseResource
 }
 
-// type fullBranch struct {
-// 	BB []models.Branch
-// 	LL []models.Location
-// }
-
 // List renders all branches
 func (br *BranchResource) List(c buffalo.Context) error {
 	log.Println("List()")
@@ -166,3 +161,19 @@ func (br *BranchResource) Destroy(c buffalo.Context) error {
 // 	lat = result[0].Geometry.Location.Lat
 // 	return lng, lat, nil
 // }
+
+func (br *BranchResource) GetBranchByCompanyID(c buffalo.Context) error {
+	log.Println("GetBranchByCompanyID")
+	b := models.Branches{}
+
+	tx := c.Value("tx").(*pop.Connection)
+	companyID := c.Param("company_id")
+
+	err := tx.Where("branches.company_id = ?", companyID).All(&b)
+	if err != nil {
+		log.Println("branch error: ", err)
+		return c.Error(404, errors.WithStack(err))
+	}
+
+	return c.Render(200, render.JSON(b))
+}

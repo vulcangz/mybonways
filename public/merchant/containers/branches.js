@@ -26,7 +26,7 @@ var Branches = {
                                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Edit</th>
                             </thead>
                             <tbody>
-                                {branch.AllBranches.map(function(b, i) {
+                                {branch.AllBranches.length?branch.AllBranches.map(function(b, i) {
                                     return (
                                     <tr>
                                         <td class="pv3 pr3 bb b--black-20 tc">{i + 1}</td>
@@ -44,7 +44,7 @@ var Branches = {
                                         </td>
                                     </tr>
                                     )
-                                })}
+                                }):""}
 
                             </tbody>
                         </table>

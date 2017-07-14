@@ -1,6 +1,6 @@
 import m from 'mithril';
 import {Promos} from "../models/promos.js";
-
+import format from 'date-fns/format';
 
 var ViewPromo = {
     oncreate:function(vnode){
@@ -69,11 +69,11 @@ var ViewPromo = {
                         <strong>Old Price:</strong> <span>{CurrentPromo.old_price}</span>
                       </div>
                       <div class="pa2  cf">
-                        <strong>Start Date:</strong> <span>{CurrentPromo.start_date}</span>
+                        <strong>Start Date:</strong> <span>{format(CurrentPromo.start_date, "YYYY-MM-DD h:mm a")}</span>
                       </div>
                       <div class="pa2  cf">
                         <strong>End Date:</strong>
-                        <span>{CurrentPromo.end_date}</span>
+                        <span>{format(CurrentPromo.end_date, "YYYY-MM-DD h:mm a")}</span>
                       </div>
                       <div class="pa2  cf">
                         <strong>Description:</strong>

@@ -1,6 +1,7 @@
 import m from 'mithril';
 import {MerchantModel} from '../models/merchant.js';
 import format from 'date-fns/format';
+import {Promos} from '../models/promos.js';
 
 var Reservations = {
     oncreate: () => {
@@ -27,7 +28,7 @@ var Reservations = {
                                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Date</th>
                                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Item Name</th>
                                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Customer Email</th>
-                                {/*<th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Edit</th>*/}
+                                <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Edit</th>
                             </thead>
                             <tbody>
                             {MerchantModel.Reservations.length?
@@ -39,7 +40,13 @@ var Reservations = {
                                         <td class="pv3 pr3 bb b--black-20 tc">{format(reservation.created_at,"YYYY-MM-DD")}</td>
                                         <td class="pv3 pr3 bb b--black-20 tc">{reservation.item_name}</td>
                                         <td class="pv3 pr3 bb b--black-20 tc">{reservation.email}</td>
-                                        {/*<td class="pv3 pr3 bb b--black-20 tc">{i+1}</td>*/}
+                                        <td class="pv3 pr3 bb b--black-20 tc">
+                                            {reservation.status == "claimed"?<span class="pa1 bg-green white">claimed</span>
+                                            :<button class="pa2 bg-navy white ba b--transparent br1 grow shadow-4 pointer"
+                                            onclick={()=>{
+                                                MerchantModel.ClaimReservation(reservation.id);
+                                            }}>Claim</button>}
+                                        </td>
                                     </tr>
                                 )
                             })

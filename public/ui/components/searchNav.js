@@ -75,20 +75,17 @@ modal.setContent(`
       </div>
   </div>
   `);
+
 // add another button
 modal.addFooterBtn('cancel', 'tingle-btn tingle-btn--danger', function() {
     // here goes some logic
     modal.close();
 });
-// add a button
 
 modal.addFooterBtn('search', 'tingle-btn tingle-btn--primary tingle-btn--pull-right', function() {
     // here goes some logic
     search.searchData.item = document.getElementById("searchQuery").value
 
-
-    // var lat = place.geometry.location.lat();
-    // var lng = place.geometry.location.lng();
     let {lat, lng} = search.searchData;
     console.log("lat : ", lat, " lng : ", lng);
     var querystring = m.buildQueryString({q: search.searchData.item, lat: lat, lng: lng})
@@ -125,25 +122,15 @@ var searchNav = {
       search.searchData.lng = lng
       m.redraw()
     });
-    // var cookie = getCookie("X-USER-TOKEN");
-    // if (cookie === ""){
-    //   console.log("X-USER-TOKEN: ", cookie, " user:", UserModel.User);
-    // } else {
-    //   console.log(cookie)
-    // }
-
-
   },
   launchSearchModal:function(){
-    // set content
-
     // open modal
     modal.open();
   },
   // Loggedin: false,
   view: (vnode) => {
     return (
-    <section>
+    <section class="pb1">
       <div class="flex flex-row pv1 ph2">
         <div class="flex pa1 pr3">
           <a class="red-custom f3 pointer" onclick={() => vnode.attrs.slideout.toggle()}>☰</a>

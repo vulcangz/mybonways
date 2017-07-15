@@ -77,7 +77,7 @@ var PromoDetailPage = {
             <section class="pv3 f6 ph2 gray">
               <section class="pb3">
                 <div class="dib fr">
-                  <a class={(!isEmptyObject(Promos.Promo.reservation)? " bg-red-custom " : " bg-transparent " ) + " pa1 b--light-gray bw1 ba mh1 red-custom br2"}
+                  <a class={(!isEmptyObject(Promos.Promo.reservation)? " red-custom " : " gray " ) + " pa1 b--light-gray bw1 ba mh1  br2 dib grow"}
                   onclick={() => {
                     if (!isEmptyObject(UserModel.User)) {
                       if (isEmptyObject(Promos.Promo.reservation)) {
@@ -96,16 +96,12 @@ var PromoDetailPage = {
                       console.error("Cannot reserve this promo.");
                     }
                   }}>
-                    <img src="/assets/img/svg/star.svg" class="" style="height:0.8rem;" />
+                    <img src="/assets/img/svg/star.svg" class="dib v-mid" style="height:0.8rem;" />
+                    <small class="dib v-mid ph1">reserve</small>
                   </a>
-                  <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
-                    <img src="/assets/img/svg/like-hollow.svg" class="" style="height:0.8rem;" />
-                  </a>
-                  <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
-                    <img src="/assets/img/svg/call.svg" class="" style="height:0.8rem;" />
-                  </a>
-                  <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
-                    <img src="/assets/img/svg/location.svg" class="" style="height:0.8rem;" />
+                  <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 gray br2 grow dib">
+                    <img src="/assets/img/svg/like-hollow.svg" class="dib v-mid" style="height:0.8rem;" />
+                    <small class="dib v-mid ph1">favorite</small>
                   </a>
                 </div>
                 <div class="ph2">

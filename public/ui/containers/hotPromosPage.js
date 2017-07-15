@@ -32,7 +32,7 @@ var HotPromosPage = {
         <section>
           {m.fragment(vnode.attrs, vnode.children)}
           <section class="animated">
-            <section class="bg-white pa3">
+            <section class="bg-white pa2">
                 <div class="slider overflow-hidden js_slider relative"  oncreate={(vnode) => {
                             vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
                           }}>
@@ -59,7 +59,7 @@ var HotPromosPage = {
 
                 {/*<a href="/promo/laptop-thyos" oncreate={m.route.link}><img src="/assets/img/ad/5.jpg" class="w-100 br3" /></a>*/}
             </section>
-            <section class="bg-light-gray-custom pv2">
+            <section class="bg-light-gray-customx pv2">
               <div class="">
                 <div class="pv1 cf">
                   {Promos.FeaturedPromos.map((promo, i) => {
@@ -68,7 +68,7 @@ var HotPromosPage = {
                         <a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100" href={"/promo/" + promo.slug} oncreate={m.route.link}>
                           <div class="f8 pv1 tr pa1">
                             <img src="/assets/img/svg/cart.svg" style="height:0.6rem;" />
-                            <span class="red-custom">
+                            <span class="red-custom dib pl1">
                               {promo.company_id}
                             </span>
                           </div>

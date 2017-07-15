@@ -48,7 +48,7 @@ var NewSlider = {
                     </div>
                 </div>
                 <div class="pa3 bg-white shadow-m2 mt3 cf">
-                    {NewSlider.Error ? <p class="bg-red white mv0 pa2 tc">{NewSlider.Error}</p> : ""}
+                    {NewSlider.Error ? <p class="bg-red-custom white mv0 pa2 tc">{NewSlider.Error}</p> : ""}
                     <div class="">
                         <p>Promo/Advert URL</p>
                         <input type="url" placeholder="" class="ba b--gray bw1 pa2 w-100"

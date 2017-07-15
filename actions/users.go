@@ -92,17 +92,6 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		return c.Render(http.StatusBadRequest, render.JSON(struct{ Error string }{Error: "Email already Exists"}))
 	}
 
-	// VERIFICATION...
-	verifyModel := &models.VerificationCode{}
-	verifyModel.CompanyID = user.Email
-	verifyModel.Code = uuid.NewV1().String()
-	log.Printf("\nUser Verification code: %s\n", verifyModel.Code)
-
-	err = tx.Create(verifyModel)
-	if err != nil {
-		return c.Error(http.StatusBadRequest, errors.New("Invalid Request"))
-	}
-
 	// log.Println("There is no error: user: ", user)
 	user.Approved = false
 	user.UserPassword, err = bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
@@ -122,6 +111,23 @@ func (v UsersResource) Create(c buffalo.Context) error {
 
 	if verrs.HasAny() {
 		log.Println(verrs.Error())
+		return c.Error(http.StatusBadRequest, errors.New("Invalid Request"))
+	}
+
+	// VERIFICATION...
+	verifyModel := &models.VerificationCode{}
+	verifyModel.CompanyID = user.Email
+	verifyModel.Code = uuid.NewV1().String()
+	log.Printf("\nUser Verification code: %s\n", verifyModel.Code)
+	code := "https://mybonways.com/api/users/verify/" + verifyModel.Code
+	log.Println(code)
+	mailContext := make(map[string]interface{})
+	mailContext["account_email"] = user.Email
+	mailContext["verification_url"] = code
+	SendMail(EMAIL_VERIFICATION, mailContext, user.Email)
+
+	err = tx.Create(verifyModel)
+	if err != nil {
 		return c.Error(http.StatusBadRequest, errors.New("Invalid Request"))
 	}
 

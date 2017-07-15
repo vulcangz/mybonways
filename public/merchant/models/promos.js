@@ -39,7 +39,7 @@ export var Promos = {
         })
     },
     Update: function(promo) {
-        console.log("Updated promo: ",promo);
+        console.log("Updated promo: ", promo);
         return m.request({
             method: "PUT",
             url: "/api/merchants/promo/" + promo.id,

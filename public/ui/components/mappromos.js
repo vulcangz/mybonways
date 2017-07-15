@@ -73,7 +73,7 @@ var MapPromos = {
             '<div id="bodyContent">'+
             MapPromos.Promos.map((promo) => {
               if (location.id !== promo.company_id) { return }
-              return "<div class='dib bg-red w4 h4 pa2 white mr1'>"+
+              return "<div class='dib bg-red-custom w4 h4 pa2 white mr1'>"+
               "<a href='/promos/" + promo.slug + "'>"+
                 "<p class='mv0 pb1'>"+ promo.item_name + "</p>"+
                 "<img class='w-100' src='" + promo.featured_image + "'/>"+
@@ -104,7 +104,7 @@ var MapPromos = {
         map: map,
 		title: "My Location"
       }))
-      
+
     // Add a marker clusterer to manage the markers.
     // var markerCluster = new MarkerClusterer(map, markers,
     //   { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
@@ -119,7 +119,7 @@ var MapPromos = {
         <div class="cf shadow-4 pa2">
           {/*<div class="fl w-100 w-50-ns">
             <div class="cf">
-              <p class="mv0 pa2 tc white bg-red">{ MapPromos.NoPromos ? MapPromos.NoPromos : "List Of all branches..."}</p>
+              <p class="mv0 pa2 tc white bg-red-custom">{ MapPromos.NoPromos ? MapPromos.NoPromos : "List Of all branches..."}</p>
               {MapPromos.Promos.length? MapPromos.Promos.map(function(promo, i) {
                   return (
                     <div class="dib w-50 pa1 fl" key={i}>
@@ -167,7 +167,7 @@ var MapPromos = {
           </div>*/}
           <div class="ph1">
             <div class="shadow-4">
-              <p class="bg-red tc white br--top mv0 pv2">Branches near you. (Click on marker to view details)</p>
+              <p class="bg-red-custom tc white br--top mv0 pv2">Branches near you. (Click on marker to view details)</p>
               <div id="map" class="vh-75 w-100 bg-gray"></div>
             </div>
           </div>

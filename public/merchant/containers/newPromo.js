@@ -3,27 +3,30 @@ import {Promos} from '../models/promos.js';
 import {MerchantModel} from '../models/merchant.js';
 import {downscaleImage} from '../utils';
 import format from 'date-fns/format';
+import Flatpickr from 'flatpickr';
+import confirmDatePlugin from 'flatpickr/src/plugins/confirmDate/confirmDate.js'
+// const flatpickr = require('flatpickr');
 
 var NewPromo = {
-  featuredImageChange:function(files){
+    featuredImageChange:function(files){
 
-      if ( /\.(jpe?g|png|gif)$/i.test(files[0].name) ) {
-        let reader  = new FileReader();
-        reader.addEventListener("load", (e)=> {
+        if ( /\.(jpe?g|png|gif)$/i.test(files[0].name) ) {
+            let reader  = new FileReader();
+            reader.addEventListener("load", (e)=> {
 
-            //  downscaleImage(e.target.result,1200,"image/jpeg",0.7,(compressed)=>{ Promos.NewPromo.images.push(compressed)
-            //  console.log(Promos.NewPromo)
-            // })
+                //  downscaleImage(e.target.result,1200,"image/jpeg",0.7,(compressed)=>{ Promos.NewPromo.images.push(compressed)
+                //  console.log(Promos.NewPromo)
+                // })
 
-            Promos.NewPromo.featured_image_b64 = e.target.result
-            m.redraw()
-            console.log(Promos.NewPromo)
+                Promos.NewPromo.featured_image_b64 = e.target.result
+                m.redraw()
+                console.log(Promos.NewPromo)
 
-        }, false);
+            }, false);
 
-        reader.readAsDataURL(files[0]);
-      }
-  },
+            reader.readAsDataURL(files[0]);
+        }
+    },
     promoImagesChange:function(files){
       console.log(files)
       for(let i in files){
@@ -45,18 +48,37 @@ var NewPromo = {
         }
       }
     },
-
   oncreate: function() {
-      // initialize the images arrays...
-      Promos.NewPromo.images = [];
-      Promos.GetCategories()
+    // initialize the images arrays...
+    Promos.NewPromo.images = [];
+    Promos.GetCategories()
+
+    const datePickerBeginInput = document.getElementById("beginDate");
+    const datePickerEndInput = document.getElementById("endDate");
+
+    const fp1 = new Flatpickr(datePickerBeginInput, {
+        "enableTime": true,
+        "plugins": [new confirmDatePlugin({})]
+    });  // Flatpickr
+    const fp2 = new Flatpickr(datePickerEndInput, {
+        "enableTime": true,
+        "plugins": [new confirmDatePlugin({})]
+    });  // Flatpickr
+    NewPromo.state.startDate = fp1;
+    NewPromo.state.endDate = fp2;
   },
   state: {
     Loader: false,
     newpromoMessage:"",
     newpromoError :"",
+    startDate: [],
+    endDate: [],
   },
   validateNewPromo: () => {
+      Promos.NewPromo.start_date = NewPromo.state.startDate.selectedDates[0];
+      console.log("start date: ", NewPromo.state.startDate.selectedDates[0]);
+      Promos.NewPromo.end_date = NewPromo.state.endDate.selectedDates[0];
+      console.log("end date: ", NewPromo.state.endDate.selectedDates[0]);
     // check if old price is greater or equal to new price...
     if (parseInt(Promos.NewPromo.old_price, 10) <= parseInt(Promos.NewPromo.new_price, 10)) {
         NewPromo.state.newpromoError = "You should probable make the new price lower than the old price.";
@@ -69,7 +91,7 @@ var NewPromo = {
     !Promos.NewPromo.start_date || !Promos.NewPromo.end_date ||
     !Promos.NewPromo.description || !Promos.NewPromo.featured_image_b64 ||
     !Promos.NewPromo.images.length) {
-        // console.log("#1 new promo to be submitted: ", Promos.NewPromo);
+        console.log("#1 new promo to be submitted: ", Promos.NewPromo);
         NewPromo.state.newpromoError = "All Details must be filled out correctly.";
         // scroll to the top to view the error message...
         window.scrollTo(0, 100);
@@ -103,7 +125,7 @@ var NewPromo = {
             </div>
         </div>
         <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
-            {NewPromo.state.newpromoError ? m("p.pa1.tc.white.bg-red.br1", NewPromo.state.newpromoError): ""}
+            {NewPromo.state.newpromoError ? m("p.pa1.tc.white.bg-red-custom.br1", NewPromo.state.newpromoError): ""}
             {NewPromo.state.newpromoMessage ? m("p.pa1.tc.white.bg-navy.br1", NewPromo.state.newpromoMessage): ""}
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Item Name:</label><br></br>
@@ -115,17 +137,17 @@ var NewPromo = {
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Item Category:</label>
-                  <select class="ba b--light-silver bw1 pa2 w-100" onchange={m.withAttr("value", function(value) {
-                      Promos.NewPromo.category = value;
-                  })}>
-                    <option disabled selected>-- Select Category --</option>
-                    {Promos.Categories.map(function(category, i){
-                      return (<option value={category.slug} key={i} >
-                        {category.name}
-                      </option>)
-                    })}
+                <select class="ba b--light-silver bw1 pa2 w-100" onchange={m.withAttr("value", function(value) {
+                    Promos.NewPromo.category = value;
+                })}>
+                <option disabled selected>-- Select Category --</option>
+                {Promos.Categories.map(function(category, i){
+                    return (<option value={category.slug} key={i} >
+                    {category.name}
+                    </option>)
+                })}
 
-                  </select>
+                </select>
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Old Price:</label>
@@ -145,7 +167,7 @@ var NewPromo = {
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Start Date:</label>
-                <input type="date" class="ba b--light-silver bw1 pa2 w-100"
+                <input type="text" id="beginDate" class=" ba b--light-silver bw1 pa2 w-100 relative"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.start_date = format(value, "YYYY-MM-DD")
                 })}
@@ -153,7 +175,7 @@ var NewPromo = {
             </div>
             <div class="pa2">
                 <label class="f4 gray pv2 dib">End Date:</label>
-                <input type="date" class="ba b--light-silver bw1 pa2 w-100"
+                <input type="text" id="endDate" class=" ba b--light-silver bw1 pa2 w-100 relative"
                 oninput={m.withAttr("value", function(value) {
                     Promos.NewPromo.end_date = format(value, "YYYY-MM-DD")
                 })}

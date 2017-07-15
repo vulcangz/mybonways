@@ -3,6 +3,8 @@ import {UserModel} from './user.js';
 
 export var Promos = {
     FeaturedPromos : [],
+    Promo: {promo_images:""},
+    PromoBranches: [],
     Promo: {promo_images:"", reservation: {}},
     PromoMerchant: {},
     Page: 1,
@@ -49,6 +51,9 @@ export var Promos = {
                 console.error(error)
             })
             m.redraw();
+            Promos.GetPromoMerchant(response.company_id);
+            Promos.GetBranches();
+
         }).catch((error) => {
             console.error("promos details error: ", error)
         })
@@ -64,6 +69,14 @@ export var Promos = {
             console.error("Promos merchant error: ", error)
         })
     },
+    GetBranches: () => {
+        return m.request({
+            method: "GET",
+            url: "/api/promo/branches/" + Promos.Promo.company_id
+        }).then((response) => {
+            console.log("Promo branches response: ", response);
+            Promos.PromoBranches = response;
+        },
     Reserve: (id) => {
         console.log("Reserve this promo. UserID: ", id);
         return m.request({
@@ -87,6 +100,7 @@ export var Promos = {
             m.redraw();
         }).catch((error) => {
             console.log("delete reservation error: ", error)
+
         })
     }
 }

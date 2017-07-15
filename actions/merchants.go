@@ -25,7 +25,7 @@ func (mr *MerchantsResource) List(c buffalo.Context) error {
 	err := tx.All(&m)
 	if err != nil {
 		log.Println("list err: ", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	return c.Render(200, render.JSON(m))
@@ -38,7 +38,7 @@ func (mr *MerchantsResource) Show(c buffalo.Context) error {
 	err := tx.Find(m, c.Param("merchant_id"))
 	if err != nil {
 		log.Println("Show err: ", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	return c.Render(200, render.JSON(m))
 }
@@ -53,7 +53,7 @@ func (mr *MerchantsResource) Create(c buffalo.Context) error {
 
 	tx := c.Value("tx").(*pop.Connection)
 
-	err = tx.Where("merchant_email = ? OR company_id = ?", m.MerchantEmail, m.CompanyID).First(m)
+	err = tx.Where("merchant_email = ? AND company_id = ?", m.MerchantEmail, m.CompanyID).First(m)
 	if err == nil {
 		log.Println("Merchant exists: ", m)
 		return c.Render(http.StatusBadRequest, render.JSON(struct{ Error string }{Error: "Email or Company ID already Exists"}))
@@ -74,6 +74,12 @@ func (mr *MerchantsResource) Create(c buffalo.Context) error {
 	v := &models.VerificationCode{}
 	v.CompanyID = m.CompanyID
 	v.Code = uuid.NewV1().String()
+	code := "https://mybonways.com/api/merchants/verify/" + v.Code
+	log.Println(code)
+	mailContext := make(map[string]interface{})
+	mailContext["verification_url"] = code
+	mailContext["account_email"] = m.MerchantEmail
+	SendMail(EMAIL_VERIFICATION, mailContext, m.MerchantEmail)
 
 	err = tx.Create(v)
 	if err != nil {
@@ -125,7 +131,7 @@ func VerifyMerchant(c buffalo.Context) error {
 
 	err := query.First(&v)
 	if err != nil {
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	log.Printf("verifivation: %#v \n ", v)
@@ -136,14 +142,14 @@ func VerifyMerchant(c buffalo.Context) error {
 	m := models.Merchant{}
 	err = query2.First(&m)
 	if err != nil {
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	m.Approved = true
 	err = tx.Update(&m)
 	log.Println(err)
 	if err != nil {
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
 	err = tx.Reload(&m)
@@ -160,7 +166,7 @@ func (mr *MerchantsResource) GetByCompanyID(c buffalo.Context) error {
 	err := tx.Where("company_id = ?", c.Param("company_id")).First(m)
 	if err != nil {
 		log.Println("Show err: ", err)
-		return c.Error(404, errors.WithStack(err))
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	return c.Render(200, render.JSON(m))
 }

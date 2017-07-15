@@ -31,20 +31,20 @@ var SignupPage = {
         SignupPage.state.loginLoader = false;
       }).catch(function(error){
         SignupPage.state.loginError = error.Error || "Username or Password is incorrect.";
-        SignupPage.state.loginLoader = false;                              
+        SignupPage.state.loginLoader = false;
       });
   },
   validateSignup: () => {
       if(!SignupPage.SignupMerchant.company_name || !SignupPage.SignupMerchant.company_id
       || !SignupPage.SignupMerchant.merchant_email || !SignupPage.SignupMerchant.merchant_password) {
-          
+
           SignupPage.state.signupMessage = "";
           SignupPage.state.signupError = "All required fields must be provided.";
           return;
       }
       SignupPage.state.signupLoader = true;
       MerchantModel.Signup(SignupPage.SignupMerchant).then(function(){
-        
+
         SignupPage.state.signupError = "";
         SignupPage.state.signupMessage = "Login to your email to verify your account.";
         SignupPage.state.signupLoader = false;
@@ -54,7 +54,7 @@ var SignupPage = {
       }).catch(function(error){
 
         SignupPage.state.signupMessage = "";
-        SignupPage.state.signupError = "Could not sign you up at this moment please try again.";
+        SignupPage.state.signupError = error.Error || "Could not sign you up at this moment please try again.";
         SignupPage.state.signupLoader = false;
 
       });
@@ -73,7 +73,7 @@ var SignupPage = {
                   <div class="dib relative">
                     <a href="#" class="dib  black link v-mid mr3  pa2  relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>login</a>
                     <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 w5 "+(vnode.state.showNav?"db":"dn")}>
-                        {SignupPage.state.loginError? m("p.bg-red.white.pv1.w-100.mv0.tc.br2", SignupPage.state.loginError): ""}
+                        {SignupPage.state.loginError? m("p.bg-red-custom.white.pv1.w-100.mv0.tc.br2", SignupPage.state.loginError): ""}
                         <div class="db pv1">
                           <input type="text" placeholder="company id" class="input-reset ba b--black-20 db w-100 pv2 ph3"
                           oninput={m.withAttr("value", function(value) {
@@ -117,7 +117,7 @@ var SignupPage = {
                   </section>
                   <section class=" pa3 pa4-ns bg-white br2 dib w-100 w-40-ns ">
                     <div class="">
-                      {SignupPage.state.signupError? m("p.bg-red.white.pv1.w-100.mv0.tc.br2", SignupPage.state.signupError) : ""}
+                      {SignupPage.state.signupError? m("p.bg-red-custom.white.pv1.w-100.mv0.tc.br2", SignupPage.state.signupError) : ""}
                       {SignupPage.state.signupMessage? m("p.bg-navy.white.pv1.w-100.mv0.tc.br2", SignupPage.state.signupMessage) : ""}
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Store Name"

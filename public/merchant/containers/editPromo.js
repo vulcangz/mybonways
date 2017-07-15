@@ -1,28 +1,18 @@
 import m from 'mithril';
 import {Promos} from "../models/promos.js";
-
 import format from 'date-fns/format';
+import Flatpickr from 'flatpickr';
+import confirmDatePlugin from 'flatpickr/src/plugins/confirmDate/confirmDate.js'
 
 var EditPromo = {
-    oninit: function(vnode) {
-        console.log("init editpromo")
-        if(Promos.AllPromos.length < 1) {
-            console.log("No promos");
-            m.route.set("/promos/");
-            return;
-        }
-        for (var j = 0; j < Promos.AllPromos.length; j++){
-            if (Promos.AllPromos[j].slug == vnode.attrs.slug){
-                EditPromo.p = Promos.AllPromos[j];
-                return;
-            }
-        }
-        // if none of the return is called then there is no promo to edit...
-        m.route.set("/promos/");
+    state: {
+        updatebutton: true,
+        startDate: {},
+        endDate: {},
+        loader: false
     },
-    updatebutton: true,
     AddPreview: function(e) {
-        EditPromo.updatebutton = false;
+        EditPromo.state.updatebutton = false;
         var image = document.getElementById("feature_image").files[0];
         var preview = document.getElementById("preview");
 
@@ -33,9 +23,9 @@ var EditPromo = {
 
                 reader.addEventListener("load", function (f) {
                     // preview.src = this.result;
-                    EditPromo.p.featured_image = this.result;
+                    Promos.CurrentPromo.featured_image = this.result;
                     preview.src = this.result;
-                    console.log(EditPromo.p);
+                    console.log(Promos.CurrentPromo);
                 }, false);
 
                 reader.readAsDataURL(image);
@@ -46,11 +36,31 @@ var EditPromo = {
             readAndPreview();
         }
     },
+    oncreate: (vnode) => {
+        Promos.GetPromo(vnode.attrs.slug).then(() => {
+            console.log("current promo: ", Promos.CurrentPromo)
+            const datePickerBeginInput = document.getElementById("beginDate");
+            const datePickerEndInput = document.getElementById("endDate");
+
+            EditPromo.state.startDate = new Flatpickr(datePickerBeginInput, {
+                "enableTime": true,
+                defaultDate: [format(Promos.CurrentPromo.start_date, "YYYY-MM-DD h:mm a")],
+                "plugins": [new confirmDatePlugin({})]
+            });  // Flatpickr
+            EditPromo.state.endDate = new Flatpickr(datePickerEndInput, {
+                "enableTime": true,
+                defaultDate: [format(Promos.CurrentPromo.end_date, "YYYY-MM-DD h:mm a")],
+                "plugins": [new confirmDatePlugin({})]
+            });
+            document.getElementById("beginDate").value = format(Promos.CurrentPromo.start_date, "YYYY-MM-DD h:mm a");
+            document.getElementById("endDate").value = format(Promos.CurrentPromo.end_date, "YYYY-MM-DD h:mm a");
+        })
+    },
     view: function(vnode) {
         // var p = Promos.AllPromos[vnode.attrs.id];\
-        if (typeof EditPromo.p == 'undefined') {
-            return
-        }
+        // if (typeof EditPromo.p == 'undefined') {
+        //     return
+        // }
         return (
             <section>
                 <div class="ph4 pv4 bg-white shadow-m2 ">
@@ -58,9 +68,10 @@ var EditPromo = {
                         <span  class="fw6 f3">Edit Promo </span>
                     </div>
                 </div>
+                {Promos.CurrentPromo?
                 <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
                     <div class="">
-                        <img class="" id="preview" width="100%" src={!EditPromo.p.featured_image_b64 || EditPromo.p.featured_image_b64 == 'null'?"/assets/img/800x450.png":EditPromo.p.featured_image_b64} alt=""/>
+                        <img class="" id="preview" width="100%" src={!Promos.CurrentPromo.featured_image_b64 || Promos.CurrentPromo.featured_image_b64 == 'null'?"/assets/img/800x450.png":Promos.CurrentPromo.featured_image_b64} alt=""/>
                     </div>
                     <div class="w-100 tc mv3">
                         <label for="feature_image" class="mv3 ba b--navy white pointer bg-navy pv2 ph3 w-100">
@@ -71,49 +82,58 @@ var EditPromo = {
                     </div>
 
                     <div class="">
-                        <p class="pa2 bt b--gray cf">Item Name: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.item_name}
+                        <p class="pa2 bt b--gray cf">Item Name: <input type="text" class="pa2 ba b--gray ml2 fr" value={Promos.CurrentPromo.item_name}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
-                            EditPromo.p.item_name = val;
+                            EditPromo.state.updatebutton = false;
+                            Promos.CurrentPromo.item_name = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Category: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.category}
+                        <p class="pa2 bt b--gray cf">Category: <input type="text" class="pa2 ba b--gray ml2 fr" value={Promos.CurrentPromo.category}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
-                            EditPromo.p.category = val;
+                            EditPromo.state.updatebutton = false;
+                            Promos.CurrentPromo.category = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">New Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.new_price}
+                        <p class="pa2 bt b--gray cf">New Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={Promos.CurrentPromo.new_price}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
-                            EditPromo.p.new_price = parseInt(val, 10);
+                            EditPromo.state.updatebutton = false;
+                            Promos.CurrentPromo.new_price = parseInt(val, 10);
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Old Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.old_price}
+                        <p class="pa2 bt b--gray cf">Old Price: <input type="text" class="pa2 ba b--gray ml2 fr" value={Promos.CurrentPromo.old_price}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
-                            EditPromo.p.old_price = parseInt(val, 10);
+                            EditPromo.state.updatebutton = false;
+                            Promos.CurrentPromo.old_price = parseInt(val, 10);
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Start Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.start_date}
+                        <p class="pa2 bt b--gray cf">Start Date: <input type="text" id="beginDate" class="pa2 ba b--gray ml2 fr"
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
+                            EditPromo.state.updatebutton = false;
                             console.log(format(val, "YYYY-MM-DD"))
-                            EditPromo.p.start_date = format(val, "YYYY-MM-DD");
+                            Promos.CurrentPromo.start_date = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">End Date: <input type="date" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.end_date}
+                        <p class="pa2 bt b--gray cf">End Date: <input type="text" id="endDate" class="pa2 ba b--gray ml2 fr"
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
-                            console.log(format(val, "YYYY-MM-DD"))
-                            EditPromo.p.end_date = format(val, "YYYY-MM-DD");
+                            EditPromo.state.updatebutton = false;
+                            console.log(val)
+                            Promos.CurrentPromo.end_date = val;
                         })}/></p>
-                        <p class="pa2 bt b--gray cf">Description: <input type="text" class="pa2 ba b--gray ml2 fr" value={EditPromo.p.description}
+                        <p class="pa2 bt b--gray cf">Description: <input type="text" class="pa2 ba b--gray ml2 fr" value={Promos.CurrentPromo.description}
                         oninput={m.withAttr("value", function(val) {
-                            EditPromo.updatebutton = false;
-                            EditPromo.p.description = val;
+                            EditPromo.state.updatebutton = false;
+                            Promos.CurrentPromo.description = val;
                         })}/></p>
                     </div>
-                    <button class={EditPromo.updatebutton?"dn":" ba b--navy white pointer bg-navy pv2 ph3 w-100"}
+                    <button class={EditPromo.state.updatebutton?"dn":" ba b--navy white pointer bg-navy pv2 ph3 w-100"}
                     onclick={function() {
-                        Promos.Update(EditPromo.p);
-                    }}> UPDATE</button>
-                </div>
+                        Promos.CurrentPromo.start_date = EditPromo.state.startDate.selectedDates[0];
+                        Promos.CurrentPromo.end_date = EditPromo.state.endDate.selectedDates[0];
+                        console.log("Current Promo: ", Promos.CurrentPromo)
+                        EditPromo.state.loader = true;
+                        Promos.Update(Promos.CurrentPromo).then(() => {
+                            EditPromo.state.loader = false;
+                        }).catch((error) => {
+                            EditPromo.state.loader = false;
+                        })
+
+                    }}>{EditPromo.state.loader? <div class="loader"></div> : "UPDATE"}</button>
+                </div>:""}
             </section>
         )
     }

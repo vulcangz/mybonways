@@ -141,10 +141,11 @@ func VerifyUser(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	query := pop.Q(tx)
 	query = tx.Where("code = ?", code)
-
+	c.Set("status", "error")
 	err := query.First(&v)
 	if err != nil {
-		return c.Error(http.StatusOK, errors.WithStack(err))
+		return c.Render(200, r.HTML("verification/user.html"))
+		// return c.Error(http.StatusOK, errors.WithStack(err))
 	}
 
 	log.Printf("verification: %#v \n ", v)
@@ -155,22 +156,27 @@ func VerifyUser(c buffalo.Context) error {
 	u := &models.User{}
 	err = query2.First(u)
 	if err != nil {
-		return c.Error(http.StatusOK, errors.WithStack(err))
+		return c.Render(200, r.HTML("verification/user.html"))
+		// return c.Error(http.StatusOK, errors.WithStack(err))
 	}
 
 	u.Approved = true
 	err = tx.Update(u)
-	log.Println(err)
+	// log.Println(err)
 	if err != nil {
-		return c.Error(http.StatusOK, errors.WithStack(err))
+		return c.Render(200, r.HTML("verification/user.html"))
+		// return c.Error(http.StatusOK, errors.WithStack(err))
 	}
 
-	err = tx.Reload(u)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-
-	return c.Render(200, render.JSON(u))
+	// err = tx.Reload(u)
+	// if err != nil {
+	// 	return c.Render(200, r.HTML("verification/user.html"))
+	// 	// return errors.WithStack(err)
+	// }
+	c.Set("status", "successful")
+	c.Set("email", u.Email)
+	return c.Render(200, r.HTML("verification/user.html"))
+	// return c.Render(200, render.JSON(u))
 }
 
 // Edit renders a edit formular for a user. This function is

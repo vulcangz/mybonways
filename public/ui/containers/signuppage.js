@@ -1,6 +1,8 @@
 import m from 'mithril';
 import {UserModel} from '../models/user.js';
 import {isEmptyObject} from '../../util/utils.js';
+import Footer from '../components/footer.js';
+
 
 var SignupPage = {
   NewUser:{},
@@ -148,6 +150,7 @@ var SignupPage = {
               </section>
             </section>
         </section>
+        <Footer />
       </section>
     );
   },

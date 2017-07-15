@@ -2,6 +2,7 @@ import m from 'mithril';
 import { Promos } from '../models/promos.js';
 import {UserModel} from '../models/user.js';
 import {isEmptyObject} from '../../util/utils.js';
+import Footer from '../components/footer.js';
 
 var Details = {
   onbeforeremove: (vnode) => {
@@ -154,11 +155,7 @@ var PromoDetailPage = {
             </section>
           </section>
         </section>
-        <section class="bg-dark-gray  cf f5">
-          <div class="tc pv3 white-80 bg-black">
-            <span>copyright Bonways 2017</span>
-          </div>
-        </section>
+        <Footer />
       </section>
     );
   },

@@ -1,4 +1,5 @@
 import m from 'mithril';
+import Footer from '../components/footer.js';
 
 var DoublePromos = {
   onbeforeremove: (vnode) => {
@@ -11,6 +12,7 @@ var DoublePromos = {
       <section class="animated">
           {m.fragment(vnode.attrs, vnode.children)}
         <div class="red">2 in 1 PROMOS...</div>
+        <Footer />
       </section>
     )
   }

@@ -3,6 +3,7 @@ import { search } from '../models/search.js';
 import { Promos } from '../models/promos.js';
 import { Slides } from '../models/slides.js';
 import { lory } from 'lory.js';
+import Footer from '../components/footer.js';
 
 var HotPromosPage = {
   slideIndex: 1,
@@ -111,11 +112,7 @@ var HotPromosPage = {
             </section>
           </section>
         </section>
-        <section class="bg-dark-gray  cf f5">
-          <div class="tc pv3 white-80 bg-black">
-            <span>copyright Bonways 2017</span>
-          </div>
-        </section>
+        <Footer/>
       </section>
     );
   },

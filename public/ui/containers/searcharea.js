@@ -1,5 +1,6 @@
 import m from 'mithril';
 import {search} from '../models/search.js';
+import Footer from '../components/footer.js';
 
 var SearchArea = {
     initMap: function (myLatLng, i, title) {
@@ -85,6 +86,7 @@ var SearchArea = {
                         }).catch((error)=>{SearchArea.state.loader = false;})
                     }}>{SearchArea.state.loader ? m(".loader"):"Load More"}</p>
                 </div>
+              <Footer/>
             </section>
         )
     }

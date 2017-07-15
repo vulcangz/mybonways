@@ -1,6 +1,7 @@
 import m from 'mithril';
 import {UserModel} from '../models/user.js';
 import {isEmptyObject} from '../../util/utils.js';
+import Footer from '../components/footer.js';
 
 var Favourites = {
     oncreate: () => {
@@ -17,6 +18,7 @@ var Favourites = {
                     </section>
                     : ""}
                 </div>
+                <Footer/>
             </section>
         )
     }

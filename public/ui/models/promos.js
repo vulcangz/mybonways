@@ -3,7 +3,6 @@ import {UserModel} from './user.js';
 
 export var Promos = {
     FeaturedPromos : [],
-    Promo: {promo_images:""},
     PromoBranches: [],
     Promo: {promo_images:"", reservation: {}},
     PromoMerchant: {},
@@ -15,6 +14,7 @@ export var Promos = {
         }).then((response) => {
             console.log("featured promos response:", response);
             Promos.FeaturedPromos = response;
+            Promos.GetBranches();
         }).catch((error) => {
             console.error("featured promos error: ", error)
         })

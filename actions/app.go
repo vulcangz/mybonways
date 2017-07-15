@@ -61,6 +61,7 @@ func App() *buffalo.App {
 		usersResource := UsersResource{&buffalo.BaseResource{}}
 		reservationResource := ReservationsResource{&buffalo.BaseResource{}}
 		adminsResource := &AdminsResource{}
+		branchResources := &BranchResource{}
 
 		// if this is merchants the middleware does not work, so i changed it to merchant
 		merchantGroup := app.Group("/api/merchants")
@@ -78,6 +79,8 @@ func App() *buffalo.App {
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
 		app.GET("/api/users/verify/{code}", VerifyUser)
 
+		app.GET("/api/promo/branches/{company_id}", branchResources.GetBranchByCompanyID)
+
 		app.POST("/api/merchants/login", MerchantLogin)
 		app.POST("/api/admin/login", AdminLogin)
 		app.POST("/api/users/login", UserLogin)
@@ -90,7 +93,7 @@ func App() *buffalo.App {
 		app.GET("/api/promo/{slug}", promoResource.GetPromoBySlug)
 		app.GET("/api/merchant/{company_id}", merchantsResource.GetByCompanyID)
 
-		merchantGroup.Resource("/branch", &BranchResource{})
+		merchantGroup.Resource("/branch", branchResources)
 		merchantGroup.Resource("/promo", promoResource)
 		merchantGroup.GET("/promo/{slug}", promoResource.GetPromoBySlug)
 

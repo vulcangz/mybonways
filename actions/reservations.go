@@ -208,13 +208,29 @@ func (v ReservationsResource) GetMerchantReservations(c buffalo.Context) error {
 	// You can order your list here. Just change
 	// err := tx.Where("user_id = ?", user["id"]).All(reservations)
 	err := tx.RawQuery(`SELECT id, created_at, updated_at, user_id,
-	promo_id, promo_slug, company_id, code, item_name, email
+	promo_id, promo_slug, company_id, code, item_name, email, status
 	FROM reservations r
 		LEFT OUTER JOIN ( SELECT id as pid, item_name FROM merchant_promos ) p ON r.promo_id = p.pid
 		LEFT OUTER JOIN ( SELECT id as uid, email FROM users ) u ON r.user_id = u.uid
 	WHERE r.company_id = ? ORDER BY r.created_at DESC;`, merchant["company_id"]).All(reservations)
 	// to:
 	// err := tx.Order("create_at desc").All(reservations)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	return c.Render(http.StatusOK, render.JSON(reservations))
+}
+
+func (v ReservationsResource) ClaimReservation(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	reservationID := c.Param("reservation_id")
+	err := tx.RawQuery("UPDATE reservations SET status = 'claimed' WHERE id = ?;", reservationID).Exec()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	merchant := c.Value("Merchant").(map[string]interface{})
+	reservations := &models.Reservations{}
+	err = tx.Where("company_id = ?", merchant["company_id"]).All(reservations)
 	if err != nil {
 		return errors.WithStack(err)
 	}

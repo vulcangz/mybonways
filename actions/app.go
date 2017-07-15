@@ -60,6 +60,7 @@ func App() *buffalo.App {
 		slidesResource := SlidesResource{&buffalo.BaseResource{}}
 		usersResource := UsersResource{&buffalo.BaseResource{}}
 		reservationResource := ReservationsResource{&buffalo.BaseResource{}}
+		adminsResource := &AdminsResource{}
 
 		// if this is merchants the middleware does not work, so i changed it to merchant
 		merchantGroup := app.Group("/api/merchants")
@@ -103,6 +104,7 @@ func App() *buffalo.App {
 
 		// This handles adding a location by the admin...
 		adminGroup.Resource("/locations/neighbourhood", locationsResource)
+		adminGroup.GET("/analytics", adminsResource.GetAnalytics)
 
 		// these handle queries for all locations (country, city and neighbourhood)
 		// gets list of countries...

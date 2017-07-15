@@ -95,6 +95,7 @@ func App() *buffalo.App {
 
 		merchantGroup.GET("/reservations", reservationResource.GetMerchantReservations)
 		merchantGroup.POST("/reservations/claim/{reservation_id}", reservationResource.ClaimReservation)
+		merchantGroup.GET("/analytics", merchantsResource.GetAnalytics)
 
 		app.Resource("/api/merchants", merchantsResource)
 

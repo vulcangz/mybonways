@@ -59,15 +59,71 @@ var _ = grift.Add("db:seed:locations", func(c *grift.Context) error {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-	locations := make([]models.Location, 6)
-	locations[0] = models.Location{Country: "Nigeria", City: "Calabar", Neighbourhood: "Marian"}
-	locations[1] = models.Location{Country: "Nigeria", City: "Benin", Neighbourhood: "Ulegu"}
-	locations[2] = models.Location{Country: "Nigeria", City: "Abuja", Neighbourhood: "Jabi"}
-	locations[3] = models.Location{Country: "Cameroon", City: "Douala", Neighbourhood: "Deido"}
-	locations[4] = models.Location{Country: "Cameroon", City: "Yaounde", Neighbourhood: "Mfou"}
-	locations[5] = models.Location{Country: "Cameroon", City: "Garoua", Neighbourhood: "Lagdo"}
-	locations[5] = models.Location{Country: "Cameroon", City: "Douala", Neighbourhood: "Prometal"}
-	for _, l := range locations {
+	// locations := []models.Location{}
+	// for _, l := range locations {
+	// 	err := db.Create(&l)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
+	NewLocations := []models.Location{
+		{Country: "Nigeria", City: "Calabar", Neighbourhood: "Marian"},
+		{Country: "Nigeria", City: "Benin", Neighbourhood: "Ulegu"},
+		{Country: "Nigeria", City: "Abuja", Neighbourhood: "Jabi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Deido"},
+		{Country: "Cameroon", City: "Yaounde", Neighbourhood: "Mfou"},
+		{Country: "Cameroon", City: "Garoua", Neighbourhood: "Lagdo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Prometal"},
+
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonaberi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonanjo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Joss"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonapriso"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nkondo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "New Bell"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bali"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nkongmondo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Koumassi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bali"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadoumbe"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadouma"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadibong"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Akwa"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Akwa nord"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nkololoun"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ngangue"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonaloka"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Brazzaville"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Km5"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Yabassi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ngodi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonamikengue"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Deido"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonateki"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bepanda"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ndogbati"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bassa"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Makepe"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ndogbong"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Zone industrielle bassa"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nylon"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Madagascar"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadiwoto"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Aéroport"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Tergal"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Cité des palmiers"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Beedi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Logpom"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Kotto"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonamossadi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bell"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Youpwe"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Port"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bessengue"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ndogbassi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Makepe missoke"},
+	}
+	for _, l := range NewLocations {
 		err := db.Create(&l)
 		if err != nil {
 			return err

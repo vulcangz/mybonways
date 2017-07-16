@@ -22,13 +22,19 @@ var MapPromos = {
   showPosition: (position) => {
     MapPromos.Position = position;
     // The nearby locations of all available branches...
-    console.log("POSITION: ", position);
+    console.log("MY POSITION: ", position);
     // TODO:: ANOTHER SEARCH QUERY FOR MAPS
     search.searchFor("*", position.coords.latitude, position.coords.longitude).then(()=>{
-      MapPromos.Locations = search.mysearch.map((promo)=>{
-        return {lng: promo.longitude, lat: promo.latitude, id: promo.company_id}
+      // Omit duplicate branches.
+      search.mysearch.map((promo)=>{
+        for (var j = 0; j < MapPromos.Locations.length; j++) {
+          if (MapPromos.Locations[j].lng == promo.longitude && MapPromos.Locations[j].lat == promo.latitude){
+            return
+          }
+        }
+        MapPromos.Locations.push({lng: promo.longitude, lat: promo.latitude, id: promo.company_id})
       })
-      // ommit duplicate
+      // Omit duplicate Promos.
       search.mysearch.forEach((promo) => {
         for (var i = 0; i < MapPromos.Promos.length; i++) {
           if (MapPromos.Promos[i].slug == promo.slug) { return }
@@ -62,6 +68,7 @@ var MapPromos = {
     // create an array of markers based on a given "locations" array.
     // The map() method here has nothing to do with the Google Maps API.
     var markers = MapPromos.Locations.map(function (location, i) {
+      console.log("New location added: ", i)
       return new google.maps.Marker({
         position: location,
         label: labels[i % labels.length],

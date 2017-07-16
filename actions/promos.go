@@ -201,20 +201,22 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	var queryString string
 	var query *pop.Query
 	if searchTerms == "*" {
-		queryString = `
-			SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug,neighbourhood,city,country,longitude,latitude FROM merchant_promos x
-				LEFT OUTER JOIN (
+		queryString = `SELECT created_at, updated_at, company_id, item_name, category, old_price, new_price,
+			start_date, end_date, description, promo_images, featured_image, featured_image_b64,
+			slug, neighbourhood, city, country, longitude, latitude FROM merchant_promos x
+				RIGHT OUTER JOIN (
 					SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 					FROM branches
-					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 100 * 1609.34
+					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10 * 1609.34
 					GROUP BY company_id,neighbourhood,city,country,longitude,latitude
 				) y
-				ON x.company_id = y.cid ORDER BY x.created_at desc LIMIT ? OFFSET ?;
-			`
+				ON x.company_id = y.cid ORDER BY x.created_at desc LIMIT ? OFFSET ?;`
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, perPage, (page-1)*perPage)
 	} else {
 		queryString = `
-		SELECT created_at, updated_at,company_id, item_name,  category, old_price, new_price, start_Date, end_date, description, promo_images, featured_image, featured_image_b64, slug,neighbourhood,city,country,longitude,latitude FROM merchant_promos x
+		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
+		city, country, longitude, latitude FROM merchant_promos x
 			RIGHT OUTER JOIN (
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches

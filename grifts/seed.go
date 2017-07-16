@@ -48,6 +48,10 @@ var _ = grift.Add("db:seed:admin", func(c *grift.Context) error {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
+	err = db.RawQuery("DELETE FROM admins").Exec()
+	if err != nil {
+		return err
+	}
 	return db.Create(&admin)
 })
 
@@ -66,6 +70,10 @@ var _ = grift.Add("db:seed:locations", func(c *grift.Context) error {
 	// 		return err
 	// 	}
 	// }
+	err := db.RawQuery("DELETE FROM locations").Exec()
+	if err != nil {
+		return err
+	}
 	NewLocations := []models.Location{
 		{Country: "Nigeria", City: "Calabar", Neighbourhood: "Marian"},
 		{Country: "Nigeria", City: "Benin", Neighbourhood: "Ulegu"},
@@ -124,7 +132,7 @@ var _ = grift.Add("db:seed:locations", func(c *grift.Context) error {
 		{Country: "Cameroon", City: "Douala", Neighbourhood: "Makepe missoke"},
 	}
 	for _, l := range NewLocations {
-		err := db.Create(&l)
+		err = db.Create(&l)
 		if err != nil {
 			return err
 		}
@@ -141,7 +149,10 @@ var _ = grift.Add("db:seed:merchants", func(c *grift.Context) error {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-
+	err = db.RawQuery("DELETE FROM merchants").Exec()
+	if err != nil {
+		return err
+	}
 	for i := 0; i < 4; i++ {
 		merchant = models.Merchant{
 			Approved:               true,
@@ -171,19 +182,19 @@ var _ = grift.Add("db:seed:branches", func(c *grift.Context) error {
 		Latitude:  6.264387,
 		Longitude: 5.716624,
 	}
-	branches[1] = models.Branch{CompanyID: "past3", Address: "Marian Calabar", Neighbourhood: "Marian", City: "Calabar", Country: "Nigeria",
+	branches[1] = models.Branch{Title: "-", CompanyID: "past3", Address: "Marian Calabar", Neighbourhood: "Marian", City: "Calabar", Country: "Nigeria",
 		Latitude:  4.972580,
 		Longitude: 8.339740,
 	}
-	branches[2] = models.Branch{CompanyID: "crunchies", Address: "Jabi Abuja", Neighbourhood: "Jabi", City: "Abuja", Country: "Nigeria",
+	branches[2] = models.Branch{Title: "-", CompanyID: "crunchies", Address: "Jabi Abuja", Neighbourhood: "Jabi", City: "Abuja", Country: "Nigeria",
 		Latitude:  9.076139,
 		Longitude: 7.399947,
 	}
-	branches[3] = models.Branch{CompanyID: "mybonways", Address: "Deido Douala", Neighbourhood: "Deido", City: "Douala", Country: "Cameroon",
+	branches[3] = models.Branch{Title: "-", CompanyID: "mybonways", Address: "Deido Douala", Neighbourhood: "Deido", City: "Douala", Country: "Cameroon",
 		Latitude:  4.063046,
 		Longitude: 9.712326,
 	}
-	branches[4] = models.Branch{CompanyID: "prometal", Address: "Prometal Douala", Neighbourhood: "Prometal", City: "Douala", Country: "Cameroon",
+	branches[4] = models.Branch{Title: "-", CompanyID: "prometal", Address: "Prometal Douala", Neighbourhood: "Prometal", City: "Douala", Country: "Cameroon",
 		Latitude:  4.027673,
 		Longitude: 9.743304,
 	}
@@ -194,6 +205,10 @@ var _ = grift.Add("db:seed:branches", func(c *grift.Context) error {
 		db = tx.(*pop.Connection)
 	}
 	var err error
+	err = db.RawQuery("DELETE FROM branches").Exec()
+	if err != nil {
+		return err
+	}
 	for _, branch := range branches {
 		queryString := fmt.Sprintf(`INSERT INTO branches(
 					created_at, updated_at, id, company_id, address, city, country, neighbourhood,latitude, longitude, location)
@@ -227,6 +242,10 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 		db = tx.(*pop.Connection)
 	}
 	var err error
+	err = db.RawQuery("DELETE FROM merchant_promos").Exec()
+	if err != nil {
+		return err
+	}
 	fileString := []string{
 		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/8a5d2656-6879-11e7-a188-78acc0541b73",    //laptop
 		"https://s3-us-west-2.amazonaws.com/test-past3/featured_images/6e065d62-6a3f-11e7-bfc1-78acc0541b73", // perfume
@@ -310,6 +329,10 @@ var _ = grift.Add("db:seed:slides", func(c *grift.Context) error {
 	}
 	// items := []string{"laptop", "shirt", "bed"}
 	var err error
+	err = db.RawQuery("DELETE FROM slides").Exec()
+	if err != nil {
+		return err
+	}
 
 	// imagesURLs := []string{
 	// 	"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/8a5d2656-6879-11e7-a188-78acc0541b73",    //laptop
@@ -344,8 +367,11 @@ var _ = grift.Add("db:seed:categories", func(c *grift.Context) error {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-
 	var err error
+	err = db.RawQuery("DELETE FROM categories").Exec()
+	if err != nil {
+		return err
+	}
 	category := models.Category{}
 	slug.CustomSub = map[string]string{
 		"/": " ",
@@ -371,6 +397,10 @@ var _ = grift.Add("db:seed:user", func(c *grift.Context) error {
 		db = tx.(*pop.Connection)
 	}
 	var err error
+	err = db.RawQuery("DELETE FROM users").Exec()
+	if err != nil {
+		return err
+	}
 	user := models.User{
 		Approved: true,
 		FullName: "Michael Akpan",
@@ -398,12 +428,12 @@ var _ = grift.Add("db:seed", func(c *grift.Context) error {
 	return models.DB.Transaction(func(tx *pop.Connection) error {
 
 		// remove all previously existing values...
-		err := tx.TruncateAll()
-		if err != nil {
-			return errors.WithStack(err)
-		}
+		// err := tx.TruncateAll()
+		// if err != nil {
+		// 	return errors.WithStack(err)
+		// }
 		c.Set("tx", tx)
-		err = grift.Run("db:seed:admin", c)
+		err := grift.Run("db:seed:admin", c)
 		if err != nil {
 			return errors.WithStack(err)
 		}

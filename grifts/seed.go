@@ -167,23 +167,23 @@ var _ = grift.Add("db:seed:merchants", func(c *grift.Context) error {
 var _ = grift.Add("db:seed:branches", func(c *grift.Context) error {
 	branches := make([]models.Branch, 5)
 	// Add DB seeding stuff here
-	branches[0] = models.Branch{CompanyID: "Mybonways", Address: "Ulegu Benin", Neighbourhood: "Ulegu", City: "Benin", Country: "Nigeria",
+	branches[0] = models.Branch{CompanyID: "mybonways", Address: "Ulegu Benin", Neighbourhood: "Ulegu", City: "Benin", Country: "Nigeria",
 		Latitude:  6.264387,
 		Longitude: 5.716624,
 	}
-	branches[1] = models.Branch{CompanyID: "Past3", Address: "Marian Calabar", Neighbourhood: "Marian", City: "Calabar", Country: "Nigeria",
+	branches[1] = models.Branch{CompanyID: "past3", Address: "Marian Calabar", Neighbourhood: "Marian", City: "Calabar", Country: "Nigeria",
 		Latitude:  4.972580,
 		Longitude: 8.339740,
 	}
-	branches[2] = models.Branch{CompanyID: "Crunchies", Address: "Jabi Abuja", Neighbourhood: "Jabi", City: "Abuja", Country: "Nigeria",
+	branches[2] = models.Branch{CompanyID: "crunchies", Address: "Jabi Abuja", Neighbourhood: "Jabi", City: "Abuja", Country: "Nigeria",
 		Latitude:  9.076139,
 		Longitude: 7.399947,
 	}
-	branches[3] = models.Branch{CompanyID: "Mybonways", Address: "Deido Douala", Neighbourhood: "Deido", City: "Douala", Country: "Cameroon",
+	branches[3] = models.Branch{CompanyID: "mybonways", Address: "Deido Douala", Neighbourhood: "Deido", City: "Douala", Country: "Cameroon",
 		Latitude:  4.063046,
 		Longitude: 9.712326,
 	}
-	branches[4] = models.Branch{CompanyID: "Prometal", Address: "Prometal Douala", Neighbourhood: "Prometal", City: "Douala", Country: "Cameroon",
+	branches[4] = models.Branch{CompanyID: "prometal", Address: "Prometal Douala", Neighbourhood: "Prometal", City: "Douala", Country: "Cameroon",
 		Latitude:  4.027673,
 		Longitude: 9.743304,
 	}

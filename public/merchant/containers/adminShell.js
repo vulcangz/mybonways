@@ -98,14 +98,6 @@ var AdminShell = {
     					Promos
             </strong>
     				</div>
-    				<div class="tc dib ph3">
-    				  <span class="db f3 pa1">
-    					{Analytics.Data.UsersCount || 0}
-            </span>
-    				  <strong class="db">
-    					Views
-            </strong>
-    				</div>
     			  </div>
     			</div>
   		  </div>

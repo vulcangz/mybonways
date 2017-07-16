@@ -20,7 +20,7 @@ var MenuComponent = {
 var AdminShell = {
   fixNav:false,
   oncreate:function(vnode){
-    // Analytics.GetAnalytics()
+    Analytics.GetAnalytics();
     var navBar = document.getElementById("fixedNav")
     var navBarOffset = navBar.offsetTop;
     var last_known_scroll_position = 0;

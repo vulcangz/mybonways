@@ -1,12 +1,15 @@
 package actions
 
 import (
-	"errors"
+	"log"
 	"net/http"
+
+	"github.com/pkg/errors"
 
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/buffalo/render"
 	"github.com/markbates/pop"
 	"github.com/tonyalaribe/mybonways/models"
 )
@@ -149,4 +152,22 @@ func (v AdminsResource) Destroy(c buffalo.Context) error {
 	}
 	// Success!
 	return c.Render(200, r.JSON(admin))
+}
+
+func (v AdminsResource) GetAnalytics(c buffalo.Context) error {
+	analytic := &models.Analytics{}
+	tx := c.Value("tx").(*pop.Connection)
+	// merchant := c.Value("Admin").(map[string]interface{})
+
+	err := tx.RawQuery(`SELECT (SELECT COUNT(*) FROM reservations WHERE status != 'claimed') as unapproved_listings_count,
+		(SELECT COUNT(*) FROM merchant_promos) as listings_count,
+		(SELECT COUNT(*) FROM users) as users_count FROM admins;`).First(analytic)
+
+	if err != nil {
+		log.Printf("\n---Anaytics query error: %#v\n", err)
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+
+	log.Printf("\n---Analytics result: %#v", analytic)
+	return c.Render(200, render.JSON(analytic))
 }

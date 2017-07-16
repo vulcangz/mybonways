@@ -27,8 +27,13 @@ var Locations = {
     return new Promise(function (resolve) { setTimeout(resolve, 1000) })
   },
   oncreate: (vnode) => {
-	console.log("Oncreate locations...")
+    console.log("Oncreate locations...")
     vnode.dom.classList.add("fadeIn");
+    // Promos.GetBranches().then(() => {
+    //   console.log("GOT BRANCHES...");
+    // }).catch((error) => {
+    //   console.log("BRANCHES ERROR: ", error)
+    // })
   },
 	view: (vnode) => {
 		console.log("Promos.Promo: ", Promos.Promo);
@@ -77,7 +82,7 @@ var PromoDetailPage = {
             <section class="pv3 f6 ph2 gray">
               <section class="pb3">
                 <div class="dib fr">
-                  <a class={(!isEmptyObject(Promos.Promo.reservation)? " red-custom " : " gray " ) + " pa1 b--light-gray bw1 ba mh1  br2 dib grow"}
+                  <a class={(!isEmptyObject(Promos.Promo.reservation)? " red-custom " : " gray " ) + " pa1 b--light-gray bw1 ba mh1  br2 dib pointer grow"}
                   onclick={() => {
                     if (!isEmptyObject(UserModel.User)) {
                       if (isEmptyObject(Promos.Promo.reservation)) {
@@ -99,7 +104,7 @@ var PromoDetailPage = {
                     <img src="/assets/img/svg/star.svg" class="dib v-mid" style="height:0.8rem;" />
                     <small class="dib v-mid ph1">reserve</small>
                   </a>
-                  <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 gray br2 grow dib">
+                  <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 gray br2 grow pointer dib">
                     <img src="/assets/img/svg/like-hollow.svg" class="dib v-mid" style="height:0.8rem;" />
                     <small class="dib v-mid ph1">favorite</small>
                   </a>

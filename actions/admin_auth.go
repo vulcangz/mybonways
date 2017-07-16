@@ -61,9 +61,10 @@ func AdminLogin(c buffalo.Context) error {
 	}
 
 	cookie := &http.Cookie{
-		Name:  "X-ADMIN-TOKEN",
-		Value: token["token"].(string),
-		Path:  "/",
+		Name:    "X-ADMIN-TOKEN",
+		Value:   token["token"].(string),
+		Path:    "/",
+		Expires: time.Now().Add(365 * 24 * time.Hour),
 	}
 
 	http.SetCookie(c.Response(), cookie)

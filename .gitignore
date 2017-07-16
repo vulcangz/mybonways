@@ -1,12 +1,12 @@
-#vendor/
+vendor/
 **/*.log
 **/*.sqlite
 .idea/
-bin/
+#bin/
 tmp/
 node_modules/
 .sass-cache/
 *-packr.go
-mybonways
-#public/assets/js/*-bundle.js
+#mybonways
+public/assets/js/*-bundle.js
 npm-debug.log*

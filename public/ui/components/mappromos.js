@@ -69,11 +69,11 @@ var MapPromos = {
         map: map,
         infoWindow: new google.maps.InfoWindow({
           content: '<div id="content">'+
-          '<h1 id="firstHeading" class="firstHeading"><a href="/merchant/' + location.id + '">'+ location.id +'</a> Promos</h1>'+
+          '<h1 id="firstHeading" class="firstHeading"><a href="#!'+/*/merchant/' + location.id + '*/'">'+ location.id +'</a> Promos</h1>'+
             '<div id="bodyContent">'+
             MapPromos.Promos.map((promo) => {
               if (location.id !== promo.company_id) { return }
-              return "<div class='dib bg-red-custom w4 h4 pa2 white mr1'>"+
+              return "<div class='dib bg-red-custom w4 h4 pa2 white ma1'>"+
               "<a href='/promos/" + promo.slug + "'>"+
                 "<p class='mv0 pb1'>"+ promo.item_name + "</p>"+
                 "<img class='w-100' src='" + promo.featured_image + "'/>"+

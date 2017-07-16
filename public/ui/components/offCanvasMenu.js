@@ -23,7 +23,9 @@ var OffCanvasMenu = {
   view:function(vnode){
     return (
       <section>
-        <nav id="menu" class="white-90 bg-red-gradient shadow-inset-1">
+        {/*}<!-- display flex is inlined because the display block in slideout css overwrites it -->*/}
+        <nav id="menu" class="white-90 bg-red-gradient shadow-inset-1 flex flex-column justify-center align-center" style="display:flex">
+          <section class="">
           {!isEmptyObject(UserModel.User)?
           <header class="pv4">
             <div class="tc">
@@ -42,8 +44,12 @@ var OffCanvasMenu = {
             </div>
           </header>
           : <div class="tc pv4">
+              <div class="pa2">
+              <h3 class="fw4 pv2">Login to track and reserve all promos as they  happen.</h3>
                 <a href="/signup" class="bg-white red ba b--red pa3 shadow-3 br2 no-underline" oncreate={m.route.link}>Signup/Login</a>
+              </div>
             </div>}
+          </section>
         </nav>
         <section id="panel">
           {m.fragment(vnode.attrs, vnode.children)}

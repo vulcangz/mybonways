@@ -180,3 +180,21 @@ func (mr *MerchantsResource) GetByCompanyID(c buffalo.Context) error {
 	}
 	return c.Render(200, render.JSON(m))
 }
+
+func (mr *MerchantsResource) GetAnalytics(c buffalo.Context) error {
+	analytic := &models.Analytics{}
+	tx := c.Value("tx").(*pop.Connection)
+	merchant := c.Value("Merchant").(map[string]interface{})
+
+	err := tx.RawQuery(`SELECT (SELECT COUNT(*) FROM reservations WHERE company_id = ? AND status != 'claimed') as unapproved_listings_count,
+		(SELECT COUNT(*) FROM merchant_promos WHERE company_id = ?) as listings_count FROM merchants;`,
+		merchant["company_id"], merchant["company_id"]).First(analytic)
+
+	if err != nil {
+		log.Printf("\n---Anaytics query error: %#v\n", err)
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+
+	log.Printf("\n---Analytics result: %#v", analytic)
+	return c.Render(200, render.JSON(analytic))
+}

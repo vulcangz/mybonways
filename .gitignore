@@ -1,4 +1,4 @@
-#vendor/
+vendor/
 **/*.log
 **/*.sqlite
 .idea/
@@ -7,6 +7,6 @@ tmp/
 node_modules/
 .sass-cache/
 *-packr.go
-mybonways
+#mybonways
 public/assets/js/*-bundle.js
 npm-debug.log*

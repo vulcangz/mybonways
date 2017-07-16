@@ -106,12 +106,12 @@ var SignupPage = {
 
               </div>
             </nav>
-            <section style="background-image:url(/assets/img/merchant_login_bg.jpg)" class="vh-100 cover" >
-              <section class="w-100 h-100 bg-black-60 flex flex-column justify-center items-center" >
+            <section style="background-image:url(/assets/img/user_login_bg.jpg)" class="vh-100 cover" >
+              <section class="w-100 h-100 bg-black-20 flex flex-column justify-center items-center" >
                 <section>
                   <section  class=" pa3 pa2-ns  br2 dib w-100 w-60-ns white-90 ">
                     <div>
-                      <h2 class="f2 fw3">Sign up for the best experience.</h2>
+                      <h2 class="f2 fw3 pl5-ns pr4-ns">Sign up to track and reserve all promos as they  happen.</h2>
                     </div>
                   </section>
                   <section class=" pa3 pa4-ns bg-white br2 dib w-100 w-40-ns ">

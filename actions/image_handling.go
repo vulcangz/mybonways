@@ -51,8 +51,9 @@ func CompressAndBlurImageAndReturnBase64(img string) (string, error) {
 
 	srcImage, _, _ := image.Decode(bytes.NewReader(byt))
 	dstImage25 := imaging.Resize(srcImage, 25, 0, imaging.CatmullRom)
+	dstImageBlured := imaging.Blur(dstImage25, 3)
 	buf := new(bytes.Buffer)
-	err = jpeg.Encode(buf, dstImage25, nil)
+	err = jpeg.Encode(buf, dstImageBlured, nil)
 	if err != nil {
 		log.Println(err)
 		return "", err

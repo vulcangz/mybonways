@@ -3,11 +3,12 @@ package grifts
 import (
 	"fmt"
 	"math/rand"
-	"strconv"
+	"strings"
 	"time"
 
 	"log"
 
+	"github.com/gosimple/slug"
 	"github.com/markbates/grift/grift"
 	"github.com/markbates/pop"
 	"github.com/pkg/errors"
@@ -16,6 +17,17 @@ import (
 )
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+var (
+	cat = []string{"Electronique/Service", "Beauté/Cosmetique", "Apparels", "Furniture", "Sorties/Restaurant/Snack",
+		"Bricolage/Decoration", "Cadeau", "Enfants", "Supermarché/Shopping", "Banque/Service", "Groceries",
+		"Transport/Service", "Santé/Bien-être", "Location"}
+	merchantIDs    = []string{"mybonways", "past3", "crunchies", "prometal"}
+	merchantEmails = []string{"hello@mybonways.com", "hello@past3.com", "hello@crunchies.com", "hello@prometal.com"}
+	// addresses      = []string{"", "", "", ""}
+	// 4.027673, 9.743304 : Prometal
+	slides = models.MerchantPromos{}
+)
 
 var _ = grift.Add("db:seed:admin", func(c *grift.Context) error {
 
@@ -47,14 +59,71 @@ var _ = grift.Add("db:seed:locations", func(c *grift.Context) error {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-	locations := make([]models.Location, 6)
-	locations[0] = models.Location{Country: "Nigeria", City: "Calabar", Neighbourhood: "Marian"}
-	locations[1] = models.Location{Country: "Nigeria", City: "Benin", Neighbourhood: "Ulegu"}
-	locations[2] = models.Location{Country: "Nigeria", City: "Abuja", Neighbourhood: "Jabi"}
-	locations[3] = models.Location{Country: "Cameroon", City: "Douala", Neighbourhood: "Deido"}
-	locations[4] = models.Location{Country: "Cameroon", City: "Yaounde", Neighbourhood: "Mfou"}
-	locations[5] = models.Location{Country: "Cameroon", City: "Garoua", Neighbourhood: "Lagdo"}
-	for _, l := range locations {
+	// locations := []models.Location{}
+	// for _, l := range locations {
+	// 	err := db.Create(&l)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
+	NewLocations := []models.Location{
+		{Country: "Nigeria", City: "Calabar", Neighbourhood: "Marian"},
+		{Country: "Nigeria", City: "Benin", Neighbourhood: "Ulegu"},
+		{Country: "Nigeria", City: "Abuja", Neighbourhood: "Jabi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Deido"},
+		{Country: "Cameroon", City: "Yaounde", Neighbourhood: "Mfou"},
+		{Country: "Cameroon", City: "Garoua", Neighbourhood: "Lagdo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Prometal"},
+
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonaberi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonanjo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Joss"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonapriso"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nkondo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "New Bell"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bali"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nkongmondo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Koumassi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bali"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadoumbe"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadouma"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadibong"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Akwa"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Akwa nord"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nkololoun"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ngangue"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonaloka"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Brazzaville"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Km5"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Yabassi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ngodi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonamikengue"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Deido"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonateki"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bepanda"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ndogbati"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bassa"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Makepe"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ndogbong"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Zone industrielle bassa"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nylon"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Madagascar"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadiwoto"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Aéroport"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Tergal"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Cité des palmiers"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Beedi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Logpom"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Kotto"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonamossadi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bell"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Youpwe"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Port"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bessengue"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ndogbassi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Makepe missoke"},
+	}
+	for _, l := range NewLocations {
 		err := db.Create(&l)
 		if err != nil {
 			return err
@@ -72,13 +141,13 @@ var _ = grift.Add("db:seed:merchants", func(c *grift.Context) error {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-	// Add DB seeding stuff here
-	for i := 1; i < 3; i++ {
+
+	for i := 0; i < 4; i++ {
 		merchant = models.Merchant{
 			Approved:               true,
-			CompanyName:            "Baze comp" + strconv.Itoa(i),
-			CompanyID:              "baze" + strconv.Itoa(i),
-			MerchantEmail:          "baze" + strconv.Itoa(i) + "@gmail.com",
+			CompanyName:            strings.Title(merchantIDs[i]),
+			CompanyID:              merchantIDs[i],
+			MerchantEmail:          merchantEmails[i],
 			MerchantPasswordString: "password",
 		}
 		merchant.MerchantPassword, err = bcrypt.GenerateFromPassword([]byte(merchant.MerchantPasswordString), bcrypt.DefaultCost)
@@ -96,23 +165,27 @@ var _ = grift.Add("db:seed:merchants", func(c *grift.Context) error {
 
 // branches, locations, merchants, and promos...
 var _ = grift.Add("db:seed:branches", func(c *grift.Context) error {
-	branches := make([]models.Branch, 4)
+	branches := make([]models.Branch, 5)
 	// Add DB seeding stuff here
-	branches[0] = models.Branch{CompanyID: "baze1", Address: "Ulegu Benin", Neighbourhood: "Ulegu", City: "Benin", Country: "Nigeria",
+	branches[0] = models.Branch{CompanyID: "Mybonways", Address: "Ulegu Benin", Neighbourhood: "Ulegu", City: "Benin", Country: "Nigeria",
 		Latitude:  6.264387,
 		Longitude: 5.716624,
 	}
-	branches[1] = models.Branch{CompanyID: "baze2", Address: "Marian Calabar", Neighbourhood: "Marian", City: "Calabar", Country: "Nigeria",
+	branches[1] = models.Branch{CompanyID: "Past3", Address: "Marian Calabar", Neighbourhood: "Marian", City: "Calabar", Country: "Nigeria",
 		Latitude:  4.972580,
 		Longitude: 8.339740,
 	}
-	branches[2] = models.Branch{CompanyID: "baze2", Address: "Jabi Abuja", Neighbourhood: "Jabi", City: "Abuja", Country: "Nigeria",
+	branches[2] = models.Branch{CompanyID: "Crunchies", Address: "Jabi Abuja", Neighbourhood: "Jabi", City: "Abuja", Country: "Nigeria",
 		Latitude:  9.076139,
 		Longitude: 7.399947,
 	}
-	branches[3] = models.Branch{CompanyID: "baze1", Address: "Deido Douala", Neighbourhood: "Deido", City: "Douala", Country: "Nigeria",
+	branches[3] = models.Branch{CompanyID: "Mybonways", Address: "Deido Douala", Neighbourhood: "Deido", City: "Douala", Country: "Cameroon",
 		Latitude:  4.063046,
 		Longitude: 9.712326,
+	}
+	branches[4] = models.Branch{CompanyID: "Prometal", Address: "Prometal Douala", Neighbourhood: "Prometal", City: "Douala", Country: "Cameroon",
+		Latitude:  4.027673,
+		Longitude: 9.743304,
 	}
 	// 9.076139, 7.399947
 	db := models.DB
@@ -122,16 +195,11 @@ var _ = grift.Add("db:seed:branches", func(c *grift.Context) error {
 	}
 	var err error
 	for _, branch := range branches {
-		// err = db.Create(&branch)
-		// if err != nil {
-		// 	log.Println("error branch: ", err)
-		// 	return err
-		// }
 		queryString := fmt.Sprintf(`INSERT INTO branches(
 					created_at, updated_at, id, company_id, address, city, country, neighbourhood,latitude, longitude, location)
 			VALUES ( current_timestamp, current_timestamp, uuid_in(md5(random()::text || clock_timestamp()::text)::cstring), ?, ?, ?, ?,
-					?, ?, ?, ST_GeomFromText('POINT(%f %f)'));
-		`, branch.Longitude, branch.Latitude)
+					?, ?, ?, ST_GeomFromText('POINT(%f %f)'));`, branch.Longitude, branch.Latitude)
+
 		query := db.RawQuery(queryString, branch.CompanyID, branch.Address, branch.City, branch.Country, branch.Neighbourhood, branch.Latitude, branch.Longitude)
 		err = query.Exec()
 		if err != nil {
@@ -160,34 +228,42 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 	}
 	var err error
 	fileString := []string{
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7ac809e1-5de0-11e7-877f-78acc0541b73",
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7cacad0a-5de0-11e7-877f-78acc0541b73",
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7e998b1f-5de0-11e7-877f-78acc0541b73",
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/80432cd9-5de0-11e7-877f-78acc0541b73",
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/837fc7c7-5de0-11e7-877f-78acc0541b73",
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/8a5d2656-6879-11e7-a188-78acc0541b73",    //laptop
+		"https://s3-us-west-2.amazonaws.com/test-past3/featured_images/6e065d62-6a3f-11e7-bfc1-78acc0541b73", // perfume
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/47fcf6fa-6a3f-11e7-bfc1-78acc0541b73",    //shirt
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/587470b6-6a3f-11e7-bfc1-78acc0541b73",    // bed
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/60c1f504-6a3f-11e7-bfc1-78acc0541b73",    // house
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/65d77386-6a3f-11e7-bfc1-78acc0541b73",    // books
+		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/68985db3-6a3f-11e7-bfc1-78acc0541b73",    // chairs
+		"https://s3-us-west-2.amazonaws.com/test-past3/featured_images/8d946a4e-6879-11e7-a188-78acc0541b73", // table
+		// "https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7ac809e1-5de0-11e7-877f-78acc0541b73",    // piggy bank
+		// "https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7cacad0a-5de0-11e7-877f-78acc0541b73",    // money
+		// "https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7e998b1f-5de0-11e7-877f-78acc0541b73",    // flower
+		// "https://s3-us-west-2.amazonaws.com/test-past3/promo_images/80432cd9-5de0-11e7-877f-78acc0541b73",    // dog
+		// "https://s3-us-west-2.amazonaws.com/test-past3/promo_images/837fc7c7-5de0-11e7-877f-78acc0541b73",    // cat
 	}
-	items := []string{"laptop", "shirt", "bed", "house", "books", "chairs", "table"}
-	cat := []string{"Computers", "Furniture", "Groceries", "Apparels"}
+	items := []string{"laptop", "Perfume", "shirt", "bed", "house", "books", "chairs", "table"}
+	// cat := []string{"Computers", "Furniture", "Groceries", "Apparels"}
 	promo := models.MerchantPromo{}
-	for j := 1; j < 3; j++ {
-		for i := 1; i < 8; i++ {
-			fileIndex := i - 1
-			if i > 5 {
-				fileIndex = 0
-			}
+
+	for _, id := range merchantIDs {
+		for i, v := range items {
 			promo = models.MerchantPromo{
-				ItemName:         items[i-1],
-				CompanyID:        "baze" + strconv.Itoa(j),
-				Category:         cat[j-1],
+				ItemName:         v,
+				CompanyID:        id,
+				Category:         cat[i],
 				OldPrice:         i * 1000,
 				NewPrice:         (i * 1000) / 2,
 				StartDate:        time.Now(),
 				EndDate:          time.Now().Local().Add(time.Hour * time.Duration(24*i)),
-				Description:      "Demo Description for " + items[i-1],
-				PromoImages:      fileString[fileIndex],
-				FeaturedImage:    fileString[fileIndex],
+				Description:      "Demo Description for " + v,
+				PromoImages:      fileString[i],
+				FeaturedImage:    fileString[i],
 				FeaturedImageB64: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAFoAkQMBIgACEQEDEQH/xAAZAAACAwEAAAAAAAAAAAAAAAACBAABAwX/xAAhEAACAgEFAQEBAQAAAAAAAAAAAQIDYQQREhMhMVFBFP/EABcBAAMBAAAAAAAAAAAAAAAAAAABAgP/xAAYEQEBAQEBAAAAAAAAAAAAAAAAARECEv/aAAwDAQACEQMRAD8A6mno+eHQpowTT1D9VZsyZ104N40r8N4QNYwGC6pL6sDSii+ADCnUR1YG+BXEBhR1YKdWBviC4gWFerBXUNOJXEaSjqBdXnwbcQeIyKSqwYzpH3EznACcuykSuowdmyApdX58ENcjpX4Qf68EDDdOiHiHq4+CtCHYITRpCJrFAxRohmiRNgiwAGimg2CBaFoFhMFsC0LBZbYLY02oUTcorEWqYEkGwZDLWFiFLo+Dsha0nAU2IGQMB6j+DlYnT/ByDJat4hoziaIY0RCbkDC1GCyNgtjxN6VIBsuTM5MeIvSNgblSYLZWJvQtybgbk3DE+htgtlblNhh6GQtabyYvaxHrHchRAPTlPwbgxGmXiHK5GbYzFmiZhFmiZUKtNy9zPkTkNFomwWwXICUisZ2rlIylIqUjKUhyItE2DuZuRXIaNabl7mXIvkB613KbA5FOQKiTYtazScha2RNXA7lmPIgjN0z8Q5XM5FFvz0drsM27oxmGpiUbQ+zJUTTfMpzFe1foLtKZUzKwzlYLyuMpXZGzpiVhnKwWldkyldkaKadhXYJu70ncMsOqwJTEVav0NWgqHOYLmK9oMribVRvOwVusBncKXXE2rjXsIJ9pCVY1pvHK7zi0jlbJjZ1Y6jIa1BzYh7spFPu/ID1GRJsCQ9RYblqMmUtRkUkzGbHqMNy1GTOWoyJSb/TNsNLD3+jJa1GTn7l7hox0VqAlqDnRYSYaMdDvyC9RkS3BfwWqkNWX5Fbb8mU2LWMm1cjfvyWJEFtVj//Z",
-				Slug:             items[i-1] + "_" + RandStringBytes(6),
+				Slug:             v + "_" + RandStringBytes(6),
+			}
+			if i < 4 {
+				slides = append(slides, promo)
 			}
 			err = db.Create(&promo)
 			if err != nil {
@@ -196,30 +272,34 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 			}
 		}
 	}
+	// for j := 1; j < 3; j++ {
+	// 	for i := 1; i < 8; i++ {
+	// 		fileIndex := i - 1
+	// 		if i > 5 {
+	// 			fileIndex = 0
+	// 		}
+	// 		promo = models.MerchantPromo{
+	// 			ItemName:         items[i-1],
+	// 			CompanyID:        "baze" + strconv.Itoa(j),
+	// 			Category:         cat[j-1],
+	// 			OldPrice:         i * 1000,
+	// 			NewPrice:         (i * 1000) / 2,
+	// 			StartDate:        time.Now(),
+	// 			EndDate:          time.Now().Local().Add(time.Hour * time.Duration(24*i)),
+	// 			Description:      "Demo Description for " + items[i-1],
+	// 			PromoImages:      fileString[fileIndex],
+	// 			FeaturedImage:    fileString[fileIndex],
+	// 			FeaturedImageB64: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAFoAkQMBIgACEQEDEQH/xAAZAAACAwEAAAAAAAAAAAAAAAACBAABAwX/xAAhEAACAgEFAQEBAQAAAAAAAAAAAQIDYQQREhMhMVFBFP/EABcBAAMBAAAAAAAAAAAAAAAAAAABAgP/xAAYEQEBAQEBAAAAAAAAAAAAAAAAARECEv/aAAwDAQACEQMRAD8A6mno+eHQpowTT1D9VZsyZ104N40r8N4QNYwGC6pL6sDSii+ADCnUR1YG+BXEBhR1YKdWBviC4gWFerBXUNOJXEaSjqBdXnwbcQeIyKSqwYzpH3EznACcuykSuowdmyApdX58ENcjpX4Qf68EDDdOiHiHq4+CtCHYITRpCJrFAxRohmiRNgiwAGimg2CBaFoFhMFsC0LBZbYLY02oUTcorEWqYEkGwZDLWFiFLo+Dsha0nAU2IGQMB6j+DlYnT/ByDJat4hoziaIY0RCbkDC1GCyNgtjxN6VIBsuTM5MeIvSNgblSYLZWJvQtybgbk3DE+htgtlblNhh6GQtabyYvaxHrHchRAPTlPwbgxGmXiHK5GbYzFmiZhFmiZUKtNy9zPkTkNFomwWwXICUisZ2rlIylIqUjKUhyItE2DuZuRXIaNabl7mXIvkB613KbA5FOQKiTYtazScha2RNXA7lmPIgjN0z8Q5XM5FFvz0drsM27oxmGpiUbQ+zJUTTfMpzFe1foLtKZUzKwzlYLyuMpXZGzpiVhnKwWldkyldkaKadhXYJu70ncMsOqwJTEVav0NWgqHOYLmK9oMribVRvOwVusBncKXXE2rjXsIJ9pCVY1pvHK7zi0jlbJjZ1Y6jIa1BzYh7spFPu/ID1GRJsCQ9RYblqMmUtRkUkzGbHqMNy1GTOWoyJSb/TNsNLD3+jJa1GTn7l7hox0VqAlqDnRYSYaMdDvyC9RkS3BfwWqkNWX5Fbb8mU2LWMm1cjfvyWJEFtVj//Z",
+	// 			Slug:             items[i-1] + "_" + RandStringBytes(6),
+	// 		}
+	// 		err = db.Create(&promo)
+	// 		if err != nil {
+	// 			log.Println("create error: ", err)
+	// 			return err
+	// 		}
+	// 	}
+	// }
 	return nil
-})
-
-var _ = grift.Add("db:seed:categories", func(c *grift.Context) error {
-	db := models.DB
-	if tx := c.Value("tx"); tx != nil {
-		log.Println("tx not nil")
-		db = tx.(*pop.Connection)
-	}
-	cat := []string{"Computers", "Furniture", "Groceries", "Apparels"}
-	var err error
-	category := models.Category{}
-	for _, c := range cat {
-		category = models.Category{
-			Name: c,
-			Slug: c + "_" + RandStringBytes(6),
-		}
-		err = db.Create(&category)
-		if err != nil {
-			log.Println("create error: ", err)
-			return err
-		}
-	}
-	return err
 })
 
 var _ = grift.Add("db:seed:slides", func(c *grift.Context) error {
@@ -228,21 +308,26 @@ var _ = grift.Add("db:seed:slides", func(c *grift.Context) error {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-	items := []string{"laptop", "shirt", "bed"}
+	// items := []string{"laptop", "shirt", "bed"}
 	var err error
 
-	imagesURLs := []string{
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7ac809e1-5de0-11e7-877f-78acc0541b73",
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7cacad0a-5de0-11e7-877f-78acc0541b73",
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7e998b1f-5de0-11e7-877f-78acc0541b73",
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/80432cd9-5de0-11e7-877f-78acc0541b73",
-		"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/837fc7c7-5de0-11e7-877f-78acc0541b73",
-	}
+	// imagesURLs := []string{
+	// 	"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/8a5d2656-6879-11e7-a188-78acc0541b73",    //laptop
+	// 	"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/47fcf6fa-6a3f-11e7-bfc1-78acc0541b73",    //shirt
+	// 	"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/587470b6-6a3f-11e7-bfc1-78acc0541b73",    // bed
+	// 	"https://s3-us-west-2.amazonaws.com/test-past3/featured_images/6e065d62-6a3f-11e7-bfc1-78acc0541b73", // perfume
+	// 	"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7ac809e1-5de0-11e7-877f-78acc0541b73",
+	// 	"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7cacad0a-5de0-11e7-877f-78acc0541b73",
+	// 	"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/7e998b1f-5de0-11e7-877f-78acc0541b73",
+	// 	"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/80432cd9-5de0-11e7-877f-78acc0541b73",
+	// 	"https://s3-us-west-2.amazonaws.com/test-past3/promo_images/837fc7c7-5de0-11e7-877f-78acc0541b73",
+	// }
 	// slide := models.Slide{}
-	for i, v := range items {
+	for _, v := range slides {
 		slide := models.Slide{
-			Image: imagesURLs[i],
-			Url:   "/promos/" + v + "_" + RandStringBytes(6),
+			Image: v.FeaturedImage,
+			// Url:   "/promos/" + v + "_" + RandStringBytes(6),
+			Url: "/promo/" + v.Slug,
 		}
 		err = db.Create(&slide)
 		if err != nil {
@@ -259,13 +344,16 @@ var _ = grift.Add("db:seed:categories", func(c *grift.Context) error {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-	cat := []string{"Computers", "Furniture", "Groceries", "Apparels"}
+
 	var err error
 	category := models.Category{}
+	slug.CustomSub = map[string]string{
+		"/": " ",
+	}
 	for _, c := range cat {
 		category = models.Category{
 			Name: c,
-			Slug: c + "_" + RandStringBytes(6),
+			Slug: slug.Make(c) + "_" + RandStringBytes(5),
 		}
 		err = db.Create(&category)
 		if err != nil {
@@ -285,8 +373,8 @@ var _ = grift.Add("db:seed:user", func(c *grift.Context) error {
 	var err error
 	user := models.User{
 		Approved: true,
-		FullName: "John Doe",
-		Email:    "john@doe.com",
+		FullName: "Michael Akpan",
+		Email:    "mike@gmail.com",
 		Password: "password",
 		Image:    "",
 		Provider: "email",

@@ -67,58 +67,6 @@ var MapPromos = {
 
 		// get all locations near this user...
 
-<<<<<<< HEAD
-    // Create an array of alphabetical characters used to label the markers.
-    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    // Add some markers to the map.
-    // Note: The code uses the JavaScript Array.prototype.map() method to
-    // create an array of markers based on a given "locations" array.
-    // The map() method here has nothing to do with the Google Maps API.
-    var markers = MapPromos.Locations.map(function (location, i) {
-      console.log("New location added: ", i)
-      return new google.maps.Marker({
-        position: location,
-        label: labels[i % labels.length],
-        title: location.id,
-        map: map,
-        infoWindow: new google.maps.InfoWindow({
-          content: '<div id="content">'+
-          '<h1 id="firstHeading" class="firstHeading"><a href="#!'+/*/merchant/' + location.id + '*/'">'+ location.id +'</a> Promos</h1>'+
-            '<div id="bodyContent">'+
-            MapPromos.Promos.map((promo) => {
-              if (location.id !== promo.company_id) { return }
-              return "<div class='dib bg-red-custom w4 h4 pa2 white ma1'>"+
-              "<a href='/promo/" + promo.slug + "'>"+
-                "<p class='mv0 pb1'>"+ promo.item_name + "</p>"+
-                "<img class='w-100' src='" + promo.featured_image + "'/>"+
-              "</a></div>"
-            })
-            .join("")+
-            '</div>'+
-          '</div>',
-          maxWidth: 350
-        })
-      });
-    });
-    // var infowindow = new google.maps.InfoWindow({
-    //       content: contentString
-    //     });
-    // [].
-    markers.forEach((marker) => {
-      marker.addListener('click', () => {
-        marker.infoWindow.open(map, marker)
-        console.log("Marker clicked: ", marker.title);
-        // m.route.set("/merchant/" + marker.title)
-      })
-    })
-    // ADD THE USERS LOCATION TO THE MARKERS...
-    markers.push(new google.maps.Marker({
-        position: mylocation,
-        label: "Me",
-        map: map,
-		title: "My Location"
-      }))
-=======
 		// Create an array of alphabetical characters used to label the markers.
 		var labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		// Add some markers to the map.
@@ -185,7 +133,6 @@ var MapPromos = {
 				title: "My Location"
 			})
 		);
->>>>>>> 36e453340fbdb91d1a48a24ba37d1eba69c26151
 
 		// Add a marker clusterer to manage the markers.
 		// var markerCluster = new MarkerClusterer(map, markers,

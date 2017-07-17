@@ -44,7 +44,7 @@ var Dashboard = {
 														<div class="dib w-100 w-50-ns fl">
 															<strong>Merchant: </strong>
 															<span class="">
-																{reservation.code}
+																{reservation.cid}
 															</span>
 														</div>
 													</p>

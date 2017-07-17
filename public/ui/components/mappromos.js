@@ -34,13 +34,15 @@ var MapPromos = {
 		search
 			.searchFor("*", position.coords.latitude, position.coords.longitude)
 			.then(() => {
-				MapPromos.Locations = search.mysearch.map(promo => {
-					return {
-						lng: promo.longitude,
-						lat: promo.latitude,
-						id: promo.company_id
-					};
-				});
+				// Omit duplicate branches.
+        search.mysearch.map((promo)=>{
+          for (var j = 0; j < MapPromos.Locations.length; j++) {
+            if (MapPromos.Locations[j].lng == promo.longitude && MapPromos.Locations[j].lat == promo.latitude){
+              return
+            }
+          }
+          MapPromos.Locations.push({lng: promo.longitude, lat: promo.latitude, id: promo.company_id})
+          });
 				// ommit duplicate
 				search.mysearch.forEach(promo => {
 					for (var i = 0; i < MapPromos.Promos.length; i++) {

@@ -1,6 +1,6 @@
-import m from 'mithril';
+import m from "mithril";
 
 export var settings = {
-    country:"Nigeria",
-    countryCode:"ng"
-}
+	country: "Nigeria",
+	countryCode: "ng"
+};

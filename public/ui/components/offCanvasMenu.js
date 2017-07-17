@@ -13,6 +13,7 @@ var OffCanvasMenu = {
 			padding: 256,
 			tolerance: 70
 		});
+		console.log(vnode.attrs.slideout)
 		UserModel.GetUserfromStorage().then(() => {}).catch(error => {
 			console.error(error);
 		});
@@ -23,10 +24,11 @@ var OffCanvasMenu = {
 				{/*}<!-- display flex is inlined because the display block in slideout css overwrites it -->*/}
 				<nav
 					id="menu"
-					class="white-90 bg-red-gradient shadow-inset-1 flex flex-column justify-center align-center"
-					style="display:flex"
+					class="white-90 bg-red-gradient shadow-inset-1 "
+
 				>
-					<section class="">
+					<section class="h-100 flex  flex-column justify-center align-center">
+						<section>
 						{!isEmptyObject(UserModel.User)
 							? <header class="pv4">
 									<div class="tc">
@@ -79,10 +81,11 @@ var OffCanvasMenu = {
 										</a>
 									</div>
 								</div>}
+							</section>
 					</section>
 				</nav>
 				<section id="panel">
-					{m.fragment(vnode.attrs, vnode.children)}
+					{m(vnode.children, vnode.attrs)}
 				</section>
 			</section>
 		);

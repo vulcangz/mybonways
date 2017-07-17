@@ -4,6 +4,7 @@ import {Analytics} from '../models/analytics.js';
 import {AdminModel} from '../models/admin.js';
 import {menus} from '../models/menus.js';
 
+var slideout;
 var MenuComponent = {
   view:function(){
     return (
@@ -21,6 +22,8 @@ var MenuComponent = {
 var AdminShell = {
   fixNav:false,
   oncreate:function(vnode){
+    slideout = vnode.attrs.slideout;
+
     Analytics.GetAnalytics()
     var navBar = document.getElementById("fixedNav")
     var navBarOffset = navBar.offsetTop;
@@ -51,12 +54,13 @@ var AdminShell = {
 
   },
   view:function(vnode){
+    console.log(vnode)
 	return (
 	  <section>
   		<section class="  pt3-ns   ph5-ns black-80  bg-light-gray-custom1" >
   		  <div class={"pa2 pv3-ns  w-100  z-5  "+(vnode.state.fixNav===true?"fixed top-0 left-0  bg-light-gray-custom1 shadow-4":"relative-ns")} id="fixedNav">
     			<div class="dib relative">
-            <a href="#" class="dib dn-ns black link v-mid mr3  pa2 ba relative" onclick={()=>{vnode.attrs.slideout.toggle()}} >☰</a>
+            <a href="#" class="dib dn-ns black link v-mid mr3  pa2 ba relative" onclick={()=>{slideout.toggle()}} >☰</a>
 
             <div class="dib">
               <img src="/assets/img/logo_xs.png" class="h2 dib v-mid"/>

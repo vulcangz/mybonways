@@ -23,7 +23,6 @@ m.route(root, '/', {
     view: function(vnode){
       return m(OffCanvasMenu,vnode.attrs,
         m(UIShell, vnode.attrs, m(HotPromosPage, vnode.attrs))
-
         );
       },
   },

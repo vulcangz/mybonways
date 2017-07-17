@@ -1,6 +1,9 @@
 var webpack = require("webpack");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const BabiliPlugin = require("babili-webpack-plugin");
+// let commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common-chunks');
+
 // var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
@@ -13,9 +16,11 @@ module.exports = {
     filename: "js/[name]-bundle.js",
     path: __dirname + "/public/assets"
   },
-  devtool: 'eval-source-map',
+  // devtool: 'eval-source-map',
   plugins: [
     new ExtractTextPlugin("css/common.css"),
+    new BabiliPlugin(),
+    // commonsPlugin
     // new BundleAnalyzerPlugin(),
   ],
   module: {
@@ -33,11 +38,11 @@ module.exports = {
         use:
         [{
           loader: "css-loader",
-          options: { sourceMap: true }
+          // options: { sourceMap: true }
       	},
         {
           loader: "sass-loader",
-          options: { sourceMap: true }
+          // options: { sourceMap: true }
         }]
       })
     }, {

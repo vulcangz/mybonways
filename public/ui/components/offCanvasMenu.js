@@ -81,7 +81,11 @@ var OffCanvasMenu = {
 					</section>
 				</nav>
 				<section id="panel">
+<<<<<<< HEAD
 					{m.fragment(vnode.attrs, vnode.children)}
+=======
+					{m.fragment(vnode.attrs, [vnode.children])}
+>>>>>>> 6e9ed31a2bd7e52b5ea34b8506ab6c89b4ac4b2a
 				</section>
 			</section>
 		);

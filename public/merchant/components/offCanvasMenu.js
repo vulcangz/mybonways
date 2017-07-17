@@ -1,6 +1,6 @@
 import m from 'mithril';
 import Slideout from 'slideout';
-var slideout;
+import {menus} from '../models/menus.js';
 
 
  var OffCanvasMenu = {
@@ -15,20 +15,18 @@ var slideout;
   view:function(vnode){
     return (
       <section>
-        <nav id="menu" class="white-90 bg-red-gradient shadow-inset-1">
-          <header class="pv4">
-            <div class="tc">
-              <img src="/assets/img/user.jpg" class="w4 h4 br-100 pa1 ba bw1 b--white"/>
-              <div>
-                <span class="f4">Anthony Alaribe</span>
+        <nav id="menu" class="white-90  shadow-inset-1 " style="background:#36494E">
+          <section class="h-100 flex flex-column justify-center align-center">
+            <header class="pv4">
+              <div class="pt4 ph4">
+                {
+                  menus.map(function(menuItem, i){
+                    return <a class="db pv2 ph2 bt link white-90" oncreate={m.route.link} href={menuItem.href} key={i}>{menuItem.title}</a>
+                  })
+                }
               </div>
-            </div>
-            <div class="pt4 ph4">
-              <a class="db pv2 ph2 bt link white-90" oncreate={m.route.link} href="/">Home</a>
-              <a class="db pv2 ph2 bt ">Profile</a>
-              <a class="db pv2 ph2 bt ">Favorites</a>
-            </div>
-          </header>
+            </header>
+          </section>
         </nav>
         <section id="panel">
           {m.fragment(vnode.attrs, vnode.children)}

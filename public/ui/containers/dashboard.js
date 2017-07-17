@@ -53,7 +53,6 @@ var Dashboard = {
                     </div>
                   </div>
                 </section>
-                <Footer />
             </section>
         )
     }

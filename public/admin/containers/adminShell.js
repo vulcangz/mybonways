@@ -2,16 +2,17 @@ import m from "mithril";
 import localforage from 'localforage';
 import {Analytics} from '../models/analytics.js';
 import {AdminModel} from '../models/admin.js';
+import {menus} from '../models/menus.js';
 
 var MenuComponent = {
   view:function(){
     return (
       <div class="">
-        <a class="dn pa2 bb b--light-gray hover-bg-light-gray link navy " href="/" oncreate={m.route.link}>Dashboard</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/categories" oncreate={m.route.link}>Categories</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/merchants" oncreate={m.route.link}>Merchants</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/locations" oncreate={m.route.link}>Locations</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/slider" oncreate={m.route.link}>Sliders</a>
+        {
+          menus.map(function(menuItem, i){
+            return <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy " href={menuItem.href} oncreate={m.route.link} key={i}>{menuItem.title}</a>
+          })
+        }
       </div>
     );
   }
@@ -55,10 +56,7 @@ var AdminShell = {
   		<section class="  pt3-ns   ph5-ns black-80  bg-light-gray-custom1" >
   		  <div class={"pa2 pv3-ns  w-100  z-5  "+(vnode.state.fixNav===true?"fixed top-0 left-0  bg-light-gray-custom1 shadow-4":"relative-ns")} id="fixedNav">
     			<div class="dib relative">
-            <a href="#" class="dib dn-ns black link v-mid mr3  pa2 ba relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>☰</a>
-              <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 "+(vnode.state.showNav?"db":"dn")}>
-                <MenuComponent />
-              </div>
+            <a href="#" class="dib dn-ns black link v-mid mr3  pa2 ba relative" onclick={()=>{vnode.attrs.slideout.toggle()}} >☰</a>
 
             <div class="dib">
               <img src="/assets/img/logo_xs.png" class="h2 dib v-mid"/>

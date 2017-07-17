@@ -67,9 +67,10 @@ func MerchantLogin(c buffalo.Context) error {
 	}
 
 	cookie := &http.Cookie{
-		Name:  "X-MERCHANT-TOKEN",
-		Value: token["token"].(string),
-		Path:  "/",
+		Name:    "X-MERCHANT-TOKEN",
+		Value:   token["token"].(string),
+		Path:    "/",
+		Expires: time.Now().Add(365 * 24 * time.Hour),
 	}
 
 	http.SetCookie(c.Response(), cookie)

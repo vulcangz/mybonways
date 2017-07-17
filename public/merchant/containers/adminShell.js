@@ -2,16 +2,18 @@ import m from "mithril";
 import localforage from 'localforage';
 import {Analytics} from '../models/analytics.js';
 import {MerchantModel} from '../models/merchant.js';
-import {isEmptyObject} from '../../util/utils.js';
+import {menus} from '../models/menus.js';
+import {isEmptyObject, slideout} from '../../util/utils.js';
 
 var MenuComponent = {
   view:function(){
     return (
       <div class="">
-        <a class="dn pa2 bb b--light-gray hover-bg-light-gray link navy " href="/" oncreate={m.route.link}>Dashboard</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/promos/" oncreate={m.route.link}>Promos</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/branches" oncreate={m.route.link}>Branches</a>
-        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/reservations" oncreate={m.route.link}>Reservations</a>
+        {
+          menus.map(function(menuItem, i){
+            return <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy " href={menuItem.href} oncreate={m.route.link} key={i}>{menuItem.title}</a>
+          })
+        }
       </div>
     );
   }
@@ -55,10 +57,8 @@ var AdminShell = {
   		<section class="  pt3-ns   ph5-ns black-80  bg-light-gray-custom1 ">
   		  <div class={"pa2 pv3-ns  w-100  z-5 "+(vnode.state.fixNav===true?"fixed top-0 left-0  bg-light-gray-custom1 shadow-4":"relative-ns")} id="fixedNav">
     			<div class="dib relative">
-            <a href="#" class="dib dn-ns black link v-mid mr3  pa2 ba relative" onclick={()=>vnode.state.showNav=!vnode.state.showNav}>☰</a>
-              <div class={" right-0 buttom-0 absolute bg-white shadow-m2 pa3 br1 "+(vnode.state.showNav?"db":"dn")}>
-                <MenuComponent />
-              </div>
+            <a href="#" class="dib dn-ns black link v-mid mr3  pa2 ba relative" onclick={()=>{vnode.attrs.slideout.toggle()}
+            }>☰</a>
 
             <div class="dib">
               <img src="/assets/img/logo_xs.png" class="h2 dib v-mid"/>
@@ -98,14 +98,6 @@ var AdminShell = {
     					Promos
             </strong>
     				</div>
-    				<div class="tc dib ph3">
-    				  <span class="db f3 pa1">
-    					{Analytics.Data.UsersCount || 0}
-            </span>
-    				  <strong class="db">
-    					Views
-            </strong>
-    				</div>
     			  </div>
     			</div>
   		  </div>
@@ -117,7 +109,7 @@ var AdminShell = {
             <MenuComponent />
     			</div>
         </section><section class="dib  w-100 w-70-ns ph3-ns v-top br1 fl">
-          {m.fragment(vnode.attrs,[vnode.children])}
+          {m.fragment(vnode.attrs,vnode.children)}
     		  </section>
   		</section>
 

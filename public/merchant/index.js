@@ -27,8 +27,10 @@ m.route(root, '/promos', {
   '/promos/new': {
       view: function(vnode) {
           return m(MerchantAuth,vnode.attrs,
-            m(AdminShell, vnode.attrs,
-              m(NewPromo, vnode.attrs)
+            m(OffCanvasMenu,vnode.attrs,
+              m(AdminShell, vnode.attrs,
+                m(NewPromo, vnode.attrs)
+              )
             )
           )
       }
@@ -36,8 +38,10 @@ m.route(root, '/promos', {
   '/promos/view/:slug': {
       view: function(vnode) {
           return m(MerchantAuth,vnode.attrs,
-            m(AdminShell, vnode.attrs,
-              m(ViewPromo, vnode.attrs)
+            m(OffCanvasMenu,vnode.attrs,
+              m(AdminShell, vnode.attrs,
+                m(ViewPromo, vnode.attrs)
+              )
             )
           )
       }
@@ -45,8 +49,10 @@ m.route(root, '/promos', {
   '/promos/edit/:slug': {
       view: function(vnode) {
           return m(MerchantAuth,vnode.attrs,
-            m(AdminShell, vnode.attrs,
-              m(EditPromo, vnode.attrs)
+            m(OffCanvasMenu,vnode.attrs,
+              m(AdminShell, vnode.attrs,
+                m(EditPromo, vnode.attrs)
+              )
             )
           )
       }
@@ -54,8 +60,10 @@ m.route(root, '/promos', {
   '/promos': {
       view: function(vnode) {
           return m(MerchantAuth,vnode.attrs,
-            m(AdminShell, vnode.attrs,
-              m(PromosTable, vnode.attrs)
+            m(OffCanvasMenu,vnode.attrs,
+              m(AdminShell, vnode.attrs,
+                m(PromosTable, vnode.attrs)
+              )
             )
           )
       }
@@ -63,37 +71,45 @@ m.route(root, '/promos', {
   '/branches': {
     view: function(vnode) {
       return m(MerchantAuth,vnode.attrs,
+        m(OffCanvasMenu,vnode.attrs,
             m(AdminShell, vnode.attrs,
               m(Branches, vnode.attrs)
             )
           )
+        )
     }
   },
   '/branches/new': {
     view: function(vnode) {
       return m(MerchantAuth,vnode.attrs,
+        m(OffCanvasMenu,vnode.attrs,
             m(AdminShell, vnode.attrs,
               m(NewBranch, vnode.attrs)
             )
           )
+        )
     }
   },
   '/branches/edit/:id': {
     view: function(vnode) {
       return m(MerchantAuth,vnode.attrs,
+        m(OffCanvasMenu,vnode.attrs,
             m(AdminShell, vnode.attrs,
               m(EditBranch, vnode.attrs)
             )
           )
+        )
     }
   },
   '/reservations': {
     view: function(vnode) {
       return m(MerchantAuth,vnode.attrs,
+        m(OffCanvasMenu,vnode.attrs,
             m(AdminShell, vnode.attrs,
               m(Reservations, vnode.attrs)
             )
           )
+        )
     }
   }
 });

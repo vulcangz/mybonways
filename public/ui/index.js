@@ -1,5 +1,6 @@
 import m from 'mithril';
 
+import UIShell from './containers/uiShell.js';
 import HotPromosPage from './containers/hotPromosPage.js';
 import PromoDetailPage from './containers/promoDetailPage.js';
 import OffCanvasMenu from './components/offCanvasMenu.js';
@@ -21,40 +22,42 @@ m.route(root, '/', {
   '/':{
     view: function(vnode){
       return m(OffCanvasMenu,vnode.attrs,
-          m(HotPromosPage,vnode.attrs, m(searchNav, vnode.attrs))
+        m(UIShell, vnode.attrs, m(HotPromosPage, vnode.attrs))
         );
       },
   },
   '/promo/:slug':{
     view: function(vnode){
       return m(OffCanvasMenu,vnode.attrs,
-          m(PromoDetailPage,vnode.attrs, m(searchNav, vnode.attrs))
+          m(UIShell, vnode.attrs, m(PromoDetailPage, vnode.attrs))
         );
       },
   },
   '/search': {
     view: function(vnode) {
-      return m(SearchArea, vnode.attrs, m(searchNav, vnode.attrs))
+      return  m(OffCanvasMenu,vnode.attrs,
+        m(UIShell, vnode.attrs, m(SearchArea, vnode.attrs))
+      )
     }
   },
   '/map': {
     view: function(vnode){
       return m(OffCanvasMenu,vnode.attrs,
-          m(MapPromos, vnode.attrs, m(searchNav, vnode.attrs))
+            m(UIShell, vnode.attrs, m(MapPromos, vnode.attrs))
         );
       },
   },
   '/2in1': {
     view: (vnode) => {
       return m(OffCanvasMenu,vnode.attrs,
-          m(DoublePromos,vnode.attrs, m(searchNav, vnode.attrs))
+            m(UIShell, vnode.attrs, m(DoublePromos, vnode.attrs))
         );
       },
   },
   '/merchant/:id': {
     view: (vnode) => {
       return m(OffCanvasMenu,vnode.attrs,
-          m(MerchantPromos, vnode.attrs, m(searchNav, vnode.attrs))
+            m(UIShell, vnode.attrs, m(MerchantPromos, vnode.attrs))
         );
       },
   },
@@ -62,14 +65,20 @@ m.route(root, '/', {
     view: (vnode) => {
       return m(UserAuth, vnode.attrs,
       m(OffCanvasMenu,vnode.attrs,
-      m(Dashboard, vnode.attrs, m(searchNav, vnode.attrs))))
+      m(UIShell, vnode.attrs,
+        m(Dashboard, vnode.attrs)
+      )))
     }
   },
   '/dashboard/favourites': {
     view: (vnode) => {
       return m(UserAuth, vnode.attrs,
       m(OffCanvasMenu,vnode.attrs,
-      m(Favourites, vnode.attrs, m(searchNav, vnode.attrs))))
+        m(UIShell, vnode.attrs,
+          m(Favourites, vnode.attrs)
+        )
+      )
+    )
     }
   },
   '/signup': {

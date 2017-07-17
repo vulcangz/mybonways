@@ -9,4 +9,5 @@ node_modules/
 *-packr.go
 #mybonways
 public/assets/js/*-bundle.js
+public/assets/js/index-bundle.js
 npm-debug.log*

@@ -56,20 +56,11 @@ var _ = grift.Add("db:seed:admin", func(c *grift.Context) error {
 })
 
 var _ = grift.Add("db:seed:locations", func(c *grift.Context) error {
-	// countries := []string{"Cameroon", "Nigeria"}
-	// cities := []string{"Garoua", "Yaounde", "Douala", "Abuja", "Calabar", "Benin"}
 	db := models.DB
 	if tx := c.Value("tx"); tx != nil {
 		log.Println("tx not nil")
 		db = tx.(*pop.Connection)
 	}
-	// locations := []models.Location{}
-	// for _, l := range locations {
-	// 	err := db.Create(&l)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// }
 	err := db.RawQuery("DELETE FROM locations").Exec()
 	if err != nil {
 		return err
@@ -78,6 +69,8 @@ var _ = grift.Add("db:seed:locations", func(c *grift.Context) error {
 		{Country: "Nigeria", City: "Calabar", Neighbourhood: "Marian"},
 		{Country: "Nigeria", City: "Benin", Neighbourhood: "Ulegu"},
 		{Country: "Nigeria", City: "Abuja", Neighbourhood: "Jabi"},
+		{Country: "Nigeria", City: "Abuja", Neighbourhood: "Kubwa"},
+		{Country: "Nigeria", City: "Abuja", Neighbourhood: "Asokoro"},
 		{Country: "Cameroon", City: "Douala", Neighbourhood: "Deido"},
 		{Country: "Cameroon", City: "Yaounde", Neighbourhood: "Mfou"},
 		{Country: "Cameroon", City: "Garoua", Neighbourhood: "Lagdo"},
@@ -176,29 +169,25 @@ var _ = grift.Add("db:seed:merchants", func(c *grift.Context) error {
 
 // branches, locations, merchants, and promos...
 var _ = grift.Add("db:seed:branches", func(c *grift.Context) error {
-	branches := make([]models.Branch, 5)
+	branches := make([]models.Branch, 10)
 	// Add DB seeding stuff here
-	branches[0] = models.Branch{CompanyID: "mybonways", Address: "Ulegu Benin", Neighbourhood: "Ulegu", City: "Benin", Country: "Nigeria",
-		Latitude:  6.264387,
-		Longitude: 5.716624,
-	}
-	branches[1] = models.Branch{Title: "-", CompanyID: "past3", Address: "Marian Calabar", Neighbourhood: "Marian", City: "Calabar", Country: "Nigeria",
-		Latitude:  4.972580,
-		Longitude: 8.339740,
-	}
-	branches[2] = models.Branch{Title: "-", CompanyID: "crunchies", Address: "Jabi Abuja", Neighbourhood: "Jabi", City: "Abuja", Country: "Nigeria",
-		Latitude:  9.076139,
-		Longitude: 7.399947,
-	}
-	branches[3] = models.Branch{Title: "-", CompanyID: "mybonways", Address: "Deido Douala", Neighbourhood: "Deido", City: "Douala", Country: "Cameroon",
-		Latitude:  4.063046,
-		Longitude: 9.712326,
-	}
-	branches[4] = models.Branch{Title: "-", CompanyID: "prometal", Address: "Prometal Douala", Neighbourhood: "Prometal", City: "Douala", Country: "Cameroon",
-		Latitude:  4.027673,
-		Longitude: 9.743304,
-	}
-	// 9.076139, 7.399947
+	branches[0] = models.Branch{Title: "Mybonways Benin branch", CompanyID: "mybonways", Address: "Ulegu Benin",
+		Neighbourhood: "Ulegu", City: "Benin", Country: "Nigeria", Latitude: 6.264387, Longitude: 5.716624}
+	branches[1] = models.Branch{Title: "Past3 Calabar branch", CompanyID: "past3", Address: "Marian Calabar",
+		Neighbourhood: "Marian", City: "Calabar", Country: "Nigeria", Latitude: 4.972580, Longitude: 8.339740}
+	branches[2] = models.Branch{Title: "Crunchies Abuja branch", CompanyID: "crunchies", Address: "Jabi Abuja",
+		Neighbourhood: "Jabi", City: "Abuja", Country: "Nigeria", Latitude: 9.076139, Longitude: 7.399947}
+	branches[3] = models.Branch{Title: "Mybonways Douala branch", CompanyID: "mybonways", Address: "Deido Douala",
+		Neighbourhood: "Deido", City: "Douala", Country: "Cameroon", Latitude: 4.063046, Longitude: 9.712326}
+	branches[4] = models.Branch{Title: "Mybonways abuja branch", CompanyID: "mybonways", Address: "Kubwa Abuja",
+		Neighbourhood: "Kubwa", City: "Abuja", Country: "Nigeria", Latitude: 9.151287, Longitude: 7.333245}
+	branches[5] = models.Branch{Title: "Prometal Douala branch", CompanyID: "prometal", Address: "Prometal Douala",
+		Neighbourhood: "Prometal", City: "Douala", Country: "Cameroon", Latitude: 4.027673, Longitude: 9.743304}
+	branches[6] = models.Branch{Title: "Prometal Abuja branch", CompanyID: "prometal", Address: "Asokoro Abuja",
+		Neighbourhood: "Asokoro", City: "Abuja", Country: "Nigeria", Latitude: 9.044077, Longitude: 7.520171}
+	branches[7] = models.Branch{Title: "Mybonways Bonaberi branch", CompanyID: "mybonways", Address: "Bonaberi Douala",
+		Neighbourhood: "Bonaberi", City: "Douala", Country: "Cameroon", Latitude: 4.085677, Longitude: 9.649905}
+	// 4.085677, 9.649905
 	db := models.DB
 	if tx := c.Value("tx"); tx != nil {
 		log.Println("tx not nil")

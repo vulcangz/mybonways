@@ -11,10 +11,10 @@ export var search = {
             method: "GET",
             url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&p=1`
         }).then(function(response) {
-            response.map((r) => {
-                console.log(r.longitude + " LNG : LNG " + r.latitude);
-            })
-            console.log("response : ", response);
+            // response.map((r) => {
+            //     console.log(r.longitude + " LNG : LNG " + r.latitude);
+            // })
+            // console.log("response : ", response);
             if(response.length){
                 search.mysearch = response;
             } else {

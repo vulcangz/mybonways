@@ -1,6 +1,7 @@
 var webpack = require("webpack");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+// var UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const BabiliPlugin = require("babili-webpack-plugin");
 // let commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common-chunks');
 
@@ -20,6 +21,11 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin("css/common.css"),
     new BabiliPlugin(),
+    // new UglifyJsPlugin({
+      //    exclude: [
+      //      'js/merchant-bundle.js'
+      //    ],
+      //  }),
     // commonsPlugin
     // new BundleAnalyzerPlugin(),
   ],

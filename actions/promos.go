@@ -16,7 +16,7 @@ import (
 	"github.com/tonyalaribe/mybonways/models"
 )
 
-const perPage = 6
+const perPage = 8
 
 // PromoResource allows CRUD with HTTP against the Promo model
 type PromoResource struct {

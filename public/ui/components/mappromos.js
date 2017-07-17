@@ -1,123 +1,159 @@
-import m from 'mithril';
-import {search} from '../models/search.js';
+import m from "mithril";
+import { search } from "../models/search.js";
 
 var MapPromos = {
-  onbeforeremove: (vnode) => {
-    vnode.dom.classList.add("fadeOut")
-    return new Promise(function (resolve) { setTimeout(resolve, 1000) })
-  },
-  oncreate: (vnode) => {
-    vnode.dom.classList.add("fadeIn");
-    MapPromos.getLocation();
-  },
-  getLocation: () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(MapPromos.showPosition, (error) =>{ console.log("Error Occured getting the position: ", error); },
-      {enableHighAccuracy: true});
-    } else {
-      //x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-  },
-  Locations: [],
-  showPosition: (position) => {
-    MapPromos.Position = position;
-    // The nearby locations of all available branches...
-    console.log("POSITION: ", position);
-    // TODO:: ANOTHER SEARCH QUERY FOR MAPS
-    search.searchFor("*", position.coords.latitude, position.coords.longitude).then(()=>{
-      MapPromos.Locations = search.mysearch.map((promo)=>{
-        return {lng: promo.longitude, lat: promo.latitude, id: promo.company_id}
-      })
-      // ommit duplicate
-      search.mysearch.forEach((promo) => {
-        for (var i = 0; i < MapPromos.Promos.length; i++) {
-          if (MapPromos.Promos[i].slug == promo.slug) { return }
-        }
-        MapPromos.Promos.push(promo)
-      })
+	onbeforeremove: vnode => {
+		vnode.dom.classList.add("fadeOut");
+		return new Promise(function(resolve) {
+			setTimeout(resolve, 1000);
+		});
+	},
+	oncreate: vnode => {
+		vnode.dom.classList.add("fadeIn");
+		MapPromos.getLocation();
+	},
+	getLocation: () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(
+				MapPromos.showPosition,
+				error => {
+					console.log("Error Occured getting the position: ", error);
+				},
+				{ enableHighAccuracy: true }
+			);
+		} else {
+			//x.innerHTML = "Geolocation is not supported by this browser.";
+		}
+	},
+	Locations: [],
+	showPosition: position => {
+		MapPromos.Position = position;
+		// The nearby locations of all available branches...
+		console.log("POSITION: ", position);
+		// TODO:: ANOTHER SEARCH QUERY FOR MAPS
+		search
+			.searchFor("*", position.coords.latitude, position.coords.longitude)
+			.then(() => {
+				MapPromos.Locations = search.mysearch.map(promo => {
+					return {
+						lng: promo.longitude,
+						lat: promo.latitude,
+						id: promo.company_id
+					};
+				});
+				// ommit duplicate
+				search.mysearch.forEach(promo => {
+					for (var i = 0; i < MapPromos.Promos.length; i++) {
+						if (MapPromos.Promos[i].slug == promo.slug) {
+							return;
+						}
+					}
+					MapPromos.Promos.push(promo);
+				});
 
-      m.redraw();
-      MapPromos.DrawMap(position);
-    }).catch((error) => {
-      MapPromos.NoPromos = "No promos found around this location."
-      console.log("error no promos found...");
+				m.redraw();
+				MapPromos.DrawMap(position);
+			})
+			.catch(error => {
+				MapPromos.NoPromos = "No promos found around this location.";
+				console.log("error no promos found...");
 
-      MapPromos.DrawMap(position);
-    })
-  },
-  DrawMap: (position) => {
-    var mylocation = { lat: position.coords.latitude, lng: position.coords.longitude };
-    console.log("mylocation::=> ", mylocation);
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: mylocation
-    });
+				MapPromos.DrawMap(position);
+			});
+	},
+	DrawMap: position => {
+		var mylocation = {
+			lat: position.coords.latitude,
+			lng: position.coords.longitude
+		};
+		console.log("mylocation::=> ", mylocation);
+		var map = new google.maps.Map(document.getElementById("map"), {
+			zoom: 10,
+			center: mylocation
+		});
 
-    // get all locations near this user...
+		// get all locations near this user...
 
-    // Create an array of alphabetical characters used to label the markers.
-    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    // Add some markers to the map.
-    // Note: The code uses the JavaScript Array.prototype.map() method to
-    // create an array of markers based on a given "locations" array.
-    // The map() method here has nothing to do with the Google Maps API.
-    var markers = MapPromos.Locations.map(function (location, i) {
-      return new google.maps.Marker({
-        position: location,
-        label: labels[i % labels.length],
-        title: location.id,
-        map: map,
-        infoWindow: new google.maps.InfoWindow({
-          content: '<div id="content">'+
-          '<h1 id="firstHeading" class="firstHeading"><a href="#!'+/*/merchant/' + location.id + '*/'">'+ location.id +'</a> Promos</h1>'+
-            '<div id="bodyContent">'+
-            MapPromos.Promos.map((promo) => {
-              if (location.id !== promo.company_id) { return }
-              return "<div class='dib bg-red-custom w4 h4 pa2 white ma1'>"+
-              "<a href='/promos/" + promo.slug + "'>"+
-                "<p class='mv0 pb1'>"+ promo.item_name + "</p>"+
-                "<img class='w-100' src='" + promo.featured_image + "'/>"+
-              "</a></div>"
-            })
-            .join("")+
-            '</div>'+
-          '</div>',
-          maxWidth: 350
-        })
-      });
-    });
-    // var infowindow = new google.maps.InfoWindow({
-    //       content: contentString
-    //     });
-    // [].
-    markers.forEach((marker) => {
-      marker.addListener('click', () => {
-        marker.infoWindow.open(map, marker)
-        console.log("Marker clicked: ", marker.title);
-        // m.route.set("/merchant/" + marker.title)
-      })
-    })
-    // ADD THE USERS LOCATION TO THE MARKERS...
-    markers.push(new google.maps.Marker({
-        position: mylocation,
-        label: "Me",
-        map: map,
-		title: "My Location"
-      }))
+		// Create an array of alphabetical characters used to label the markers.
+		var labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		// Add some markers to the map.
+		// Note: The code uses the JavaScript Array.prototype.map() method to
+		// create an array of markers based on a given "locations" array.
+		// The map() method here has nothing to do with the Google Maps API.
+		var markers = MapPromos.Locations.map(function(location, i) {
+			return new google.maps.Marker({
+				position: location,
+				label: labels[i % labels.length],
+				title: location.id,
+				map: map,
+				infoWindow: new google.maps.InfoWindow({
+					content:
+						'<div id="content">' +
+						'<h1 id="firstHeading" class="firstHeading"><a href="#!' +
+						/*/merchant/' + location.id + '*/ '">' +
+						location.id +
+						"</a> Promos</h1>" +
+						'<div id="bodyContent">' +
+						MapPromos.Promos
+							.map(promo => {
+								if (location.id !== promo.company_id) {
+									return;
+								}
+								return (
+									"<div class='dib bg-red-custom w4 h4 pa2 white ma1'>" +
+									"<a href='/promos/" +
+									promo.slug +
+									"'>" +
+									"<p class='mv0 pb1'>" +
+									promo.item_name +
+									"</p>" +
+									"<img class='w-100' src='" +
+									promo.featured_image +
+									"'/>" +
+									"</a></div>"
+								);
+							})
+							.join("") +
+						"</div>" +
+						"</div>",
+					maxWidth: 350
+				})
+			});
+		});
+		// var infowindow = new google.maps.InfoWindow({
+		//       content: contentString
+		//     });
+		// [].
+		markers.forEach(marker => {
+			marker.addListener("click", () => {
+				marker.infoWindow.open(map, marker);
+				console.log("Marker clicked: ", marker.title);
+				// m.route.set("/merchant/" + marker.title)
+			});
+		});
+		// ADD THE USERS LOCATION TO THE MARKERS...
+		markers.push(
+			new google.maps.Marker({
+				position: mylocation,
+				label: "Me",
+				map: map,
+				title: "My Location"
+			})
+		);
 
-    // Add a marker clusterer to manage the markers.
-    // var markerCluster = new MarkerClusterer(map, markers,
-    //   { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
-  },
-  Position: {},
-  NoPromos: "",
-  Promos:[],
-  view: (vnode) => {
-    return (
-      <section class="animated">
-        {m.fragment(vnode.attrs, vnode.children)}
-        <div class="cf shadow-4 pa2">
-          {/*<div class="fl w-100 w-50-ns">
+		// Add a marker clusterer to manage the markers.
+		// var markerCluster = new MarkerClusterer(map, markers,
+		//   { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+	},
+	Position: {},
+	NoPromos: "",
+	Promos: [],
+	view: vnode => {
+		return (
+			<section class="animated">
+				{m.fragment(vnode.attrs, vnode.children)}
+				<div class="cf shadow-4 pa2">
+					{/*<div class="fl w-100 w-50-ns">
             <div class="cf">
               <p class="mv0 pa2 tc white bg-red-custom">{ MapPromos.NoPromos ? MapPromos.NoPromos : "List Of all branches..."}</p>
               {MapPromos.Promos.length? MapPromos.Promos.map(function(promo, i) {
@@ -165,16 +201,18 @@ var MapPromos = {
                 }}>Load More</button>
             </div>
           </div>*/}
-          <div class="ph1">
-            <div class="shadow-4">
-              <p class="bg-red-custom tc white br--top mv0 pv2">Branches near you. (Click on marker to view details)</p>
-              <div id="map" class="vh-75 w-100 bg-gray"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
-}
+					<div class="ph1">
+						<div class="shadow-4">
+							<p class="bg-red-custom tc white br--top mv0 pv2">
+								Branches near you. (Click on marker to view details)
+							</p>
+							<div id="map" class="vh-75 w-100 bg-gray" />
+						</div>
+					</div>
+				</div>
+			</section>
+		);
+	}
+};
 
 export default MapPromos;

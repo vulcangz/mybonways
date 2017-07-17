@@ -260,8 +260,8 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 				ItemName:         v,
 				CompanyID:        id,
 				Category:         cat[i],
-				OldPrice:         i * 1000,
-				NewPrice:         (i * 1000) / 2,
+				OldPrice:         (i + 1) * 1000,
+				NewPrice:         ((i + 1) * 1000) / 2,
 				StartDate:        time.Now(),
 				EndDate:          time.Now().Local().Add(time.Hour * time.Duration(24*i)),
 				Description:      "Demo Description for " + v,
@@ -390,24 +390,32 @@ var _ = grift.Add("db:seed:user", func(c *grift.Context) error {
 	if err != nil {
 		return err
 	}
-	user := models.User{
-		Approved: true,
-		FullName: "Michael Akpan",
-		Email:    "mike@gmail.com",
-		Password: "password",
-		Image:    "",
-		Provider: "email",
+	users := []models.User{
+		{Approved: true,
+			FullName: "My Bonways",
+			Email:    "hello@mybonways.com",
+			Password: "password",
+			Image:    "",
+			Provider: "email"},
+		{Approved: true,
+			FullName: "John Doe",
+			Email:    "john@doe.com",
+			Password: "password",
+			Image:    "",
+			Provider: "email"},
 	}
-	user.UserPassword, err = bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil {
-		log.Println("bcrypt error: ", err)
-		return err
-	}
-	user.Password = ""
-	err = db.Create(&user)
-	if err != nil {
-		log.Println("create error: ", err)
-		return err
+	for _, user := range users {
+		user.UserPassword, err = bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+		if err != nil {
+			log.Println("bcrypt error: ", err)
+			return err
+		}
+		user.Password = ""
+		err = db.Create(&user)
+		if err != nil {
+			log.Println("create error: ", err)
+			return err
+		}
 	}
 	return err
 })

@@ -114,7 +114,6 @@ var searchNav = {
 			console.error(error);
 		});
 
-
 		let input = document.getElementById("areaInput");
 		var autocomplete = new google.maps.places.Autocomplete(input, {
 			types: ["geocode"],
@@ -143,7 +142,7 @@ var searchNav = {
 	},
 	// Loggedin: false,
 	view: vnode => {
-					console.log(UserModel)
+		console.log(UserModel);
 		return (
 			<section>
 				<section class="pb1 dn-ns">

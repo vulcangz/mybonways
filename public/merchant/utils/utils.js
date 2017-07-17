@@ -1,2 +1,2 @@
- var slideout = {};
+var slideout = {};
 export default slideout;

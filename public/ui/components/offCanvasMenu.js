@@ -43,6 +43,9 @@ var OffCanvasMenu = {
 												class="db pv2 ph2 bt link white-90"
 												oncreate={m.route.link}
 												href="/"
+												onclick={() => {
+													vnode.attrs.slideout.close();
+												}}
 											>
 												Home
 											</a>
@@ -50,12 +53,16 @@ var OffCanvasMenu = {
 												class="db pv2 ph2 bt link"
 												oncreate={m.route.link}
 												href="/dashboard"
+												onclick={() => {
+													vnode.attrs.slideout.close();
+												}}
 											>
 												Dashboard
 											</a>
 											<a
 												class="db pv2 ph2 bt link pointer"
 												onclick={() => {
+													vnode.attrs.slideout.close();
 													UserModel.Logout();
 												}}
 											>

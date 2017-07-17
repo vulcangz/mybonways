@@ -16,7 +16,7 @@ var Dashboard = {
 					<Profile />
 				</div>
 				<section class="ph2 ph5-ns pv3 pb4 cf">
-					<div class="dib w-100 w-50-ns fl shadow-4">
+					<div class="dib w-100 w-50-ns fl shadow-4 pv2">
 						<div class="pa2 cf">
 							<h2 class="red-custom tc fw4 ">Reserved Promos.</h2>
 							{/*Reserved promos goes here.*/}
@@ -44,7 +44,7 @@ var Dashboard = {
 														<div class="dib w-100 w-50-ns fl">
 															<strong>Merchant: </strong>
 															<span class="">
-																{reservation.code}
+																{reservation.cid}
 															</span>
 														</div>
 													</p>
@@ -54,6 +54,7 @@ var Dashboard = {
 									})
 								: <p class="tc">You have made no Reservations yet.</p>}
 						</div>
+						{UserModel.Reservations.length?
 						<div class="tc pv3">
 							<button
 								class="ba b--red-custom bg-transparent pv2 ph3"
@@ -65,7 +66,7 @@ var Dashboard = {
 							>
 								Load More
 							</button>
-						</div>
+						</div>:""}
 					</div>
 				</section>
 			</section>

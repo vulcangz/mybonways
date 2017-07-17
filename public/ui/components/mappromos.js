@@ -2,47 +2,56 @@ import m from "mithril";
 import { search } from "../models/search.js";
 
 var MapPromos = {
-  onbeforeremove: (vnode) => {
-    vnode.dom.classList.add("fadeOut")
-    return new Promise(function (resolve) { setTimeout(resolve, 1000) })
-  },
-  oncreate: (vnode) => {
-    vnode.dom.classList.add("fadeIn");
-    MapPromos.getLocation();
-  },
-  getLocation: () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(MapPromos.showPosition,
-      (error) => {
-        console.log("Error Occured getting the position: ", error);
-      }, {enableHighAccuracy: true});
-    } else {
-      //x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-  },
-  Locations: [],
-  showPosition: (position) => {
-    MapPromos.Position = position;
-    // The nearby locations of all available branches...
-    console.log("MY POSITION: ", position);
-    // TODO:: ANOTHER SEARCH QUERY FOR MAPS
-    search.searchFor("*", position.coords.latitude, position.coords.longitude).then(()=>{
-      // Omit duplicate branches.
-      search.mysearch.map(promo =>{
-        for (var j = 0; j < MapPromos.Locations.length; j++) {
-          if (MapPromos.Locations[j].lng == promo.longitude && MapPromos.Locations[j].lat == promo.latitude){
-            return
+	onbeforeremove: vnode => {
+		vnode.dom.classList.add("fadeOut");
+		return new Promise(function(resolve) {
+			setTimeout(resolve, 1000);
+		});
+	},
+	oncreate: vnode => {
+		vnode.dom.classList.add("fadeIn");
+		MapPromos.getLocation();
+	},
+	getLocation: () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(
+				MapPromos.showPosition,
+				error => {
+					console.log("Error Occured getting the position: ", error);
+				},
+				{ enableHighAccuracy: true }
+			);
+		} else {
+			//x.innerHTML = "Geolocation is not supported by this browser.";
+		}
+	},
+	Locations: [],
+	showPosition: position => {
+		MapPromos.Position = position;
+		// The nearby locations of all available branches...
+		console.log("POSITION: ", position);
+		// TODO:: ANOTHER SEARCH QUERY FOR MAPS
+		search
+			.searchFor("*", position.coords.latitude, position.coords.longitude)
+			.then(() => {
+				// Omit duplicate branches.
+        search.mysearch.map((promo)=>{
+          for (var j = 0; j < MapPromos.Locations.length; j++) {
+            if (MapPromos.Locations[j].lng == promo.longitude && MapPromos.Locations[j].lat == promo.latitude){
+              return
+            }
           }
-        }
-        MapPromos.Locations.push({lng: promo.longitude, lat: promo.latitude, id: promo.company_id})
-      })
-      // Omit duplicate Promos.
-      search.mysearch.forEach(promo => {
-        for (var i = 0; i < MapPromos.Promos.length; i++) {
-          if (MapPromos.Promos[i].slug == promo.slug) { return }
-        }
-        MapPromos.Promos.push(promo)
-      })
+          MapPromos.Locations.push({lng: promo.longitude, lat: promo.latitude, id: promo.company_id})
+          });
+				// ommit duplicate
+				search.mysearch.forEach(promo => {
+					for (var i = 0; i < MapPromos.Promos.length; i++) {
+						if (MapPromos.Promos[i].slug == promo.slug) {
+							return;
+						}
+					}
+					MapPromos.Promos.push(promo);
+				});
 
 				m.redraw();
 				MapPromos.DrawMap(position);
@@ -61,7 +70,7 @@ var MapPromos = {
 		};
 		console.log("mylocation::=> ", mylocation);
 		var map = new google.maps.Map(document.getElementById("map"), {
-			zoom: 10,
+			zoom: 8,
 			center: mylocation
 		});
 

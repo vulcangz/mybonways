@@ -47,7 +47,7 @@ var modal = new tingle.modal({
 		// here's goes some logic
 		// e.g. save content before closing the modal
 		return true; // close the modal
-		return false; // nothing happens
+		// return false; // nothing happens
 	}
 });
 modal.setContent(`
@@ -113,7 +113,7 @@ var searchNav = {
 		UserModel.GetUserfromStorage().then(() => {}).catch(error => {
 			console.error(error);
 		});
-
+		// vnode.attrs.slideout.close();
 		let input = document.getElementById("areaInput");
 		var autocomplete = new google.maps.places.Autocomplete(input, {
 			types: ["geocode"],
@@ -150,7 +150,7 @@ var searchNav = {
 						<div class="flex pa1 pr3">
 							<a
 								class="red-custom f3 pointer"
-								onclick={() => vnode.attrs.slideout.toggle()}
+								onclick={() => vnode.attrs.slideout.toggle() }
 							>
 								☰
 							</a>

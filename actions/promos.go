@@ -300,3 +300,24 @@ func (v *PromoResource) GetPromoBySlug(c buffalo.Context) error {
 
 	return c.Render(200, r.JSON(merchantPromo))
 }
+
+func (v *PromoResource) GetMerchantPromos(c buffalo.Context) error {
+	log.Println("in list ")
+	m := models.MerchantPromos{}
+
+	tx := c.Value("tx").(*pop.Connection)
+	companyID := c.Param("company_id")
+
+	log.Printf(" before query %#v", companyID)
+
+	query := pop.Q(tx)
+	query = tx.Where("company_id = ?", companyID)
+
+	err := query.All(&m)
+	if err != nil {
+		log.Println("promo_resource error: ", err)
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+	log.Println("after query")
+	return c.Render(200, render.JSON(m))
+}

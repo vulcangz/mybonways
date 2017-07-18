@@ -4,6 +4,7 @@ import { UserModel } from "./user.js";
 export var Promos = {
 	FeaturedPromos: [],
 	PromoBranches: [],
+	MerchantPromos: [],
 	Promo: { promo_images: "", reservation: {} },
 	PromoMerchant: {},
 	Page: 1,
@@ -79,6 +80,21 @@ export var Promos = {
 			})
 			.catch(error => {
 				console.error("Promos merchant error: ", error);
+			});
+	},
+	GetMerchantPromos: company_id => {
+		console.log("comapny id ::: ", company_id);
+		return m
+			.request({
+				method: "GET",
+				url: "/api/promos/" + company_id
+			})
+			.then(response => {
+				console.log("Merchant Promos response: ", response);
+				Promos.MerchantPromos = response;
+			})
+			.catch(error => {
+				console.error("Merchant Promos error: ", error);
 			});
 	},
 	GetBranches: () => {

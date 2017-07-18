@@ -91,8 +91,7 @@ var MapPromos = {
 				infoWindow: new google.maps.InfoWindow({
 					content:
 						'<div id="content">' +
-						'<h1 id="firstHeading" class="firstHeading"><a href="#!' +
-						/*/merchant/' + location.id + '*/ '">' +
+						'<h1 id="firstHeading" class="firstHeading"><a href="/merchant/' + location.id + '">' +
 						location.id +
 						"</a> Promos</h1>" +
 						'<div id="bodyContent">' +

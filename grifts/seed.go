@@ -102,7 +102,7 @@ var _ = grift.Add("db:seed:promos", func(c *grift.Context) error {
 				PromoImages:      fileString[i],
 				FeaturedImage:    fileString[i],
 				FeaturedImageB64: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAFoAkQMBIgACEQEDEQH/xAAZAAACAwEAAAAAAAAAAAAAAAACBAABAwX/xAAhEAACAgEFAQEBAQAAAAAAAAAAAQIDYQQREhMhMVFBFP/EABcBAAMBAAAAAAAAAAAAAAAAAAABAgP/xAAYEQEBAQEBAAAAAAAAAAAAAAAAARECEv/aAAwDAQACEQMRAD8A6mno+eHQpowTT1D9VZsyZ104N40r8N4QNYwGC6pL6sDSii+ADCnUR1YG+BXEBhR1YKdWBviC4gWFerBXUNOJXEaSjqBdXnwbcQeIyKSqwYzpH3EznACcuykSuowdmyApdX58ENcjpX4Qf68EDDdOiHiHq4+CtCHYITRpCJrFAxRohmiRNgiwAGimg2CBaFoFhMFsC0LBZbYLY02oUTcorEWqYEkGwZDLWFiFLo+Dsha0nAU2IGQMB6j+DlYnT/ByDJat4hoziaIY0RCbkDC1GCyNgtjxN6VIBsuTM5MeIvSNgblSYLZWJvQtybgbk3DE+htgtlblNhh6GQtabyYvaxHrHchRAPTlPwbgxGmXiHK5GbYzFmiZhFmiZUKtNy9zPkTkNFomwWwXICUisZ2rlIylIqUjKUhyItE2DuZuRXIaNabl7mXIvkB613KbA5FOQKiTYtazScha2RNXA7lmPIgjN0z8Q5XM5FFvz0drsM27oxmGpiUbQ+zJUTTfMpzFe1foLtKZUzKwzlYLyuMpXZGzpiVhnKwWldkyldkaKadhXYJu70ncMsOqwJTEVav0NWgqHOYLmK9oMribVRvOwVusBncKXXE2rjXsIJ9pCVY1pvHK7zi0jlbJjZ1Y6jIa1BzYh7spFPu/ID1GRJsCQ9RYblqMmUtRkUkzGbHqMNy1GTOWoyJSb/TNsNLD3+jJa1GTn7l7hox0VqAlqDnRYSYaMdDvyC9RkS3BfwWqkNWX5Fbb8mU2LWMm1cjfvyWJEFtVj//Z",
-				Slug:             v + "_" + RandStringBytes(6),
+				Slug:             v + "-" + RandStringBytes(6),
 			}
 			if i == j {
 				slides = append(slides, promo)
@@ -164,7 +164,7 @@ var _ = grift.Add("db:seed:categories", func(c *grift.Context) error {
 	for _, c := range cat {
 		category = models.Category{
 			Name: c,
-			Slug: slug.Make(c) + "_" + RandStringBytes(5),
+			Slug: slug.Make(c) + "-" + RandStringBytes(5),
 		}
 		err = db.Create(&category)
 		if err != nil {

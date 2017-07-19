@@ -149,10 +149,10 @@ var HotPromosPage = {
 													</div>
 													<div class="dib w-50 fl">
 														<strong class="dark-gray db">
-															{promo.new_price}CFA
+															{promo.new_price}F CFA
 														</strong>
 														<span class="strike db">
-															{promo.old_price}CFA
+															{promo.old_price}F CFA
 														</span>
 													</div>
 												</div>

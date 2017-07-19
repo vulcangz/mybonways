@@ -41,6 +41,11 @@ var EditPromo = {
 		}
 	},
 	oncreate: vnode => {
+		Promos.GetCategories().then(() => {
+			console.log("correct categories");
+		}).catch(() => {
+			console.log("Error getting categories");
+		})
 		Promos.GetPromo(vnode.attrs.slug).then(() => {
 			console.log("current promo: ", Promos.CurrentPromo);
 			const datePickerBeginInput = document.getElementById("beginDate");
@@ -128,7 +133,31 @@ var EditPromo = {
 								</p>
 								<p class="pa2 bt b--gray cf">
 									Category:{" "}
-									<input
+									<select
+										class="pa2 ba b--gray ml2 fr"
+										onchange={m.withAttr("value", function(value) {
+											EditPromo.state.updatebutton = false;
+											Promos.CurrentPromo.category = val;
+										})} >
+										<option disabled>
+											-- Select Category --
+										</option>
+										{Promos.Categories? Promos.Categories.map(function(category, i) {
+											if (Promos.CurrentPromo.category == category.name){
+												return (
+												<option value={category.name} key={i} selected>
+													{category.name}
+												</option>
+											)
+											}
+											return (
+												<option value={category.name} key={i}>
+													{category.name}
+												</option>
+											);
+										}):""}
+									</select>
+									{/*<input
 										type="text"
 										class="pa2 ba b--gray ml2 fr"
 										value={Promos.CurrentPromo.category}
@@ -136,7 +165,7 @@ var EditPromo = {
 											EditPromo.state.updatebutton = false;
 											Promos.CurrentPromo.category = val;
 										})}
-									/>
+									/>*/}
 								</p>
 								<p class="pa2 bt b--gray cf">
 									New Price:{" "}

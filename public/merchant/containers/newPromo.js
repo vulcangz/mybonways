@@ -176,7 +176,7 @@ var NewPromo = {
 							</option>
 							{Promos.Categories.map(function(category, i) {
 								return (
-									<option value={category.slug} key={i}>
+									<option value={category.name} key={i}>
 										{category.name}
 									</option>
 								);

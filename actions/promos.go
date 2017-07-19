@@ -204,7 +204,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		queryString = `SELECT created_at, updated_at, company_id, item_name, category, old_price, new_price,
 			start_date, end_date, description, promo_images, featured_image, featured_image_b64,
 			slug, neighbourhood, city, country, longitude, latitude FROM merchant_promos x
-				RIGHT OUTER JOIN (
+				LEFT OUTER JOIN (
 					SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 					FROM branches
 					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 700 * 1609.34
@@ -217,7 +217,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
 		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
-			RIGHT OUTER JOIN (
+			LEFT OUTER JOIN (
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches
 				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 100 * 1609.34

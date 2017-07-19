@@ -204,8 +204,9 @@ var MapPromos = {
           </div>*/}
 					<div class="ph1">
 						<div class="shadow-4">
-							<p class="bg-red-custom tc white br--top mv0 pv2">
-								Branches near you. (Click on marker to view details)
+							<p class="bg-red-custom tc white br--top mv0 pv1 f8">
+								Branches near you. <br/>
+								<small>(Click on marker to view details)</small>
 							</p>
 							<div id="map" class="vh-75 w-100 bg-gray" />
 						</div>

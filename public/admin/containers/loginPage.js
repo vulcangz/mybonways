@@ -145,9 +145,6 @@ var LoginPage = {
 											<button
 												class="pv3 ph4 bg-navy white-90 bw0 shadow-4 grow pointer w4"
 												onclick={function() {
-													{
-														/*console.log("login clicked");*/
-													}
 													LoginPage.ValidateLogin();
 												}}
 											>

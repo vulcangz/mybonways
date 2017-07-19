@@ -113,7 +113,7 @@ var searchNav = {
 		UserModel.GetUserfromStorage().then(() => {}).catch(error => {
 			console.error(error);
 		});
-		// vnode.attrs.slideout.close();
+		vnode.attrs.slideout.close();
 		let input = document.getElementById("areaInput");
 		var autocomplete = new google.maps.places.Autocomplete(input, {
 			types: ["geocode"],

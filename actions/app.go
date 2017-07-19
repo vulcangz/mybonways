@@ -91,6 +91,8 @@ func App() *buffalo.App {
 		app.GET("/api/promo/search", promoResource.Search)
 
 		app.GET("/api/promo/{slug}", promoResource.GetPromoBySlug)
+		app.GET("/api/promos/{company_id}", promoResource.GetMerchantPromos)
+
 		app.GET("/api/merchant/{company_id}", merchantsResource.GetByCompanyID)
 
 		merchantGroup.Resource("/branch", branchResources)

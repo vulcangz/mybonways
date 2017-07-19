@@ -11,11 +11,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <link rel="stylesheet" href="/assets/css/tachyons.min.css">
-        <link rel="stylesheet" href="/assets/css/iziToast.css">
-        <link rel="stylesheet" href="/assets/css/animate.css">
         <link rel="stylesheet" href="/assets/css/main.css">
     </head>
-    <body class="font-x border-box fw4">
+    <body class="font-x border-box fw4 flex flex-column justify-center vh-100">
+      <section>
         <div class="tc pa2">
             <div class="dib w3">
                 <img src="/assets/img/logo.png" width="100%" alt="MyBonWays" />
@@ -33,19 +32,31 @@
                 <!--<a class="no-underline br2 w4 pa2 bg-red white" href="/">CONTINUE</a>-->
             </div>
         </div>
-        <% } else { %>
         <div class="ph7-l ph5-m ph0 tc">
-            <div class="pa3 bg-red-custom">
-                <h2 class="white tc mv0">Verification Successful</h2>
+            <div class="pa3 ">
+                <h2 class="white tc mv0 red-custom">Verification Error</h2>
             </div>
             <div class="pa2 tc">
-                <p class="mv1 red f3">Thanks for registering <%= companyname %> at mybonways.com</p>
-                <p class="mv1 red f3">Your email <span class="red-custom">(<%= email %>)</span> has been successfully confirmed</p>
+                <p class="mv1  ">There was an error verifying your email: <span class="">(<%= email %>)</span></p>
             </div>
-            <div class="mv3">
-                <a class="no-underline br2 w4 pa2 bg-red white " href="/merchants">CONTINUE</a>
+            <div class="mv3  pt3">
+                <a class="no-underline br2 w4 pa2 pa3-ns bg-red-custom white " href="/merchants">BACK TO MERCHANT SIGNUP</a>
+            </div>
+        </div>
+        <% } else { %>
+        <div class="ph7-l ph5-m ph0 tc">
+            <div class="pa3 ">
+                <h2 class="white tc mv0 red-custom">Verification Successful</h2>
+            </div>
+            <div class="pa2 tc">
+                <p class="mv1  ">Thanks for registering <%= companyname %> on mybonways.com</p>
+                <p class="mv1  ">Your email <span class="">(<%= email %>)</span> has been successfully confirmed</p>
+            </div>
+            <div class="mv3  pt3">
+                <a class="no-underline br2 w4 pa2 pa3-ns bg-red-custom white " href="/merchants">CONTINUE</a>
             </div>
         </div>
         <% } %>
+      </section>
     </body>
 </html>

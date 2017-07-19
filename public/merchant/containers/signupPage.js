@@ -185,9 +185,9 @@ var SignupPage = {
 											<input
 												class="input-reset ba b--black-20 db w-100 pv3 ph3"
 												type="text"
-												placeholder="Store Name"
+												placeholder="Company Name"
 												oninput={m.withAttr("value", function(value) {
-													SignupPage.SignupMerchant.company_name = value.trim();
+													SignupPage.SignupMerchant.company_name = value;
 												})}
 												value={SignupPage.SignupMerchant.company_name}
 											/>
@@ -196,7 +196,7 @@ var SignupPage = {
 											<input
 												class="input-reset ba b--black-20 db w-100 pv3 ph3"
 												type="text"
-												placeholder="Store ID"
+												placeholder="Company ID"
 												oninput={m.withAttr("value", function(value) {
 													SignupPage.SignupMerchant.company_id = value.trim();
 												})}

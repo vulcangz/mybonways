@@ -46,7 +46,6 @@ func (v SlidesResource) List(c buffalo.Context) error {
 	}
 	// Make slides available inside the html template
 	// c.Set("slides", slides)
-	log.Println("slides: ", slides)
 	return c.Render(http.StatusOK, render.JSON(slides))
 }
 

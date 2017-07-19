@@ -137,7 +137,7 @@ var EditPromo = {
 										class="pa2 ba b--gray ml2 fr"
 										onchange={m.withAttr("value", function(value) {
 											EditPromo.state.updatebutton = false;
-											Promos.CurrentPromo.category = val;
+											Promos.CurrentPromo.category = value;
 										})} >
 										<option disabled>
 											-- Select Category --

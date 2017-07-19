@@ -35,14 +35,21 @@ var MapPromos = {
 			.searchFor("*", position.coords.latitude, position.coords.longitude)
 			.then(() => {
 				// Omit duplicate branches.
-        search.mysearch.map((promo)=>{
-          for (var j = 0; j < MapPromos.Locations.length; j++) {
-            if (MapPromos.Locations[j].lng == promo.longitude && MapPromos.Locations[j].lat == promo.latitude){
-              return
-            }
-          }
-          MapPromos.Locations.push({lng: promo.longitude, lat: promo.latitude, id: promo.company_id})
-          });
+				search.mysearch.map(promo => {
+					for (var j = 0; j < MapPromos.Locations.length; j++) {
+						if (
+							MapPromos.Locations[j].lng == promo.longitude &&
+							MapPromos.Locations[j].lat == promo.latitude
+						) {
+							return;
+						}
+					}
+					MapPromos.Locations.push({
+						lng: promo.longitude,
+						lat: promo.latitude,
+						id: promo.company_id
+					});
+				});
 				// ommit duplicate
 				search.mysearch.forEach(promo => {
 					for (var i = 0; i < MapPromos.Promos.length; i++) {
@@ -91,9 +98,11 @@ var MapPromos = {
 				infoWindow: new google.maps.InfoWindow({
 					content:
 						'<div id="content">' +
-						'<h1 id="firstHeading" class="firstHeading"><a href="/merchant/' + location.id + '">' +
+						'<strong id="firstHeading" class="firstHeading f5"><a href="/merchant/' +
 						location.id +
-						"</a> Promos</h1>" +
+						'">' +
+						location.id +
+						"</a> </strong>" +
 						'<div id="bodyContent">' +
 						MapPromos.Promos
 							.map(promo => {
@@ -101,17 +110,48 @@ var MapPromos = {
 									return;
 								}
 								return (
-									"<div class='dib bg-red-custom w4 h4 pa2 white ma1'>" +
-									"<a href='/promo/" +
-									promo.slug +
-									"'>" +
-									"<p class='mv0 pb1'>" +
-									promo.item_name +
-									"</p>" +
-									"<img class='w-100' src='" +
-									promo.featured_image +
-									"'/>" +
-									"</a></div>"
+									`
+									<a class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100 mv2" href=${ "/promo/" + promo.slug}>
+									    <div class="f8 pv1 tl pv1 ph1">
+									        <div class="dib w-50 overflow-x-hidden">
+									            <img src="/assets/img/svg/grid.svg" style="height:0.55rem;" class="di v-mid" />
+									            <span class="red-custom di pl1 v-mid">
+																						${promo.category}
+																					</span>
+									        </div>
+									        <div class="dib w-50 overflow-x-hidden">
+									            <img src="/assets/img/svg/cart.svg" style="height:0.55rem;" class="di v-mid" />
+									            <span class="red-custom di pl1 v-mid">
+																						${promo.company_id}
+																					</span>
+									        </div>
+									    </div>
+									    <div class="w-100 cover overflow-hidden">
+									        <img src=${promo.featured_image} class="w-100 br2" />
+									    </div>
+									    <span class="f7 lh-title dib pa1 ">
+																				${promo.item_name}
+																			</span>
+									    <div class="f8 pa1 tr cf">
+									        <div class="dib w-50 fl">
+									            <span class=" red-custom db fw6 f5">
+																						${((parseInt(promo.old_price) -
+																							parseInt(promo.new_price)) /
+																							parseInt(promo.old_price) *
+																							100).toFixed(1)}%
+																					</span>
+									        </div>
+									        <div class="dib w-50 fl">
+									            <strong class="dark-gray db">
+																						${promo.new_price}CFA
+																					</strong>
+									            <span class="strike db">
+																						${promo.old_price}CFA
+																					</span>
+									        </div>
+									    </div>
+									</a>
+									`
 								);
 							})
 							.join("") +
@@ -205,7 +245,7 @@ var MapPromos = {
 					<div class="ph1">
 						<div class="shadow-4">
 							<p class="bg-red-custom tc white br--top mv0 pv1 f8">
-								Branches near you. <br/>
+								Branches near you. <br />
 								<small>(Click on marker to view details)</small>
 							</p>
 							<div id="map" class="vh-75 w-100 bg-gray" />

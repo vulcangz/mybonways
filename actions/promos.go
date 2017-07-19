@@ -237,8 +237,8 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		log.Println("promo_resource error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	log.Println("after query")
-	log.Println("MerchantPromoSearchResult:: ", m)
+	// log.Println("after query")
+	// log.Println("MerchantPromoSearchResult:: ", m)
 	return c.Render(200, render.JSON(m))
 }
 

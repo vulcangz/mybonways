@@ -1,5 +1,6 @@
 import m from "mithril";
 import { MerchantsModel } from "../models/merchants.js";
+import format from "date-fns/format";
 
 var ViewMerchant = {
 	oncreate: function(vnode) {
@@ -31,8 +32,11 @@ var ViewMerchant = {
 							<strong>Number of promos:</strong> <span class="fr">-</span>
 						</div>
 						<div class="pa2  cf">
+							<strong>Number of Reservations:</strong> <span class="fr">-</span>
+						</div>
+						<div class="pa2  cf">
 							<strong>Registeration Date:</strong>{" "}
-							<span class="fr">{MerchantsModel.Merchant.created_at}</span>
+							<span class="fr">{format(MerchantsModel.Merchant.created_at, "YYYY-MM-DD h:mm a")}</span>
 						</div>
 					</div>
 				</div>

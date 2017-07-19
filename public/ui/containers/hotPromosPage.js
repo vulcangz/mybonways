@@ -142,10 +142,9 @@ var HotPromosPage = {
 												<div class="f8 pa1 tr cf">
 													<div class="dib w-50 fl">
 														<span class=" red-custom db fw6 f5">
-															{((parseInt(promo.old_price) -
-																parseInt(promo.new_price)) /
-																parseInt(promo.old_price) *
-																100).toFixed(1)}%
+															{((parseInt(promo.old_price) - parseInt(promo.new_price)) / parseInt(promo.old_price) * 100) % 1?
+															((parseInt(promo.old_price) - parseInt(promo.new_price)) / parseInt(promo.old_price) * 100).toFixed(1):
+															((parseInt(promo.old_price) - parseInt(promo.new_price)) / parseInt(promo.old_price) * 100)}%
 														</span>
 													</div>
 													<div class="dib w-50 fl">

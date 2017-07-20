@@ -25,7 +25,6 @@ type PromoResource struct {
 
 // Create a MerchantPromo
 func (pr *PromoResource) Create(c buffalo.Context) error {
-	log.Println("create promo")
 	mp := models.MerchantPromo{}
 	err := c.Bind(&mp)
 	if err != nil {
@@ -35,7 +34,6 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 
 	PromoImages := make([]string, 10)
 
-	log.Println("b4 mp image")
 	for _, v := range mp.Images {
 		imgUUID := uuid.NewV1().String()
 		imagename := "promo_images/" + imgUUID
@@ -45,18 +43,15 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 			return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 		}
 
-		log.Println("no up load b64 error")
 		PromoImages = append(PromoImages, imagepath)
 	}
 
 	mp.Images = []string{}
 
-	log.Println("after mp images")
 	mp.PromoImages = strings.Trim(strings.Join(strings.Fields(fmt.Sprint(PromoImages)), ", "), "[]")
 
 	featured_imgUUID := uuid.NewV1().String()
 	imagename := "featured_images/" + featured_imgUUID
-	log.Println("b64error xx")
 	mp.FeaturedImage, err = UploadBase64Image(s3bucket, mp.FeaturedImageB64, imagename)
 	if err != nil {
 		log.Println("b64error")
@@ -76,7 +71,6 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	}
 
 	tx.Reload(&mp)
-	log.Println(mp)
 	return c.Render(http.StatusOK, render.JSON(mp))
 }
 
@@ -121,20 +115,17 @@ func (pr *PromoResource) Update(c buffalo.Context) error {
 		// push the image to s3 bucket...
 		imgUUID := uuid.NewV1().String()
 		imagename := "promo_images/" + imgUUID
-		log.Println("b64error xx")
 		imagepath, err := UploadBase64Image(s3bucket, mp.FeaturedImage, imagename)
 		if err != nil {
 			log.Println("b64error")
 			return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 		}
 		// create a blurred image of the featured image to save in the db...
-		log.Println(mp.FeaturedImage)
 		B64, err := CompressAndBlurImageAndReturnBase64(mp.FeaturedImage)
 		if err != nil {
 			log.Println("compress error", err)
 			return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 		}
-		log.Println(string(B64))
 		mp.FeaturedImageB64 = string(B64)
 		mp.FeaturedImage = imagepath
 	}
@@ -159,13 +150,10 @@ func (pr *PromoResource) Update(c buffalo.Context) error {
 
 // List renders all Promos
 func (pr *PromoResource) List(c buffalo.Context) error {
-	log.Println("in list ")
 	m := models.MerchantPromos{}
 
 	tx := c.Value("tx").(*pop.Connection)
 	merchant := c.Value("Merchant").(map[string]interface{})
-
-	log.Printf(" before query %#v", merchant)
 
 	query := pop.Q(tx)
 	query = tx.Where("company_id = ?", merchant["company_id"])
@@ -175,17 +163,11 @@ func (pr *PromoResource) List(c buffalo.Context) error {
 		log.Println("promo_resource error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	log.Println("after query")
 	return c.Render(200, render.JSON(m))
 }
 
 // List renders all Promos
 func (pr *PromoResource) Search(c buffalo.Context) error {
-	// m := models.MerchantPromos{}
-	// x := make(map[string]interface{})
-	// m := []struct{
-	//
-	// }
 	page, err := strconv.Atoi(c.Param("p"))
 	if err != nil || page < 1 {
 		page = 1
@@ -245,7 +227,6 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 // TODO PREVENT EXPIRED PROMOS FROM BEING LISTED...
 
 func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
-	log.Println("IN list featured promos")
 	m := []models.MerchantPromo{}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -257,12 +238,10 @@ func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 		log.Println("feature promo error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	log.Println("after query")
 	return c.Render(200, render.JSON(m))
 }
 
 func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
-	log.Println("IN list Page featured promos")
 	m := models.MerchantPromos{}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -280,7 +259,6 @@ func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
 		log.Println("feature promo error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	log.Println("after query")
 	return c.Render(200, render.JSON(m))
 }
 
@@ -302,13 +280,10 @@ func (v *PromoResource) GetPromoBySlug(c buffalo.Context) error {
 }
 
 func (v *PromoResource) GetMerchantPromos(c buffalo.Context) error {
-	log.Println("in list ")
 	m := models.MerchantPromos{}
 
 	tx := c.Value("tx").(*pop.Connection)
 	companyID := c.Param("company_id")
-
-	log.Printf(" before query %#v", companyID)
 
 	query := pop.Q(tx)
 	query = tx.Where("company_id = ?", companyID)
@@ -318,6 +293,6 @@ func (v *PromoResource) GetMerchantPromos(c buffalo.Context) error {
 		log.Println("promo_resource error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	log.Println("after query")
+
 	return c.Render(200, render.JSON(m))
 }

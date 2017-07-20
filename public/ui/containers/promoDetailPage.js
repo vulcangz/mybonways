@@ -3,6 +3,7 @@ import { Promos } from "../models/promos.js";
 import { UserModel } from "../models/user.js";
 import { isEmptyObject } from "../../util/utils.js";
 import Footer from "../components/footer.js";
+import format from "date-fns/format";
 
 var Details = {
 	onbeforeremove: vnode => {
@@ -55,14 +56,14 @@ var Locations = {
 	view: vnode => {
 		console.log("Promos.Promo: ", Promos.Promo);
 		return (
-			<div class="red animated">
-				<p>All branches you can find this promo.</p>
+			<div class="animated">
+				<p>All branches you can find this promo (click to load map).</p>
 				{Promos.PromoBranches.length
 					? Promos.PromoBranches.map((branch, i) => {
 							return (
-								<div class="pa2 dib">
+								<div class="pa2 db">
 									<a
-										target="_blank"
+										target="_blank" class="link"
 										href={
 											"https://www.google.com/maps/dir/?api=1&destination=" +
 											branch.latitude +
@@ -165,7 +166,7 @@ var PromoDetailPage = {
 									</a>
 								</div>
 								<div class="ph2">
-									<span class="dib red-custom pv1">
+									<span class="dib red-custom pv1 f4 f6-ns">
 										{Promos.Promo.old_price ? Promos.Promo.item_name : ""}
 									</span>
 									{!isEmptyObject(Promos.Promo.reservation)
@@ -176,18 +177,45 @@ var PromoDetailPage = {
 												</span>
 											</div>
 										: ""}
-									<div class="pt1">
-										<span>Original Price: </span>
-										<span>
-											{Promos.Promo.old_price ? Promos.Promo.old_price : ""}F CFA
-										</span>
+
+									<div class="pv2">
+										<div class="pt1">
+											<span class="f7">Merchant: </span>
+											<span>
+												{Promos.PromoMerchant.company_name}
+											</span>
+										</div>
 									</div>
-									<div class="pt1">
-										<span>Current Price: </span>
-										<span>
-											{Promos.Promo.old_price ? Promos.Promo.new_price : ""}F CFA
-										</span>
+									<div class="pv2 ">
+										<div class="pt1">
+											<span class="f7">Original Price: </span>
+											<span>
+												{Promos.Promo.old_price ? Promos.Promo.old_price : "0"}FCFA
+											</span>
+										</div>
+										<div class="pt1">
+											<span class="f7">Current Price: </span>
+											<span>
+												{Promos.Promo.old_price ? Promos.Promo.new_price : "0"}FCFA
+											</span>
+										</div>
 									</div>
+
+									<div class="pv2 ">
+										<div class="pt1">
+											<span class="f7">Promo starts: </span>
+											<span>
+												{format(Promos.Promo.start_date, "YYYY-MM-DD h:mm a")}
+											</span>
+										</div>
+										<div class="pt1">
+											<span class="f7">Promo ends: </span>
+											<span>
+												{format(Promos.Promo.end_date, "YYYY-MM-DD h:mm a")}
+											</span>
+										</div>
+									</div>
+
 								</div>
 							</section>
 							<section class="pv2">

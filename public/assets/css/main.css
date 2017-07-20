@@ -87,20 +87,6 @@ a{
 
 
 
-/* ==========================================================================
-   Media Queries
-   ========================================================================== */
-
-@media only screen and (min-width: 35em) {
-
-}
-
-@media print,
-       (-o-min-device-pixel-ratio: 5/4),
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 120dpi) {
-
-}
 
 /* ==========================================================================
    Helper classes
@@ -108,8 +94,25 @@ a{
    *, *:before, *:after {
        box-sizing : border-box;
    }
+.gray{
+  color:#3c4859;
+}
 
+.bg-gray{
+  background-color:#3c4859;
+}
 
+.b--gray{
+  border-color:#3c4859;
+}
+
+.black{
+  color:#3c4859;
+}
+
+.light-gray{
+  color:#9facbd;
+}
    .shadow-0 {
      box-shadow: none;
      transition: all 0.3s cubic-bezier(.25,.8,.25,1);

@@ -4,13 +4,13 @@ export var search = {
 	page: 1,
 	searchData: {},
 	mysearch: [],
-	searchFor: function(query, lat, lng) {
+	searchFor: function(query, lat, lng, cat) {
 		// search for a particular area
 		console.log("Search Params: q: ", query, " lat: ", lat, " lng: ", lng);
 		return m
 			.request({
 				method: "GET",
-				url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&p=1`
+				url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&cat=${cat}&p=1`
 			})
 			.then(function(response) {
 				// response.map((r) => {
@@ -24,13 +24,13 @@ export var search = {
 				}
 			});
 	},
-	loadMore: function(query, lat, lng) {
+	loadMore: function(query, lat, lng, cat) {
 		// search for a particular area
 		console.log("Search Params: q: ", query, " lat: ", lat, " lng: ", lng);
 		return m
 			.request({
 				method: "GET",
-				url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&p=${++search.page}`
+				url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&cat=${cat}&p=${++search.page}`
 			})
 			.then(function(response) {
 				response.map(r => {

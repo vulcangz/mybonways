@@ -16,7 +16,8 @@ import (
 	"github.com/tonyalaribe/mybonways/models"
 )
 
-const perPage = 8
+const perPage = 16
+const categoryPerPage = 16
 
 // PromoResource allows CRUD with HTTP against the Promo model
 type PromoResource struct {
@@ -178,29 +179,45 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	searchTerms := c.Request().URL.Query().Get("q")
 	searchLatitude := c.Request().URL.Query().Get("lat")
 	searchLongitude := c.Request().URL.Query().Get("lng")
+	category := c.Request().URL.Query().Get("cat")
+
 	var queryString string
 	var query *pop.Query
 	if searchTerms == "*" {
 		queryString = `SELECT created_at, updated_at, company_id, item_name, category, old_price, new_price,
 			start_date, end_date, description, promo_images, featured_image, featured_image_b64,
 			slug, neighbourhood, city, country, longitude, latitude FROM merchant_promos x
-				LEFT OUTER JOIN (
+				RIGHT OUTER JOIN (
 					SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 					FROM branches
-					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 700 * 1609.34
+					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
 					GROUP BY company_id,neighbourhood,city,country,longitude,latitude
 				) y
 				ON x.company_id = y.cid ORDER BY x.created_at desc;`
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude)
+	} else if category != "" {
+		queryString = `
+		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
+		city, country, longitude, latitude FROM merchant_promos x
+			RIGHT OUTER JOIN (
+				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
+				FROM branches
+				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
+				GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+			) y
+			ON x.company_id = y.cid WHERE x.category=? ORDER BY x.created_at desc LIMIT ? OFFSET ?;
+		`
+		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, category, categoryPerPage, (page-1)*perPage)
 	} else {
 		queryString = `
 		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
 		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
-			LEFT OUTER JOIN (
+			RIGHT OUTER JOIN (
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches
-				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 100 * 1609.34
+				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
 				GROUP BY company_id,neighbourhood,city,country,longitude,latitude
 			) y
 			ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;

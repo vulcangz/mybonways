@@ -77,7 +77,7 @@ func (v CategoriesResource) Create(c buffalo.Context) error {
 		return err
 	}
 
-	category.Slug = slug.Make(category.Name) + "_" + RandStringBytes(5)
+	category.Slug = slug.Make(category.Name) + "-" + RandStringBytes(5)
 
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)

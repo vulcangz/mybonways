@@ -7,7 +7,7 @@ var Footer = {
 		return (
 			<section class="bg-dark-gray  cf f5">
 				<div class="tc pv3 white-80 bg-black">
-					<span>copyright Bonways 2017</span>
+					<span>Copyright 2017 MyBonWays</span>
 				</div>
 			</section>
 		);

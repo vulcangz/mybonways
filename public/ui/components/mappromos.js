@@ -143,10 +143,10 @@ var MapPromos = {
 									        </div>
 									        <div class="dib w-50 fl">
 									            <strong class="dark-gray db">
-																						${promo.new_price}CFA
+																						${promo.new_price}F CFA
 																					</strong>
 									            <span class="strike db">
-																						${promo.old_price}CFA
+																						${promo.old_price}F CFA
 																					</span>
 									        </div>
 									    </div>
@@ -218,8 +218,8 @@ var MapPromos = {
                             <span class=" red-custom db fw6 f5">{(((parseInt(promo.old_price) - parseInt(promo.new_price))/parseInt(promo.old_price)) * 100).toFixed(1) }%</span>
                           </div>
                           <div class="dib w-50 fl">
-                            <strong class="dark-gray db">{promo.new_price}CFA</strong>
-                            <span class="strike db">{promo.old_price}CFA</span>
+                            <strong class="dark-gray db">{promo.new_price}F CFA</strong>
+                            <span class="strike db">{promo.old_price}F CFA</span>
                           </div>
                         </div>
                         <div class="f8 pa1 pv2 ">

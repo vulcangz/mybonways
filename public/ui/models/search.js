@@ -10,7 +10,7 @@ export var search = {
 		return m
 			.request({
 				method: "GET",
-				url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&cat=${cat}&p=1`
+				url: `/api/promo/search?q=${query?query:""}&lat=${lat?lat:""}&lng=${lng?lng:""}&cat=${cat?cat:""}&p=1`
 			})
 			.then(function(response) {
 				// response.map((r) => {
@@ -30,7 +30,7 @@ export var search = {
 		return m
 			.request({
 				method: "GET",
-				url: `/api/promo/search?q=${query}&lat=${lat}&lng=${lng}&cat=${cat}&p=${++search.page}`
+				url: `/api/promo/search?q=${query?query:""}&lat=${lat?lat:""}&lng=${lng?lng:""}&cat=${cat?cat:""}&p=${++search.page}`
 			})
 			.then(function(response) {
 				response.map(r => {

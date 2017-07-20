@@ -195,6 +195,19 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 				) y
 				ON x.company_id = y.cid ORDER BY x.created_at desc;`
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude)
+	} else if category != "" && searchLatitude == "" {
+		queryString = `
+		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
+		city, country, longitude, latitude FROM merchant_promos x
+			RIGHT OUTER JOIN (
+				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
+				FROM branches
+				GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+			) y
+			ON x.company_id = y.cid WHERE x.category=? ORDER BY x.created_at desc LIMIT ? OFFSET ?;
+		`
+		query = tx.RawQuery(queryString, category, categoryPerPage, (page-1)*perPage)
 	} else if category != "" {
 		queryString = `
 		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,

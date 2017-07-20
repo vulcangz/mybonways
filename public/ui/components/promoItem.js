@@ -3,7 +3,6 @@ import m from "mithril";
 var promoItem = {
   view:function(vnode){
     let {promo,key} = vnode.attrs;
-    console.log(promo)
     return (
       <div class="dib w-50 w-33-m w-25-l pa1 fl" key={key}>
         <a

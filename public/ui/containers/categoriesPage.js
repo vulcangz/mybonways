@@ -27,7 +27,7 @@ var CategoriesPage = {
 									<div class="pv4">
 										<div class="pa2">
 											<strong class="fw6 f5">{catnpromo.category.name}</strong>
-											<a class="fr f6 light-gray link" href="#">See all ➔ </a>
+											<a class="fr f6 light-gray link" href={"/search?cat="+catnpromo.category.name} oncreate={m.route.link}>See all ➔ </a>
 										</div>
 										<div class="overflow-hidden truncate pv2">
 											{catnpromo.promos.map(function(promo,i){

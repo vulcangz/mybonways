@@ -11,7 +11,7 @@ var OffCanvasMenu = {
 			panel: document.getElementById("panel"),
 			menu: document.getElementById("menu"),
 			padding: 256,
-			tolerance: 70
+			tolerance: 50
 		});
 		console.log(vnode.attrs.slideout);
 		UserModel.GetUserfromStorage().then(() => {}).catch(error => {

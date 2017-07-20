@@ -1,7 +1,6 @@
 var webpack = require("webpack");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-// var UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const BabiliPlugin = require("babili-webpack-plugin");
 // let commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common-chunks');
 
@@ -17,10 +16,10 @@ module.exports = {
     filename: "js/[name]-bundle.js",
     path: __dirname + "/public/assets"
   },
-  devtool: 'eval-source-map',
+  // devtool: 'eval-source-map',
   plugins: [
     new ExtractTextPlugin("css/common.css"),
-    // new BabiliPlugin(),
+    new BabiliPlugin(),
     // new UglifyJsPlugin({
       //    exclude: [
       //      'js/merchant-bundle.js'

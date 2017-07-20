@@ -184,15 +184,15 @@ var searchNav = {
 							</div>
 							<div class="flex flex-auto justify-center pa1 tc">
 								<a
-									href="/2in1"
+									href="/categories"
 									class={
-										(m.route.get() == "/2in1"
+										(m.route.get() == "/categories"
 											? "bg-red-custom white "
 											: " red-custom ") + " pa1 dib w-100 br-pill no-underline"
 									}
 									oncreate={m.route.link}
 								>
-									2 in 1
+									Categories
 								</a>
 							</div>
 						</div>
@@ -275,16 +275,16 @@ var searchNav = {
 								</div>
 								<div class=" pa1 tc dib">
 									<a
-										href="/2in1"
+										href="/categories"
 										class={
-											(m.route.get() == "/2in1"
+											(m.route.get() == "/categories"
 												? "bg-red-custom white "
 												: " red-custom ") +
 											" pa1 ph3 dib w-100 br-pill no-underline"
 										}
 										oncreate={m.route.link}
 									>
-										2 in 1
+										Categories
 									</a>
 								</div>
 							</div>

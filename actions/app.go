@@ -106,6 +106,7 @@ func App() *buffalo.App {
 		app.Resource("/api/merchants", merchantsResource)
 
 		app.Resource("/api/categories", CategoriesResource{&buffalo.BaseResource{}})
+		app.GET("/api/categories_with_promos", CategoriesResource{}.ListWithTopPromos)
 
 		// This handles adding a location by the admin...
 		adminGroup.Resource("/locations/neighbourhood", locationsResource)

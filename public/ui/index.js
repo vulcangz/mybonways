@@ -7,7 +7,7 @@ import OffCanvasMenu from "./components/offCanvasMenu.js";
 import SearchArea from "./containers/searcharea.js";
 import searchNav from "./components/searchNav.js";
 import MapPromos from "./components/mappromos.js";
-import DoublePromos from "./containers/doublePromos.js";
+import CategoriesPage from "./containers/categoriesPage.js";
 import MerchantPromos from "./containers/merchantpromos.js";
 import SignupPage from "./containers/signuppage.js";
 import Dashboard from "./containers/dashboard.js";
@@ -55,12 +55,12 @@ m.route(root, "/", {
 			);
 		}
 	},
-	"/2in1": {
+	"/categories": {
 		view: vnode => {
 			return m(
 				OffCanvasMenu,
 				vnode.attrs,
-				m(UIShell, vnode.attrs, m(DoublePromos, vnode.attrs))
+				m(UIShell, vnode.attrs, m(CategoriesPage, vnode.attrs))
 			);
 		}
 	},

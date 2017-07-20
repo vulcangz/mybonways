@@ -82,8 +82,7 @@ func (v *PromoResource) Show(c buffalo.Context) error {
 	// Allocate an empty Category
 	merchantPromo := models.MerchantPromo{}
 
-	query := pop.Q(tx)
-	query = tx.Where("slug = ?", c.Param("promo_id"))
+	query := tx.Where("slug = ?", c.Param("promo_id"))
 
 	err := query.First(&merchantPromo)
 	if err != nil {
@@ -155,8 +154,7 @@ func (pr *PromoResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	merchant := c.Value("Merchant").(map[string]interface{})
 
-	query := pop.Q(tx)
-	query = tx.Where("company_id = ?", merchant["company_id"])
+	query := tx.Where("company_id = ?", merchant["company_id"])
 
 	err := query.All(&m)
 	if err != nil {

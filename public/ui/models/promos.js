@@ -6,9 +6,24 @@ export var Promos = {
 	PromoBranches: [],
 	MerchantPromos: [],
 	Promo: { promo_images: "", reservation: {} },
+	CategoriesAndPromos:[],
 	PromoMerchant: {},
 	Page: 1,
-	GetFeaturedPromos: () => {
+	GetCategoriesAndPromos:function(){
+			return m
+				.request({
+					method: "GET",
+					url: "/api/categories_with_promos"
+				})
+				.then(response => {
+					console.log("categories and promos:", response);
+					Promos.CategoriesAndPromos = response;
+				})
+				.catch(error => {
+					console.error("featured promos error: ", error);
+				});
+	},
+	GetFeaturedPromos: function(){
 		return m
 			.request({
 				method: "GET",
@@ -17,13 +32,13 @@ export var Promos = {
 			.then(response => {
 				console.log("featured promos response:", response);
 				Promos.FeaturedPromos = response;
-				Promos.GetBranches();
+				// Promos.GetBranches();
 			})
 			.catch(error => {
 				console.error("featured promos error: ", error);
 			});
 	},
-	LoadMore: () => {
+	LoadMore: function(){
 		return m
 			.request({
 				method: "GET",
@@ -40,7 +55,7 @@ export var Promos = {
 				console.error("more promos Error: ", error);
 			});
 	},
-	GetPromo: slug => {
+	GetPromo: function(slug){
 		return m
 			.request({
 				method: "GET",
@@ -68,7 +83,7 @@ export var Promos = {
 				console.error("promos details error: ", error);
 			});
 	},
-	GetPromoMerchant: company_id => {
+	GetPromoMerchant: function(company_id) {
 		return m
 			.request({
 				method: "GET",
@@ -82,7 +97,7 @@ export var Promos = {
 				console.error("Promos merchant error: ", error);
 			});
 	},
-	GetMerchantPromos: company_id => {
+	GetMerchantPromos: function(company_id){
 		console.log("comapny id ::: ", company_id);
 		return m
 			.request({
@@ -97,7 +112,7 @@ export var Promos = {
 				console.error("Merchant Promos error: ", error);
 			});
 	},
-	GetBranches: () => {
+	GetBranches: function(){
 		return m
 			.request({
 				method: "GET",
@@ -108,7 +123,7 @@ export var Promos = {
 				Promos.PromoBranches = response;
 			});
 	},
-	Reserve: id => {
+	Reserve: function(id){
 		console.log("Reserve this promo. UserID: ", id);
 		return m
 			.request({
@@ -126,7 +141,7 @@ export var Promos = {
 				Promos.Promo.reservation = response;
 			});
 	},
-	unReserve: () => {
+	unReserve: function(){
 		console.log("unreserve: ");
 		return m
 			.request({

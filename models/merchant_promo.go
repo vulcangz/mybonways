@@ -26,6 +26,7 @@ type MerchantPromo struct {
 	FeaturedImage    string    `json:"featured_image" db:"featured_image"`
 	FeaturedImageB64 string    `json:"featured_image_b64" db:"featured_image_b64"`
 	Slug             string    `json:"slug" db:"slug"`
+	Quantity         int       `json:"quantity" db:"quantity"`
 }
 
 type MerchantPromoSearchResult struct {

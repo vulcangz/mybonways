@@ -40,18 +40,18 @@ var HotPromosPage = {
 								vnode.dom.style.height = vnode.dom.offsetWidth / 2 + "px";
 							}}
 						>
-							<div class="frame js_frame">
-								<ul class="slides js_slides pa0 ma0 w-100">
+							<div class="frame js_frame h-100">
+								<ul class="slides js_slides pa0 ma0 w-100 h-100">
 									{Slides.AllSlides.length
 										? Slides.AllSlides.map(slide => {
 												return (
-													<li class="js_slide w-100">
+													<li class="js_slide w-100 h-100">
 														<a
 															href={slide.url}
-															class="w-100 dib v-top"
+															class="w-100 dib v-top h-100 "
 															oncreate={m.route.link}
 														>
-															<img src={slide.image} class="w-100 br3" />
+															<img src={slide.image} class="w-100 br3 h-100 cover" />
 														</a>
 													</li>
 												);

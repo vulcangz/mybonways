@@ -75,7 +75,7 @@ export var MerchantModel = {
 				console.log("response: ", response);
 			});
 	},
-	GetReservations: () => {
+	GetReservations: function() {
 		return m
 			.request({
 				method: "GET",
@@ -86,11 +86,11 @@ export var MerchantModel = {
 				MerchantModel.Reservations = response;
 			});
 	},
-	ClaimReservation: id => {
+	ClaimReservation: function(reservation_id, promo_id) {
 		return m
 			.request({
 				method: "POST",
-				url: "/api/merchants/reservations/claim/" + id,
+				url: "/api/merchants/reservations/claim/" + reservation_id + "/" + promo_id,
 				data: {}
 			})
 			.then(response => {

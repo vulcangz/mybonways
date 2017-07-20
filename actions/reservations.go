@@ -191,7 +191,7 @@ func (v ReservationsResource) isReserved(c buffalo.Context) error {
 	reservation := &models.Reservation{}
 	userID := c.Param("promo_id")
 	// To find the Reservation the parameter reservation_id is used.
-	err := tx.Where("promo_id = ?", userID).First(reservation)
+	err := tx.Where("promo_id = ? AND status = 'pending'", userID).First(reservation)
 	if err != nil {
 		return c.Render(422, render.JSON(reservation))
 	}
@@ -224,13 +224,23 @@ func (v ReservationsResource) GetMerchantReservations(c buffalo.Context) error {
 func (v ReservationsResource) ClaimReservation(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	reservationID := c.Param("reservation_id")
+	promoID := c.Param("promo_id")
 	err := tx.RawQuery("UPDATE reservations SET status = 'claimed' WHERE id = ?;", reservationID).Exec()
 	if err != nil {
 		return errors.WithStack(err)
 	}
+	err = tx.RawQuery("UPDATE merchant_promos SET quantity = quantity - 1 WHERE id = ? AND quantity > 0;", promoID).Exec()
+	if err != nil {
+		return errors.WithStack(err)
+	}
 	merchant := c.Value("Merchant").(map[string]interface{})
-	reservations := &models.Reservations{}
-	err = tx.Where("company_id = ?", merchant["company_id"]).All(reservations)
+	reservations := &[]models.MerchantReservationStruct{}
+	err = tx.RawQuery(`SELECT id, created_at, updated_at, user_id,
+	promo_id, promo_slug, company_id, code, item_name, email, status
+	FROM reservations r
+		LEFT OUTER JOIN ( SELECT id as pid, item_name FROM merchant_promos ) p ON r.promo_id = p.pid
+		LEFT OUTER JOIN ( SELECT id as uid, email FROM users ) u ON r.user_id = u.uid
+	WHERE r.company_id = ? ORDER BY r.created_at DESC;`, merchant["company_id"]).All(reservations)
 	if err != nil {
 		return errors.WithStack(err)
 	}

@@ -124,17 +124,13 @@ var PromoDetailPage = {
 											(!isEmptyObject(Promos.Promo.reservation)
 												? " red-custom "
 												: " gray ") +
-											" pa1 b--light-gray bw1 ba mh1  br2 dib pointer grow"
+											" pa1 b--light-gray bw1 ba mh1 br2 dib pointer grow"
 										}
 										onclick={function () {
 											if (!isEmptyObject(UserModel.User) && Promos.Promo.quantity) {
 												if (isEmptyObject(Promos.Promo.reservation)) {
 													Promos.Reserve(UserModel.User.id)
-														.then(function () {
-															{
-																/*Promos.Promo.reservation = {}*/
-															}
-														})
+														.then(function () {})
 														.catch(error => {
 															console.log("Reserve error: ", error);
 															Promos.Promo.reservation = {};

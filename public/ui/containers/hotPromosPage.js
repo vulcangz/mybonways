@@ -104,21 +104,13 @@ var HotPromosPage = {
 												oncreate={m.route.link}
 											>
 												<div class="f8 pv1 tl pv1 ph1">
-													<div class="dib w-50 overflow-x-hidden">
+													<div class=" overflow-x-hidden">
 														<img
 															src="/assets/img/svg/grid.svg"
 															style="height:0.55rem;" class="di v-mid"
 														/>
 													<span class="red-custom di pl1 v-mid">
 															{promo.category}
-														</span>
-													</div><div class="dib w-50 overflow-x-hidden">
-														<img
-															src="/assets/img/svg/cart.svg"
-															style="height:0.55rem;" class="di v-mid"
-														/>
-													<span class="red-custom di pl1 v-mid">
-															{promo.company_id}
 														</span>
 													</div>
 												</div>

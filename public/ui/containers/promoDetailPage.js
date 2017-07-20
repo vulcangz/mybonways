@@ -148,10 +148,12 @@ var PromoDetailPage = {
 												if (isEmptyObject(UserModel.User)) {
 													// TODO:: DISPLAY THE ERROR ON THE PAGE
 													console.error("You are not logged in.");
-												} else if (Promos.Promo.quantity) {
+												} else if (!Promos.Promo.quantity) {
 													// TODO:: DISPLAY THE ERROR ON THE PAGE
 													console.error("There are no more quantities.");
 												}
+													console.error("an error.");
+												
 											}
 										}}
 									>

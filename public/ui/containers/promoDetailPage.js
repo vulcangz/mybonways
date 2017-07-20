@@ -179,13 +179,13 @@ var PromoDetailPage = {
 									<div class="pt1">
 										<span>Original Price: </span>
 										<span>
-											{Promos.Promo.old_price ? Promos.Promo.old_price : ""}CFA
+											{Promos.Promo.old_price ? Promos.Promo.old_price : ""}F CFA
 										</span>
 									</div>
 									<div class="pt1">
 										<span>Current Price: </span>
 										<span>
-											{Promos.Promo.old_price ? Promos.Promo.new_price : ""}CFA
+											{Promos.Promo.old_price ? Promos.Promo.new_price : ""}F CFA
 										</span>
 									</div>
 								</div>

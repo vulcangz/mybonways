@@ -108,12 +108,14 @@ modal.addFooterBtn(
 );
 
 var searchNav = {
+	fixNav: false,
 	searchError: "",
-	oncreate: vnode => {
+	oncreate: function(vnode) {
 		UserModel.GetUserfromStorage().then(() => {}).catch(error => {
 			console.error(error);
 		});
 		vnode.attrs.slideout.close();
+
 		let input = document.getElementById("areaInput");
 		var autocomplete = new google.maps.places.Autocomplete(input, {
 			types: ["geocode"],
@@ -135,22 +137,55 @@ var searchNav = {
 			search.searchData.lng = lng;
 			m.redraw();
 		});
+
+		var navBar = document.getElementById("fixedNav");
+		var navBarOffset = navBar.offsetTop;
+		var last_known_scroll_position = 0;
+		var ticking = false;
+		function CheckPostionAndUpdateNavClass(scroll_pos) {
+			// do something with the scroll position
+			if (scroll_pos > navBarOffset) {
+				vnode.state.fixNav = true;
+				m.redraw();
+			} else {
+				vnode.state.fixNav = false;
+				m.redraw();
+			}
+		}
+
+		window.addEventListener("scroll", function(e) {
+			last_known_scroll_position = window.scrollY;
+			if (!ticking) {
+				window.requestAnimationFrame(function() {
+					CheckPostionAndUpdateNavClass(last_known_scroll_position);
+					ticking = false;
+				});
+			}
+			ticking = true;
+		});
 	},
 	launchSearchModal: function() {
 		// open modal
 		modal.open();
 	},
 	// Loggedin: false,
-	view: vnode => {
-		console.log(UserModel);
+	view: function(vnode) {
 		return (
 			<section>
-				<section class="pb1 dn-ns">
-					<div class="flex flex-row pv1 ph2">
+				<section class="pb1 dn-ns ">
+					<div
+						class={
+							"flex flex-row pv1 ph2  w-100 z-2 fixed-header w-100 bg-white " +
+							(vnode.state.fixNav === true
+								? "fixed top-0 left-0 bb b--light-gray"
+								: "relative-ns")
+						}
+						id="fixedNav"
+					>
 						<div class="flex pa1 pr3">
 							<a
 								class="red-custom f3 pointer"
-								onclick={() => vnode.attrs.slideout.toggle() }
+								onclick={() => vnode.attrs.slideout.toggle()}
 							>
 								☰
 							</a>
@@ -197,7 +232,9 @@ var searchNav = {
 							</div>
 						</div>
 					</div>
-					<div class="ph2 flex">
+					<div
+						class={"ph2 flex " + (vnode.state.fixNav === true ? "pt45" : "")}
+					>
 						<button
 							class="bg-transparent b--transparent ma0 pa0 dib w-100"
 							onclick={searchNav.launchSearchModal}

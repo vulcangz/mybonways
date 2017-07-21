@@ -8,7 +8,7 @@ var UIShell = {
 		return (
 			<section>
 				{m(SearchNav, vnode.attrs)}
-				<section class="tc">
+				<section class="tc" style="min-height:100vh;">
 					<section class="tl dib w-100 w-80-m w-70-l">
 						{m.fragment(vnode.attrs, [vnode.children])}
 					</section>

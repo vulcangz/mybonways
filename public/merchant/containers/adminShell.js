@@ -156,7 +156,9 @@ var AdminShell = {
 				</section>
 
 				<footer class="pa3 bg-light-gray tc mt4">
-					<p class="mb2 f6">Copyright {new Date().getFullYear()} myBonWays </p>
+					<p class="mb2 f6">
+						Copyright {new Date().getFullYear()} myBonWays{" "}
+					</p>
 					<small style="font-size:0.5rem">
 						Built By{" "}
 						<a href="http://past3.com.ng" target="_blank">

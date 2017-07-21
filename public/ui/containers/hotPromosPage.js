@@ -35,7 +35,8 @@ var HotPromosPage = {
 				<section class="animated">
 					<section class="bg-white pa2">
 						<div
-							class="slider overflow-hidden js_slider relative"
+							class="slider overflow-hidden js_slider relative "
+							data-slideout-ignore
 							oncreate={vnode => {
 								vnode.dom.style.height = vnode.dom.offsetWidth / 2 + "px";
 							}}
@@ -51,7 +52,7 @@ var HotPromosPage = {
 															class="w-100 dib v-top h-100 "
 															oncreate={m.route.link}
 														>
-															<img src={slide.image} class="w-100 br3 h-100 cover" />
+															<img src={slide.image} class="w-100 br3 h-100 cover bg-light-gray object-fit-cover " />
 														</a>
 													</li>
 												);

@@ -16,10 +16,10 @@ module.exports = {
     filename: "js/[name]-bundle.js",
     path: __dirname + "/public/assets"
   },
-  // devtool: 'eval-source-map',
+  devtool: 'eval-source-map',
   plugins: [
     new ExtractTextPlugin("css/common.css"),
-    new BabiliPlugin(),
+    // new BabiliPlugin(),
     // new UglifyJsPlugin({
       //    exclude: [
       //      'js/merchant-bundle.js'

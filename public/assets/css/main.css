@@ -113,6 +113,14 @@ a{
 .light-gray{
   color:#9facbd;
 }
+
+.bg-light-gray{
+  color:#9facbd;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
    .shadow-0 {
      box-shadow: none;
      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -174,7 +182,16 @@ a{
      }
    }
 
+.pt45{
+   padding-top: 2.9rem;
+}
 
+@media (min-width:480px){
+  .pt0-ns{
+     padding-top: 0;
+  }
+
+}
 .bg-red-custom{
   background-color: #D82125;
 }
@@ -242,7 +259,7 @@ body {
 .slideout-panel {
   position: relative;
   z-index: 1;
-  will-change: transform;
+  /*will-change: transform;*/
   background-color: #FFF; /* A background-color is required */
   min-height: 100vh;
 }

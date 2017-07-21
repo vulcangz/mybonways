@@ -4,6 +4,7 @@ import { UserModel } from "../models/user.js";
 import { isEmptyObject } from "../../util/utils.js";
 import Footer from "../components/footer.js";
 import format from "date-fns/format";
+// import baguetteBox from "baguettebox.js";
 
 var Details = {
 	onbeforeremove: vnode => {
@@ -14,6 +15,8 @@ var Details = {
 	},
 	oncreate: vnode => {
 		vnode.dom.classList.add("fadeIn");
+		// console.log(baguetteBox)
+		// baguetteBox.run('#gallery');
 	},
 	view: () => {
 		var promo_images = Promos.Promo.promo_images
@@ -23,15 +26,17 @@ var Details = {
 					return;
 				}
 				return (
-					<div class="dib w-50 br b--transparent">
+					<a class="dib w-50 w-33-ns br b--transparent" href={pi}>
 						<img src={pi} class="w-100  b--light-gray-custom" />
-					</div>
+					</a>
 				);
 			});
 		return (
 			<div class="animated">
 				<p>{Promos.Promo.description}</p>
-				<div class=""> {promo_images} </div>{" "}
+				<div id="gallery">
+					{promo_images}
+				</div>
 			</div>
 		);
 	}

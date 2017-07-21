@@ -9,7 +9,7 @@ var Favourites = {
 	},
 	view: vnode => {
 		return (
-			<section>
+			<section >
 				{m.fragment(vnode.attrs, vnode.children)}
 				<div class="">
 					{!isEmptyObject(UserModel.User)

@@ -8,7 +8,7 @@ var Profile = {
 	},
 	view: vnode => {
 		return (
-			<section class=" pv5">
+			<section class=" pv5 " >
 				<div class="pa2">
 					{!isEmptyObject(UserModel.User)
 						? <section class="tc">

@@ -16,7 +16,7 @@ var CategoriesPage = {
 	},
 	view: function(vnode){
 		return (
-			<section class="animated">
+			<section class="animated"	>
 				{m.fragment(vnode.attrs, vnode.children)}
 				<section class="pv3">
 					{

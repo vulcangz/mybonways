@@ -3,6 +3,7 @@ import {Comment} from '../models/comment.js';
 import { Promos } from "../models/promos.js";
 import { UserModel } from "../models/user.js";
 import format from "date-fns/format";
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 
 var Comments = {
     state:{
@@ -40,37 +41,42 @@ var Comments = {
     view: function(vnode) {
         return (
             <section class="mw7">
-                <div class="ph2 pv1 mv1">Comments</div>
+                <div class="ph1 pv1 mv1">Comments</div>
+                  <div class="ph1 pv1 mv1">
+                      {Comments.state.error?<p class="red mv0 pa1">{Comments.state.error}</p>:""}
+                      <textarea id="comment" class="w-100 mw-100 h3 pa2 ba b--light-gray"
+                          oninput={m.withAttr("value", function(value) {
+                              Comment.MyComment.comment = value;
+                          })}>
+                      </textarea>
+                      <div class="cf">
+                          <button class="pa2 w4 bg-navy br1 white ba b--transparent fr"
+                              onclick={function() {
+                                  Comments.ValidateAndSendComment();
+                              }}
+                          >{Comments.state.loader? <div class="loader"></div>:"Comment"}</button>
+                      </div>
+                  </div>
+                  <section class="pv3">
                 {Comment.AllComments.length?
                 Comment.AllComments.map(function(c, i) {
                     return (
-                        <div class="ph3 pv1 mv1 cf bb b--light-gray">
-                            <div class="fl w2 h2">
-                                <img alt="image" src="/assets/img/user.jpg"/>
+                        <div class="ph1 pv1 mv1 cf bb b--light-gray">
+                            <div class="fl dib w-20 w-10-ns pa1 pa2-ns">
+                                <img alt="image" src="/assets/img/user.jpg" class="w-100"/>
                             </div>
-                            <div class="fl pl4">
-                                <p class="mv0">{c.user.full_name + " : " + format(c.comment.created_at, "YYYY-MM-DD h:mm a")}</p>
-                                <p class="f3 mv0 pa1">{c.comment.comment}</p>
+                            <div class="fl dib pl4 w-80 w-90-ns ">
+                                <p class="mv0">
+                                  <span>{c.user.full_name}</span> <span class="f7 fr">{distanceInWordsToNow(c.comment.created_at)} ago
+                                  </span>
+                                </p>
+                                <p class=" mv0 pa1 f7">{c.comment.comment}</p>
                             </div>
                         </div>
                     )
                 })
                 :""}
-                <div class="ph3 pv1 mv1">
-                    {Comments.state.error?<p class="red mv0 pa1">{Comments.state.error}</p>:""}
-                    <textarea id="comment" class="w-100 mw-100 h3 pa2"
-                        oninput={m.withAttr("value", function(value) {
-                            Comment.MyComment.comment = value;
-                        })}>
-                    </textarea>
-                    <div class="cf">
-                        <button class="pa2 w4 bg-navy br1 white ba b--transparent fr"
-                            onclick={function() {
-                                Comments.ValidateAndSendComment();
-                            }}
-                        >{Comments.state.loader? <div class="loader"></div>:"Comment"}</button>
-                    </div>
-                </div>
+              </section>
             </section>
         )
     }

@@ -155,7 +155,7 @@ var PromoDetailPage = {
 													console.error("There are no more quantities.");
 												}
 													console.error("an error.");
-												
+
 											}
 										}}
 									>
@@ -177,9 +177,7 @@ var PromoDetailPage = {
 								</div>
 								<div class="ph2">
 									<span class="dib red-custom pv1 f4 f6-ns">
-										{Promos.Promo.old_price ? Promos.Promo.item_name : ""}
-										{" "}
-										({Promos.Promo.quantity})
+										{Promos.Promo.item_name}
 									</span>
 									{!isEmptyObject(Promos.Promo.reservation)
 										? <div class="pt1 fr">

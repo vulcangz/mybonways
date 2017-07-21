@@ -184,7 +184,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	var queryString string
 	var query *pop.Query
 	if searchTerms == "*" {
-		queryString = `SELECT created_at, updated_at, company_id, item_name, category, old_price, new_price,
+		queryString = `SELECT id, created_at, updated_at, company_id, item_name, category, old_price, new_price,
 			start_date, end_date, description, promo_images, featured_image, featured_image_b64,
 			slug, neighbourhood, city, country, longitude, latitude FROM merchant_promos x
 				RIGHT OUTER JOIN (
@@ -197,7 +197,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude)
 	} else if category != "" && searchLatitude == "" {
 		queryString = `
-		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
 		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
 			RIGHT OUTER JOIN (
@@ -210,7 +210,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		query = tx.RawQuery(queryString, category, categoryPerPage, (page-1)*perPage)
 	} else if category != "" {
 		queryString = `
-		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
 		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
 			RIGHT OUTER JOIN (
@@ -224,7 +224,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, category, categoryPerPage, (page-1)*perPage)
 	} else {
 		queryString = `
-		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
 		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
 			RIGHT OUTER JOIN (
@@ -247,6 +247,9 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		log.Println("promo_resource error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
+	for i := range m {
+		err = tx.RawQuery(`SELECT COUNT(*) as comment FROM comments WHERE promo_id = ?`, m[i].ID).First(&m[i].Count)
+	}
 	// log.Println("after query")
 	// log.Println("MerchantPromoSearchResult:: ", m)
 	return c.Render(200, render.JSON(m))
@@ -266,12 +269,10 @@ func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 		log.Println("feature promo error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	result := []models.MerchantPromo{}
-	for _, promo := range m {
-		err = tx.RawQuery(`SELECT COUNT(*) as comment FROM comments WHERE promo_id = ?`, promo.ID).First(&promo.Count)
-		result = append(result, promo)
+	for i := range m {
+		err = tx.RawQuery(`SELECT COUNT(*) as comment FROM comments WHERE promo_id = ?`, m[i].ID).First(&m[i].Count)
 	}
-	return c.Render(200, render.JSON(result))
+	return c.Render(200, render.JSON(m))
 }
 
 func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
@@ -291,6 +292,10 @@ func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
 	if err != nil {
 		log.Println("feature promo error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+
+	for i := range m {
+		err = tx.RawQuery(`SELECT COUNT(*) as comment FROM comments WHERE promo_id = ?`, m[i].ID).First(&m[i].Count)
 	}
 	return c.Render(200, render.JSON(m))
 }

@@ -68,6 +68,9 @@ func (v CategoriesResource) ListWithTopPromos(c buffalo.Context) error {
 		m := models.MerchantPromos{}
 		query := tx.Where("category = ?", cat.Name)
 		query.All(&m)
+		for i, _ := range m {
+			err = tx.RawQuery(`SELECT COUNT(*) as comment FROM comments WHERE promo_id = ?`, m[i].ID).First(&m[i].Count)
+		}
 		catGroup["category"] = cat
 		catGroup["promos"] = m
 		result = append(result, catGroup)

@@ -2,6 +2,8 @@ var webpack = require("webpack");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 const BabiliPlugin = require("babili-webpack-plugin");
+const glob = require('glob');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // let commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common-chunks');
 
 // var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -11,14 +13,16 @@ module.exports = {
     index:"./public/ui/index.js",
     admin:"./public/admin/index.js",
     merchant:"./public/merchant/index.js",
+    styles: glob.sync("./public/assets/css/partials/*.css")
   },
   output: {
     filename: "js/[name]-bundle.js",
     path: __dirname + "/public/assets"
   },
-  devtool: 'eval-source-map',
+  // devtool: 'eval-source-map',
   plugins: [
-    new ExtractTextPlugin("css/common.css"),
+    new ExtractTextPlugin("css/main.min.css"),
+    new OptimizeCssAssetsPlugin(),
     // new BabiliPlugin(),
     // new UglifyJsPlugin({
       //    exclude: [
@@ -37,19 +41,13 @@ module.exports = {
       },
       exclude: /node_modules/
     }, {
-      test: /\.scss$/,
-      use: ExtractTextPlugin.extract({
-        fallback: "style-loader",
-        use:
-        [{
-          loader: "css-loader",
-          // options: { sourceMap: true }
-      	},
-        {
-          loader: "sass-loader",
-          // options: { sourceMap: true }
-        }]
-      })
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: [ 'css-loader' ],
+
+          })
+
     }, {
       test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
       use: "url-loader?limit=10000&mimetype=application/font-woff"

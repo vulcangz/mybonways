@@ -1,0 +1,354 @@
+.searchbtn {
+	position: absolute;
+	left: 12px;
+}
+.searchinput {
+	text-indent: 25px;
+}
+
+.font-x {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+		sans-serif;
+}
+/*! HTML5 Boilerplate v5.0 | MIT License | http://h5bp.com/ */
+
+.browserupgrade {
+	margin: 0.2em 0;
+	background: #ccc;
+	color: #000;
+	padding: 0.2em 0;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+body {
+	transition: height 1s ease;
+	-webkit-transition: height 1s ease;
+}
+a {
+	color: inherit;
+}
+
+.hovereffect {
+	overflow: hidden;
+	position: relative;
+	text-align: center;
+	cursor: default;
+}
+.hovereffect .overlay {
+	position: absolute;
+	overflow: hidden;
+	left: 0;
+	top: auto;
+	bottom: 0;
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.35s;
+	-webkit-transform: translate3d(0, 100%, 0);
+	transform: translate3d(0, 100%, 0);
+}
+
+.hovereffect img {
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.35s;
+}
+
+.hovereffect:hover img {
+	-webkit-transform: translate3d(0, -10%, 0);
+	transform: translate3d(0, -10%, 0);
+}
+
+.hovereffect h2 {
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.35s;
+	-webkit-transform: translate3d(0, 200%, 0);
+	transform: translate3d(0, 200%, 0);
+}
+
+.hovereffect:hover .overlay,
+.hovereffect:hover h2 {
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
+
+.hovereffect:hover h2 {
+	-webkit-transition-delay: 0.05s;
+	transition-delay: 0.05s;
+}
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+.gray {
+	color: #3c4859;
+}
+
+.bg-gray {
+	background-color: #3c4859;
+}
+
+.b--gray {
+	border-color: #3c4859;
+}
+
+.black {
+	color: #3c4859;
+}
+
+.light-gray {
+	color: #9facbd;
+}
+
+.bg-light-gray {
+	color: #9facbd;
+}
+
+.object-fit-cover {
+	object-fit: cover;
+}
+.shadow-0 {
+	box-shadow: none;
+	transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.shadow-m1 {
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.shadow-m2 {
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.shadow-m3 {
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.shadow-m4 {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.shadow-m5 {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.hover-shadow-m1:hover,
+.hover-shadow-m1:focus {
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.hover-shadow-m2:hover,
+.hover-shadow-m2:focus {
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.hover-shadow-m3:hover,
+.hover-shadow-m3:focus {
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.hover-shadow-m4:hover,
+.hover-shadow-m4:focus {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.hover-shadow-m5:hover,
+.hover-shadow-m5:focus {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+input[type=text],
+input[type=password] {
+	box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+	.mt-m25-ns {
+		margin-top: -2.5rem;
+	}
+}
+
+.pt45 {
+	padding-top: 2.9rem;
+}
+
+@media (min-width: 480px) {
+	.pt0-ns {
+		padding-top: 0;
+	}
+}
+.bg-red-custom {
+	background-color: #d82125;
+}
+
+.b--red-custom {
+	border-color: #d82125;
+}
+.red-custom {
+	color: #d82125;
+}
+
+.light-gray-custom {
+	color: #f5f5f5;
+}
+
+.bg-light-gray-custom {
+	background-color: #f5f5f5;
+}
+
+.b--light-gray-custom {
+	border-color: #f4f4f4;
+}
+
+.hover-bg-light-gray-custom:hover,
+.hover-bg-light-gray-custom:focus {
+	background-color: #f5f5f5;
+}
+
+.f7 {
+	font-size: 0.775rem;
+}
+
+.f8 {
+	font-size: 0.675rem;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+		sans-serif;
+}
+
+.slideout-menu {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 256px;
+	min-height: 100vh;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	z-index: 0;
+	display: none;
+}
+
+.slideout-menu-left {
+	left: 0;
+}
+
+.slideout-menu-right {
+	right: 0;
+}
+
+.slideout-panel {
+	position: relative;
+	z-index: 1;
+	/*will-change: transform;*/
+	background-color: #fff; /* A background-color is required */
+	min-height: 100vh;
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+	overflow: hidden;
+}
+
+.slideout-open .slideout-menu {
+	display: block;
+}
+
+.shadow-inset-1 {
+	-webkit-box-shadow: inset -2px 0px 5px -1px rgba(66, 66, 66, 0.24);
+	-moz-box-shadow: inset -2px 0px 5px -1px rgba(66, 66, 66, 0.24);
+	box-shadow: inset -2px 0px 5px -1px rgba(66, 66, 66, 0.24);
+}
+
+.bg-red-gradient {
+	background: rgba(246, 46, 36, 1);
+	background: -webkit-linear-gradient(top, #f74c4c 0%, #d82125 100%);
+	background: linear-gradient(to bottom, #f74c4c 0%, #d82125 100%);
+}
+
+.bg-light-gray-custom1 {
+	background-color: #95a5a6;
+}
+
+.bg-light-red-custom1 {
+	background-color: #f1a9a0;
+}
+
+.min-w4 {
+	min-width: 2rem;
+}
+
+hr.light {
+	border: 0;
+	height: 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/**
+  * (optional) define here the style definitions which should be applied on the slider container
+  * e.g. width including further controls like arrows etc.
+  */
+.slider {
+}
+
+.frame {
+	/**
+      * (optional) wrapper width, specifies width of the slider frame.
+      */
+	/*width: 880px;*/
+	position: relative;
+	font-size: 0;
+	line-height: 0;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.slides {
+	display: inline-block;
+}
+
+li {
+	position: relative;
+	display: inline-block;
+
+	/**
+      * (optional) if the content inside the slide element has a defined size.
+      */
+	/*width: 880px;*/
+}
+
+.prev,
+.next {
+	position: absolute;
+	top: 50%;
+	margin-top: -25px;
+	display: block;
+	cursor: pointer;
+}
+
+.next {
+	right: 0;
+}
+
+.prev {
+	left: 0;
+}
+
+.next svg,
+.prev svg {
+	width: 25px;
+}

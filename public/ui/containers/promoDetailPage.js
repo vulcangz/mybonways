@@ -5,6 +5,7 @@ import { isEmptyObject } from "../../util/utils.js";
 import Footer from "../components/footer.js";
 import format from "date-fns/format";
 // import baguetteBox from "baguettebox.js";
+import Comments from '../components/comments.js';
 
 var Details = {
 	onbeforeremove: vnode => {
@@ -261,10 +262,25 @@ var PromoDetailPage = {
 											Locations
 										</button>
 									</div>
+									<div class="flex flex-auto  justify-center tc">
+										<button
+											class={
+												(PromoDetailPage.tab == "Comments"
+													? "bg-red-custom white "
+													: "bg-white ") +
+												" pa1 dib w-100 ba b--transparent pointer"
+											}
+											onclick={function() {
+												PromoDetailPage.tab = "Comments";
+											}}
+										>
+											Comments
+										</button>
+									</div>
 								</div>
 								<div class="pa1">
 									{PromoDetailPage.tab == "Details" ? m(Details) : ""}
-									{/*{PromoDetailPage.tab == "Map" ? m(Map) : ""}*/}
+									{PromoDetailPage.tab == "Comments" ? m(Comments) : ""}
 									{PromoDetailPage.tab == "Locations"
 										? m(Locations, vnode)
 										: ""}

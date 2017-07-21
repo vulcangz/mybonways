@@ -1,0 +1,6 @@
+create_table("comments", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("user_id", "uuid", {})
+	t.Column("comment", "string", {})
+	t.Column("promo_id", "uuid", {})
+})

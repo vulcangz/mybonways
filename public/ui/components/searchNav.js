@@ -169,7 +169,8 @@ var searchNav = {
 		modal.open();
 	},
 	// Loggedin: false,
-	view: function(vnode) {
+	view: vnode => {
+		// console.log(UserModel);
 		return (
 			<section>
 				<section class="pb1 dn-ns ">

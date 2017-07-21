@@ -62,6 +62,7 @@ func App() *buffalo.App {
 		reservationResource := ReservationsResource{&buffalo.BaseResource{}}
 		adminsResource := &AdminsResource{}
 		branchResources := &BranchResource{}
+		commentResource := CommentsResource{&buffalo.BaseResource{}}
 
 		// if this is merchants the middleware does not work, so i changed it to merchant
 		merchantGroup := app.Group("/api/merchants")
@@ -75,6 +76,9 @@ func App() *buffalo.App {
 
 		reservationsGroup := app.Group("/api/reservations")
 		reservationsGroup.Use(UserLoginCheckMiddleware)
+
+		commentGroup := app.Group("/api/comments")
+		commentGroup.Use(UserLoginCheckMiddleware)
 
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
 		app.GET("/api/users/verify/{code}", VerifyUser)
@@ -133,6 +137,9 @@ func App() *buffalo.App {
 		reservationsGroup.Resource("/", reservationResource)
 		reservationsGroup.GET("/isreserved/{promo_id}", reservationResource.isReserved)
 		// reservationsResources.GET("/")
+
+		commentGroup.POST("/", commentResource.Create)
+		commentGroup.GET("/{promo_id}", commentResource.GetPromoComments)
 
 		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
 			c.Render(200, spa.HTML("index.html"))

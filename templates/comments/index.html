@@ -1,0 +1,30 @@
+<h1>Comments</h1>
+
+<p>
+  <a href="<%= newCommentPath() %>" class="btn btn-primary">Create New Comment</a>
+</p>
+
+<table class="table table-striped">
+  <thead>
+  <th>UserID</th>
+    <th>Comment</th>
+    <th>PromoID</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (comment) in comments { %>
+      <tr>
+      <td><%= comment.UserID %></td>
+        <td><%= comment.Comment %></td>
+        <td><%= comment.PromoID %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= commentPath({ comment_id: comment.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editCommentPath({ comment_id: comment.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= commentPath({ comment_id: comment.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

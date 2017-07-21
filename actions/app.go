@@ -139,7 +139,7 @@ func App() *buffalo.App {
 		// reservationsResources.GET("/")
 
 		commentGroup.POST("/", commentResource.Create)
-		commentGroup.GET("/{promo_id}", commentResource.GetPromoComments)
+		app.GET("/api/comments/{promo_id}", commentResource.GetPromoComments)
 
 		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
 			c.Render(200, spa.HTML("index.html"))

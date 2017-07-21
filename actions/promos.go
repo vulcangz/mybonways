@@ -266,7 +266,12 @@ func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 		log.Println("feature promo error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	return c.Render(200, render.JSON(m))
+	result := []models.MerchantPromo{}
+	for _, promo := range m {
+		err = tx.RawQuery(`SELECT COUNT(*) as comment FROM comments WHERE promo_id = ?`, promo.ID).First(&promo.Count)
+		result = append(result, promo)
+	}
+	return c.Render(200, render.JSON(result))
 }
 
 func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {

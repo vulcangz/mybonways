@@ -23,7 +23,7 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin("css/main.min.css"),
     new OptimizeCssAssetsPlugin(),
-    // new BabiliPlugin(),
+    new BabiliPlugin(),
     // new UglifyJsPlugin({
       //    exclude: [
       //      'js/merchant-bundle.js'

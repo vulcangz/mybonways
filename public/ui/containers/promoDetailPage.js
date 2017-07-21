@@ -215,13 +215,13 @@ var PromoDetailPage = {
 										<div class="pt1">
 											<span class="f7">Promo starts: </span>
 											<span>
-												{format(Promos.Promo.start_date, "YYYY-MM-DD h:mm a")}
+												{format(Promos.Promo.start_date, "DD-MM-YYYY h:mm a")}
 											</span>
 										</div>
 										<div class="pt1">
 											<span class="f7">Promo ends: </span>
 											<span>
-												{format(Promos.Promo.end_date, "YYYY-MM-DD h:mm a")}
+												{format(Promos.Promo.end_date, "DD-MM-YYYY h:mm a")}
 											</span>
 										</div>
 									</div>

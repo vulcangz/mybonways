@@ -11,6 +11,7 @@ var HotPromosPage = {
 	slideIndex: 1,
 	Slides: [],
 	oncreate: function(vnode) {
+		// console.error("TESTING THE MICROPHONE:::")
 		Slides.GetAllSlides().then(() => {
 			console.log("then called ");
 			m.redraw();
@@ -28,6 +29,10 @@ var HotPromosPage = {
 		});
 		console.log(vnode);
 		Promos.GetFeaturedPromos();
+	},
+	onremove: function () {
+		// console.error("TESTING THE MICROPHONE:::");
+		Promos.Page = 0;
 	},
 	view: function(vnode) {
 		return (

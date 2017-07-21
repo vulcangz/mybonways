@@ -218,6 +218,20 @@ var EditPromo = {
 									/>
 								</p>
 								<p class="pa2 bt b--gray cf">
+									Quantity:{" "}
+									<input
+										type="number"
+										id="quantity"
+										class="pa2 ba b--gray ml2 fr"
+										value={Promos.CurrentPromo.quantity}
+										oninput={m.withAttr("value", function(val) {
+											EditPromo.state.updatebutton = false;
+											console.log(val);
+											Promos.CurrentPromo.quantity = val;
+										})}
+									/>
+								</p>
+								<p class="pa2 bt b--gray cf">
 									Description:{" "}
 									<input
 										type="text"

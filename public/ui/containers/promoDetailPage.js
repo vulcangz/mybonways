@@ -129,17 +129,13 @@ var PromoDetailPage = {
 											(!isEmptyObject(Promos.Promo.reservation)
 												? " red-custom "
 												: " gray ") +
-											" pa1 b--light-gray bw1 ba mh1  br2 dib pointer grow"
+											" pa1 b--light-gray bw1 ba mh1 br2 dib pointer grow"
 										}
-										onclick={() => {
-											if (!isEmptyObject(UserModel.User)) {
+										onclick={function () {
+											if (!isEmptyObject(UserModel.User) && Promos.Promo.quantity) {
 												if (isEmptyObject(Promos.Promo.reservation)) {
 													Promos.Reserve(UserModel.User.id)
-														.then(() => {
-															{
-																/*Promos.Promo.reservation = {}*/
-															}
-														})
+														.then(function () {})
 														.catch(error => {
 															console.log("Reserve error: ", error);
 															Promos.Promo.reservation = {};
@@ -150,7 +146,15 @@ var PromoDetailPage = {
 													});
 												}
 											} else {
-												console.error("Cannot reserve this promo.");
+												if (isEmptyObject(UserModel.User)) {
+													// TODO:: DISPLAY THE ERROR ON THE PAGE
+													console.error("You are not logged in.");
+												} else if (!Promos.Promo.quantity) {
+													// TODO:: DISPLAY THE ERROR ON THE PAGE
+													console.error("There are no more quantities.");
+												}
+													console.error("an error.");
+												
 											}
 										}}
 									>
@@ -173,6 +177,8 @@ var PromoDetailPage = {
 								<div class="ph2">
 									<span class="dib red-custom pv1 f4 f6-ns">
 										{Promos.Promo.old_price ? Promos.Promo.item_name : ""}
+										{" "}
+										({Promos.Promo.quantity})
 									</span>
 									{!isEmptyObject(Promos.Promo.reservation)
 										? <div class="pt1 fr">

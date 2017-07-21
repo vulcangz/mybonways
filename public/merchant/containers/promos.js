@@ -35,6 +35,9 @@ var PromosTable = {
 									Duration
 								</th>
 								<th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">
+									Quantity
+								</th>
+								<th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">
 									Actions
 								</th>
 							</thead>
@@ -69,6 +72,9 @@ var PromosTable = {
 														<span class="db ">
 															{format(promo.end_date, "YYYY-MM-DD h:mm a")}
 														</span>
+													</td>
+													<td class="pv3 pr3 bb b--black-20 tc">
+														{promo.quantity}
 													</td>
 													<td class="pv3 pr3 bb b--black-20 tc">
 														<a

@@ -57,9 +57,9 @@ var Reservations = {
 															? <span class="pa1 bg-green white">claimed</span>
 															: <button
 																	class="pa2 bg-navy white ba b--transparent br1 grow shadow-4 pointer"
-																	onclick={() => {
+																	onclick={function() {
 																		MerchantModel.ClaimReservation(
-																			reservation.id
+																			reservation.id, reservation.promo_id
 																		);
 																	}}
 																>

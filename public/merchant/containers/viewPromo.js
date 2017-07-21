@@ -95,6 +95,12 @@ var ViewPromo = {
 							</span>
 						</div>
 						<div class="pa2  cf">
+							<strong>Quantity: </strong>
+							<span>
+								{" "}{CurrentPromo.quantity}
+							</span>
+						</div>
+						<div class="pa2  cf">
 							<strong>Description:</strong>
 							<p>
 								{" "}{CurrentPromo.description}

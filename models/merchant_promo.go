@@ -27,6 +27,11 @@ type MerchantPromo struct {
 	FeaturedImageB64 string    `json:"featured_image_b64" db:"featured_image_b64"`
 	Slug             string    `json:"slug" db:"slug"`
 	Quantity         int       `json:"quantity" db:"quantity"`
+
+	Count struct {
+		Comment   int `json:"comment" db:"comment"`
+		Favourite int `json:"favourite" db:"favourite"`
+	} `json:"count" db:"-"`
 }
 
 type MerchantPromoSearchResult struct {
@@ -53,6 +58,11 @@ type MerchantPromoSearchResult struct {
 	Longitude     float64 `json:"longitude" db:"longitude"`
 	Latitude      float64 `json:"latitude" db:"latitude"`
 	WeightedTSV   string  `json:"weighed_tsv" db:"weighted_tsv"`
+
+	Count struct {
+		Comment   int `json:"comment" db:"comment"`
+		Favourite int `json:"favourite" db:"favourite"`
+	} `json:"count" db:"-"`
 }
 
 // String is not required by pop and may be deleted

@@ -1,0 +1,7 @@
+create_table("favourites", func(t) {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("user_id", "uuid", {})
+	t.Column("promo_id", "uuid", {})
+	t.Column("promo_slug", "string", {})
+	t.Column("company_id", "string", {})
+})

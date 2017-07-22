@@ -166,7 +166,29 @@ var PromoDetailPage = {
 										/>
 										<small class="dib v-mid ph1">reserve</small>
 									</a>
-									<a class="pa1 bg-transparent b--light-gray bw1 ba mh1 gray br2 grow pointer dib">
+									<a class={
+									(!isEmptyObject(Promos.Promo.favourite)
+												? " red-custom "
+												: " gray ") +
+											" pa1 b--light-gray bw1 ba mh1 br2 dib pointer grow"}
+										onclick={function() {
+											if (!isEmptyObject(UserModel.User)) {
+												if (isEmptyObject(Promos.Promo.favourite)) {
+													Promos.AddFavourite(UserModel.User.id)
+													.then(function() {})
+													.catch(function() {})
+												} else {
+													Promos.RemoveFavourite()
+													.then(function() {})
+													.catch(function() {})
+												}
+											} else {
+												if (isEmptyObject(UserModel.User)) {
+													// TODO:: DISPLAY THE ERROR ON THE PAGE
+													console.error("You are not logged in.");
+												}
+											}
+										}}>
 										<img
 											src="/assets/img/svg/like-hollow.svg"
 											class="dib v-mid"

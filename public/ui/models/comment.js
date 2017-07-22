@@ -18,7 +18,9 @@ export var Comment = {
             url: "/api/comments/"+ promo_id,
         }).then(function(response) {
             console.log("All comments response: ", response)
-            Comment.AllComments = response;
+            if (response) {
+                Comment.AllComments = response;
+            }
         })
     }
 }

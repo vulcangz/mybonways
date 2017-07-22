@@ -52,6 +52,9 @@ func App() *buffalo.App {
 		app.GET("/merchants", MerchantHandler)
 		app.GET("/merchants/{rest:.*}", MerchantHandler)
 
+		app.GET("/sw.js", func(c buffalo.Context) error {
+			return c.Render(200, spa.Template("text/javascript", "assets/sw.js"))
+		})
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
 
 		promoResource := &PromoResource{}

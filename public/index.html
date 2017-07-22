@@ -8,9 +8,16 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>MyBonWays</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="apple-touch-icon" href="/assets/icons/icon-512x512.png">
+        <link rel="manifest" href="/assets/manifest.json">
+
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="msapplication-starturl" content="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
         <link rel="stylesheet" href="/assets/css/main.min.css">
     </head>
     <body class="font-x border-box fw4">
@@ -19,12 +26,16 @@
         <![endif]-->
         <section id="appContainer">
         </section>
+        <script>
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js');
+        }
+        </script>
         <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsqrZKCXbh9rFjnstvvC4K0tO3kO4w8co&libraries=places">
         </script>
         <script src="/assets/js/index-bundle.js" type="text/javascript" charset="utf-8" ></script>
-        <script>
-        </script>
+
     </body>
 </html>

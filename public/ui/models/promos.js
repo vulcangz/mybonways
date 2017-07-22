@@ -176,6 +176,17 @@ export var Promos = {
 			Promos.Promo.favourite = response;
 		})
 	},
+	RemoveFavourite: function() {
+		return m.request({
+			method: "DELETE",
+			url: "/api/favourites/" + Promos.Promo.favourite.id
+		}).then(function(response) {
+			console.log("Successfuly removed favourites: ",response)
+			Promos.Promo.favourite = {};
+		}).catch(function(error) {
+			console.error("Error removing favourites");
+		})
+	},
 	isFavourite: function() {
 		return m.request({
 			method: "GET",

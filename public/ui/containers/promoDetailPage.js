@@ -173,11 +173,15 @@ var PromoDetailPage = {
 											" pa1 b--light-gray bw1 ba mh1 br2 dib pointer grow"}
 										onclick={function() {
 											if (!isEmptyObject(UserModel.User)) {
-												Promos.AddFavourite(UserModel.User.id).then(function() {
-
-												}).catch(function() {
-
-												})
+												if (isEmptyObject(Promos.Promo.favourite)) {
+													Promos.AddFavourite(UserModel.User.id)
+													.then(function() {})
+													.catch(function() {})
+												} else {
+													Promos.RemoveFavourite()
+													.then(function() {})
+													.catch(function() {})
+												}
 											} else {
 												if (isEmptyObject(UserModel.User)) {
 													// TODO:: DISPLAY THE ERROR ON THE PAGE

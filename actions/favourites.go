@@ -3,6 +3,8 @@ package actions
 import (
 	"net/http"
 
+	"log"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/markbates/pop"
@@ -159,7 +161,8 @@ func (v FavouritesResource) Destroy(c buffalo.Context) error {
 	// Allocate an empty Favourite
 	favourite := &models.Favourite{}
 	// To find the Favourite the parameter favourite_id is used.
-	err := tx.Find(favourite, c.Param("favourite_id"))
+	log.Println("/_id of favourites: ", c.Param("/_id"))
+	err := tx.Find(favourite, c.Param("/_id"))
 	if err != nil {
 		return errors.WithStack(err)
 	}

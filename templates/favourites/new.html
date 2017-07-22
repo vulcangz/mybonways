@@ -1,6 +1,0 @@
-<h1>New Favourite</h1>
-
-<%= form_for(favourite, {action: favouritesPath(), method: "POST"}) { %>
-  <%= partial("favourites/form.html") %>
-  <a href="<%= favouritesPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
-<% } %>

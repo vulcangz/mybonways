@@ -5,7 +5,7 @@ export var Promos = {
 	FeaturedPromos: [],
 	PromoBranches: [],
 	MerchantPromos: [],
-	Promo: { promo_images: "", reservation: {} },
+	Promo: { promo_images: "", reservation: {}, favourite: {} },
 	CategoriesAndPromos:[],
 	PromoMerchant: {},
 	Page: 1,
@@ -70,7 +70,10 @@ export var Promos = {
 					.then(() => {
 						UserModel.isReserved(Promos.Promo.id).then(response => {
 							Promos.Promo.reservation = response;
-						});
+						}).catch(function(){
+							console.error("Not Reserved");
+						})
+						Promos.isFavourite();
 					})
 					.catch(error => {
 						console.error(error);
@@ -157,5 +160,31 @@ export var Promos = {
 			.catch(error => {
 				console.log("delete reservation error: ", error);
 			});
+	},
+	AddFavourite: function(id) {
+		return m.request({
+			method: "POST",
+			url: "/api/favourites",
+			data: {
+					user_id: id,
+					promo_id: Promos.Promo.id,
+					promo_slug: Promos.Promo.slug,
+					company_id: Promos.Promo.company_id
+				}
+		}).then(function(response) {
+			console.log("Favourite response: ", response)
+			Promos.Promo.favourite = response;
+		})
+	},
+	isFavourite: function() {
+		return m.request({
+			method: "GET",
+			url: "/api/favourites/isfavourite/" + Promos.Promo.id
+		}).then(function(response) {
+			console.log("is favourite: ", response)
+			Promos.Promo.favourite = response;
+		}).catch(function(error) {
+			console.error("Not Favourite: ", error);
+		})
 	}
 };

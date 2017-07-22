@@ -1,0 +1,20 @@
+<h1>Favourites#Show</h1>
+
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= favouritesPath() %>" class="btn btn-info">Back to all Favourites</a></li>
+  <li><a href="<%= editFavouritePath({ favourite_id: favourite.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li><a href="<%= favouritePath({ favourite_id: favourite.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>UserID</strong>: <%= favourite.UserID %>
+</p>
+<p>
+  <strong>PromoID</strong>: <%= favourite.PromoID %>
+</p>
+<p>
+  <strong>PromoSlug</strong>: <%= favourite.PromoSlug %>
+</p>
+<p>
+  <strong>CompanyID</strong>: <%= favourite.CompanyID %>
+</p>

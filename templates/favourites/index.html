@@ -1,0 +1,32 @@
+<h1>Favourites</h1>
+
+<p>
+  <a href="<%= newFavouritePath() %>" class="btn btn-primary">Create New Favourite</a>
+</p>
+
+<table class="table table-striped">
+  <thead>
+  <th>UserID</th>
+    <th>PromoID</th>
+    <th>PromoSlug</th>
+    <th>CompanyID</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (favourite) in favourites { %>
+      <tr>
+      <td><%= favourite.UserID %></td>
+        <td><%= favourite.PromoID %></td>
+        <td><%= favourite.PromoSlug %></td>
+        <td><%= favourite.CompanyID %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= favouritePath({ favourite_id: favourite.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editFavouritePath({ favourite_id: favourite.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= favouritePath({ favourite_id: favourite.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

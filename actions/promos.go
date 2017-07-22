@@ -248,7 +248,8 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	for i := range m {
-		err = tx.RawQuery(`SELECT COUNT(*) as comment FROM comments WHERE promo_id = ?`, m[i].ID).First(&m[i].Count)
+		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
+			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
 	}
 	// log.Println("after query")
 	// log.Println("MerchantPromoSearchResult:: ", m)
@@ -270,7 +271,8 @@ func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	for i := range m {
-		err = tx.RawQuery(`SELECT COUNT(*) as comment FROM comments WHERE promo_id = ?`, m[i].ID).First(&m[i].Count)
+		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
+			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
 	}
 	return c.Render(200, render.JSON(m))
 }
@@ -295,7 +297,8 @@ func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
 	}
 
 	for i := range m {
-		err = tx.RawQuery(`SELECT COUNT(*) as comment FROM comments WHERE promo_id = ?`, m[i].ID).First(&m[i].Count)
+		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
+			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
 	}
 	return c.Render(200, render.JSON(m))
 }

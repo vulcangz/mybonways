@@ -5,9 +5,16 @@ import { Promos } from "../models/promos.js";
 
 var Reservations = {
 	oncreate: () => {
-		MerchantModel.GetReservations().then(() => {}).catch(error => {
+		Reservations.state.loader = true;
+		MerchantModel.GetReservations().then(() => {
+			Reservations.state.loader = false;
+		}).catch(error => {
+			Reservations.state.loader = false;
 			console.log("Merchants Reservation error: ", error);
 		});
+	},
+	state: {
+		loader: true
 	},
 	view: () => {
 		return (
@@ -72,6 +79,9 @@ var Reservations = {
 									: ""}
 							</tbody>
 						</table>
+						<div class="tc">
+							{Reservations.state.loader?<div class="loader" style="color: red"></div>:""}
+						</div>
 					</div>
 				</div>
 			</section>

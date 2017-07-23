@@ -165,6 +165,19 @@ func (pr *PromoResource) List(c buffalo.Context) error {
 	return c.Render(200, render.JSON(m))
 }
 
+func (pr *PromoResource) ListAll(c buffalo.Context) error {
+	m := models.MerchantPromos{}
+
+	tx := c.Value("tx").(*pop.Connection)
+
+	err := tx.All(&m)
+	if err != nil {
+		log.Println("promo_resource error: ", err)
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+	return c.Render(200, render.JSON(m))
+}
+
 // List renders all Promos
 func (pr *PromoResource) Search(c buffalo.Context) error {
 	page, err := strconv.Atoi(c.Param("p"))

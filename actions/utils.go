@@ -1,10 +1,13 @@
 package actions
 
 import (
+	"log"
 	"math/rand"
+	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/gobuffalo/buffalo"
 	"github.com/tonyalaribe/mybonways/models"
 )
 
@@ -49,4 +52,19 @@ func RandStringBytes(n int) string {
 		b[i] = letterBytes[rand.Intn(len(letterBytes))]
 	}
 	return string(b)
+}
+
+func ServeLocale(c buffalo.Context) error {
+	language := strings.Split(c.Request().Header["Accept-Language"][0], ",")[0]
+	log.Println("REQUEST:: ", language)
+	err := c.Render(200, spa.Template("text/javascript", "assets/js/menu-"+language+".js"))
+	if err != nil {
+		log.Println("ERROR: ", err)
+		language = strings.Split(language, ";")[0]
+		err = c.Render(200, spa.Template("text/javascript", "assets/js/menu-"+language+".js"))
+		if err != nil {
+			err = c.Render(200, spa.Template("text/javascript", "assets/js/menu-en.js"))
+		}
+	}
+	return err
 }

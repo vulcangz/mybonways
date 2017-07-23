@@ -55,6 +55,9 @@ func App() *buffalo.App {
 		app.GET("/sw.js", func(c buffalo.Context) error {
 			return c.Render(200, spa.Template("text/javascript", "assets/sw.js"))
 		})
+
+		app.GET("/menu.js", ServeLocale)
+
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
 
 		promoResource := &PromoResource{}

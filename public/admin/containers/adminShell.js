@@ -2,7 +2,7 @@ import m from "mithril";
 import localforage from "localforage";
 import { Analytics } from "../models/analytics.js";
 import { AdminModel } from "../models/admin.js";
-import { menus } from "../models/menus.js";
+// import { menus } from "../models/menus.js";
 
 var slideout;
 var MenuComponent = {

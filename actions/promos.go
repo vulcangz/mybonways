@@ -206,7 +206,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
 					GROUP BY company_id,neighbourhood,city,country,longitude,latitude
 				) y
-				ON x.company_id = y.cid ORDER BY x.created_at desc;`
+				ON x.company_id = y.cid WHERE x.id IS NOT NULL ORDER BY x.created_at desc;`
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude)
 	} else if category != "" && searchLatitude == "" {
 		queryString = `
@@ -257,12 +257,15 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	// log.Printf("%#v", x)
 	err = query.All(&m)
 	if err != nil {
-		log.Println("promo_resource error: ", err)
+		log.Println("promo_resource error: ", err.Error())
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	for i := range m {
 		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
 			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
+		if err != nil {
+			log.Println("Count Error: ", err)
+		}
 	}
 	// log.Println("after query")
 	// log.Println("MerchantPromoSearchResult:: ", m)

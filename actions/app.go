@@ -56,7 +56,7 @@ func App() *buffalo.App {
 			return c.Render(200, spa.Template("text/javascript", "assets/sw.js"))
 		})
 
-		app.GET("/menu.js", ServeLocale)
+		app.GET("/AdminMenu/menu.js", ServeLocale)
 
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
 

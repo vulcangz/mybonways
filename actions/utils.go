@@ -57,13 +57,13 @@ func RandStringBytes(n int) string {
 func ServeLocale(c buffalo.Context) error {
 	language := strings.Split(c.Request().Header["Accept-Language"][0], ",")[0]
 	log.Println("REQUEST:: ", language)
-	err := c.Render(200, spa.Template("text/javascript", "assets/js/menu-"+language+".js"))
+	err := c.Render(200, spa.Template("text/javascript", "assets/js/AdminMenu/menu-"+language+".js"))
 	if err != nil {
-		log.Println("ERROR: ", err)
+		log.Println("ERROR:: ", err)
 		language = strings.Split(language, ";")[0]
-		err = c.Render(200, spa.Template("text/javascript", "assets/js/menu-"+language+".js"))
+		err = c.Render(200, spa.Template("text/javascript", "assets/js/AdminMenu/menu-"+language+".js"))
 		if err != nil {
-			err = c.Render(200, spa.Template("text/javascript", "assets/js/menu-en.js"))
+			err = c.Render(200, spa.Template("text/javascript", "assets/js/AdminMenu/menu-en.js"))
 		}
 	}
 	return err

@@ -10,7 +10,7 @@ var Categories = {
 		});
 	},
 	oncreate: function() {
-		console.log("MENU: ", menuss);
+		console.log("MENU: ", menus);
 		CategoriesModel.GetCategories();
 	},
 	view: function() {

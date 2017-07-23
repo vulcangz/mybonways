@@ -34,6 +34,9 @@ var HotPromosPage = {
 		// console.error("TESTING THE MICROPHONE:::");
 		Promos.Page = 0;
 	},
+	state: {
+		loader: false
+	},
 	view: function(vnode) {
 		return (
 			<section class="tc">
@@ -62,7 +65,7 @@ var HotPromosPage = {
 													</li>
 												);
 											})
-										: ""}
+										: <div class="loader" style="color: red"></div>}
 								</ul>
 							</div>
 							<span class="js_prev prev pa4">
@@ -102,21 +105,27 @@ var HotPromosPage = {
 					<section class="bg-light-gray-customx pv2">
 						<div class="">
 							<div class="pv1 cf">
-								{Promos.FeaturedPromos.map((promo, i) => {
+								{Promos.FeaturedPromos.length?
+								Promos.FeaturedPromos.map((promo, i) => {
 									return (
 										<PromoItem promo={promo} key={i}/>
 									);
-								})}
+								}):<div class="loader" style="color: red"></div>}
 							</div>
 						</div>
 						<div class="tc pv3">
 							<button
 								class="ba b--red-custom bg-transparent pv2 ph3"
 								onclick={() => {
-									Promos.LoadMore();
+									HotPromosPage.state.loader = true;
+									Promos.LoadMore().then(function() {
+										HotPromosPage.state.loader = false;
+									}).catch(function() {
+										HotPromosPage.state.loader = false;
+									})
 								}}
 							>
-								Load More
+								{HotPromosPage.state.loader?<div class="loader" style="color: red"></div>: "Load More"}
 							</button>
 						</div>
 					</section>

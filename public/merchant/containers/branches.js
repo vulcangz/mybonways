@@ -3,7 +3,15 @@ import { branch } from "../models/branches.js";
 
 var Branches = {
 	oncreate: function() {
-		branch.GetAllBranches();
+		Branches.state.loader = true;
+		branch.GetAllBranches().then(function() {
+			Branches.state.loader = false;
+		}).catch(function() {
+			Branches.state.loader = false;
+		})
+	},
+	state:{
+		loader: true
 	},
 	view: function() {
 		return (
@@ -81,6 +89,9 @@ var Branches = {
 									: ""}
 							</tbody>
 						</table>
+						<div class="tc">
+							{Branches.state.loader?<div class="loader" style="color: red"></div>:""}
+						</div>
 					</div>
 				</div>
 			</section>

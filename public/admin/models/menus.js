@@ -18,5 +18,9 @@ export var menus = [
 	{
 		title: "Sliders",
 		href: "/slider"
+	},
+	{
+		title: "Promos",
+		href: "/promos"
 	}
 ];

@@ -4,7 +4,15 @@ import format from "date-fns/format";
 
 var PromosTable = {
 	oncreate: function() {
-		Promos.GetAllPromos();
+		PromosTable.state.loader = true;
+		Promos.GetAllPromos().then(function() {
+			PromosTable.state.loader = false;
+		}).catch(function(){
+			PromosTable.state.loader = false;
+		})
+	},
+	state: {
+		loader : true
 	},
 	view: function() {
 		return (
@@ -99,6 +107,9 @@ var PromosTable = {
 									: ""}
 							</tbody>
 						</table>
+						<div class="tc">
+							{PromosTable.state.loader?<div class="loader" style="color: red"></div>:""}
+						</div>
 					</div>
 					<div class="mt4 cf pa2 pv3">
 						<a

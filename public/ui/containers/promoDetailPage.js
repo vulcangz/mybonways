@@ -218,6 +218,15 @@ var PromoDetailPage = {
 											</span>
 										</div>
 									</div>
+									{Promos.Promo.quantity?
+									<div class="pv2">
+										<div class="pt1">
+											<span class="f7">Reservation Quantity: </span>
+											<span>
+												{Promos.Promo.quantity}
+											</span>
+										</div>
+									</div>:""}
 									<div class="pv2 ">
 										<div class="pt1">
 											<span class="f7">Original Price: </span>

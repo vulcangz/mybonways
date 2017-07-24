@@ -122,6 +122,7 @@ func App() *buffalo.App {
 		// This handles adding a location by the admin...
 		adminGroup.Resource("/locations/neighbourhood", locationsResource)
 		adminGroup.GET("/analytics", adminsResource.GetAnalytics)
+		adminGroup.GET("/promos", promoResource.ListAll)
 
 		// these handle queries for all locations (country, city and neighbourhood)
 		// gets list of countries...
@@ -139,6 +140,7 @@ func App() *buffalo.App {
 
 		app.GET("/api/slides", slidesResource.List)
 		adminGroup.Resource("/slides", slidesResource)
+
 		app.POST("/api/users/signup", usersResource.Create)
 
 		reservationsGroup.Resource("/", reservationResource)

@@ -6,6 +6,7 @@ import Footer from "../components/footer.js";
 import format from "date-fns/format";
 // import baguetteBox from "baguettebox.js";
 import Comments from '../components/comments.js';
+import iziToast from 'iziToast';
 
 var Details = {
 	onbeforeremove: vnode => {
@@ -136,26 +137,42 @@ var PromoDetailPage = {
 											if (!isEmptyObject(UserModel.User) && Promos.Promo.quantity) {
 												if (isEmptyObject(Promos.Promo.reservation)) {
 													Promos.Reserve(UserModel.User.id)
-														.then(function () {})
+														.then(function () {
+															iziToast.success({
+																title: 'Successs',
+																message: "You have Reserved this item.",
+																position: 'topRight',
+															});
+														})
 														.catch(error => {
+															iziToast.error({
+																title: 'Error',
+																message: "Could not reserve this promo",
+																position: 'topRight',
+																color: "red"
+															});
 															console.log("Reserve error: ", error);
 															Promos.Promo.reservation = {};
 														});
 												} else {
 													Promos.unReserve().then(response => {
+														iziToast.info({
+															title: 'Info',
+															message: "You have unreserved this item.",
+															position: 'topRight',
+														});
 														Promos.Promo.reservation = {};
 													});
 												}
 											} else {
-												if (isEmptyObject(UserModel.User)) {
-													// TODO:: DISPLAY THE ERROR ON THE PAGE
-													console.error("You are not logged in.");
-												} else if (!Promos.Promo.quantity) {
-													// TODO:: DISPLAY THE ERROR ON THE PAGE
-													console.error("There are no more quantities.");
-												}
-													console.error("an error.");
-
+												// TODO:: DISPLAY THE ERROR ON THE PAGE
+												iziToast.error({
+													title: 'Error',
+													message: "You are not logged in",
+													position: 'topRight',
+													color: "red"
+												});
+												console.error("You are not logged in.");
 											}
 										}}
 									>
@@ -175,16 +192,48 @@ var PromoDetailPage = {
 											if (!isEmptyObject(UserModel.User)) {
 												if (isEmptyObject(Promos.Promo.favourite)) {
 													Promos.AddFavourite(UserModel.User.id)
-													.then(function() {})
-													.catch(function() {})
+													.then(function() {
+														iziToast.success({
+															title: 'Success',
+															message: "Successfully added to favourites",
+															position: 'topRight'
+														});
+													})
+													.catch(function() {
+														iziToast.error({
+															title: 'Error',
+															message: "Could not add this promo to favourite",
+															position: 'topRight',
+															color: "red"
+														});
+													})
 												} else {
 													Promos.RemoveFavourite()
-													.then(function() {})
-													.catch(function() {})
+													.then(function() {
+														iziToast.info({
+															title: 'Info',
+															message: "Removed as favourite",
+															position: 'topRight'
+														});
+													})
+													.catch(function() {
+														iziToast.error({
+															title: 'Error',
+															message: "Could not remove as favourite",
+															position: 'topRight',
+															color: "red"
+														});
+													})
 												}
 											} else {
 												if (isEmptyObject(UserModel.User)) {
 													// TODO:: DISPLAY THE ERROR ON THE PAGE
+													iziToast.error({
+														title: 'Error',
+														message: "You are not logged in",
+														position: 'topRight',
+														color: "red"
+													});
 													console.error("You are not logged in.");
 												}
 											}

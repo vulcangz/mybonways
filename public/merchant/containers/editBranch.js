@@ -81,7 +81,19 @@ var EditBranch = {
 						<button
 							class=" ph3 pv2 bg-navy white-90 grow pointer no-underline shadow-4 bw0 "
 							onclick={function() {
-								branch.UpdateBranch();
+								branch.UpdateBranch().then(function(){
+									iziToast.success({
+										title: 'Success',
+										message: "Branch successfully updated",
+										position: 'topRight'
+									});
+								}).catch(function() {
+									iziToast.error({
+										title: 'Error',
+										message: "Could not update this branch.",
+										position: 'topRight'
+									});
+								})
 							}}
 						>
 							Update Branch

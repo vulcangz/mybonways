@@ -4,6 +4,7 @@ import { Promos } from "../models/promos.js";
 import { UserModel } from "../models/user.js";
 import format from "date-fns/format";
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
+import iziToast from 'iziToast';
 
 var Comments = {
     state:{
@@ -18,6 +19,12 @@ var Comments = {
     },
     ValidateAndSendComment: function() {
         if (!UserModel.User.id) {
+            iziToast.error({
+                title: 'Error',
+                message: "You must be logged in to comment",
+                position: 'bottomRight',
+                color: "red"
+            });
             Comments.state.error = "You must be logged in to comment.";
             return;
         }
@@ -30,6 +37,11 @@ var Comments = {
         console.log("Comment: ", Comment.MyComment)
         Comments.state.loader = true;
         Comment.Add().then(function(){
+            iziToast.success({
+                title: 'Successs',
+                message: "Comment successfully added.",
+                position: 'bottomRight',
+            });
             Comments.state.loader = false;
             document.getElementById("comment").value = "";
             Comment.MyComment.comment = "";

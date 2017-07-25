@@ -1,5 +1,6 @@
 import m from "mithril";
 import { AdminModel } from "../models/admin.js";
+import iziToast from 'iziToast';
 
 var LoginPage = {
 	LoginAdmin: {},
@@ -12,6 +13,12 @@ var LoginPage = {
 	},
 	ValidateLogin: () => {
 		if (!LoginPage.LoginAdmin.email || !LoginPage.LoginAdmin.password) {
+			iziToast.error({
+				title: 'Error',
+				message: 'Please all fields are required',
+				position: 'topRight',
+				color: "red"
+			});
 			LoginPage.state.LoginError = "Please all fields are required.";
 			return;
 		}
@@ -23,6 +30,12 @@ var LoginPage = {
 				m.route.set("/");
 			})
 			.catch(error => {
+				iziToast.error({
+					title: 'Error',
+					message: "Email or password is incorrect",
+					position: 'topRight',
+					color: "red"
+				});
 				LoginPage.state.loader = false;
 				console.log("Admin Login Error: ", error);
 				LoginPage.state.LoginError = "Email or password is incorrect.";

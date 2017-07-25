@@ -33,15 +33,15 @@ export var Locations = {
 				console.log("error: ", error);
 			});
 	},
-	GetNeighbourhoods: () => {
+	GetNeighbourhoods: (country, city) => {
 		return m
 			.request({
 				method: "GET",
 				url:
 					"/api/locations/neighbourhood?country=" +
-					branch.NewBranch.country +
+					country +
 					"&city=" +
-					branch.NewBranch.city
+					city
 			})
 			.then(response => {
 				console.log("response: ", response);

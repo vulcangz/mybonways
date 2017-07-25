@@ -4,6 +4,7 @@ import { MerchantModel } from "../models/merchant.js";
 import { Locations } from "../models/locations.js";
 import tingle from "tingle.js";
 import { settings } from "../models/settings.js";
+import iziToast from 'iziToast';
 
 // instanciate new modal
 var modal = new tingle.modal({
@@ -97,7 +98,7 @@ var NewBranch = {
 		};
 		var map = new google.maps.Map(document.getElementById("map"), {
 			zoom: 15,
-			center: uluru
+			center: position
 		});
 
 		var placeService = new google.maps.places.PlacesService(map);
@@ -155,6 +156,11 @@ var NewBranch = {
 			!branch.NewBranch.longitude ||
 			!branch.NewBranch.latitude
 		) {
+			iziToast.error({
+				title: 'Error',
+				message: "All field must be filled correctly.",
+				position: 'topRight'
+			});
 			NewBranch.state.NewBranchMessage = "";
 			NewBranch.state.NewBranchError = "All field must be filled correctly.";
 			window.scrollTo(0, 100);
@@ -164,12 +170,22 @@ var NewBranch = {
 		branch
 			.SaveNewBranch()
 			.then(() => {
+				iziToast.success({
+					title: 'Success',
+					message: "New Branch added.",
+					position: 'topRight'
+				});
 				NewBranch.state.loader = false;
 				NewBranch.state.NewBranchError = "";
 				NewBranch.state.NewBranchMessage = "New Branch Added.";
 				window.scrollTo(0, 100);
 			})
 			.catch(error => {
+				iziToast.error({
+					title: 'Error',
+					message: "Could not add this branch. Please try again.",
+					position: 'topRight'
+				});
 				NewBranch.state.loader = false;
 				console.log("New Branch Error: ", error);
 				NewBranch.state.NewBranchError =
@@ -337,7 +353,7 @@ var NewBranch = {
 								console.log("E:", e);
 								branch.NewBranch.city = e.target.value;
 								// go and retrieve the neighbourhoods for this city and country
-								Locations.GetNeighbourhoods();
+								Locations.GetNeighbourhoods(branch.NewBranch.country, branch.NewBranch.city);
 							}}
 						>
 							<option disabled selected>

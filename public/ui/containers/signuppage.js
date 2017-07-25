@@ -2,6 +2,7 @@ import m from "mithril";
 import { UserModel } from "../models/user.js";
 import { isEmptyObject } from "../../util/utils.js";
 import Footer from "../components/footer.js";
+import iziToast from 'iziToast';
 
 var SignupPage = {
 	NewUser: {},
@@ -20,6 +21,12 @@ var SignupPage = {
 		// validate input
 		console.log("login: ", SignupPage.LoginUser);
 		if (!SignupPage.LoginUser.email || !SignupPage.LoginUser.user_password) {
+			iziToast.error({
+				title: 'Error',
+				message: 'Please all fields are required',
+				position: 'topRight',
+				color: "red"
+			});
 			SignupPage.state.loginError = "Please all fields are required";
 			return;
 		}
@@ -34,6 +41,12 @@ var SignupPage = {
 				SignupPage.state.loginLoader = false;
 			})
 			.catch(function(error) {
+				iziToast.error({
+					title: 'Error',
+					message: error.Error || "Username or Password is incorrect",
+					position: 'topRight',
+					color: "red"
+				});
 				console.log("Login error: ", error);
 				SignupPage.state.loginError =
 					error.Error || "Username or Password is incorrect.";
@@ -47,6 +60,12 @@ var SignupPage = {
 			!UserModel.NewUser.email ||
 			!UserModel.NewUser.user_password
 		) {
+			iziToast.error({
+				title: 'Error',
+				message: 'All required fields must be provided',
+				position: 'topRight',
+				color: "red"
+			});
 			SignupPage.state.signupMessage = "";
 			SignupPage.state.signupError = "All required fields must be provided.";
 			return;
@@ -54,6 +73,12 @@ var SignupPage = {
 		SignupPage.state.signupLoader = true;
 		UserModel.Signup()
 			.then(() => {
+				iziToast.success({
+					title: 'Success',
+					message: "Login to your email to verify your account",
+					position: 'topRight',
+					color: "blue"
+				});
 				SignupPage.state.signupError = "";
 				SignupPage.state.signupMessage =
 					"Login to your email to verify your account.";
@@ -63,11 +88,17 @@ var SignupPage = {
 				m.redraw();
 			})
 			.catch(function(error) {
+				iziToast.error({
+					title: 'Error',
+					message: error.Error? error.Error: "Could not sign you up at this moment please try again",
+					position: 'topRight',
+					color: "red"
+				});
 				console.error("Signup error: ", error);
 				SignupPage.state.signupMessage = "";
 				SignupPage.state.signupError = error.Error
 					? error.Error
-					: "Could not sign you up at this moment please try again.";
+					: "Could not sign you up at this moment please try again";
 				SignupPage.state.signupLoader = false;
 			});
 	},
@@ -207,7 +238,7 @@ var SignupPage = {
 										</div>
 										<div class="tr pv2">
 											<button
-												class="pv2 ph4 bg-navy white-90 bw0 shadow-4 grow"
+												class="pv2 ph4 bg-navy white-90 bw0 shadow-4 pointer grow"
 												onclick={function() {
 													SignupPage.validateSignup();
 												}}

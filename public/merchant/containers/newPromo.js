@@ -6,6 +6,7 @@ import format from "date-fns/format";
 import Flatpickr from "flatpickr";
 import confirmDatePlugin from "flatpickr/src/plugins/confirmDate/confirmDate.js";
 // const flatpickr = require('flatpickr');
+import iziToast from 'iziToast';
 
 var NewPromo = {
 	featuredImageChange: function(files) {
@@ -87,6 +88,11 @@ var NewPromo = {
 			parseInt(Promos.NewPromo.old_price, 10) <=
 			parseInt(Promos.NewPromo.new_price, 10)
 		) {
+			iziToast.error({
+					title: 'Error',
+					message: "You should probable make the new price lower than the old price.",
+					position: 'topRight'
+				});
 			NewPromo.state.newpromoError =
 				"You should probable make the new price lower than the old price.";
 			window.scrollTo(0, 100);
@@ -105,6 +111,11 @@ var NewPromo = {
 			!Promos.NewPromo.images.length
 		) {
 			console.log("#1 new promo to be submitted: ", Promos.NewPromo);
+			iziToast.error({
+					title: 'Error',
+					message: "All Details must be filled out correctly.",
+					position: 'topRight'
+				});
 			NewPromo.state.newpromoError =
 				"All Details must be filled out correctly.";
 			// scroll to the top to view the error message...
@@ -118,6 +129,11 @@ var NewPromo = {
 
 		Promos.SaveNew()
 			.then(function() {
+				iziToast.success({
+					title: 'Successs',
+					message: "New Promo Added.",
+					position: 'topRight'
+				});
 				NewPromo.state.newpromoMessage = "New Promo added!";
 				window.scrollTo(0, 100);
 				NewPromo.state.Loader = false;
@@ -126,6 +142,11 @@ var NewPromo = {
 				NewPromo.state.newpromoError = "";
 			})
 			.catch(function(error) {
+				iziToast.error({
+					title: 'Error',
+					message: "An error occured adding this promo. Try Again.",
+					position: 'topRight'
+				});
 				NewPromo.state.newpromoError =
 					"An error occured adding this promo. Try Again.";
 				window.scrollTo(0, 100);

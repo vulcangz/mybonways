@@ -44,7 +44,6 @@ export var branch = {
 			.request({
 				method: "GET",
 				url: "/api/merchants/branch/" + String(id),
-				data: {}
 			})
 			.then(function(response) {
 				console.log(response);

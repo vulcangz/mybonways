@@ -225,15 +225,11 @@ func (v ReservationsResource) GetMerchantReservations(c buffalo.Context) error {
 func (v ReservationsResource) ClaimReservation(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	reservationID := c.Param("reservation_id")
-	promoID := c.Param("promo_id")
 	err := tx.RawQuery("UPDATE reservations SET status = 'claimed' WHERE id = ?;", reservationID).Exec()
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	err = tx.RawQuery("UPDATE merchant_promos SET quantity = quantity - 1 WHERE id = ? AND quantity > 0;", promoID).Exec()
-	if err != nil {
-		return errors.WithStack(err)
-	}
+
 	merchant := c.Value("Merchant").(map[string]interface{})
 	reservations := &[]models.MerchantReservationStruct{}
 	err = tx.RawQuery(`SELECT id, created_at, updated_at, user_id,

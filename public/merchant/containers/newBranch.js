@@ -98,7 +98,7 @@ var NewBranch = {
 		};
 		var map = new google.maps.Map(document.getElementById("map"), {
 			zoom: 15,
-			center: uluru
+			center: position
 		});
 
 		var placeService = new google.maps.places.PlacesService(map);
@@ -353,7 +353,7 @@ var NewBranch = {
 								console.log("E:", e);
 								branch.NewBranch.city = e.target.value;
 								// go and retrieve the neighbourhoods for this city and country
-								Locations.GetNeighbourhoods();
+								Locations.GetNeighbourhoods(branch.NewBranch.country, branch.NewBranch.city);
 							}}
 						>
 							<option disabled selected>

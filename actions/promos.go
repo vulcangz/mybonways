@@ -190,11 +190,11 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 				RIGHT OUTER JOIN (
 					SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 					FROM branches
-					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
-					GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10000 * 1609.34
+					ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 				) y
 				ON x.company_id = y.cid ORDER BY x.created_at desc;`
-		query = tx.RawQuery(queryString, searchLongitude, searchLatitude)
+		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude)
 	} else if category != "" && searchLatitude == "" {
 		queryString = `
 		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
@@ -216,12 +216,12 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 			RIGHT OUTER JOIN (
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches
-				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
-				GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10000 * 1609.34
+				ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 			) y
 			ON x.company_id = y.cid WHERE x.category=? ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 		`
-		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, category, categoryPerPage, (page-1)*perPage)
+		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude, category, categoryPerPage, (page-1)*perPage)
 	} else {
 		queryString = `
 		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
@@ -231,11 +231,11 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches
 				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
-				GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+				ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 			) y
 			ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 		`
-		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
+		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
 	}
 	// ORDER BY created_at desc LIMIT 2 OFFSET 2
 

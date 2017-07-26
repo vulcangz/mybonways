@@ -32,13 +32,14 @@ var SearchArea = {
 	},
 	view: function(vnode) {
 		let { q, lat, lng,cat } = vnode.attrs;
+		console.log((cat?cat!=="":false))
 		return (
 			<section style="min-height:100vh;">
 				<section>
 					{m.fragment(vnode.attrs, vnode.children)}
 					<div class="cf">
 						{
-							cat!==""?
+							(cat?cat!=="":false)?
 							<div class="tc pa2 pv4 f4 light-gray ">
 								category: <span class="black f2">{cat}</span>
 							</div>

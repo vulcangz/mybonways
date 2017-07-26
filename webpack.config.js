@@ -20,12 +20,12 @@ module.exports = {
     filename: "js/[name]-bundle.js",
     path: __dirname + "/public/assets"
   },
-  // devtool: 'eval-source-map',
+  devtool: 'eval-source-map',
   plugins: [
     new ExtractTextPlugin("assets/css/main.min.css"),
     new OptimizeCssAssetsPlugin(),
 
-    // new BabiliPlugin(),
+    new BabiliPlugin(),
     new workboxPlugin({
       globPatterns: [
       ],

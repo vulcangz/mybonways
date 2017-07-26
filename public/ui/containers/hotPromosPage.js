@@ -102,7 +102,7 @@ var HotPromosPage = {
 
 						{/*<a href="/promo/laptop-thyos" oncreate={m.route.link}><img src="/assets/img/ad/5.jpg" class="w-100 br3" /></a>*/}
 					</section>
-					<section class="bg-light-gray-customx pv2">
+					<section class="bg-light-gray-customx pv2 tl">
 						<div class="">
 							<div class="pv1 cf">
 								{Promos.FeaturedPromos.length?

@@ -203,11 +203,11 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 				RIGHT OUTER JOIN (
 					SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 					FROM branches
-					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
-					GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10000 * 1609.34
+					ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 				) y
 				ON x.company_id = y.cid WHERE x.id IS NOT NULL ORDER BY x.created_at desc;`
-		query = tx.RawQuery(queryString, searchLongitude, searchLatitude)
+		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude)
 	} else if category != "" && searchLatitude == "" {
 		queryString = `
 		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
@@ -229,12 +229,12 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 			RIGHT OUTER JOIN (
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches
-				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
-				GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10000 * 1609.34
+				ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 			) y
 			ON x.company_id = y.cid WHERE x.category=? ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 		`
-		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, category, categoryPerPage, (page-1)*perPage)
+		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude, category, categoryPerPage, (page-1)*perPage)
 	} else {
 		queryString = `
 		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
@@ -244,11 +244,11 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches
 				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
-				GROUP BY company_id,neighbourhood,city,country,longitude,latitude
+				ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 			) y
 			ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 		`
-		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
+		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
 	}
 	// ORDER BY created_at desc LIMIT 2 OFFSET 2
 
@@ -260,13 +260,13 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		log.Println("promo_resource error: ", err.Error())
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	for i := range m {
-		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
-			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
-		if err != nil {
-			log.Println("Count Error: ", err)
-		}
-	}
+	// for i := range m {
+	// 	err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
+	// 		(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
+	// 	if err != nil {
+	// 		log.Println("Count Error: ", err)
+	// 	}
+	// }
 	// log.Println("after query")
 	// log.Println("MerchantPromoSearchResult:: ", m)
 	return c.Render(200, render.JSON(m))
@@ -286,10 +286,10 @@ func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 		log.Println("feature promo error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	for i := range m {
-		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
-			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
-	}
+	// for i := range m {
+	// 	err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
+	// 		(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
+	// }
 	return c.Render(200, render.JSON(m))
 }
 
@@ -312,10 +312,10 @@ func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
-	for i := range m {
-		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
-			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
-	}
+	// for i := range m {
+	// 	err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
+	// 		(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
+	// }
 	return c.Render(200, render.JSON(m))
 }
 

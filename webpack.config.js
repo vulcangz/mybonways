@@ -25,7 +25,7 @@ module.exports = {
     new ExtractTextPlugin("assets/css/main.min.css"),
     new OptimizeCssAssetsPlugin(),
 
-    // new BabiliPlugin(),
+    new BabiliPlugin(),
     new workboxPlugin({
       globPatterns: [
       ],

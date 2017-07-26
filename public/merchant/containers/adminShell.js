@@ -11,7 +11,7 @@ var MenuComponent = {
 	view: function() {
 		return (
 			<div class="">
-				{menus.map(function(menuItem, i) {
+				{menus[navigator.language]?menus[navigator.language].map(function(menuItem, i) {
 					return (
 						<a
 							class="db pa2 bb b--light-gray hover-bg-light-gray link navy "
@@ -19,7 +19,18 @@ var MenuComponent = {
 							oncreate={m.route.link}
 							key={i}
 						>
-							{menuItem.title}
+							{menuItem.title.toLocaleString(navigator.language)}
+						</a>
+					);
+				}):menus["en-US"].map(function(menuItem, i) {
+					return (
+						<a
+							class="db pa2 bb b--light-gray hover-bg-light-gray link navy "
+							href={menuItem.href}
+							oncreate={m.route.link}
+							key={i}
+						>
+							{menuItem.title.toLocaleString(navigator.language)}
 						</a>
 					);
 				})}

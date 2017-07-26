@@ -1,4 +1,26 @@
-export var menus = [
+export var menus = {"fr-CM": [
+	{
+		title: "tableau de bord",
+		href: "/"
+	},
+	{
+		title: "Catégories",
+		href: "/categories"
+	},
+	{
+		title: "Marchands",
+		href: "/merchants"
+	},
+	{
+		title: "Emplacements",
+		href: "/locations"
+	},
+	{
+		title: "Sliders",
+		href: "/slider"
+	}
+],
+"en-US": [
 	{
 		title: "Dashboard",
 		href: "/"
@@ -23,4 +45,5 @@ export var menus = [
 		title: "Promos",
 		href: "/promos"
 	}
-];
+]}
+// export menus;

@@ -22,7 +22,7 @@ var OffCanvasMenu = {
 					<section class="h-100 flex flex-column justify-center align-center">
 						<header class="pv4">
 							<div class="pt4 ph4">
-								{menus.map(function(menuItem, i) {
+								{menus[navigator.language]?menus[navigator.language].map(function(menuItem, i) {
 									return (
 										<a
 											class="db pv2 ph2 bt link white-90"
@@ -30,7 +30,18 @@ var OffCanvasMenu = {
 											href={menuItem.href}
 											key={i}
 										>
-											{menuItem.title}
+											{menuItem.title.toLocaleString(navigator.language)}
+										</a>
+									);
+								}):menus["en-US"].map(function(menuItem, i) {
+									return (
+										<a
+											class="db pv2 ph2 bt link white-90"
+											oncreate={m.route.link}
+											href={menuItem.href}
+											key={i}
+										>
+											{menuItem.title.toLocaleString(navigator.language)}
 										</a>
 									);
 								})}

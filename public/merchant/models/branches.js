@@ -8,7 +8,7 @@ export var branch = {
 	editBranch: {},
 	GetAllBranches: function() {
 		// TODO :: GET all my branches
-		m
+		return m
 			.request({
 				method: "GET",
 				url: "/api/merchants/branch",
@@ -40,11 +40,10 @@ export var branch = {
 		// edit a branch
 	},
 	GetBranch: id => {
-		m
+		return m
 			.request({
 				method: "GET",
 				url: "/api/merchants/branch/" + String(id),
-				data: {}
 			})
 			.then(function(response) {
 				console.log(response);
@@ -52,7 +51,7 @@ export var branch = {
 			});
 	},
 	UpdateBranch: () => {
-		m
+		return m
 			.request({
 				method: "PUT",
 				url: "/api/merchants/branch/" + branch.editBranch.id,
@@ -65,7 +64,7 @@ export var branch = {
 	},
 	DeleteBranch: function(id, i) {
 		console.log("delete: ", id);
-		m
+		return m
 			.request({
 				method: "DELETE",
 				url: "/api/merchants/branch/" + id,

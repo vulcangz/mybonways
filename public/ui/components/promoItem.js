@@ -62,7 +62,7 @@ var promoItem = {
                 class="dib pr1"
                 style="height:0.5rem;"
               />
-              <span class="dib">200</span>
+              <span class="dib">{promo.count.favourite}</span>
             </span>
             <span class="pa1">
               <img
@@ -70,7 +70,7 @@ var promoItem = {
                 class="pr1"
                 style="height:0.5rem;"
               />
-              <span class="dib">12</span>
+              <span class="dib">{promo.count.comment}</span>
             </span>
           </div>
         </a>

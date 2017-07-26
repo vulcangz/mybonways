@@ -21,7 +21,7 @@ var CategoriesPage = {
 				<section class="pv3">
 					{
 						Promos.CategoriesAndPromos.map(function(catnpromo){
-							console.log(catnpromo)
+							{/* console.log(catnpromo) */}
 							if (catnpromo.promos.length!==0){
 								return (
 									<div class="pv4">

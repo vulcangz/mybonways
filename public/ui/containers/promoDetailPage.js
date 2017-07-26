@@ -6,6 +6,7 @@ import Footer from "../components/footer.js";
 import format from "date-fns/format";
 // import baguetteBox from "baguettebox.js";
 import Comments from '../components/comments.js';
+import iziToast from 'iziToast';
 
 var Details = {
 	onbeforeremove: vnode => {
@@ -136,26 +137,42 @@ var PromoDetailPage = {
 											if (!isEmptyObject(UserModel.User) && Promos.Promo.quantity) {
 												if (isEmptyObject(Promos.Promo.reservation)) {
 													Promos.Reserve(UserModel.User.id)
-														.then(function () {})
+														.then(function () {
+															iziToast.success({
+																title: 'Successs',
+																message: "You have Reserved this item.",
+																position: 'topRight',
+															});
+														})
 														.catch(error => {
+															iziToast.error({
+																title: 'Error',
+																message: "Could not reserve this promo",
+																position: 'topRight',
+																color: "red"
+															});
 															console.log("Reserve error: ", error);
 															Promos.Promo.reservation = {};
 														});
 												} else {
 													Promos.unReserve().then(response => {
+														iziToast.info({
+															title: 'Info',
+															message: "You have unreserved this item.",
+															position: 'topRight',
+														});
 														Promos.Promo.reservation = {};
 													});
 												}
 											} else {
-												if (isEmptyObject(UserModel.User)) {
-													// TODO:: DISPLAY THE ERROR ON THE PAGE
-													console.error("You are not logged in.");
-												} else if (!Promos.Promo.quantity) {
-													// TODO:: DISPLAY THE ERROR ON THE PAGE
-													console.error("There are no more quantities.");
-												}
-													console.error("an error.");
-
+												// TODO:: DISPLAY THE ERROR ON THE PAGE
+												iziToast.error({
+													title: 'Error',
+													message: "You are not logged in",
+													position: 'topRight',
+													color: "red"
+												});
+												console.error("You are not logged in.");
 											}
 										}}
 									>
@@ -166,7 +183,61 @@ var PromoDetailPage = {
 										/>
 										<small class="dib v-mid ph1">reserve</small>
 									</a>
-									<a class="pa1 bg-transparent b--light-gray bw1 ba mh1 gray br2 grow pointer dib">
+									<a class={
+									(!isEmptyObject(Promos.Promo.favourite)
+												? " red-custom "
+												: " gray ") +
+											" pa1 b--light-gray bw1 ba mh1 br2 dib pointer grow"}
+										onclick={function() {
+											if (!isEmptyObject(UserModel.User)) {
+												if (isEmptyObject(Promos.Promo.favourite)) {
+													Promos.AddFavourite(UserModel.User.id)
+													.then(function() {
+														iziToast.success({
+															title: 'Success',
+															message: "Successfully added to favourites",
+															position: 'topRight'
+														});
+													})
+													.catch(function() {
+														iziToast.error({
+															title: 'Error',
+															message: "Could not add this promo to favourite",
+															position: 'topRight',
+															color: "red"
+														});
+													})
+												} else {
+													Promos.RemoveFavourite()
+													.then(function() {
+														iziToast.info({
+															title: 'Info',
+															message: "Removed as favourite",
+															position: 'topRight'
+														});
+													})
+													.catch(function() {
+														iziToast.error({
+															title: 'Error',
+															message: "Could not remove as favourite",
+															position: 'topRight',
+															color: "red"
+														});
+													})
+												}
+											} else {
+												if (isEmptyObject(UserModel.User)) {
+													// TODO:: DISPLAY THE ERROR ON THE PAGE
+													iziToast.error({
+														title: 'Error',
+														message: "You are not logged in",
+														position: 'topRight',
+														color: "red"
+													});
+													console.error("You are not logged in.");
+												}
+											}
+										}}>
 										<img
 											src="/assets/img/svg/like-hollow.svg"
 											class="dib v-mid"
@@ -196,6 +267,15 @@ var PromoDetailPage = {
 											</span>
 										</div>
 									</div>
+									{Promos.Promo.quantity?
+									<div class="pv2">
+										<div class="pt1">
+											<span class="f7">Reservation Quantity: </span>
+											<span>
+												{Promos.Promo.quantity}
+											</span>
+										</div>
+									</div>:""}
 									<div class="pv2 ">
 										<div class="pt1">
 											<span class="f7">Original Price: </span>

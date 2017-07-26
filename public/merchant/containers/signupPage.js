@@ -1,5 +1,6 @@
 import m from "mithril";
 import { MerchantModel } from "../models/merchant.js";
+import iziToast from 'iziToast';
 
 var SignupPage = {
 	SignupMerchant: {},
@@ -22,6 +23,12 @@ var SignupPage = {
 			!SignupPage.LoginMerchant.merchant_email ||
 			!SignupPage.LoginMerchant.merchant_password
 		) {
+			iziToast.error({
+				title: 'Error',
+				message: "Please all fields are required",
+				position: 'topRight',
+				color: "red"
+			});
 			SignupPage.state.loginError = "Please all fields are required";
 			return;
 		}
@@ -35,6 +42,12 @@ var SignupPage = {
 				SignupPage.state.loginLoader = false;
 			})
 			.catch(function(error) {
+				iziToast.error({
+					title: 'Error',
+					message: error.Error || "Username or Password is incorrect",
+					position: 'topRight',
+					color: "red"
+				});
 				SignupPage.state.loginError =
 					error.Error || "Username or Password is incorrect.";
 				SignupPage.state.loginLoader = false;
@@ -47,6 +60,12 @@ var SignupPage = {
 			!SignupPage.SignupMerchant.merchant_email ||
 			!SignupPage.SignupMerchant.merchant_password
 		) {
+			iziToast.error({
+				title: 'Error',
+				message: "All required fields must be provided.",
+				position: 'topRight',
+				color: "red"
+			});
 			SignupPage.state.signupMessage = "";
 			SignupPage.state.signupError = "All required fields must be provided.";
 			return;
@@ -54,6 +73,12 @@ var SignupPage = {
 		SignupPage.state.signupLoader = true;
 		MerchantModel.Signup(SignupPage.SignupMerchant)
 			.then(function() {
+				iziToast.success({
+					title: 'Success',
+					message: "Login to your email to verify your account.",
+					position: 'topRight',
+					color: "blue"
+				});
 				SignupPage.state.signupError = "";
 				SignupPage.state.signupMessage =
 					"Login to your email to verify your account.";
@@ -62,6 +87,12 @@ var SignupPage = {
 				SignupPage.SignupMerchant = {};
 			})
 			.catch(function(error) {
+				iziToast.error({
+					title: 'Error',
+					message: error.Error || "Could not sign you up at this moment please try again.",
+					position: 'topRight',
+					color: "red"
+				});
 				SignupPage.state.signupMessage = "";
 				SignupPage.state.signupError =
 					error.Error ||

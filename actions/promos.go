@@ -165,6 +165,19 @@ func (pr *PromoResource) List(c buffalo.Context) error {
 	return c.Render(200, render.JSON(m))
 }
 
+func (pr *PromoResource) ListAll(c buffalo.Context) error {
+	m := models.MerchantPromos{}
+
+	tx := c.Value("tx").(*pop.Connection)
+
+	err := tx.All(&m)
+	if err != nil {
+		log.Println("promo_resource error: ", err)
+		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+	return c.Render(200, render.JSON(m))
+}
+
 // List renders all Promos
 func (pr *PromoResource) Search(c buffalo.Context) error {
 	page, err := strconv.Atoi(c.Param("p"))
@@ -184,7 +197,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	var queryString string
 	var query *pop.Query
 	if searchTerms == "*" {
-		queryString = `SELECT created_at, updated_at, company_id, item_name, category, old_price, new_price,
+		queryString = `SELECT id, created_at, updated_at, company_id, item_name, category, old_price, new_price,
 			start_date, end_date, description, promo_images, featured_image, featured_image_b64,
 			slug, neighbourhood, city, country, longitude, latitude FROM merchant_promos x
 				RIGHT OUTER JOIN (
@@ -193,11 +206,11 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10000 * 1609.34
 					ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 				) y
-				ON x.company_id = y.cid ORDER BY x.created_at desc;`
+				ON x.company_id = y.cid WHERE x.id IS NOT NULL ORDER BY x.created_at desc;`
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude)
 	} else if category != "" && searchLatitude == "" {
 		queryString = `
-		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
 		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
 			RIGHT OUTER JOIN (
@@ -210,7 +223,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		query = tx.RawQuery(queryString, category, categoryPerPage, (page-1)*perPage)
 	} else if category != "" {
 		queryString = `
-		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
 		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
 			RIGHT OUTER JOIN (
@@ -224,7 +237,7 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude, category, categoryPerPage, (page-1)*perPage)
 	} else {
 		queryString = `
-		SELECT created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
 		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
 			RIGHT OUTER JOIN (
@@ -244,8 +257,15 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	// log.Printf("%#v", x)
 	err = query.All(&m)
 	if err != nil {
-		log.Println("promo_resource error: ", err)
+		log.Println("promo_resource error: ", err.Error())
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+	for i := range m {
+		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
+			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
+		if err != nil {
+			log.Println("Count Error: ", err)
+		}
 	}
 	// log.Println("after query")
 	// log.Println("MerchantPromoSearchResult:: ", m)
@@ -265,6 +285,10 @@ func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 	if err != nil {
 		log.Println("feature promo error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+	for i := range m {
+		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
+			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
 	}
 	return c.Render(200, render.JSON(m))
 }
@@ -286,6 +310,11 @@ func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
 	if err != nil {
 		log.Println("feature promo error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
+	}
+
+	for i := range m {
+		err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,
+			(SELECT COUNT(*) FROM favourites WHERE promo_id = ? ) AS favourite;`, m[i].ID, m[i].ID).First(&m[i].Count)
 	}
 	return c.Render(200, render.JSON(m))
 }

@@ -4,6 +4,7 @@ export var search = {
 	page: 1,
 	searchData: {},
 	mysearch: [],
+	more: true,
 	searchFor: function(query, lat, lng, cat) {
 		// search for a particular area
 		console.log("Search Params: q: ", query, " lat: ", lat, " lng: ", lng);
@@ -40,6 +41,7 @@ export var search = {
 				if (response.length) {
 					search.mysearch.push.apply(search.mysearch, response);
 				} else {
+					search.more = false;
 					console.log("no other response");
 				}
 			});

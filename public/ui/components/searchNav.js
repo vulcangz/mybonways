@@ -77,7 +77,7 @@ modal.setContent(`
       <br/>
       <div class="pv2">
         <div class="tc ">
-          <button class="pa2 dib" onclick="window.setLocation()">
+          <button class="pa2 dib ba b--light-gray" onclick="window.setLocation()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h1" viewBox="0 0 561 561"><path d="M280.5 178.5c-56.1 0-102 45.9-102 102 0 56.1 45.9 102 102 102 56.1 0 102-45.9 102-102C382.5 224.4 336.6 178.5 280.5 178.5zM507.5 255C494.7 147.9 410.6 63.8 306 53.6V0h-51v53.6C147.9 63.8 63.8 147.9 53.6 255H0v51h53.6C66.3 413.1 150.5 497.3 255 507.5V561h51v-53.5C413.1 494.7 497.3 410.6 507.5 306H561v-51H507.5zM280.5 459C181.1 459 102 380 102 280.5S181.1 102 280.5 102 459 181.1 459 280.5 380 459 280.5 459z"/></svg>
 			<span>search around current location</span>
           </button>

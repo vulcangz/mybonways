@@ -32,7 +32,7 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	mp.Slug = slug.Make(mp.ItemName) + "-" + RandStringBytes(5)
-
+	log.Println("PROMO: ", mp)
 	PromoImages := make([]string, 10)
 
 	for _, v := range mp.Images {
@@ -66,12 +66,15 @@ func (pr *PromoResource) Create(c buffalo.Context) error {
 	log.Printf("MerchantPromo: %#v \n ", mp)
 
 	tx := c.Value("tx").(*pop.Connection)
-	err = tx.Create(&mp)
+	err = tx.Create(&mp, "comment", "favourite")
 	if err != nil {
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 
-	tx.Reload(&mp)
+	tx.RawQuery(`
+	SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity,
+		 0 as comment, 0 as favourite FROM merchant_promos WHERE id = ?`, mp.ID).First(&mp)
 	return c.Render(http.StatusOK, render.JSON(mp))
 }
 
@@ -83,7 +86,10 @@ func (v *PromoResource) Show(c buffalo.Context) error {
 	// Allocate an empty Category
 	merchantPromo := models.MerchantPromo{}
 
-	query := tx.Where("slug = ?", c.Param("promo_id"))
+	query := tx.RawQuery(`
+	SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity,
+		 0 as comment, 0 as favourite FROM merchant_promos WHERE slug = ?`, c.Param("promo_id")) // alias for slug since we are using resource
 
 	err := query.First(&merchantPromo)
 	if err != nil {
@@ -106,7 +112,10 @@ func (pr *PromoResource) Update(c buffalo.Context) error {
 	// send the featured image to s3 bucket
 	// But first of all check if the featured image name is in the db
 	promo := &models.MerchantPromo{}
-	err = tx.Where("id = ?", mp.ID).First(promo)
+	err = tx.RawQuery(`
+	SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity,
+		 0 as comment, 0 as favourite FROM merchant_promos WHERE id = ?`, mp.ID).First(promo)
 	if err != nil {
 		log.Printf("Cannot find the promo: %#v", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
@@ -132,13 +141,16 @@ func (pr *PromoResource) Update(c buffalo.Context) error {
 
 	log.Println("no up load b64 error")
 
-	err = tx.Update(mp)
+	err = tx.Update(mp, "comment", "favourite")
 	if err != nil {
 		log.Printf("Cannot update the promo: %#v", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
 	// just to be sure
-	err = tx.Reload(mp)
+	err = tx.RawQuery(`
+	SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity,
+		 0 as comment, 0 as favourite FROM merchant_promos WHERE id = ?`, mp.ID).First(mp)
 	if err != nil {
 		log.Printf("Cannot reload the promo: %#v", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
@@ -155,7 +167,9 @@ func (pr *PromoResource) List(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	merchant := c.Value("Merchant").(map[string]interface{})
 
-	query := tx.Where("company_id = ?", merchant["company_id"])
+	query := tx.RawQuery(`SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity,
+		 0 as comment, 0 as favourite FROM merchant_promos WHERE company_id = ?`, merchant["company_id"])
 
 	err := query.All(&m)
 	if err != nil {
@@ -170,7 +184,11 @@ func (pr *PromoResource) ListAll(c buffalo.Context) error {
 
 	tx := c.Value("tx").(*pop.Connection)
 
-	err := tx.All(&m)
+	err := tx.RawQuery(`
+		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity,
+		 0 as comment, 0 as favourite FROM merchant_promos
+	`).All(&m)
 	if err != nil {
 		log.Println("promo_resource error: ", err)
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
@@ -378,7 +396,9 @@ func (v *PromoResource) GetMerchantPromos(c buffalo.Context) error {
 	companyID := c.Param("company_id")
 
 	query := pop.Q(tx)
-	query = tx.Where("company_id = ?", companyID)
+	query = tx.RawQuery(`SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity,
+		 0 as comment, 0 as favourite FROM merchant_promos WHERE company_id = ?`, companyID)
 
 	err := query.All(&m)
 	if err != nil {

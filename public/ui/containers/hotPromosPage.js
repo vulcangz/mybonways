@@ -114,7 +114,7 @@ var HotPromosPage = {
 							</div>
 						</div>
 						<div class="tc pv3">
-							<button
+							{Promos.more?<button
 								class="ba b--red-custom bg-transparent pv2 ph3"
 								onclick={() => {
 									HotPromosPage.state.loader = true;
@@ -126,7 +126,7 @@ var HotPromosPage = {
 								}}
 							>
 								{HotPromosPage.state.loader?<div class="loader" style="color: red"></div>: "Load More"}
-							</button>
+							</button>:<div class="red pv2">No More Results</div>}
 						</div>
 					</section>
 				</section>

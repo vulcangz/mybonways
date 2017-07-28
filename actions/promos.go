@@ -199,55 +199,73 @@ func (pr *PromoResource) Search(c buffalo.Context) error {
 	if searchTerms == "*" {
 		queryString = `SELECT id, created_at, updated_at, company_id, item_name, category, old_price, new_price,
 			start_date, end_date, description, promo_images, featured_image, featured_image_b64,
-			slug, neighbourhood, city, country, longitude, latitude FROM merchant_promos x
+			slug, COALESCE(SUM(comment), 0) as comment, COALESCE(SUM(favourite), 0) as favourite,
+			neighbourhood, city, country, longitude, latitude FROM merchant_promos x
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS comment FROM comments GROUP BY promo_id)c ON x.id = c.promo_id
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS favourite FROM favourites GROUP BY promo_id)f ON x.id = f.promo_id
 				RIGHT OUTER JOIN (
 					SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 					FROM branches
 					WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10000 * 1609.34
 					ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 				) y
-				ON x.company_id = y.cid WHERE x.id IS NOT NULL ORDER BY x.created_at desc;`
+				ON x.company_id = y.cid WHERE x.id IS NOT NULL
+				GROUP BY x.id,neighbourhood, city, country, longitude, latitude
+				ORDER BY x.created_at desc;`
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude)
 	} else if category != "" && searchLatitude == "" {
 		queryString = `
 		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
-		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
-		city, country, longitude, latitude FROM merchant_promos x
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, COALESCE(SUM(comment), 0) as comment,
+		 COALESCE(SUM(favourite), 0) as favourite, neighbourhood, city, country, longitude, latitude FROM merchant_promos x
+		  LEFT JOIN (SELECT promo_id, COUNT(*) AS comment FROM comments GROUP BY promo_id)c ON x.id = c.promo_id
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS favourite FROM favourites GROUP BY promo_id)f ON x.id = f.promo_id
 			RIGHT OUTER JOIN (
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches
 				GROUP BY company_id,neighbourhood,city,country,longitude,latitude
 			) y
-			ON x.company_id = y.cid WHERE x.category=? ORDER BY x.created_at desc LIMIT ? OFFSET ?;
+			ON x.company_id = y.cid WHERE x.category=?
+			GROUP BY x.id,neighbourhood,city,country,longitude,latitude
+			ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 		`
 		query = tx.RawQuery(queryString, category, categoryPerPage, (page-1)*perPage)
 	} else if category != "" {
 		queryString = `
 		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
-		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, COALESCE(SUM(comment), 0) as comment,
+		 COALESCE(SUM(favourite), 0) as favourite, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
+		LEFT JOIN (SELECT promo_id, COUNT(*) AS comment FROM comments GROUP BY promo_id)c ON x.id = c.promo_id
+		LEFT JOIN (SELECT promo_id, COUNT(*) AS favourite FROM favourites GROUP BY promo_id)f ON x.id = f.promo_id
 			RIGHT OUTER JOIN (
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches
 				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 10000 * 1609.34
 				ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 			) y
-			ON x.company_id = y.cid WHERE x.category=? ORDER BY x.created_at desc LIMIT ? OFFSET ?;
+			ON x.company_id = y.cid WHERE x.category=?
+			ORDER BY x.created_at desc LIMIT ? OFFSET ?;
 		`
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude, category, categoryPerPage, (page-1)*perPage)
 	} else {
 		queryString = `
 		SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
-		end_date, description, promo_images, featured_image, featured_image_b64, slug, neighbourhood,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, COALESCE(SUM(comment), 0) as comment,
+		 COALESCE(SUM(favourite), 0) as favourite, neighbourhood,
 		city, country, longitude, latitude FROM merchant_promos x
+		LEFT JOIN (SELECT promo_id, COUNT(*) AS comment FROM comments GROUP BY promo_id)c ON x.id = c.promo_id
+		LEFT JOIN (SELECT promo_id, COUNT(*) AS favourite FROM favourites GROUP BY promo_id)f ON x.id = f.promo_id
 			RIGHT OUTER JOIN (
 				SELECT company_id as cid,neighbourhood,city,country,longitude,latitude
 				FROM branches
 				WHERE ST_Distance_Sphere(location, ST_MakePoint(?,?)) <= 1000 * 1609.34
+				GROUP BY cid,neighbourhood,city,country,longitude,latitude,location
 				ORDER BY ST_Distance_Sphere(location,ST_MakePoint(?,?))
 			) y
-			ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?) ORDER BY x.created_at desc LIMIT ? OFFSET ?;
-		`
+			ON x.company_id = y.cid WHERE x.weighted_tsv @@ to_tsquery(?)
+			GROUP BY x.id,neighbourhood, city, country, longitude, latitude
+			ORDER BY x.created_at desc LIMIT ? OFFSET ?;`
 		query = tx.RawQuery(queryString, searchLongitude, searchLatitude, searchLongitude, searchLatitude, searchTerms, perPage, (page-1)*perPage)
 	}
 	// ORDER BY created_at desc LIMIT 2 OFFSET 2
@@ -279,7 +297,12 @@ func (pr *PromoResource) ListFeaturedPromos(c buffalo.Context) error {
 
 	tx := c.Value("tx").(*pop.Connection)
 
-	query := tx.Order("created_at desc").Limit(perPage)
+	query := tx.RawQuery(`SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity, COALESCE(SUM(comment), 0) as comment,
+		 COALESCE(SUM(favourite), 0) as favourite FROM merchant_promos
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS comment FROM comments GROUP BY promo_id)c ON merchant_promos.id = c.promo_id
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS favourite FROM favourites GROUP BY promo_id)f ON merchant_promos.id = f.promo_id
+				GROUP BY merchant_promos.id ORDER BY merchant_promos.created_at DESC LIMIT ?`, perPage)
 
 	err := query.All(&m)
 	if err != nil {
@@ -304,7 +327,16 @@ func (pr *PromoResource) ListFeaturedPromosPage(c buffalo.Context) error {
 		log.Println("incorrect params")
 		return c.Error(http.StatusInternalServerError, errors.WithStack(err))
 	}
-	query = tx.Order("created_at desc").Paginate(page, perPage)
+	if page < 1 {
+		page = 1
+	}
+	query = tx.RawQuery(`SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity, COALESCE(SUM(comment), 0) as comment,
+		 COALESCE(SUM(favourite), 0) as favourite FROM merchant_promos
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS comment FROM comments GROUP BY promo_id)c ON merchant_promos.id = c.promo_id
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS favourite FROM favourites GROUP BY promo_id)f ON merchant_promos.id = f.promo_id
+				GROUP BY merchant_promos.id ORDER BY merchant_promos.created_at DESC LIMIT ? OFFSET ?`, perPage, (page-1)*perPage)
+	// query = tx.Order("created_at desc").Paginate(page, perPage)
 
 	err = query.All(&m)
 	if err != nil {
@@ -326,7 +358,10 @@ func (v *PromoResource) GetPromoBySlug(c buffalo.Context) error {
 	merchantPromo := models.MerchantPromo{}
 
 	query := pop.Q(tx)
-	query = tx.Where("slug = ?", c.Param("slug"))
+	query = tx.RawQuery(`SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity,
+		 0 as comment, 0 as favourite FROM merchant_promos WHERE slug = ?`, c.Param("slug"))
+	//.Where("slug = ?", c.Param("slug"))
 
 	err := query.First(&merchantPromo)
 	if err != nil {

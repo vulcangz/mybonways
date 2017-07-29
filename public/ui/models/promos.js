@@ -38,6 +38,7 @@ export var Promos = {
 				console.error("featured promos error: ", error);
 			});
 	},
+	more: true,
 	LoadMore: function(){
 		return m
 			.request({
@@ -49,6 +50,8 @@ export var Promos = {
 				if (response.length > 0) {
 					Promos.FeaturedPromos.push.apply(Promos.FeaturedPromos, response);
 					// Promos.FeaturedPromos = Promos.FeaturedPromos.concat(response);
+				} else {
+					Promos.more = false;
 				}
 			})
 			.catch(error => {

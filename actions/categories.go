@@ -66,7 +66,13 @@ func (v CategoriesResource) ListWithTopPromos(c buffalo.Context) error {
 	for _, cat := range categories {
 		catGroup := make(map[string]interface{})
 		m := models.MerchantPromos{}
-		query := tx.Where("category = ?", cat.Name)
+		query := tx.RawQuery(`SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity, COALESCE(SUM(comment), 0) as comment,
+		 COALESCE(SUM(favourite), 0) as favourite FROM merchant_promos
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS comment FROM comments GROUP BY promo_id)c ON merchant_promos.id = c.promo_id
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS favourite FROM favourites GROUP BY promo_id)f ON merchant_promos.id = f.promo_id
+				WHERE merchant_promos.category = ? GROUP BY merchant_promos.id ORDER BY merchant_promos.created_at DESC`, cat.Name)
+		// query := tx.Where("category = ?", cat.Name)
 		query.All(&m)
 		// for i := range m {
 		// 	err = tx.RawQuery(`SELECT (SELECT COUNT(*) FROM comments WHERE promo_id = ?) AS comment,

@@ -79,6 +79,9 @@ var NewPromo = {
 		endDate: []
 	},
 	validateNewPromo: () => {
+		if (!Promos.NewPromo.quantity) {
+			Promos.NewPromo.quantity = 0;
+		}
 		Promos.NewPromo.start_date = NewPromo.state.startDate.selectedDates[0];
 		console.log("start date: ", NewPromo.state.startDate.selectedDates[0]);
 		Promos.NewPromo.end_date = NewPromo.state.endDate.selectedDates[0];
@@ -243,6 +246,16 @@ var NewPromo = {
 							class=" ba b--light-silver bw1 pa2 w-100 relative"
 							oninput={m.withAttr("value", function(value) {
 								Promos.NewPromo.end_date = format(value, "YYYY-MM-DD");
+							})}
+						/>
+					</div>
+					<div class="pa2">
+						<label class="f4 gray pv2 dib">Quantity:</label>
+						<input
+							type="text"
+							class="ba b--light-silver bw1 pa2 w-100"
+							oninput={m.withAttr("value", function(value) {
+								Promos.NewPromo.quantity = parseInt(value, 10);
 							})}
 						/>
 					</div>

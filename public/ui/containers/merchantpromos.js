@@ -1,5 +1,6 @@
 import m from "mithril";
 import {Promos} from '../models/promos.js';
+import PromoItem from '../components/promoItem.js';
 
 var MerchantPromos = {
 	oncreate: (vnode) => {
@@ -16,7 +17,10 @@ var MerchantPromos = {
 						<p class="mv0 pa2 bg-red-custom white">Promos provided by {vnode.attrs.id}:</p>
 						{Promos.MerchantPromos.length?
 						Promos.MerchantPromos.map((promo, i)=>{
-							return (<div class="dib w-50 w-33-m w-25-l pa1 fl" key={i}>
+							return (
+										<PromoItem promo={promo} key={i}/>
+									);
+							{/* return (<div class="dib w-50 w-33-m w-25-l pa1 fl" key={i}>
 								<a
 									class="br2 gray hover-bg-light-gray-custom fl bg-white hover-shadow-m2 ba b--light-gray link w-100"
 									href={"/promo/" + promo.slug}
@@ -85,7 +89,7 @@ var MerchantPromos = {
 										</span>
 									</div>
 								</a>
-							</div>)
+							</div>) */}
 						}):""}
 					</div>
 				</section>

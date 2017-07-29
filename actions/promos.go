@@ -397,8 +397,13 @@ func (v *PromoResource) GetMerchantPromos(c buffalo.Context) error {
 
 	query := pop.Q(tx)
 	query = tx.RawQuery(`SELECT id, created_at, updated_at,company_id, item_name, category, old_price, new_price, start_date,
-		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity,
-		 0 as comment, 0 as favourite FROM merchant_promos WHERE company_id = ?`, companyID)
+		end_date, description, promo_images, featured_image, featured_image_b64, slug, quantity, COALESCE(SUM(comment), 0) as comment,
+		 COALESCE(SUM(favourite), 0) as favourite FROM merchant_promos
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS comment FROM comments GROUP BY promo_id)c ON merchant_promos.id = c.promo_id
+			LEFT JOIN (SELECT promo_id, COUNT(*) AS favourite FROM favourites GROUP BY promo_id)f ON merchant_promos.id = f.promo_id
+			WHERE company_id = ?
+			GROUP BY merchant_promos.id
+			ORDER BY merchant_promos.created_at DESC`, companyID)
 
 	err := query.All(&m)
 	if err != nil {

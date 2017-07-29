@@ -24,9 +24,9 @@ window.setLocation = function() {
 				iziToast.error({
 					position: "topCenter",
 					title: "Error",
-					message: "An error occured trying to get your location"
+					message: "An error occured trying to get your location: " + error.message
 				});
-				console.log(error);
+				console.log("Location search error: ", error.message);
 				loader.style.display = "none";
 			},
 			{
@@ -91,7 +91,7 @@ modal.setContent(`
         <span class="dib searchbtn z-3 pv1 " style="padding-top:0.60rem">
             <img src="/assets/img/svg/location.svg" class="" style="height:0.7rem;" />
         </span>
-        <input type="search" class="w-100 pa2 input-reset searchinput bg-light-gray-custom  b--transparent" placeholder="select location" id="areaInput" />
+        <input autocomplete="on" type="search" class="w-100 pa2 input-reset searchinput bg-light-gray-custom  b--transparent" placeholder="select location" id="areaInput" />
       </div>
   </div>
   `);
@@ -111,6 +111,22 @@ modal.addFooterBtn(
 
 		let { lat, lng } = search.searchData;
 		console.log("lat : ", lat, " lng : ", lng);
+		if (!search.searchData.item) {
+			iziToast.error({
+				position: "topCenter",
+				title: "Error",
+				message: "Empty search item! (Specify item to search for)"
+			});
+			return;
+		}
+		if (!lat || !lng) {
+			iziToast.error({
+				position: "topCenter",
+				title: "Error",
+				message: "Location is not specified"
+			});
+			return;
+		}
 		var querystring = m.buildQueryString({
 			q: search.searchData.item,
 			lat: lat,
@@ -129,12 +145,24 @@ var searchNav = {
 	searchError: "",
 	loader: "noshow",
 	oncreate: function(vnode) {
+		if ("geolocation" in navigator) {
+			/* geolocation is available */
+			console.log("geolocation is available--");
+		} else {
+			/* geolocation IS NOT available */
+			console.log("geolocation IS NOT available--");
+		}
 		UserModel.GetUserfromStorage().then(() => {}).catch(error => {
 			console.error(error);
 		});
 		vnode.attrs.slideout.close();
 
 		let input = document.getElementById("areaInput");
+		if (input){
+			console.log("INPUT: ", input);
+		} else {
+			console.log("NO INPUT: ", input);
+		}
 		var autocomplete = new google.maps.places.Autocomplete(input, {
 			types: ["geocode"],
 			componentRestrictions: { country: settings.countryCode }

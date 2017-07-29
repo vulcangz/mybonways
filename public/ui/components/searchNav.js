@@ -91,7 +91,7 @@ modal.setContent(`
         <span class="dib searchbtn z-3 pv1 " style="padding-top:0.60rem">
             <img src="/assets/img/svg/location.svg" class="" style="height:0.7rem;" />
         </span>
-        <input type="search" class="w-100 pa2 input-reset searchinput bg-light-gray-custom  b--transparent" placeholder="select location" id="areaInput" />
+        <input autocomplete="on" type="search" class="w-100 pa2 input-reset searchinput bg-light-gray-custom  b--transparent" placeholder="select location" id="areaInput" />
       </div>
   </div>
   `);
@@ -158,6 +158,11 @@ var searchNav = {
 		vnode.attrs.slideout.close();
 
 		let input = document.getElementById("areaInput");
+		if (input){
+			console.log("INPUT: ", input);
+		} else {
+			console.log("NO INPUT: ", input);
+		}
 		var autocomplete = new google.maps.places.Autocomplete(input, {
 			types: ["geocode"],
 			componentRestrictions: { country: settings.countryCode }

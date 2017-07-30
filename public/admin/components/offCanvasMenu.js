@@ -1,6 +1,6 @@
 import m from "mithril";
 import Slideout from "slideout";
-import { menus } from "../models/menus.js";
+import { locale } from "../models/locale.js";
 var slideout;
 
 var OffCanvasMenu = {
@@ -23,7 +23,7 @@ var OffCanvasMenu = {
 					<section class="h-100 flex flex-column justify-center align-center">
 						<header class="pv4">
 							<div class="pt4 ph4">
-								{menus[navigator.language]?menus[navigator.language].map(function(menuItem, i) {
+								{locale[navigator.language]?locale[navigator.language].map(function(menuItem, i) {
 									return (
 										<a
 											class="db pv2 ph2 bt link white-90"
@@ -34,7 +34,7 @@ var OffCanvasMenu = {
 											{menuItem.title.toLocaleString(navigator.language)}
 										</a>
 									);
-								}):menus["en-US"].map(function(menuItem, i) {
+								}):locale["en-US"].map(function(menuItem, i) {
 									return (
 										<a
 											class="db pv2 ph2 bt link white-90"

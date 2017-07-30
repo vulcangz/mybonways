@@ -1,4 +1,4 @@
-export var menus = {
+export var locale = {
     "en-US": {
         Hot: "Hot",
         Categories: "Categories",

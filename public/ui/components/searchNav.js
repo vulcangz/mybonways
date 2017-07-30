@@ -5,7 +5,7 @@ import { getCookie } from "../../util/cookie.js";
 import tingle from "tingle.js";
 import { settings } from "../../merchant/models/settings.js";
 import { isEmptyObject } from "../../util/utils.js";
-import { menus } from '../models/menu.js';
+import { locale } from '../models/locale.js';
 import iziToast from 'iziToast';
 
 window.setLocation = function() {
@@ -249,7 +249,7 @@ var searchNav = {
 									}
 									oncreate={m.route.link}
 								>
-									{menus[navigator.language]?menus[navigator.language].Map:menus["en-US"].Map}
+									{locale[navigator.language]?locale[navigator.language].Map:locale["en-US"].Map}
 								</a>
 							</div>
 							<div class="flex flex-auto justify-center pa1 tc">
@@ -262,7 +262,7 @@ var searchNav = {
 									}
 									oncreate={m.route.link}
 								>
-									{menus[navigator.language]?menus[navigator.language].Hot:menus["en-US"].Hot}
+									{locale[navigator.language]?locale[navigator.language].Hot:locale["en-US"].Hot}
 								</a>
 							</div>
 							<div class="flex flex-auto justify-center pa1 tc">
@@ -275,7 +275,7 @@ var searchNav = {
 									}
 									oncreate={m.route.link}
 								>
-									{menus[navigator.language]?menus[navigator.language].Categories:menus["en-US"].Categories}
+									{locale[navigator.language]?locale[navigator.language].Categories:locale["en-US"].Categories}
 								</a>
 							</div>
 						</div>
@@ -341,7 +341,7 @@ var searchNav = {
 										}
 										oncreate={m.route.link}
 									>
-										{menus[navigator.language]?menus[navigator.language].Map:menus["en-US"].Map}
+										{locale[navigator.language]?locale[navigator.language].Map:locale["en-US"].Map}
 									</a>
 								</div>
 								<div class=" pa1 tc dib">
@@ -355,7 +355,7 @@ var searchNav = {
 										}
 										oncreate={m.route.link}
 									>
-										{menus[navigator.language]?menus[navigator.language].Hot:menus["en-US"].Hot}
+										{locale[navigator.language]?locale[navigator.language].Hot:locale["en-US"].Hot}
 									</a>
 								</div>
 								<div class=" pa1 tc dib">
@@ -369,7 +369,7 @@ var searchNav = {
 										}
 										oncreate={m.route.link}
 									>
-										{menus[navigator.language]?menus[navigator.language].Categories:menus["en-US"].Categories}
+										{locale[navigator.language]?locale[navigator.language].Categories:locale["en-US"].Categories}
 									</a>
 								</div>
 							</div>

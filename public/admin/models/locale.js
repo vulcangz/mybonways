@@ -1,4 +1,5 @@
-export var menus = {"fr-CM": [
+export var locale = {
+	"fr-CM": [
 	{
 		title: "tableau de bord",
 		href: "/"
@@ -46,4 +47,4 @@ export var menus = {"fr-CM": [
 		href: "/promos"
 	}
 ]}
-// export menus;
+// export locale;

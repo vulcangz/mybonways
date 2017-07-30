@@ -113,9 +113,10 @@ var HotPromosPage = {
 								}):<div class="loader" style="color: red"></div>}
 							</div>
 						</div>
+						{Promos.FeaturedPromos.length?
 						<div class="tc pv3">
-							<button
-								class="ba b--red-custom bg-transparent pv2 ph3"
+							{Promos.more?
+							<button class="ba w4 b--red-custom bg-transparent pv2 ph3"
 								onclick={() => {
 									HotPromosPage.state.loader = true;
 									Promos.LoadMore().then(function() {
@@ -126,8 +127,8 @@ var HotPromosPage = {
 								}}
 							>
 								{HotPromosPage.state.loader?<div class="loader" style="color: red"></div>: "Load More"}
-							</button>
-						</div>
+							</button>:<div class="red pv2">No More Results</div>}
+						</div>:""}
 					</section>
 				</section>
 			</section>

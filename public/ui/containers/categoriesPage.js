@@ -19,8 +19,8 @@ var CategoriesPage = {
 			<section class="animated"	>
 				{m.fragment(vnode.attrs, vnode.children)}
 				<section class="pv3">
-					{
-						Promos.CategoriesAndPromos.map(function(catnpromo){
+					{Promos.CategoriesAndPromos.length?
+					Promos.CategoriesAndPromos.map(function(catnpromo){
 							{/* console.log(catnpromo) */}
 							if (catnpromo.promos.length!==0){
 								return (
@@ -38,10 +38,7 @@ var CategoriesPage = {
 								)
 							}
 					})
-				}
-
-
-
+				:<div class="loader" style="color: red"></div>}
 				</section>
 			</section>
 		);

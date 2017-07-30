@@ -1,5 +1,51 @@
 import m from "mithril";
 import { search } from "../models/search.js";
+import tingle from "tingle.js";
+
+function createModal(backRoute, successCallback) {
+	// instanciate new modal
+	var modal = new tingle.modal({
+		footer: true,
+		stickyFooter: false,
+		closeMethods: [],
+		closeLabel: "Close",
+		cssClass: ["custom-class-1", "custom-class-2"],
+		onOpen: function() {
+			console.log("modal open");
+		},
+		onClose: function() {
+			console.log("modal closed");
+		},
+		beforeClose: function() {
+			// here's goes some logic
+			// e.g. save content before closing the modal
+			return true; // close the modal
+			// return false; // nothing happens
+		}
+	});
+		// set content
+		modal.setContent(
+			"<h1>MyBonWays will need your gps location to access this page</h1>"
+		);
+		// add another button
+		modal.addFooterBtn("go back", "tingle-btn tingle-btn--danger", function() {
+			// here goes some logic
+			m.route.set(backRoute);
+			modal.close();
+			modal.destroy();
+		});
+		// add a button
+		modal.addFooterBtn(
+			"continue",
+			"tingle-btn tingle-btn--primary tingle-btn--pull-right",
+			function() {
+				console.log("continue...");
+				successCallback();
+				// MapPromos.getLocation();
+			}
+		);
+		return modal;
+}
 
 var MapPromos = {
 	onbeforeremove: vnode => {
@@ -8,25 +54,42 @@ var MapPromos = {
 			setTimeout(resolve, 1000);
 		});
 	},
+	modal: {},
 	oncreate: vnode => {
 		vnode.dom.classList.add("fadeIn");
-		MapPromos.getLocation();
+		MapPromos.modal = createModal("/", MapPromos.getLocation);
+		navigator.permissions?
+			navigator.permissions.query({name:'geolocation'}).then(permission =>
+					permission.state === "granted"?MapPromos.getLocation():MapPromos.modal.open()
+				)
+			:MapPromos.modal.open()
+		
+		// MapPromos.getLocation();
 	},
 	getLocation: () => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				MapPromos.showPosition,
 				error => {
+					// modal.destroy();
+					m.route.set("/");
+					MapPromos.modal.close();
+					MapPromos.modal.destroy();
 					console.log("Error Occured getting the position: ", error);
 				},
 				{ enableHighAccuracy: true }
 			);
 		} else {
+			m.route.set("/");
+			MapPromos.modal.close();
+			MapPromos.modal.destroy();
 			//x.innerHTML = "Geolocation is not supported by this browser.";
 		}
 	},
 	Locations: [],
 	showPosition: position => {
+		MapPromos.modal.close();
+		MapPromos.modal.destroy();
 		MapPromos.Position = position;
 		// The nearby locations of all available branches...
 		console.log("POSITION: ", position);

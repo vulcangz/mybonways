@@ -6,6 +6,13 @@ import { getCookie } from "../../util/cookie.js";
 var searchNav = {
 	searchError: "",
 	oncreate: vnode => {
+		if ("geolocation" in navigator) {
+			/* geolocation is available */
+			console.log("geolocation is available");
+		} else {
+			/* geolocation IS NOT available */
+			console.log("geolocation IS NOT available");
+		}
 		let input = document.getElementById("areaInput");
 		var autocomplete = new google.maps.places.Autocomplete(input);
 		autocomplete.addListener("place_changed", function() {

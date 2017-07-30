@@ -28,10 +28,10 @@ type MerchantPromo struct {
 	Slug             string    `json:"slug" db:"slug"`
 	Quantity         int       `json:"quantity" db:"quantity"`
 
-	Count struct {
-		Comment   int `json:"comment" db:"comment"`
-		Favourite int `json:"favourite" db:"favourite"`
-	} `json:"count" db:"-"`
+	// Count struct {
+	Comment   int `json:"comment" db:"comment"`
+	Favourite int `json:"favourite" db:"favourite"`
+	// } `json:"count" db:"-"`
 }
 
 type MerchantPromoSearchResult struct {
@@ -59,10 +59,10 @@ type MerchantPromoSearchResult struct {
 	Latitude      float64 `json:"latitude" db:"latitude"`
 	WeightedTSV   string  `json:"weighed_tsv" db:"weighted_tsv"`
 
-	Count struct {
-		Comment   int `json:"comment" db:"comment"`
-		Favourite int `json:"favourite" db:"favourite"`
-	} `json:"count" db:"-"`
+	// Count struct {
+	Comment   int `json:"comment" db:"comment"`
+	Favourite int `json:"favourite" db:"favourite"`
+	// } `json:"count" db:"-"`
 }
 
 // String is not required by pop and may be deleted

@@ -96,10 +96,10 @@ var EditPromo = {
 									id="preview"
 									width="100%"
 									src={
-										!Promos.CurrentPromo.featured_image_b64 ||
-										Promos.CurrentPromo.featured_image_b64 == "null"
+										!Promos.CurrentPromo.featured_image ||
+										Promos.CurrentPromo.featured_image == "null"
 											? "/assets/img/800x450.png"
-											: Promos.CurrentPromo.featured_image_b64
+											: Promos.CurrentPromo.featured_image
 									}
 									alt=""
 								/>
@@ -228,7 +228,7 @@ var EditPromo = {
 										oninput={m.withAttr("value", function(val) {
 											EditPromo.state.updatebutton = false;
 											console.log(val);
-											Promos.CurrentPromo.quantity = val;
+											Promos.CurrentPromo.quantity = parseInt(val);
 										})}
 									/>
 								</p>

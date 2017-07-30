@@ -49,15 +49,15 @@ var SearchArea = {
 						}
 					</div>
 					<div class="cf">
-						{search.mysearch.map(function(promo, i) {
+						{search.mysearch.length?search.mysearch.map(function(promo, i) {
 							return (
 								<PromoItem promo={promo} key={i} />
 							);
-						})}
+						}):<div class="loader" style="color: red"></div>}
 					</div>
 				</section>
 				<div class="tc">
-					<p
+					{search.more?<p
 						class="dib pv2 ph3 pv3-ns ph4-ns ba b--red bg-red-custom white pointer shadow-2 hover-shadow-m3"
 						onclick={() => {
 							SearchArea.state.loader = true;
@@ -72,7 +72,7 @@ var SearchArea = {
 						}}
 					>
 						{SearchArea.state.loader ? m(".loader") : "Load More"}
-					</p>
+					</p>:<div class="red pv2">No More Results</div>}
 				</div>
 			</section>
 		);

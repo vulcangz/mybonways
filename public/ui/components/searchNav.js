@@ -5,7 +5,7 @@ import { getCookie } from "../../util/cookie.js";
 import tingle from "tingle.js";
 import { settings } from "../../merchant/models/settings.js";
 import { isEmptyObject } from "../../util/utils.js";
-import iziToast from 'iziToast';
+import izitoast from 'izitoast';
 
 window.setLocation = function() {
 	var loader = document.getElementById("location_loader");
@@ -21,7 +21,7 @@ window.setLocation = function() {
 					loader.style.display = "none";
 			},
 			error => {
-				iziToast.error({
+				izitoast.error({
 					position: "topCenter",
 					title: "Error",
 					message: "An error occured trying to get your location: " + error.message
@@ -36,7 +36,7 @@ window.setLocation = function() {
 			}
 		);
 	} else {
-		iziToast.error({
+		izitoast.error({
 			position: "topCenter",
 			title: "Error",
 			message: "No GeoLocation Support"
@@ -112,7 +112,7 @@ modal.addFooterBtn(
 		let { lat, lng } = search.searchData;
 		console.log("lat : ", lat, " lng : ", lng);
 		if (!search.searchData.item) {
-			iziToast.error({
+			izitoast.error({
 				position: "topCenter",
 				title: "Error",
 				message: "Empty search item! (Specify item to search for)"
@@ -120,7 +120,7 @@ modal.addFooterBtn(
 			return;
 		}
 		if (!lat || !lng) {
-			iziToast.error({
+			izitoast.error({
 				position: "topCenter",
 				title: "Error",
 				message: "Location is not specified"

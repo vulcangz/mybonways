@@ -1,12 +1,12 @@
 import m from "mithril";
 import { ListingsModel } from "../models/listings.js";
-import iziToast from "iziToast";
+import izitoast from "izitoast";
 
 export var ListingItem = {
 	ApproveListing: function(slug) {
 		ListingsModel.ApproveListing(slug)
 			.then(function() {
-				iziToast.success({
+				izitoast.success({
 					position: "topRight",
 					title: "Success",
 					message: "Approved Listing successfully"
@@ -14,7 +14,7 @@ export var ListingItem = {
 			})
 			.catch(function(err) {
 				console.log(err);
-				iziToast.error({
+				izitoast.error({
 					position: "topRight",
 					title: "Error",
 					message: "Unable to approve listing"
@@ -24,7 +24,7 @@ export var ListingItem = {
 	DeleteListing: function(slug) {
 		ListingsModel.ApproveListing(slug)
 			.then(function() {
-				iziToast.success({
+				izitoast.success({
 					position: "topRight",
 					title: "Success",
 					message: "Deleted Listing successfully"
@@ -32,7 +32,7 @@ export var ListingItem = {
 			})
 			.catch(function(err) {
 				console.log(err);
-				iziToast.error({
+				izitoast.error({
 					position: "topRight",
 					title: "Error",
 					message: "Unable to delete listing"

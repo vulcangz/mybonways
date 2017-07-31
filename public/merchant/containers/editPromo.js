@@ -3,7 +3,7 @@ import { Promos } from "../models/promos.js";
 import format from "date-fns/format";
 import Flatpickr from "flatpickr";
 import confirmDatePlugin from "flatpickr/src/plugins/confirmDate/confirmDate.js";
-import iziToast from 'iziToast';
+import izitoast from 'izitoast';
 
 var EditPromo = {
 	state: {
@@ -260,7 +260,7 @@ var EditPromo = {
 									EditPromo.state.loader = true;
 									Promos.Update(Promos.CurrentPromo)
 										.then(() => {
-											iziToast.success({
+											izitoast.success({
 												title: 'Success',
 												message: "Promo Successfully updated.",
 												position: 'topRight'
@@ -268,7 +268,7 @@ var EditPromo = {
 											EditPromo.state.loader = false;
 										})
 										.catch(error => {
-											iziToast.error({
+											izitoast.error({
 												title: 'Error',
 												message: "Could not update this promo.",
 												position: 'topRight'

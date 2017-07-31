@@ -6,7 +6,7 @@ import Footer from "../components/footer.js";
 import format from "date-fns/format";
 // import baguetteBox from "baguettebox.js";
 import Comments from '../components/comments.js';
-import iziToast from 'iziToast';
+import izitoast from 'izitoast';
 
 var Details = {
 	onbeforeremove: vnode => {
@@ -138,14 +138,14 @@ var PromoDetailPage = {
 												if (isEmptyObject(Promos.Promo.reservation)) {
 													Promos.Reserve(UserModel.User.id)
 														.then(function () {
-															iziToast.success({
+															izitoast.success({
 																title: 'Successs',
 																message: "You have Reserved this item.",
 																position: 'topRight',
 															});
 														})
 														.catch(error => {
-															iziToast.error({
+															izitoast.error({
 																title: 'Error',
 																message: "Could not reserve this promo",
 																position: 'topRight',
@@ -156,7 +156,7 @@ var PromoDetailPage = {
 														});
 												} else {
 													Promos.unReserve().then(response => {
-														iziToast.info({
+														izitoast.info({
 															title: 'Info',
 															message: "You have unreserved this item.",
 															position: 'topRight',
@@ -166,7 +166,7 @@ var PromoDetailPage = {
 												}
 											} else {
 												// TODO:: DISPLAY THE ERROR ON THE PAGE
-												iziToast.error({
+												izitoast.error({
 													title: 'Error',
 													message: "You are not logged in",
 													position: 'topRight',
@@ -193,14 +193,14 @@ var PromoDetailPage = {
 												if (isEmptyObject(Promos.Promo.favourite)) {
 													Promos.AddFavourite(UserModel.User.id)
 													.then(function() {
-														iziToast.success({
+														izitoast.success({
 															title: 'Success',
 															message: "Successfully added to favourites",
 															position: 'topRight'
 														});
 													})
 													.catch(function() {
-														iziToast.error({
+														izitoast.error({
 															title: 'Error',
 															message: "Could not add this promo to favourite",
 															position: 'topRight',
@@ -210,14 +210,14 @@ var PromoDetailPage = {
 												} else {
 													Promos.RemoveFavourite()
 													.then(function() {
-														iziToast.info({
+														izitoast.info({
 															title: 'Info',
 															message: "Removed as favourite",
 															position: 'topRight'
 														});
 													})
 													.catch(function() {
-														iziToast.error({
+														izitoast.error({
 															title: 'Error',
 															message: "Could not remove as favourite",
 															position: 'topRight',
@@ -228,7 +228,7 @@ var PromoDetailPage = {
 											} else {
 												if (isEmptyObject(UserModel.User)) {
 													// TODO:: DISPLAY THE ERROR ON THE PAGE
-													iziToast.error({
+													izitoast.error({
 														title: 'Error',
 														message: "You are not logged in",
 														position: 'topRight',

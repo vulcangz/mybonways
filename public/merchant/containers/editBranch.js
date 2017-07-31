@@ -1,6 +1,6 @@
 import m from "mithril";
 import { branch } from "../models/branches.js";
-import iziToast from 'iziToast';
+import izitoast from 'izitoast';
 import {Locations} from '../models/locations.js';
 import { isEmptyObject } from "../../util/utils.js";
 
@@ -139,14 +139,14 @@ var EditBranch = {
 								onclick={function() {
 									EditBranch.state.buttonloader = true;
 									branch.UpdateBranch().then(function(){
-										iziToast.success({
+										izitoast.success({
 											title: 'Success',
 											message: "Branch successfully updated",
 											position: 'topRight'
 										});
 										EditBranch.state.buttonloader = false;
 									}).catch(function() {
-										iziToast.error({
+										izitoast.error({
 											title: 'Error',
 											message: "Could not update this branch.",
 											position: 'topRight'

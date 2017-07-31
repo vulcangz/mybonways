@@ -4,7 +4,7 @@ import { Promos } from "../models/promos.js";
 import { UserModel } from "../models/user.js";
 import format from "date-fns/format";
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
-import iziToast from 'iziToast';
+import izitoast from 'izitoast';
 
 var Comments = {
     state:{
@@ -19,7 +19,7 @@ var Comments = {
     },
     ValidateAndSendComment: function() {
         if (!UserModel.User.id) {
-            iziToast.error({
+            izitoast.error({
                 title: 'Error',
                 message: "You must be logged in to comment",
                 position: 'bottomRight',
@@ -37,7 +37,7 @@ var Comments = {
         console.log("Comment: ", Comment.MyComment)
         Comments.state.loader = true;
         Comment.Add().then(function(){
-            iziToast.success({
+            izitoast.success({
                 title: 'Successs',
                 message: "Comment successfully added.",
                 position: 'bottomRight',

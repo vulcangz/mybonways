@@ -4,7 +4,7 @@ import { MerchantModel } from "../models/merchant.js";
 import { Locations } from "../models/locations.js";
 import tingle from "tingle.js";
 import { settings } from "../models/settings.js";
-import iziToast from 'iziToast';
+import izitoast from 'izitoast';
 
 // instanciate new modal
 var modal = new tingle.modal({
@@ -156,7 +156,7 @@ var NewBranch = {
 			!branch.NewBranch.longitude ||
 			!branch.NewBranch.latitude
 		) {
-			iziToast.error({
+			izitoast.error({
 				title: 'Error',
 				message: "All field must be filled correctly.",
 				position: 'topRight'
@@ -170,7 +170,7 @@ var NewBranch = {
 		branch
 			.SaveNewBranch()
 			.then(() => {
-				iziToast.success({
+				izitoast.success({
 					title: 'Success',
 					message: "New Branch added.",
 					position: 'topRight'
@@ -181,7 +181,7 @@ var NewBranch = {
 				window.scrollTo(0, 100);
 			})
 			.catch(error => {
-				iziToast.error({
+				izitoast.error({
 					title: 'Error',
 					message: "Could not add this branch. Please try again.",
 					position: 'topRight'

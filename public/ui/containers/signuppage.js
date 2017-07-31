@@ -2,7 +2,7 @@ import m from "mithril";
 import { UserModel } from "../models/user.js";
 import { isEmptyObject } from "../../util/utils.js";
 import Footer from "../components/footer.js";
-import iziToast from 'iziToast';
+import izitoast from 'izitoast';
 
 var SignupPage = {
 	NewUser: {},
@@ -21,7 +21,7 @@ var SignupPage = {
 		// validate input
 		console.log("login: ", SignupPage.LoginUser);
 		if (!SignupPage.LoginUser.email || !SignupPage.LoginUser.user_password) {
-			iziToast.error({
+			izitoast.error({
 				title: 'Error',
 				message: 'Please all fields are required',
 				position: 'topRight',
@@ -41,7 +41,7 @@ var SignupPage = {
 				SignupPage.state.loginLoader = false;
 			})
 			.catch(function(error) {
-				iziToast.error({
+				izitoast.error({
 					title: 'Error',
 					message: error.Error || "Username or Password is incorrect",
 					position: 'topRight',
@@ -60,7 +60,7 @@ var SignupPage = {
 			!UserModel.NewUser.email ||
 			!UserModel.NewUser.user_password
 		) {
-			iziToast.error({
+			izitoast.error({
 				title: 'Error',
 				message: 'All required fields must be provided',
 				position: 'topRight',
@@ -73,7 +73,7 @@ var SignupPage = {
 		SignupPage.state.signupLoader = true;
 		UserModel.Signup()
 			.then(() => {
-				iziToast.success({
+				izitoast.success({
 					title: 'Success',
 					message: "Login to your email to verify your account",
 					position: 'topRight',
@@ -88,7 +88,7 @@ var SignupPage = {
 				m.redraw();
 			})
 			.catch(function(error) {
-				iziToast.error({
+				izitoast.error({
 					title: 'Error',
 					message: error.Error? error.Error: "Could not sign you up at this moment please try again",
 					position: 'topRight',

@@ -12,6 +12,74 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+var _ = grift.Add("db:seed:locations:production", func(c *grift.Context) error {
+	db := models.DB
+	if tx := c.Value("tx"); tx != nil {
+		log.Println("tx not nil")
+		db = tx.(*pop.Connection)
+	}
+	err := db.RawQuery("DELETE FROM locations").Exec()
+	if err != nil {
+		return err
+	}
+	NewLocations := []models.Location{
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonaberi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonanjo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Joss"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonapriso"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nkondo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "New Bell"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bali"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nkongmondo"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Koumassi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bali"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadoumbe"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadouma"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadibong"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Akwa"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Akwa nord"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nkololoun"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ngangue"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonaloka"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Brazzaville"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Km5"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Yabassi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ngodi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonamikengue"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Deido"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonateki"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bepanda"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ndogbati"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bassa"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Makepe"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ndogbong"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Zone industrielle bassa"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Nylon"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Madagascar"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonadiwoto"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Aéroport"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Tergal"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Cité des palmiers"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Beedi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Logpom"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Kotto"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bonamossadi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bell"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Youpwe"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Port"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Bessengue"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Ndogbassi"},
+		{Country: "Cameroon", City: "Douala", Neighbourhood: "Makepe missoke"},
+	}
+	for _, l := range NewLocations {
+		err = db.Create(&l)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+})
+
 var _ = grift.Add("db:seed:locations", func(c *grift.Context) error {
 	db := models.DB
 	if tx := c.Value("tx"); tx != nil {

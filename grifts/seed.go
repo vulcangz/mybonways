@@ -17,8 +17,8 @@ import (
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 var (
-	cat = []string{"Electronique/Service", "Beauté/Cosmetique", "Apparels", "Furniture", "Sorties/Restaurant/Snack",
-		"Bricolage/Decoration", "Cadeau", "Enfants", "Supermarché/Shopping", "Banque/Service", "Groceries",
+	cat = []string{"Electronique/Service", "Beauté/Cosmetique", "Apparels", "Furniture", "Fun", "Restaurant", "Snack",
+		"Bricolage/Decoration", "Cadeau", "Enfants", "Supermarché", "Shopping", "Banque/Service", "Groceries",
 		"Transport/Service", "Santé/Bien-être", "Location"}
 	merchantIDs    = []string{"mybonways", "past3", "crunchies", "prometal"}
 	merchantEmails = []string{"hello@mybonways.com", "hello@past3.com", "hello@crunchies.com", "hello@prometal.com"}

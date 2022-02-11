@@ -35,7 +35,7 @@
     "glob": "^7.1.2",
     "jquery": "^3.2.1",
     "jquery-ujs": "^1.2.2",
-    "node-sass": "^4.5.3",
+    "node-sass": "^7.0.0",
     "npm-install-webpack-plugin": "^4.0.4",
     "optimize-css-assets-webpack-plugin": "^2.0.0",
     "path": "^0.12.7",
